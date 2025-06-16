@@ -127,8 +127,9 @@ jobs:
               issue_number,
             });
 
-            const currentReviewers = JSON.parse(`"${{ steps.pr.outputs.reviewers }}"`.replace(/&quot;/g,'"'));
-            const body = `[🔔 Reviewer Notified] ${currentReviewers.join(", ")}`;
+            const reviewerString = `${{ steps.pr.outputs.reviewers }}`.replace(/[\[\]"]/g, '');
+            const reviewers = reviewerString.split(',').map(r => r.trim()).filter(Boolean);
+            const body = `[🔔 Reviewer Notified] ${reviewers.join(", ")}`;
 
             const existing = comments.data.find(comment =>
               comment.body.startsWith("[🔔 Reviewer Notified]")
