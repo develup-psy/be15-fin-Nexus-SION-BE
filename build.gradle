@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'nu.studer.jooq' version '8.2'
 }
 
 group = 'com.example'
@@ -29,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -42,8 +44,58 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    jooqGenerator 'org.mariadb.jdbc:mariadb-java-client'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'target/generated-sources/jooq'
+        }
+    }
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def env = new Properties()
+file(".env").withInputStream { stream -> env.load(stream) }
+def dbHost = env.getProperty("DB_HOST")
+def dbPort = env.getProperty("DB_PORT")
+def dbName = env.getProperty("DB_NAME")
+def dbUrl = "jdbc:mariadb://${dbHost}:${dbPort}/${dbName}"
+
+jooq {
+    version = '3.18.6' // jooq 라이브러리 버전
+    configurations {
+        main {
+            generationTool {
+                jdbc {
+                    driver = 'org.mariadb.jdbc.Driver'
+                    url = dbUrl
+                    user = env.getProperty('DB_USERNAME')
+                    password = env.getProperty('DB_PASSWORD')
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                    database {
+                        name = 'org.jooq.meta.mariadb.MariaDBDatabase'
+                        inputSchema = dbName // MariaDB의 DB명
+                    }
+                    generate {
+                        daos = true
+                        pojos = true
+                        javaTimeTypes = true
+                    }
+                    target {
+                        packageName = 'com.example.jooq.generated'
+                        directory = 'target/generated-sources/jooq'
+                    }
+                }
+            }
+        }
+    }
 }
