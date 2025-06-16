@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [review_requested]
 
+permissions:
+  contents: write
+
 jobs:
   dispatch-notify:
     runs-on: ubuntu-latest
