@@ -120,17 +120,15 @@ jobs:
         with:
           script: |
             const issue_number = parseInt("${{ steps.pr.outputs.number }}");
+
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number,
             });
 
-            const current = `${{ steps.notified.outputs.result }}`.split(" ").filter(Boolean);
-            const added = `${{ steps.new-reviewers.outputs.new_reviewers }}`.split(" ").filter(Boolean);
-            const merged = Array.from(new Set([...current, ...added])).join(", ");
-
-            const body = `[🔔 Reviewer Notified] ${merged}`;
+            const currentReviewers = JSON.parse(`"${{ steps.pr.outputs.reviewers }}"`.replace(/&quot;/g,'"'));
+            const body = `[🔔 Reviewer Notified] ${currentReviewers.join(", ")}`;
 
             const existing = comments.data.find(comment =>
               comment.body.startsWith("[🔔 Reviewer Notified]")
