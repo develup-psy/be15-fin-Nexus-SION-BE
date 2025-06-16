@@ -4,5 +4,5 @@ import com.nexus.sion.feature.member.command.application.dto.response.TokenRespo
 
 public interface MemberService {
 
-    TokenResponse testLogin();
+  TokenResponse testLogin();
 }
