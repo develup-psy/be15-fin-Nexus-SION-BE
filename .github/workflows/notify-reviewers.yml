@@ -1,9 +1,8 @@
 name: Notify Reviewers on PR
 
 on:
-  pull_request:
-    types: [review_requested]
-  workflow_dispatch:
+  repository_dispatch:
+    types: [notify-reviewers]
 
 permissions:
   issues: write
@@ -14,16 +13,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Wait for reviewers to settle
-        run: sleep 10
+      - name: Get PR info
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.client_payload.pr_number
+            });
+
+            core.setOutput("html_url", pr.data.html_url);
+            core.setOutput("number", pr.data.number.toString());
+            core.setOutput("reviewers", JSON.stringify(pr.data.requested_reviewers.map(r => r.login)));
 
       - name: Map GitHub usernames to Discord IDs
         id: map-reviewers
-        env:
-          REVIEWERS_JSON: ${{ toJson(github.event.pull_request.requested_reviewers) }}
         run: |
-          echo "🔄 Mapping GitHub reviewers to Discord mentions..."
-
           declare -A USER_MAP=(
             ["sezeme"]="534088965050073089"
             ["Kihong12"]="385400409654820864"
@@ -33,16 +40,16 @@ jobs:
             ["develup-psy"]="531501995140448267"
           )
 
+          reviewers=$(echo '${{ steps.pr.outputs.reviewers }}' | jq -r '.[]')
           mentions=""
-
-          while read login; do
+          for login in $reviewers; do
             id=${USER_MAP[$login]}
             if [ -n "$id" ]; then
               mentions+="<@$id> "
             else
               echo "⚠️ No Discord ID mapped for $login"
             fi
-          done < <(echo "$REVIEWERS_JSON" | jq -r '.[].login')
+          done
 
           echo "mentions=$mentions" >> "$GITHUB_OUTPUT"
 
@@ -55,27 +62,21 @@ jobs:
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: parseInt("${{ steps.pr.outputs.number }}"),
             });
 
             const notified = comments.data.some(comment =>
               comment.body.includes("[🔔 Reviewer Notified]")
             );
 
-            if (notified) {
-              console.log("✅ Already notified.");
-              return "true";
-            } else {
-              console.log("🔔 No prior notification.");
-              return "false";
-            }
+            return notified ? "true" : "false";
 
       - name: Send Discord Notification
         if: steps.check.outputs.result == 'false'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           MENTIONS: ${{ steps.map-reviewers.outputs.mentions }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_URL: ${{ steps.pr.outputs.html_url }}
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d "{
@@ -94,6 +95,6 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: parseInt("${{ steps.pr.outputs.number }}"),
               body: "[🔔 Reviewer Notified] Discord 알림이 전송되었습니다."
             });
