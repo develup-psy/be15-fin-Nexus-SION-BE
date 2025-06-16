@@ -1,0 +1,22 @@
+name: Trigger Notify Reviewers
+
+on:
+  pull_request:
+    types: [review_requested]
+
+permissions:
+  contents: write
+
+jobs:
+  dispatch-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger notify-reviews workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: notify-reviewers
+          client-payload: |
+            {
+              "pr_number": ${{ github.event.pull_request.number }}
+            }
