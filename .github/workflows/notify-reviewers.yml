@@ -11,7 +11,7 @@ permissions:
 jobs:
   notify:
     runs-on: ubuntu-latest
-
+    if: github.event.pull_request.requested_reviewers == null || github.event.pull_request.requested_reviewers.length == 0
     steps:
       - name: Get PR info
         id: pr
@@ -28,8 +28,13 @@ jobs:
             core.setOutput("number", pr.data.number.toString());
             core.setOutput("reviewers", JSON.stringify(pr.data.requested_reviewers.map(r => r.login)));
 
+      - name: Skip if no reviewers
+        if: ${{ steps.pr.outputs.reviewers == '[]' }}
+        run: echo "❌ 리뷰어가 없으므로 알림을 생략합니다."
+
       - name: Map GitHub usernames to Discord IDs
         id: map-reviewers
+        if: ${{ steps.pr.outputs.reviewers != '[]' }}
         run: |
           declare -A USER_MAP=(
             ["sezeme"]="534088965050073089"
@@ -55,6 +60,7 @@ jobs:
 
       - name: Check if notification already sent (by PR comment)
         id: check
+        if: ${{ steps.pr.outputs.reviewers != '[]' }}
         uses: actions/github-script@v7
         with:
           result-encoding: string
