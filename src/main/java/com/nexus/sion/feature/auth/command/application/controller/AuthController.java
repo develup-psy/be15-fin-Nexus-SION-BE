@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.member.command.application.controller;
+package com.nexus.sion.feature.auth.command.application.controller;
 
 import static com.nexus.sion.common.utils.CookieUtils.createRefreshTokenCookie;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.member.command.application.dto.response.TokenResponse;
-import com.nexus.sion.feature.member.command.application.service.MemberService;
+import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
+import com.nexus.sion.feature.auth.command.application.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,14 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/members")
 @Tag(name = "", description = "")
 @Slf4j
-public class MemberAuthController {
-  private final MemberService memberService;
+public class AuthController {
+  private final AuthService authService;
 
   /* 테스트 로그인 */
   @Operation(summary = "테스트용 로그인", description = "테스트용 로그인 후 JWT를 발급합니다.")
   @PostMapping("/login/test")
   public ResponseEntity<ApiResponse<TokenResponse>> login() {
-    TokenResponse token = memberService.testLogin();
+    TokenResponse token = authService.testLogin();
     log.info(token.toString());
     return buildTokenResponse(token);
   }
