@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.member.command.domain.aggregate; // package
+package com.nexus.sion.feature.auth.command.domain.aggregate; // package
                                                                 // com.sixmycat.catchy.feature.member.command.domain.aggregate;
 //
 // import jakarta.persistence.*;

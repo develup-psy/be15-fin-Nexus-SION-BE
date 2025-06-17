@@ -1,16 +1,16 @@
-package com.nexus.sion.feature.member.command.application.service;
+package com.nexus.sion.feature.auth.command.application.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nexus.sion.feature.member.command.application.dto.response.TokenResponse;
+import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.security.jwt.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MemberAuthServiceImpl implements MemberService {
+public class AuthServiceImpl implements AuthService {
   private final JwtTokenProvider jwtTokenProvider;
 
   /* 테스트 로그인  */

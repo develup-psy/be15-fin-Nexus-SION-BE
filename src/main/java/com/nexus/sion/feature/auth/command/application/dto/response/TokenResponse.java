@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.member.command.application.dto.response;
+package com.nexus.sion.feature.auth.command.application.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
