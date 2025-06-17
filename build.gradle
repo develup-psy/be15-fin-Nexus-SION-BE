@@ -116,3 +116,9 @@ jooq {
         }
     }
 }
+
+tasks.named('generateJooq') {
+    onlyIf {
+        gradle.startParameter.taskNames.contains('generateJooq')
+    }
+}
