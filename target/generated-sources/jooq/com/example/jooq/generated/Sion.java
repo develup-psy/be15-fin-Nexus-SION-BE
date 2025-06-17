@@ -6,7 +6,6 @@ package com.example.jooq.generated;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
-import com.example.jooq.generated.tables.Developer;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -14,6 +13,7 @@ import com.example.jooq.generated.tables.Grade;
 import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
+import com.example.jooq.generated.tables.Member;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.ProjectEvaluation;
@@ -58,11 +58,6 @@ public class Sion extends SchemaImpl {
     public final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
 
     /**
-     * The table <code>SION.developer</code>.
-     */
-    public final Developer DEVELOPER = Developer.DEVELOPER;
-
-    /**
      * The table <code>SION.developer_tech_stack</code>.
      */
     public final DeveloperTechStack DEVELOPER_TECH_STACK = DeveloperTechStack.DEVELOPER_TECH_STACK;
@@ -96,6 +91,11 @@ public class Sion extends SchemaImpl {
      * The table <code>SION.job_and_tech_stack</code>.
      */
     public final JobAndTechStack JOB_AND_TECH_STACK = JobAndTechStack.JOB_AND_TECH_STACK;
+
+    /**
+     * The table <code>SION.member</code>.
+     */
+    public final Member MEMBER = Member.MEMBER;
 
     /**
      * The table <code>SION.project</code>.
@@ -170,7 +170,6 @@ public class Sion extends SchemaImpl {
         return Arrays.asList(
             Certificate.CERTIFICATE,
             ClientCompany.CLIENT_COMPANY,
-            Developer.DEVELOPER,
             DeveloperTechStack.DEVELOPER_TECH_STACK,
             DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
             Domain.DOMAIN,
@@ -178,6 +177,7 @@ public class Sion extends SchemaImpl {
             InitialScore.INITIAL_SCORE,
             Job.JOB,
             JobAndTechStack.JOB_AND_TECH_STACK,
+            Member.MEMBER,
             Project.PROJECT,
             ProjectAndJob.PROJECT_AND_JOB,
             ProjectEvaluation.PROJECT_EVALUATION,

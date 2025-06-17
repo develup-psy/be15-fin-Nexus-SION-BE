@@ -147,18 +147,18 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
         return Arrays.asList(Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1, Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1, Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
     }
 
-    private transient Developer _developer;
+    private transient Member _member;
     private transient ProjectAndJob _projectAndJob;
     private transient Squad _squad;
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table.
+     * Get the implicit join path to the <code>SION.member</code> table.
      */
-    public Developer developer() {
-        if (_developer == null)
-            _developer = new Developer(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
+    public Member member() {
+        if (_member == null)
+            _member = new Member(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
 
-        return _developer;
+        return _member;
     }
 
     /**

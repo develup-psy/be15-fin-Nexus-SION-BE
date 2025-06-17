@@ -133,17 +133,17 @@ public class DeveloperTechStack extends TableImpl<DeveloperTechStackRecord> {
         return Arrays.asList(Keys.FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1, Keys.FK_TECH_STACK_TO_DEVELOPER_TECH_STACK_1);
     }
 
-    private transient Developer _developer;
+    private transient Member _member;
     private transient TechStack _techStack;
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table.
+     * Get the implicit join path to the <code>SION.member</code> table.
      */
-    public Developer developer() {
-        if (_developer == null)
-            _developer = new Developer(this, Keys.FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1);
+    public Member member() {
+        if (_member == null)
+            _member = new Member(this, Keys.FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1);
 
-        return _developer;
+        return _member;
     }
 
     /**

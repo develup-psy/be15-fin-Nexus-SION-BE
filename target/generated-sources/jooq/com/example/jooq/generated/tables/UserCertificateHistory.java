@@ -140,17 +140,17 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
         return Arrays.asList(Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1, Keys.FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
     }
 
-    private transient Developer _fkDeveloperToUserCertificateHistory_1;
+    private transient Member _fkDeveloperToUserCertificateHistory_1;
     private transient Certificate _certificate;
-    private transient Developer _fkDeveloperToUserCertificateHistory_2;
+    private transient Member _fkDeveloperToUserCertificateHistory_2;
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table, via
-     * the <code>FK_developer_TO_user_certificate_history_1</code> key.
+     * Get the implicit join path to the <code>SION.member</code> table, via the
+     * <code>FK_developer_TO_user_certificate_history_1</code> key.
      */
-    public Developer fkDeveloperToUserCertificateHistory_1() {
+    public Member fkDeveloperToUserCertificateHistory_1() {
         if (_fkDeveloperToUserCertificateHistory_1 == null)
-            _fkDeveloperToUserCertificateHistory_1 = new Developer(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1);
+            _fkDeveloperToUserCertificateHistory_1 = new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1);
 
         return _fkDeveloperToUserCertificateHistory_1;
     }
@@ -166,12 +166,12 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
     }
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table, via
-     * the <code>FK_developer_TO_user_certificate_history_2</code> key.
+     * Get the implicit join path to the <code>SION.member</code> table, via the
+     * <code>FK_developer_TO_user_certificate_history_2</code> key.
      */
-    public Developer fkDeveloperToUserCertificateHistory_2() {
+    public Member fkDeveloperToUserCertificateHistory_2() {
         if (_fkDeveloperToUserCertificateHistory_2 == null)
-            _fkDeveloperToUserCertificateHistory_2 = new Developer(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
+            _fkDeveloperToUserCertificateHistory_2 = new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
 
         return _fkDeveloperToUserCertificateHistory_2;
     }

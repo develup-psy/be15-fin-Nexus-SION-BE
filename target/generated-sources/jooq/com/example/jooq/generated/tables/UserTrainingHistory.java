@@ -132,17 +132,17 @@ public class UserTrainingHistory extends TableImpl<UserTrainingHistoryRecord> {
         return Arrays.asList(Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1, Keys.FK_TRAINING_PROGRAM_TO_USER_TRAINING_HISTORY_1, Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2);
     }
 
-    private transient Developer _fkDeveloperToUserTrainingHistory_1;
+    private transient Member _fkDeveloperToUserTrainingHistory_1;
     private transient TrainingProgram _trainingProgram;
-    private transient Developer _fkDeveloperToUserTrainingHistory_2;
+    private transient Member _fkDeveloperToUserTrainingHistory_2;
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table, via
-     * the <code>FK_developer_TO_user_training_history_1</code> key.
+     * Get the implicit join path to the <code>SION.member</code> table, via the
+     * <code>FK_developer_TO_user_training_history_1</code> key.
      */
-    public Developer fkDeveloperToUserTrainingHistory_1() {
+    public Member fkDeveloperToUserTrainingHistory_1() {
         if (_fkDeveloperToUserTrainingHistory_1 == null)
-            _fkDeveloperToUserTrainingHistory_1 = new Developer(this, Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1);
+            _fkDeveloperToUserTrainingHistory_1 = new Member(this, Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1);
 
         return _fkDeveloperToUserTrainingHistory_1;
     }
@@ -159,12 +159,12 @@ public class UserTrainingHistory extends TableImpl<UserTrainingHistoryRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>SION.developer</code> table, via
-     * the <code>FK_developer_TO_user_training_history_2</code> key.
+     * Get the implicit join path to the <code>SION.member</code> table, via the
+     * <code>FK_developer_TO_user_training_history_2</code> key.
      */
-    public Developer fkDeveloperToUserTrainingHistory_2() {
+    public Member fkDeveloperToUserTrainingHistory_2() {
         if (_fkDeveloperToUserTrainingHistory_2 == null)
-            _fkDeveloperToUserTrainingHistory_2 = new Developer(this, Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2);
+            _fkDeveloperToUserTrainingHistory_2 = new Member(this, Keys.FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2);
 
         return _fkDeveloperToUserTrainingHistory_2;
     }

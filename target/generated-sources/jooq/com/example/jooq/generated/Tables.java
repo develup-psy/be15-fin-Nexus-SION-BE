@@ -6,7 +6,6 @@ package com.example.jooq.generated;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
-import com.example.jooq.generated.tables.Developer;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -14,6 +13,7 @@ import com.example.jooq.generated.tables.Grade;
 import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
+import com.example.jooq.generated.tables.Member;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.ProjectEvaluation;
@@ -42,11 +42,6 @@ public class Tables {
      * The table <code>SION.client_company</code>.
      */
     public static final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
-
-    /**
-     * The table <code>SION.developer</code>.
-     */
-    public static final Developer DEVELOPER = Developer.DEVELOPER;
 
     /**
      * The table <code>SION.developer_tech_stack</code>.
@@ -82,6 +77,11 @@ public class Tables {
      * The table <code>SION.job_and_tech_stack</code>.
      */
     public static final JobAndTechStack JOB_AND_TECH_STACK = JobAndTechStack.JOB_AND_TECH_STACK;
+
+    /**
+     * The table <code>SION.member</code>.
+     */
+    public static final Member MEMBER = Member.MEMBER;
 
     /**
      * The table <code>SION.project</code>.
