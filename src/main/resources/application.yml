@@ -33,3 +33,14 @@ springdoc:
     display-request-duration: true
   api-docs:
     path: /v3/api-docs
+
+cloud:
+  aws:
+    active: true
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: sion-bucket

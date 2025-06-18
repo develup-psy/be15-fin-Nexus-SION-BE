@@ -48,6 +48,12 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     jooqGenerator 'org.mariadb.jdbc:mariadb-java-client'
+
+    //aws
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
+
+    implementation 'software.amazon.awssdk:s3:2.21.5'
 }
 
 sourceSets {
