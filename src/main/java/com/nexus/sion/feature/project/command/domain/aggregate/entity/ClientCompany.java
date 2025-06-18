@@ -19,9 +19,6 @@ public class ClientCompany {
     @Column(name = "company_name", length = 100, nullable = false)
     private String companyName;
 
-    @Column(name = "type", length = 100)
-    private String type;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
