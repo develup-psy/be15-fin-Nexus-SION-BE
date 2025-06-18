@@ -1,17 +1,18 @@
 package com.nexus.sion.common.s3.service;
 
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-
-import java.io.IOException;
 
 @Service
 @ConditionalOnProperty(name = "cloud.aws.active", havingValue = "true")
@@ -56,7 +57,6 @@ public class ImageS3Service {
   }
 
   private boolean isAllowedContentType(String contentType) {
-    return "image/jpeg".equals(contentType)
-            || "image/png".equals(contentType);
+    return "image/jpeg".equals(contentType) || "image/png".equals(contentType);
   }
 }
