@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/document")
 @RequiredArgsConstructor
-public class DocumentS3TestController {
+public class DocumentS3Controller {
 
   private final DocumentS3Service s3Service;
 

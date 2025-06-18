@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/image")
 @RequiredArgsConstructor
-public class ImageS3TestController {
+public class ImageS3Controller {
 
   private final ImageS3Service s3Service;
 
