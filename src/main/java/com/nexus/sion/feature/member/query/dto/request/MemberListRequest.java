@@ -1,10 +1,12 @@
 package com.nexus.sion.feature.member.query.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class MemberListRequest {
   private int page = 0;
   private int size = 10;

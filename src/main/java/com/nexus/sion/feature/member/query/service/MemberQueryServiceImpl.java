@@ -1,4 +1,3 @@
-// MemberQueryServiceImpl.java (implementation)
 package com.nexus.sion.feature.member.query.service;
 
 import static com.example.jooq.generated.tables.Member.MEMBER;
