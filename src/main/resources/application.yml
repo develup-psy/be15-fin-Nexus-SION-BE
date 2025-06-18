@@ -42,4 +42,4 @@ cloud:
     region:
       static: ap-northeast-2
     s3:
-      bucket: sion-bucket
+      bucket: ${AWS_BUCKET}
