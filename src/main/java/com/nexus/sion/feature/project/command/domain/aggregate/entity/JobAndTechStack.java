@@ -23,12 +23,9 @@ public class JobAndTechStack {
   @Column(name = "tech_stack_id", length = 30, nullable = false)
   private String techStackId;
 
-  /*@ManyToOne
+  @ManyToOne
   @JoinColumn(name = "project_and_job_id", nullable = false)
-  private ProjectAndJob projectAndJob;*/
-
-  @Column(name = "project_and_job_id", nullable = false)
-  private String projectAndJob;
+  private ProjectAndJob projectAndJob;
 
   @Column(name = "priority")
   private Integer priority;
