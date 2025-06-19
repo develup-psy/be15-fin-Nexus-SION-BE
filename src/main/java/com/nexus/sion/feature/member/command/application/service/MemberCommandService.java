@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.member.command.application.service;
 
-import com.nexus.sion.feature.member.util.Validator;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -9,22 +8,25 @@ import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.member.command.application.dto.request.UserCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-public class UserCommandService {
+@Slf4j
+public class MemberCommandService {
 
   private final ModelMapper modelMapper;
   private final PasswordEncoder passwordEncoder;
   private final MemberRepository memberRepository;
 
   @Transactional
-  public void registerUser(UserCreateRequest request) {
+  public void registerUser(MemberCreateRequest request) {
     // 핸드폰번호 체크 로직
     if (!Validator.isPhonenumberValid(request.getPhoneNumber())) {
       throw new BusinessException(ErrorCode.INVALID_PHONE_NUMBER_FORMAT);

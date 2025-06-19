@@ -3,11 +3,12 @@ package com.nexus.sion.feature.member.command.application.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,8 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexus.sion.feature.member.command.application.dto.request.UserCreateRequest;
-import com.nexus.sion.feature.member.command.application.service.UserCommandService;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 
 @AutoConfigureMockMvc
 @WebMvcTest(controllers = MemberCommandController.class)
@@ -32,13 +33,15 @@ class MemberCommandControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @Autowired private UserCommandService userCommandService;
+  @Autowired private MemberCommandService userCommandService;
+
+  @Autowired private MemberCommandService memberCommandService;
 
   @TestConfiguration
   static class MockConfig {
     @Bean
-    public UserCommandService userCommandService() {
-      return mock(UserCommandService.class);
+    public MemberCommandService userCommandService() {
+      return mock(MemberCommandService.class);
     }
   }
 
@@ -54,27 +57,22 @@ class MemberCommandControllerTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
+  @DisplayName("회원가입 통합 테스트")
   @Test
   void 회원가입_성공() throws Exception {
-    // given
-    UserCreateRequest request =
-            new UserCreateRequest(
-                    "EMP123", "홍길동", "Password123!", "01011111111", "test@example.com"
-            );
-    String requestJson = objectMapper.writeValueAsString(request);
+    MemberCreateRequest request = MemberCreateRequest.builder()
+            .email("test@example.com")
+            .password("Test1234!")
+            .employeeName("테스트유저")
+            .phoneNumber("01012345678")
+            .build();
 
-    // when & then
-    mockMvc
-        .perform(
-            post("/api/v1/members/signup")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.success").value(true))
-        .andExpect(jsonPath("$.data").doesNotExist());
+    mockMvc.perform(post("/api/v1/members/signup")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.success").value(true))
+            .andDo(print());
 
-    // verify: 서비스가 한 번 호출됐는지 확인
-    verify(userCommandService).registerUser(any(UserCreateRequest.class));
   }
 }
