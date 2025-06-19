@@ -4,7 +4,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCreateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.repository.UserRepository;
+import com.nexus.sion.feature.member.command.repository.MemberRepository;
 import com.nexus.sion.feature.member.util.PasswordValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class UserCommandService {
 
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public void registerUser(UserCreateRequest request) {
@@ -26,15 +26,18 @@ public class UserCommandService {
         if (!PasswordValidator.isValid(request.getPassword())) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD_FORMAT);
         }
-        if (userRepository.existsByEmail(request.getEmail())) {
+        System.out.println(memberRepository.findAll());
+        System.out.println("이메일 비교");
+        if (memberRepository.existsByEmail(request.getEmail())) {
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
         }
-        if (userRepository.existsByEmployeeIdentificationNumber(request.getEmployeeIdentificationNumber())) {
+        System.out.println("사번 비교");
+        if (memberRepository.existsByEmployeeIdentificationNumber(request.getEmployeeIdentificationNumber())) {
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER);
         }
 
         Member member = modelMapper.map(request, Member.class);
         member.setEncodedPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(member);
+        memberRepository.save(member);
     }
 }
