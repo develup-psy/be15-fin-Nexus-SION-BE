@@ -77,4 +77,8 @@ public class Member {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  public void setEncodedPassword(String encodedPassword) {
+    this.password = encodedPassword;
+  }
 }
