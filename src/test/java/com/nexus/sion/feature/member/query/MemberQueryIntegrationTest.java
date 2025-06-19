@@ -30,7 +30,6 @@ class MemberQueryIntegrationTest {
         .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
   }
 
-
   @DisplayName("키워드로 검색 시 정상적인 회원 목록을 반환한다")
   @WithMockUser(username = "testuser")
   @Test
@@ -42,16 +41,16 @@ class MemberQueryIntegrationTest {
 
     // when & then
     mockMvc
-            .perform(get("/members/search")
-                    .param("keyword", keyword)
-                    .param("page", String.valueOf(page))
-                    .param("size", String.valueOf(size)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data.content", not(empty())))
-            .andExpect(jsonPath("$.data.content[0].name", containsString("홍")))
-            .andExpect(jsonPath("$.data.totalElements", greaterThan(0)))
-            .andExpect(jsonPath("$.data.currentPage").value(page));
+        .perform(
+            get("/members/search")
+                .param("keyword", keyword)
+                .param("page", String.valueOf(page))
+                .param("size", String.valueOf(size)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data.content", not(empty())))
+        .andExpect(jsonPath("$.data.content[0].name", containsString("홍")))
+        .andExpect(jsonPath("$.data.totalElements", greaterThan(0)))
+        .andExpect(jsonPath("$.data.currentPage").value(page));
   }
-
 }
