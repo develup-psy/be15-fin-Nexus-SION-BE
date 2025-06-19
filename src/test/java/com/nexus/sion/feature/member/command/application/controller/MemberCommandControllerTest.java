@@ -58,8 +58,9 @@ class MemberCommandControllerTest {
   void 회원가입_성공() throws Exception {
     // given
     UserCreateRequest request =
-        new UserCreateRequest("EMP123", "홍길동", "test@example.com", "Password123!");
-
+            new UserCreateRequest(
+                    "EMP123", "홍길동", "Password123!", "01011111111", "test@example.com"
+            );
     String requestJson = objectMapper.writeValueAsString(request);
 
     // when & then

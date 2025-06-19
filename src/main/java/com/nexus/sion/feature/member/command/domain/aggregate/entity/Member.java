@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -67,6 +68,9 @@ public class Member {
   @Column(name = "role", nullable = false)
   private MemberRole role;
 
+  @Column(nullable = false)
+  private LocalDate birthday;
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
@@ -80,5 +84,9 @@ public class Member {
 
   public void setEncodedPassword(String encodedPassword) {
     this.password = encodedPassword;
+  }
+
+  public void setAdminRole() {
+    role = MemberRole.ADMIN;
   }
 }

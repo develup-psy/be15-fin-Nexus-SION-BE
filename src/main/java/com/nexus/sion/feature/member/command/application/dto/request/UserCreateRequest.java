@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserCreateRequest {
   private final String employeeIdentificationNumber;
-  private final String name;
-  private final String email;
+  private final String employeeName;
   private final String password;
+  private final String phoneNumber;
+  private final String email;
 }
