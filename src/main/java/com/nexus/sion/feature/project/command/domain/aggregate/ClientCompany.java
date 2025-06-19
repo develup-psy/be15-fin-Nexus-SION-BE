@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.project.command.domain.aggregate.entity;
+package com.nexus.sion.feature.project.command.domain.aggregate;
 
 import java.time.LocalDateTime;
 
