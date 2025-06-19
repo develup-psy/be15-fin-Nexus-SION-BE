@@ -31,130 +31,123 @@ import com.example.jooq.generated.tables.records.DomainRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Domain extends TableImpl<DomainRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.domain</code> */
-  public static final Domain DOMAIN = new Domain();
+    /** The reference instance of <code>SION.domain</code> */
+    public static final Domain DOMAIN = new Domain();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<DomainRecord> getRecordType() {
-    return DomainRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<DomainRecord> getRecordType() {
+        return DomainRecord.class;
+    }
 
-  /** The column <code>SION.domain.name</code>. */
-  public final TableField<DomainRecord, String> NAME =
-      createField(DSL.name("name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    /** The column <code>SION.domain.name</code>. */
+    public final TableField<DomainRecord, String> NAME = createField(DSL.name("name"),
+                    SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.domain.created_at</code>. */
-  public final TableField<DomainRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.domain.created_at</code>. */
+    public final TableField<DomainRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.domain.updated_at</code>. */
-  public final TableField<DomainRecord, LocalDateTime> UPDATED_AT =
-      createField(
-          DSL.name("updated_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.domain.updated_at</code>. */
+    public final TableField<DomainRecord, LocalDateTime> UPDATED_AT = createField(
+                    DSL.name("updated_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  private Domain(Name alias, Table<DomainRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private Domain(Name alias, Table<DomainRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private Domain(Name alias, Table<DomainRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private Domain(Name alias, Table<DomainRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.domain</code> table reference */
-  public Domain(String alias) {
-    this(DSL.name(alias), DOMAIN);
-  }
+    /** Create an aliased <code>SION.domain</code> table reference */
+    public Domain(String alias) {
+        this(DSL.name(alias), DOMAIN);
+    }
 
-  /** Create an aliased <code>SION.domain</code> table reference */
-  public Domain(Name alias) {
-    this(alias, DOMAIN);
-  }
+    /** Create an aliased <code>SION.domain</code> table reference */
+    public Domain(Name alias) {
+        this(alias, DOMAIN);
+    }
 
-  /** Create a <code>SION.domain</code> table reference */
-  public Domain() {
-    this(DSL.name("domain"), null);
-  }
+    /** Create a <code>SION.domain</code> table reference */
+    public Domain() {
+        this(DSL.name("domain"), null);
+    }
 
-  public <O extends Record> Domain(Table<O> child, ForeignKey<O, DomainRecord> key) {
-    super(child, key, DOMAIN);
-  }
+    public <O extends Record> Domain(Table<O> child, ForeignKey<O, DomainRecord> key) {
+        super(child, key, DOMAIN);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public UniqueKey<DomainRecord> getPrimaryKey() {
-    return Keys.KEY_DOMAIN_PRIMARY;
-  }
+    @Override
+    public UniqueKey<DomainRecord> getPrimaryKey() {
+        return Keys.KEY_DOMAIN_PRIMARY;
+    }
 
-  @Override
-  public Domain as(String alias) {
-    return new Domain(DSL.name(alias), this);
-  }
+    @Override
+    public Domain as(String alias) {
+        return new Domain(DSL.name(alias), this);
+    }
 
-  @Override
-  public Domain as(Name alias) {
-    return new Domain(alias, this);
-  }
+    @Override
+    public Domain as(Name alias) {
+        return new Domain(alias, this);
+    }
 
-  @Override
-  public Domain as(Table<?> alias) {
-    return new Domain(alias.getQualifiedName(), this);
-  }
+    @Override
+    public Domain as(Table<?> alias) {
+        return new Domain(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public Domain rename(String name) {
-    return new Domain(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public Domain rename(String name) {
+        return new Domain(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public Domain rename(Name name) {
-    return new Domain(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public Domain rename(Name name) {
+        return new Domain(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public Domain rename(Table<?> name) {
-    return new Domain(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public Domain rename(Table<?> name) {
+        return new Domain(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row3 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row3 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row3<String, LocalDateTime, LocalDateTime> fieldsRow() {
-    return (Row3) super.fieldsRow();
-  }
+    @Override
+    public Row3<String, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row3) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }

@@ -10,130 +10,143 @@ import java.time.LocalDateTime;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class InitialScore implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private Long id;
-  private Integer years;
-  private Integer score;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+    private Long id;
+    private Integer years;
+    private Integer score;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-  public InitialScore() {}
+    public InitialScore() {}
 
-  public InitialScore(InitialScore value) {
-    this.id = value.id;
-    this.years = value.years;
-    this.score = value.score;
-    this.createdAt = value.createdAt;
-    this.updatedAt = value.updatedAt;
-  }
+    public InitialScore(InitialScore value) {
+        this.id = value.id;
+        this.years = value.years;
+        this.score = value.score;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+    }
 
-  public InitialScore(
-      Long id, Integer years, Integer score, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.id = id;
-    this.years = years;
-    this.score = score;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
+    public InitialScore(Long id, Integer years, Integer score, LocalDateTime createdAt,
+                    LocalDateTime updatedAt) {
+        this.id = id;
+        this.years = years;
+        this.score = score;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
-  /** Getter for <code>SION.initial_score.id</code>. */
-  public Long getId() {
-    return this.id;
-  }
+    /** Getter for <code>SION.initial_score.id</code>. */
+    public Long getId() {
+        return this.id;
+    }
 
-  /** Setter for <code>SION.initial_score.id</code>. */
-  public void setId(Long id) {
-    this.id = id;
-  }
+    /** Setter for <code>SION.initial_score.id</code>. */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  /** Getter for <code>SION.initial_score.years</code>. */
-  public Integer getYears() {
-    return this.years;
-  }
+    /** Getter for <code>SION.initial_score.years</code>. */
+    public Integer getYears() {
+        return this.years;
+    }
 
-  /** Setter for <code>SION.initial_score.years</code>. */
-  public void setYears(Integer years) {
-    this.years = years;
-  }
+    /** Setter for <code>SION.initial_score.years</code>. */
+    public void setYears(Integer years) {
+        this.years = years;
+    }
 
-  /** Getter for <code>SION.initial_score.score</code>. */
-  public Integer getScore() {
-    return this.score;
-  }
+    /** Getter for <code>SION.initial_score.score</code>. */
+    public Integer getScore() {
+        return this.score;
+    }
 
-  /** Setter for <code>SION.initial_score.score</code>. */
-  public void setScore(Integer score) {
-    this.score = score;
-  }
+    /** Setter for <code>SION.initial_score.score</code>. */
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 
-  /** Getter for <code>SION.initial_score.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
+    /** Getter for <code>SION.initial_score.created_at</code>. */
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
 
-  /** Setter for <code>SION.initial_score.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    /** Setter for <code>SION.initial_score.created_at</code>. */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  /** Getter for <code>SION.initial_score.updated_at</code>. */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
+    /** Getter for <code>SION.initial_score.updated_at</code>. */
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
 
-  /** Setter for <code>SION.initial_score.updated_at</code>. */
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+    /** Setter for <code>SION.initial_score.updated_at</code>. */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    final InitialScore other = (InitialScore) obj;
-    if (this.id == null) {
-      if (other.id != null) return false;
-    } else if (!this.id.equals(other.id)) return false;
-    if (this.years == null) {
-      if (other.years != null) return false;
-    } else if (!this.years.equals(other.years)) return false;
-    if (this.score == null) {
-      if (other.score != null) return false;
-    } else if (!this.score.equals(other.score)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
-    if (this.updatedAt == null) {
-      if (other.updatedAt != null) return false;
-    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
-    return true;
-  }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final InitialScore other = (InitialScore) obj;
+        if (this.id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!this.id.equals(other.id))
+            return false;
+        if (this.years == null) {
+            if (other.years != null)
+                return false;
+        } else if (!this.years.equals(other.years))
+            return false;
+        if (this.score == null) {
+            if (other.score != null)
+                return false;
+        } else if (!this.score.equals(other.score))
+            return false;
+        if (this.createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!this.createdAt.equals(other.createdAt))
+            return false;
+        if (this.updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!this.updatedAt.equals(other.updatedAt))
+            return false;
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.years == null) ? 0 : this.years.hashCode());
-    result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+        result = prime * result + ((this.years == null) ? 0 : this.years.hashCode());
+        result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("InitialScore (");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("InitialScore (");
 
-    sb.append(id);
-    sb.append(", ").append(years);
-    sb.append(", ").append(score);
-    sb.append(", ").append(createdAt);
-    sb.append(", ").append(updatedAt);
+        sb.append(id);
+        sb.append(", ").append(years);
+        sb.append(", ").append(score);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
 
-    sb.append(")");
-    return sb.toString();
-  }
+        sb.append(")");
+        return sb.toString();
+    }
 }

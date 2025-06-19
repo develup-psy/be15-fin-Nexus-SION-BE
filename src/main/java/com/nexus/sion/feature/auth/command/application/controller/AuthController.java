@@ -24,24 +24,23 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "", description = "")
 @Slf4j
 public class AuthController {
-  private final AuthService authService;
+    private final AuthService authService;
 
-  /* 테스트 로그인 */
-  @Operation(summary = "테스트용 로그인", description = "테스트용 로그인 후 JWT를 발급합니다.")
-  @PostMapping("/login/test")
-  public ResponseEntity<ApiResponse<TokenResponse>> login() {
-    TokenResponse token = authService.testLogin();
-    log.info(token.toString());
-    return buildTokenResponse(token);
-  }
+    /* 테스트 로그인 */
+    @Operation(summary = "테스트용 로그인", description = "테스트용 로그인 후 JWT를 발급합니다.")
+    @PostMapping("/login/test")
+    public ResponseEntity<ApiResponse<TokenResponse>> login() {
+        TokenResponse token = authService.testLogin();
+        log.info(token.toString());
+        return buildTokenResponse(token);
+    }
 
-  /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
-  private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
-      TokenResponse tokenResponse) {
-    ResponseCookie cookie =
-        createRefreshTokenCookie(tokenResponse.getRefreshToken()); // refreshToken 쿠키 생성
-    return ResponseEntity.ok()
-        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(ApiResponse.success(tokenResponse));
-  }
+    /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
+    private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
+                    TokenResponse tokenResponse) {
+        ResponseCookie cookie = createRefreshTokenCookie(tokenResponse.getRefreshToken()); // refreshToken
+                                                                                           // 쿠키 생성
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                        .body(ApiResponse.success(tokenResponse));
+    }
 }

@@ -1,8 +1,6 @@
 package com.nexus.sion.feature.member.command.application.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,48 +29,45 @@ import com.nexus.sion.feature.member.command.application.service.MemberCommandSe
 @Import(MemberCommandControllerTest.SecurityTestConfig.class)
 class MemberCommandControllerTest {
 
-  @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @Autowired private MemberCommandService userCommandService;
+    @Autowired
+    private MemberCommandService userCommandService;
 
-  @Autowired private MemberCommandService memberCommandService;
+    @Autowired
+    private MemberCommandService memberCommandService;
 
-  @TestConfiguration
-  static class MockConfig {
-    @Bean
-    public MemberCommandService userCommandService() {
-      return mock(MemberCommandService.class);
+    @TestConfiguration
+    static class MockConfig {
+        @Bean
+        public MemberCommandService userCommandService() {
+            return mock(MemberCommandService.class);
+        }
     }
-  }
 
-  @TestConfiguration
-  static class SecurityTestConfig {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      http.csrf(AbstractHttpConfigurer::disable);
-      http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-      return http.build();
+    @TestConfiguration
+    static class SecurityTestConfig {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http.csrf(AbstractHttpConfigurer::disable);
+            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+            return http.build();
+        }
     }
-  }
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-  @DisplayName("회원가입 통합 테스트")
-  @Test
-  void 회원가입_성공() throws Exception {
-    MemberCreateRequest request = MemberCreateRequest.builder()
-            .email("test@example.com")
-            .password("Test1234!")
-            .employeeName("테스트유저")
-            .phoneNumber("01012345678")
-            .build();
+    @DisplayName("회원가입 통합 테스트")
+    @Test
+    void 회원가입_성공() throws Exception {
+        MemberCreateRequest request = MemberCreateRequest.builder().email("test@example.com")
+                        .password("Test1234!").employeeName("테스트유저").phoneNumber("01012345678")
+                        .build();
 
-    mockMvc.perform(post("/api/v1/members/signup")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.success").value(true))
-            .andDo(print());
-
-  }
+        mockMvc.perform(post("/api/v1/members/signup").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.success").value(true)).andDo(print());
+    }
 }

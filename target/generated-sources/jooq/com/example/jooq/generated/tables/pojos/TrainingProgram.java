@@ -12,191 +12,205 @@ import com.example.jooq.generated.enums.TrainingProgramTrainingType;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class TrainingProgram implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private String trainingName;
-  private String description;
-  private TrainingProgramTrainingType trainingType;
-  private String organizer;
-  private LocalDateTime startedAt;
-  private LocalDateTime endedAt;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+    private String trainingName;
+    private String description;
+    private TrainingProgramTrainingType trainingType;
+    private String organizer;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-  public TrainingProgram() {}
+    public TrainingProgram() {}
 
-  public TrainingProgram(TrainingProgram value) {
-    this.trainingName = value.trainingName;
-    this.description = value.description;
-    this.trainingType = value.trainingType;
-    this.organizer = value.organizer;
-    this.startedAt = value.startedAt;
-    this.endedAt = value.endedAt;
-    this.createdAt = value.createdAt;
-    this.updatedAt = value.updatedAt;
-  }
+    public TrainingProgram(TrainingProgram value) {
+        this.trainingName = value.trainingName;
+        this.description = value.description;
+        this.trainingType = value.trainingType;
+        this.organizer = value.organizer;
+        this.startedAt = value.startedAt;
+        this.endedAt = value.endedAt;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+    }
 
-  public TrainingProgram(
-      String trainingName,
-      String description,
-      TrainingProgramTrainingType trainingType,
-      String organizer,
-      LocalDateTime startedAt,
-      LocalDateTime endedAt,
-      LocalDateTime createdAt,
-      LocalDateTime updatedAt) {
-    this.trainingName = trainingName;
-    this.description = description;
-    this.trainingType = trainingType;
-    this.organizer = organizer;
-    this.startedAt = startedAt;
-    this.endedAt = endedAt;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
+    public TrainingProgram(String trainingName, String description,
+                    TrainingProgramTrainingType trainingType, String organizer,
+                    LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime createdAt,
+                    LocalDateTime updatedAt) {
+        this.trainingName = trainingName;
+        this.description = description;
+        this.trainingType = trainingType;
+        this.organizer = organizer;
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
-  /** Getter for <code>SION.training_program.training_name</code>. */
-  public String getTrainingName() {
-    return this.trainingName;
-  }
+    /** Getter for <code>SION.training_program.training_name</code>. */
+    public String getTrainingName() {
+        return this.trainingName;
+    }
 
-  /** Setter for <code>SION.training_program.training_name</code>. */
-  public void setTrainingName(String trainingName) {
-    this.trainingName = trainingName;
-  }
+    /** Setter for <code>SION.training_program.training_name</code>. */
+    public void setTrainingName(String trainingName) {
+        this.trainingName = trainingName;
+    }
 
-  /** Getter for <code>SION.training_program.description</code>. */
-  public String getDescription() {
-    return this.description;
-  }
+    /** Getter for <code>SION.training_program.description</code>. */
+    public String getDescription() {
+        return this.description;
+    }
 
-  /** Setter for <code>SION.training_program.description</code>. */
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    /** Setter for <code>SION.training_program.description</code>. */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  /** Getter for <code>SION.training_program.training_type</code>. */
-  public TrainingProgramTrainingType getTrainingType() {
-    return this.trainingType;
-  }
+    /** Getter for <code>SION.training_program.training_type</code>. */
+    public TrainingProgramTrainingType getTrainingType() {
+        return this.trainingType;
+    }
 
-  /** Setter for <code>SION.training_program.training_type</code>. */
-  public void setTrainingType(TrainingProgramTrainingType trainingType) {
-    this.trainingType = trainingType;
-  }
+    /** Setter for <code>SION.training_program.training_type</code>. */
+    public void setTrainingType(TrainingProgramTrainingType trainingType) {
+        this.trainingType = trainingType;
+    }
 
-  /** Getter for <code>SION.training_program.organizer</code>. */
-  public String getOrganizer() {
-    return this.organizer;
-  }
+    /** Getter for <code>SION.training_program.organizer</code>. */
+    public String getOrganizer() {
+        return this.organizer;
+    }
 
-  /** Setter for <code>SION.training_program.organizer</code>. */
-  public void setOrganizer(String organizer) {
-    this.organizer = organizer;
-  }
+    /** Setter for <code>SION.training_program.organizer</code>. */
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
 
-  /** Getter for <code>SION.training_program.started_at</code>. */
-  public LocalDateTime getStartedAt() {
-    return this.startedAt;
-  }
+    /** Getter for <code>SION.training_program.started_at</code>. */
+    public LocalDateTime getStartedAt() {
+        return this.startedAt;
+    }
 
-  /** Setter for <code>SION.training_program.started_at</code>. */
-  public void setStartedAt(LocalDateTime startedAt) {
-    this.startedAt = startedAt;
-  }
+    /** Setter for <code>SION.training_program.started_at</code>. */
+    public void setStartedAt(LocalDateTime startedAt) {
+        this.startedAt = startedAt;
+    }
 
-  /** Getter for <code>SION.training_program.ended_at</code>. */
-  public LocalDateTime getEndedAt() {
-    return this.endedAt;
-  }
+    /** Getter for <code>SION.training_program.ended_at</code>. */
+    public LocalDateTime getEndedAt() {
+        return this.endedAt;
+    }
 
-  /** Setter for <code>SION.training_program.ended_at</code>. */
-  public void setEndedAt(LocalDateTime endedAt) {
-    this.endedAt = endedAt;
-  }
+    /** Setter for <code>SION.training_program.ended_at</code>. */
+    public void setEndedAt(LocalDateTime endedAt) {
+        this.endedAt = endedAt;
+    }
 
-  /** Getter for <code>SION.training_program.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
+    /** Getter for <code>SION.training_program.created_at</code>. */
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
 
-  /** Setter for <code>SION.training_program.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    /** Setter for <code>SION.training_program.created_at</code>. */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  /** Getter for <code>SION.training_program.updated_at</code>. */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
+    /** Getter for <code>SION.training_program.updated_at</code>. */
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
 
-  /** Setter for <code>SION.training_program.updated_at</code>. */
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+    /** Setter for <code>SION.training_program.updated_at</code>. */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    final TrainingProgram other = (TrainingProgram) obj;
-    if (this.trainingName == null) {
-      if (other.trainingName != null) return false;
-    } else if (!this.trainingName.equals(other.trainingName)) return false;
-    if (this.description == null) {
-      if (other.description != null) return false;
-    } else if (!this.description.equals(other.description)) return false;
-    if (this.trainingType == null) {
-      if (other.trainingType != null) return false;
-    } else if (!this.trainingType.equals(other.trainingType)) return false;
-    if (this.organizer == null) {
-      if (other.organizer != null) return false;
-    } else if (!this.organizer.equals(other.organizer)) return false;
-    if (this.startedAt == null) {
-      if (other.startedAt != null) return false;
-    } else if (!this.startedAt.equals(other.startedAt)) return false;
-    if (this.endedAt == null) {
-      if (other.endedAt != null) return false;
-    } else if (!this.endedAt.equals(other.endedAt)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
-    if (this.updatedAt == null) {
-      if (other.updatedAt != null) return false;
-    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
-    return true;
-  }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final TrainingProgram other = (TrainingProgram) obj;
+        if (this.trainingName == null) {
+            if (other.trainingName != null)
+                return false;
+        } else if (!this.trainingName.equals(other.trainingName))
+            return false;
+        if (this.description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!this.description.equals(other.description))
+            return false;
+        if (this.trainingType == null) {
+            if (other.trainingType != null)
+                return false;
+        } else if (!this.trainingType.equals(other.trainingType))
+            return false;
+        if (this.organizer == null) {
+            if (other.organizer != null)
+                return false;
+        } else if (!this.organizer.equals(other.organizer))
+            return false;
+        if (this.startedAt == null) {
+            if (other.startedAt != null)
+                return false;
+        } else if (!this.startedAt.equals(other.startedAt))
+            return false;
+        if (this.endedAt == null) {
+            if (other.endedAt != null)
+                return false;
+        } else if (!this.endedAt.equals(other.endedAt))
+            return false;
+        if (this.createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!this.createdAt.equals(other.createdAt))
+            return false;
+        if (this.updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!this.updatedAt.equals(other.updatedAt))
+            return false;
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.trainingName == null) ? 0 : this.trainingName.hashCode());
-    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-    result = prime * result + ((this.trainingType == null) ? 0 : this.trainingType.hashCode());
-    result = prime * result + ((this.organizer == null) ? 0 : this.organizer.hashCode());
-    result = prime * result + ((this.startedAt == null) ? 0 : this.startedAt.hashCode());
-    result = prime * result + ((this.endedAt == null) ? 0 : this.endedAt.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.trainingName == null) ? 0 : this.trainingName.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.trainingType == null) ? 0 : this.trainingType.hashCode());
+        result = prime * result + ((this.organizer == null) ? 0 : this.organizer.hashCode());
+        result = prime * result + ((this.startedAt == null) ? 0 : this.startedAt.hashCode());
+        result = prime * result + ((this.endedAt == null) ? 0 : this.endedAt.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("TrainingProgram (");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("TrainingProgram (");
 
-    sb.append(trainingName);
-    sb.append(", ").append(description);
-    sb.append(", ").append(trainingType);
-    sb.append(", ").append(organizer);
-    sb.append(", ").append(startedAt);
-    sb.append(", ").append(endedAt);
-    sb.append(", ").append(createdAt);
-    sb.append(", ").append(updatedAt);
+        sb.append(trainingName);
+        sb.append(", ").append(description);
+        sb.append(", ").append(trainingType);
+        sb.append(", ").append(organizer);
+        sb.append(", ").append(startedAt);
+        sb.append(", ").append(endedAt);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
 
-    sb.append(")");
-    return sb.toString();
-  }
+        sb.append(")");
+        return sb.toString();
+    }
 }

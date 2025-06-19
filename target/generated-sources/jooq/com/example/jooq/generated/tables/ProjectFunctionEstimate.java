@@ -36,239 +36,185 @@ import com.example.jooq.generated.tables.records.ProjectFunctionEstimateRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.project_function_estimate</code> */
-  public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
-      new ProjectFunctionEstimate();
+    /** The reference instance of <code>SION.project_function_estimate</code> */
+    public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
+                    new ProjectFunctionEstimate();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<ProjectFunctionEstimateRecord> getRecordType() {
-    return ProjectFunctionEstimateRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<ProjectFunctionEstimateRecord> getRecordType() {
+        return ProjectFunctionEstimateRecord.class;
+    }
 
-  /** The column <code>SION.project_function_estimate.project_function_estimate_id</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, Long> PROJECT_FUNCTION_ESTIMATE_ID =
-      createField(
-          DSL.name("project_function_estimate_id"),
-          SQLDataType.BIGINT.nullable(false).identity(true),
-          this,
-          "");
+    /** The column <code>SION.project_function_estimate.project_function_estimate_id</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, Long> PROJECT_FUNCTION_ESTIMATE_ID =
+                    createField(DSL.name("project_function_estimate_id"),
+                                    SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>SION.project_function_estimate.function_name</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, String> FUNCTION_NAME =
-      createField(DSL.name("function_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    /** The column <code>SION.project_function_estimate.function_name</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, String> FUNCTION_NAME = createField(
+                    DSL.name("function_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>SION.project_function_estimate.function_type</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateFunctionType>
-      FUNCTION_TYPE =
-          createField(
-              DSL.name("function_type"),
-              SQLDataType.VARCHAR(3)
-                  .nullable(false)
-                  .asEnumDataType(
-                      com.example.jooq.generated.enums.ProjectFunctionEstimateFunctionType.class),
-              this,
-              "");
+    /** The column <code>SION.project_function_estimate.function_type</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateFunctionType> FUNCTION_TYPE =
+                    createField(DSL.name("function_type"),
+                                    SQLDataType.VARCHAR(3).nullable(false).asEnumDataType(
+                                                    com.example.jooq.generated.enums.ProjectFunctionEstimateFunctionType.class),
+                                    this, "");
 
-  /** The column <code>SION.project_function_estimate.complexity</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateComplexity>
-      COMPLEXITY =
-          createField(
-              DSL.name("complexity"),
-              SQLDataType.VARCHAR(7)
-                  .nullable(false)
-                  .asEnumDataType(
-                      com.example.jooq.generated.enums.ProjectFunctionEstimateComplexity.class),
-              this,
-              "");
+    /** The column <code>SION.project_function_estimate.complexity</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateComplexity> COMPLEXITY =
+                    createField(DSL.name("complexity"),
+                                    SQLDataType.VARCHAR(7).nullable(false).asEnumDataType(
+                                                    com.example.jooq.generated.enums.ProjectFunctionEstimateComplexity.class),
+                                    this, "");
 
-  /** The column <code>SION.project_function_estimate.function_score</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, Integer> FUNCTION_SCORE =
-      createField(DSL.name("function_score"), SQLDataType.INTEGER.nullable(false), this, "");
+    /** The column <code>SION.project_function_estimate.function_score</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, Integer> FUNCTION_SCORE = createField(
+                    DSL.name("function_score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.project_function_estimate.description</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, String> DESCRIPTION =
-      createField(
-          DSL.name("description"),
-          SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)),
-          this,
-          "");
+    /** The column <code>SION.project_function_estimate.description</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, String> DESCRIPTION =
+                    createField(DSL.name("description"),
+                                    SQLDataType.CLOB.defaultValue(
+                                                    DSL.field(DSL.raw("NULL"), SQLDataType.CLOB)),
+                                    this, "");
 
-  /** The column <code>SION.project_function_estimate.related_tables_count</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_TABLES_COUNT =
-      createField(DSL.name("related_tables_count"), SQLDataType.INTEGER.nullable(false), this, "");
+    /** The column <code>SION.project_function_estimate.related_tables_count</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_TABLES_COUNT =
+                    createField(DSL.name("related_tables_count"),
+                                    SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.project_function_estimate.related_fields_count</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_FIELDS_COUNT =
-      createField(
-          DSL.name("related_fields_count"),
-          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
-          this,
-          "");
+    /** The column <code>SION.project_function_estimate.related_fields_count</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_FIELDS_COUNT =
+                    createField(DSL.name("related_fields_count"), SQLDataType.INTEGER.defaultValue(
+                                    DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
-  /** The column <code>SION.project_function_estimate.created_at</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.project_function_estimate.created_at</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).defaultValue(
+                                    DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, String> PROJECT_FP_SUMMARY_ID =
-      createField(
-          DSL.name("project_fp_summary_id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    /** The column <code>SION.project_function_estimate.project_fp_summary_id</code>. */
+    public final TableField<ProjectFunctionEstimateRecord, String> PROJECT_FP_SUMMARY_ID =
+                    createField(DSL.name("project_fp_summary_id"),
+                                    SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-  private ProjectFunctionEstimate(Name alias, Table<ProjectFunctionEstimateRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private ProjectFunctionEstimate(Name alias, Table<ProjectFunctionEstimateRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private ProjectFunctionEstimate(
-      Name alias, Table<ProjectFunctionEstimateRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private ProjectFunctionEstimate(Name alias, Table<ProjectFunctionEstimateRecord> aliased,
+                    Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.project_function_estimate</code> table reference */
-  public ProjectFunctionEstimate(String alias) {
-    this(DSL.name(alias), PROJECT_FUNCTION_ESTIMATE);
-  }
+    /** Create an aliased <code>SION.project_function_estimate</code> table reference */
+    public ProjectFunctionEstimate(String alias) {
+        this(DSL.name(alias), PROJECT_FUNCTION_ESTIMATE);
+    }
 
-  /** Create an aliased <code>SION.project_function_estimate</code> table reference */
-  public ProjectFunctionEstimate(Name alias) {
-    this(alias, PROJECT_FUNCTION_ESTIMATE);
-  }
+    /** Create an aliased <code>SION.project_function_estimate</code> table reference */
+    public ProjectFunctionEstimate(Name alias) {
+        this(alias, PROJECT_FUNCTION_ESTIMATE);
+    }
 
-  /** Create a <code>SION.project_function_estimate</code> table reference */
-  public ProjectFunctionEstimate() {
-    this(DSL.name("project_function_estimate"), null);
-  }
+    /** Create a <code>SION.project_function_estimate</code> table reference */
+    public ProjectFunctionEstimate() {
+        this(DSL.name("project_function_estimate"), null);
+    }
 
-  public <O extends Record> ProjectFunctionEstimate(
-      Table<O> child, ForeignKey<O, ProjectFunctionEstimateRecord> key) {
-    super(child, key, PROJECT_FUNCTION_ESTIMATE);
-  }
+    public <O extends Record> ProjectFunctionEstimate(Table<O> child,
+                    ForeignKey<O, ProjectFunctionEstimateRecord> key) {
+        super(child, key, PROJECT_FUNCTION_ESTIMATE);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public Identity<ProjectFunctionEstimateRecord, Long> getIdentity() {
-    return (Identity<ProjectFunctionEstimateRecord, Long>) super.getIdentity();
-  }
+    @Override
+    public Identity<ProjectFunctionEstimateRecord, Long> getIdentity() {
+        return (Identity<ProjectFunctionEstimateRecord, Long>) super.getIdentity();
+    }
 
-  @Override
-  public UniqueKey<ProjectFunctionEstimateRecord> getPrimaryKey() {
-    return Keys.KEY_PROJECT_FUNCTION_ESTIMATE_PRIMARY;
-  }
+    @Override
+    public UniqueKey<ProjectFunctionEstimateRecord> getPrimaryKey() {
+        return Keys.KEY_PROJECT_FUNCTION_ESTIMATE_PRIMARY;
+    }
 
-  @Override
-  public List<ForeignKey<ProjectFunctionEstimateRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1);
-  }
+    @Override
+    public List<ForeignKey<ProjectFunctionEstimateRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1);
+    }
 
-  private transient ProjectFpSummary _projectFpSummary;
+    private transient ProjectFpSummary _projectFpSummary;
 
-  /** Get the implicit join path to the <code>SION.project_fp_summary</code> table. */
-  public ProjectFpSummary projectFpSummary() {
-    if (_projectFpSummary == null)
-      _projectFpSummary =
-          new ProjectFpSummary(this, Keys.FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1);
+    /** Get the implicit join path to the <code>SION.project_fp_summary</code> table. */
+    public ProjectFpSummary projectFpSummary() {
+        if (_projectFpSummary == null)
+            _projectFpSummary = new ProjectFpSummary(this,
+                            Keys.FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1);
 
-    return _projectFpSummary;
-  }
+        return _projectFpSummary;
+    }
 
-  @Override
-  public ProjectFunctionEstimate as(String alias) {
-    return new ProjectFunctionEstimate(DSL.name(alias), this);
-  }
+    @Override
+    public ProjectFunctionEstimate as(String alias) {
+        return new ProjectFunctionEstimate(DSL.name(alias), this);
+    }
 
-  @Override
-  public ProjectFunctionEstimate as(Name alias) {
-    return new ProjectFunctionEstimate(alias, this);
-  }
+    @Override
+    public ProjectFunctionEstimate as(Name alias) {
+        return new ProjectFunctionEstimate(alias, this);
+    }
 
-  @Override
-  public ProjectFunctionEstimate as(Table<?> alias) {
-    return new ProjectFunctionEstimate(alias.getQualifiedName(), this);
-  }
+    @Override
+    public ProjectFunctionEstimate as(Table<?> alias) {
+        return new ProjectFunctionEstimate(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectFunctionEstimate rename(String name) {
-    return new ProjectFunctionEstimate(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectFunctionEstimate rename(String name) {
+        return new ProjectFunctionEstimate(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectFunctionEstimate rename(Name name) {
-    return new ProjectFunctionEstimate(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectFunctionEstimate rename(Name name) {
+        return new ProjectFunctionEstimate(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectFunctionEstimate rename(Table<?> name) {
-    return new ProjectFunctionEstimate(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectFunctionEstimate rename(Table<?> name) {
+        return new ProjectFunctionEstimate(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row10 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row10 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row10<
-          Long,
-          String,
-          ProjectFunctionEstimateFunctionType,
-          ProjectFunctionEstimateComplexity,
-          Integer,
-          String,
-          Integer,
-          Integer,
-          LocalDateTime,
-          String>
-      fieldsRow() {
-    return (Row10) super.fieldsRow();
-  }
+    @Override
+    public Row10<Long, String, ProjectFunctionEstimateFunctionType, ProjectFunctionEstimateComplexity, Integer, String, Integer, Integer, LocalDateTime, String> fieldsRow() {
+        return (Row10) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function10<
-              ? super Long,
-              ? super String,
-              ? super ProjectFunctionEstimateFunctionType,
-              ? super ProjectFunctionEstimateComplexity,
-              ? super Integer,
-              ? super String,
-              ? super Integer,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function10<? super Long, ? super String, ? super ProjectFunctionEstimateFunctionType, ? super ProjectFunctionEstimateComplexity, ? super Integer, ? super String, ? super Integer, ? super Integer, ? super LocalDateTime, ? super String, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function10<
-              ? super Long,
-              ? super String,
-              ? super ProjectFunctionEstimateFunctionType,
-              ? super ProjectFunctionEstimateComplexity,
-              ? super Integer,
-              ? super String,
-              ? super Integer,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function10<? super Long, ? super String, ? super ProjectFunctionEstimateFunctionType, ? super ProjectFunctionEstimateComplexity, ? super Integer, ? super String, ? super Integer, ? super Integer, ? super LocalDateTime, ? super String, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }

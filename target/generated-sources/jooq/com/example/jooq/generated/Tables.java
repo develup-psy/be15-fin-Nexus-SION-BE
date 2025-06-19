@@ -29,71 +29,71 @@ import com.example.jooq.generated.tables.UserTrainingHistory;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Tables {
 
-  /** The table <code>SION.certificate</code>. */
-  public static final Certificate CERTIFICATE = Certificate.CERTIFICATE;
+    /** The table <code>SION.certificate</code>. */
+    public static final Certificate CERTIFICATE = Certificate.CERTIFICATE;
 
-  /** The table <code>SION.client_company</code>. */
-  public static final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
+    /** The table <code>SION.client_company</code>. */
+    public static final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
 
-  /** The table <code>SION.developer_tech_stack</code>. */
-  public static final DeveloperTechStack DEVELOPER_TECH_STACK =
-      DeveloperTechStack.DEVELOPER_TECH_STACK;
+    /** The table <code>SION.developer_tech_stack</code>. */
+    public static final DeveloperTechStack DEVELOPER_TECH_STACK =
+                    DeveloperTechStack.DEVELOPER_TECH_STACK;
 
-  /** The table <code>SION.developer_tech_stack_history</code>. */
-  public static final DeveloperTechStackHistory DEVELOPER_TECH_STACK_HISTORY =
-      DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY;
+    /** The table <code>SION.developer_tech_stack_history</code>. */
+    public static final DeveloperTechStackHistory DEVELOPER_TECH_STACK_HISTORY =
+                    DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY;
 
-  /** The table <code>SION.domain</code>. */
-  public static final Domain DOMAIN = Domain.DOMAIN;
+    /** The table <code>SION.domain</code>. */
+    public static final Domain DOMAIN = Domain.DOMAIN;
 
-  /** The table <code>SION.grade</code>. */
-  public static final Grade GRADE = Grade.GRADE;
+    /** The table <code>SION.grade</code>. */
+    public static final Grade GRADE = Grade.GRADE;
 
-  /** The table <code>SION.initial_score</code>. */
-  public static final InitialScore INITIAL_SCORE = InitialScore.INITIAL_SCORE;
+    /** The table <code>SION.initial_score</code>. */
+    public static final InitialScore INITIAL_SCORE = InitialScore.INITIAL_SCORE;
 
-  /** The table <code>SION.job</code>. */
-  public static final Job JOB = Job.JOB;
+    /** The table <code>SION.job</code>. */
+    public static final Job JOB = Job.JOB;
 
-  /** The table <code>SION.job_and_tech_stack</code>. */
-  public static final JobAndTechStack JOB_AND_TECH_STACK = JobAndTechStack.JOB_AND_TECH_STACK;
+    /** The table <code>SION.job_and_tech_stack</code>. */
+    public static final JobAndTechStack JOB_AND_TECH_STACK = JobAndTechStack.JOB_AND_TECH_STACK;
 
-  /** The table <code>SION.member</code>. */
-  public static final Member MEMBER = Member.MEMBER;
+    /** The table <code>SION.member</code>. */
+    public static final Member MEMBER = Member.MEMBER;
 
-  /** The table <code>SION.project</code>. */
-  public static final Project PROJECT = Project.PROJECT;
+    /** The table <code>SION.project</code>. */
+    public static final Project PROJECT = Project.PROJECT;
 
-  /** The table <code>SION.project_and_job</code>. */
-  public static final ProjectAndJob PROJECT_AND_JOB = ProjectAndJob.PROJECT_AND_JOB;
+    /** The table <code>SION.project_and_job</code>. */
+    public static final ProjectAndJob PROJECT_AND_JOB = ProjectAndJob.PROJECT_AND_JOB;
 
-  /** The table <code>SION.project_evaluation</code>. */
-  public static final ProjectEvaluation PROJECT_EVALUATION = ProjectEvaluation.PROJECT_EVALUATION;
+    /** The table <code>SION.project_evaluation</code>. */
+    public static final ProjectEvaluation PROJECT_EVALUATION = ProjectEvaluation.PROJECT_EVALUATION;
 
-  /** The table <code>SION.project_fp_summary</code>. */
-  public static final ProjectFpSummary PROJECT_FP_SUMMARY = ProjectFpSummary.PROJECT_FP_SUMMARY;
+    /** The table <code>SION.project_fp_summary</code>. */
+    public static final ProjectFpSummary PROJECT_FP_SUMMARY = ProjectFpSummary.PROJECT_FP_SUMMARY;
 
-  /** The table <code>SION.project_function_estimate</code>. */
-  public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
-      ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE;
+    /** The table <code>SION.project_function_estimate</code>. */
+    public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
+                    ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE;
 
-  /** The table <code>SION.squad</code>. */
-  public static final Squad SQUAD = Squad.SQUAD;
+    /** The table <code>SION.squad</code>. */
+    public static final Squad SQUAD = Squad.SQUAD;
 
-  /** The table <code>SION.squad_employee</code>. */
-  public static final SquadEmployee SQUAD_EMPLOYEE = SquadEmployee.SQUAD_EMPLOYEE;
+    /** The table <code>SION.squad_employee</code>. */
+    public static final SquadEmployee SQUAD_EMPLOYEE = SquadEmployee.SQUAD_EMPLOYEE;
 
-  /** The table <code>SION.tech_stack</code>. */
-  public static final TechStack TECH_STACK = TechStack.TECH_STACK;
+    /** The table <code>SION.tech_stack</code>. */
+    public static final TechStack TECH_STACK = TechStack.TECH_STACK;
 
-  /** The table <code>SION.training_program</code>. */
-  public static final TrainingProgram TRAINING_PROGRAM = TrainingProgram.TRAINING_PROGRAM;
+    /** The table <code>SION.training_program</code>. */
+    public static final TrainingProgram TRAINING_PROGRAM = TrainingProgram.TRAINING_PROGRAM;
 
-  /** The table <code>SION.user_certificate_history</code>. */
-  public static final UserCertificateHistory USER_CERTIFICATE_HISTORY =
-      UserCertificateHistory.USER_CERTIFICATE_HISTORY;
+    /** The table <code>SION.user_certificate_history</code>. */
+    public static final UserCertificateHistory USER_CERTIFICATE_HISTORY =
+                    UserCertificateHistory.USER_CERTIFICATE_HISTORY;
 
-  /** The table <code>SION.user_training_history</code>. */
-  public static final UserTrainingHistory USER_TRAINING_HISTORY =
-      UserTrainingHistory.USER_TRAINING_HISTORY;
+    /** The table <code>SION.user_training_history</code>. */
+    public static final UserTrainingHistory USER_TRAINING_HISTORY =
+                    UserTrainingHistory.USER_TRAINING_HISTORY;
 }
