@@ -33,172 +33,151 @@ import com.example.jooq.generated.tables.records.ProjectAndJobRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.project_and_job</code> */
-  public static final ProjectAndJob PROJECT_AND_JOB = new ProjectAndJob();
+    /** The reference instance of <code>SION.project_and_job</code> */
+    public static final ProjectAndJob PROJECT_AND_JOB = new ProjectAndJob();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<ProjectAndJobRecord> getRecordType() {
-    return ProjectAndJobRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<ProjectAndJobRecord> getRecordType() {
+        return ProjectAndJobRecord.class;
+    }
 
-  /** The column <code>SION.project_and_job.project_and_job_id</code>. */
-  public final TableField<ProjectAndJobRecord, Long> PROJECT_AND_JOB_ID =
-      createField(DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    /** The column <code>SION.project_and_job.project_and_job_id</code>. */
+    public final TableField<ProjectAndJobRecord, Long> PROJECT_AND_JOB_ID = createField(
+                    DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.project_and_job.required_number</code>. */
-  public final TableField<ProjectAndJobRecord, Integer> REQUIRED_NUMBER =
-      createField(DSL.name("required_number"), SQLDataType.INTEGER.nullable(false), this, "");
+    /** The column <code>SION.project_and_job.required_number</code>. */
+    public final TableField<ProjectAndJobRecord, Integer> REQUIRED_NUMBER = createField(
+                    DSL.name("required_number"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.project_and_job.created_at</code>. */
-  public final TableField<ProjectAndJobRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.project_and_job.created_at</code>. */
+    public final TableField<ProjectAndJobRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.project_and_job.updated_at</code>. */
-  public final TableField<ProjectAndJobRecord, LocalDateTime> UPDATED_AT =
-      createField(
-          DSL.name("updated_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.project_and_job.updated_at</code>. */
+    public final TableField<ProjectAndJobRecord, LocalDateTime> UPDATED_AT = createField(
+                    DSL.name("updated_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.project_and_job.project_code</code>. */
-  public final TableField<ProjectAndJobRecord, String> PROJECT_CODE =
-      createField(DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    /** The column <code>SION.project_and_job.project_code</code>. */
+    public final TableField<ProjectAndJobRecord, String> PROJECT_CODE = createField(
+                    DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.project_and_job.job_name</code>. */
-  public final TableField<ProjectAndJobRecord, String> JOB_NAME =
-      createField(DSL.name("job_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    /** The column <code>SION.project_and_job.job_name</code>. */
+    public final TableField<ProjectAndJobRecord, String> JOB_NAME = createField(
+                    DSL.name("job_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  private ProjectAndJob(Name alias, Table<ProjectAndJobRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private ProjectAndJob(Name alias, Table<ProjectAndJobRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private ProjectAndJob(Name alias, Table<ProjectAndJobRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private ProjectAndJob(Name alias, Table<ProjectAndJobRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.project_and_job</code> table reference */
-  public ProjectAndJob(String alias) {
-    this(DSL.name(alias), PROJECT_AND_JOB);
-  }
+    /** Create an aliased <code>SION.project_and_job</code> table reference */
+    public ProjectAndJob(String alias) {
+        this(DSL.name(alias), PROJECT_AND_JOB);
+    }
 
-  /** Create an aliased <code>SION.project_and_job</code> table reference */
-  public ProjectAndJob(Name alias) {
-    this(alias, PROJECT_AND_JOB);
-  }
+    /** Create an aliased <code>SION.project_and_job</code> table reference */
+    public ProjectAndJob(Name alias) {
+        this(alias, PROJECT_AND_JOB);
+    }
 
-  /** Create a <code>SION.project_and_job</code> table reference */
-  public ProjectAndJob() {
-    this(DSL.name("project_and_job"), null);
-  }
+    /** Create a <code>SION.project_and_job</code> table reference */
+    public ProjectAndJob() {
+        this(DSL.name("project_and_job"), null);
+    }
 
-  public <O extends Record> ProjectAndJob(Table<O> child, ForeignKey<O, ProjectAndJobRecord> key) {
-    super(child, key, PROJECT_AND_JOB);
-  }
+    public <O extends Record> ProjectAndJob(Table<O> child,
+                    ForeignKey<O, ProjectAndJobRecord> key) {
+        super(child, key, PROJECT_AND_JOB);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public UniqueKey<ProjectAndJobRecord> getPrimaryKey() {
-    return Keys.KEY_PROJECT_AND_JOB_PRIMARY;
-  }
+    @Override
+    public UniqueKey<ProjectAndJobRecord> getPrimaryKey() {
+        return Keys.KEY_PROJECT_AND_JOB_PRIMARY;
+    }
 
-  @Override
-  public List<ForeignKey<ProjectAndJobRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
-  }
+    @Override
+    public List<ForeignKey<ProjectAndJobRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
+    }
 
-  private transient Job _job;
+    private transient Job _job;
 
-  /** Get the implicit join path to the <code>SION.job</code> table. */
-  public Job job() {
-    if (_job == null) _job = new Job(this, Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
+    /** Get the implicit join path to the <code>SION.job</code> table. */
+    public Job job() {
+        if (_job == null)
+            _job = new Job(this, Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
 
-    return _job;
-  }
+        return _job;
+    }
 
-  @Override
-  public ProjectAndJob as(String alias) {
-    return new ProjectAndJob(DSL.name(alias), this);
-  }
+    @Override
+    public ProjectAndJob as(String alias) {
+        return new ProjectAndJob(DSL.name(alias), this);
+    }
 
-  @Override
-  public ProjectAndJob as(Name alias) {
-    return new ProjectAndJob(alias, this);
-  }
+    @Override
+    public ProjectAndJob as(Name alias) {
+        return new ProjectAndJob(alias, this);
+    }
 
-  @Override
-  public ProjectAndJob as(Table<?> alias) {
-    return new ProjectAndJob(alias.getQualifiedName(), this);
-  }
+    @Override
+    public ProjectAndJob as(Table<?> alias) {
+        return new ProjectAndJob(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectAndJob rename(String name) {
-    return new ProjectAndJob(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectAndJob rename(String name) {
+        return new ProjectAndJob(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectAndJob rename(Name name) {
-    return new ProjectAndJob(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectAndJob rename(Name name) {
+        return new ProjectAndJob(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public ProjectAndJob rename(Table<?> name) {
-    return new ProjectAndJob(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public ProjectAndJob rename(Table<?> name) {
+        return new ProjectAndJob(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row6 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row6 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row6<Long, Integer, LocalDateTime, LocalDateTime, String, String> fieldsRow() {
-    return (Row6) super.fieldsRow();
-  }
+    @Override
+    public Row6<Long, Integer, LocalDateTime, LocalDateTime, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function6<
-              ? super Long,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? super String,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function6<? super Long, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function6<
-              ? super Long,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? super String,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function6<? super Long, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }

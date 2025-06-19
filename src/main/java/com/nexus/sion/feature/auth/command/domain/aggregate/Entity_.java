@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.auth.command.domain.aggregate; // package
-                                                                // com.sixmycat.catchy.feature.member.command.domain.aggregate;
+                                                              // com.sixmycat.catchy.feature.member.command.domain.aggregate;
+
 //
 // import jakarta.persistence.*;
 // import lombok.AccessLevel;
@@ -13,8 +14,8 @@ package com.nexus.sion.feature.auth.command.domain.aggregate; // package
 // @Getter
 // @ToString
 // public class Entity_ {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
-//    private Long id;
+// @Id
+// @GeneratedValue(strategy = GenerationType.IDENTITY)
+// @Column(name = "id")
+// private Long id;
 // }

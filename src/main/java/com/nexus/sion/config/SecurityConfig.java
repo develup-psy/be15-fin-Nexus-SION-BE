@@ -26,52 +26,54 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity // 컨트롤 메서드 제어 가능하도록 활성화
 @EnableWebSecurity
 public class SecurityConfig {
-  private final JwtTokenProvider jwtTokenProvider;
-  private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .exceptionHandling(
-            exception -> exception.authenticationEntryPoint(restAuthenticationEntryPoint) // 인증 실패
-            )
-        // 요청 http method, url 기준으로 인증, 인가 필요 여부 설정
-        .authorizeHttpRequests(
-            auth -> auth.requestMatchers("/api/v1/**").permitAll().anyRequest().authenticated())
-        // 커스텀 인증 필터(jwt 토큰 필터)
-        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                        .csrf(AbstractHttpConfigurer::disable)
+                        .sessionManagement(session -> session
+                                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .exceptionHandling(exception -> exception
+                                        .authenticationEntryPoint(restAuthenticationEntryPoint) // 인증
+                                                                                                // 실패
+                        )
+                        // 요청 http method, url 기준으로 인증, 인가 필요 여부 설정
+                        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/**")
+                                        .permitAll().anyRequest().authenticated())
+                        // 커스텀 인증 필터(jwt 토큰 필터)
+                        .addFilterBefore(jwtAuthenticationFilter(),
+                                        UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  @Bean
-  public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    return new JwtAuthenticationFilter(jwtTokenProvider);
-  }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
 
-  @Bean
-  public CorsFilter corsFilter() {
-    return new CorsFilter(corsConfigurationSource());
-  }
+    @Bean
+    public CorsFilter corsFilter() {
+        return new CorsFilter(corsConfigurationSource());
+    }
 
-  @Bean
-  public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    config.addAllowedOrigin("http://localhost:5173");
-    config.addAllowedHeader("*");
-    config.addAllowedMethod("*");
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", config);
-    return source;
-  }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 }

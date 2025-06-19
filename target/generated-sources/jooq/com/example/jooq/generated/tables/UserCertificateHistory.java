@@ -34,222 +34,190 @@ import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class UserCertificateHistory extends TableImpl<UserCertificateHistoryRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.user_certificate_history</code> */
-  public static final UserCertificateHistory USER_CERTIFICATE_HISTORY =
-      new UserCertificateHistory();
+    /** The reference instance of <code>SION.user_certificate_history</code> */
+    public static final UserCertificateHistory USER_CERTIFICATE_HISTORY =
+                    new UserCertificateHistory();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<UserCertificateHistoryRecord> getRecordType() {
-    return UserCertificateHistoryRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<UserCertificateHistoryRecord> getRecordType() {
+        return UserCertificateHistoryRecord.class;
+    }
 
-  /** The column <code>SION.user_certificate_history.user_certificate_history_id</code>. */
-  public final TableField<UserCertificateHistoryRecord, Long> USER_CERTIFICATE_HISTORY_ID =
-      createField(
-          DSL.name("user_certificate_history_id"),
-          SQLDataType.BIGINT.nullable(false).identity(true),
-          this,
-          "");
+    /** The column <code>SION.user_certificate_history.user_certificate_history_id</code>. */
+    public final TableField<UserCertificateHistoryRecord, Long> USER_CERTIFICATE_HISTORY_ID =
+                    createField(DSL.name("user_certificate_history_id"),
+                                    SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>SION.user_certificate_history.created_at</code>. */
-  public final TableField<UserCertificateHistoryRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.user_certificate_history.created_at</code>. */
+    public final TableField<UserCertificateHistoryRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.user_certificate_history.updated_at</code>. */
-  public final TableField<UserCertificateHistoryRecord, LocalDateTime> UPDATED_AT =
-      createField(
-          DSL.name("updated_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.user_certificate_history.updated_at</code>. */
+    public final TableField<UserCertificateHistoryRecord, LocalDateTime> UPDATED_AT = createField(
+                    DSL.name("updated_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.user_certificate_history.updated_by</code>. */
-  public final TableField<UserCertificateHistoryRecord, String> UPDATED_BY =
-      createField(
-          DSL.name("updated_by"),
-          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
-          this,
-          "");
+    /** The column <code>SION.user_certificate_history.updated_by</code>. */
+    public final TableField<UserCertificateHistoryRecord, String> UPDATED_BY =
+                    createField(DSL.name("updated_by"), SQLDataType.VARCHAR(30).defaultValue(
+                                    DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
 
-  /** The column <code>SION.user_certificate_history.certificate_name</code>. */
-  public final TableField<UserCertificateHistoryRecord, String> CERTIFICATE_NAME =
-      createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    /** The column <code>SION.user_certificate_history.certificate_name</code>. */
+    public final TableField<UserCertificateHistoryRecord, String> CERTIFICATE_NAME =
+                    createField(DSL.name("certificate_name"),
+                                    SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>SION.user_certificate_history.employee_identification_number</code>. */
-  public final TableField<UserCertificateHistoryRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
-      createField(
-          DSL.name("employee_identification_number"),
-          SQLDataType.VARCHAR(30).nullable(false),
-          this,
-          "");
+    /** The column <code>SION.user_certificate_history.employee_identification_number</code>. */
+    public final TableField<UserCertificateHistoryRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
+                    createField(DSL.name("employee_identification_number"),
+                                    SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  private UserCertificateHistory(Name alias, Table<UserCertificateHistoryRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private UserCertificateHistory(Name alias, Table<UserCertificateHistoryRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private UserCertificateHistory(
-      Name alias, Table<UserCertificateHistoryRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private UserCertificateHistory(Name alias, Table<UserCertificateHistoryRecord> aliased,
+                    Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.user_certificate_history</code> table reference */
-  public UserCertificateHistory(String alias) {
-    this(DSL.name(alias), USER_CERTIFICATE_HISTORY);
-  }
+    /** Create an aliased <code>SION.user_certificate_history</code> table reference */
+    public UserCertificateHistory(String alias) {
+        this(DSL.name(alias), USER_CERTIFICATE_HISTORY);
+    }
 
-  /** Create an aliased <code>SION.user_certificate_history</code> table reference */
-  public UserCertificateHistory(Name alias) {
-    this(alias, USER_CERTIFICATE_HISTORY);
-  }
+    /** Create an aliased <code>SION.user_certificate_history</code> table reference */
+    public UserCertificateHistory(Name alias) {
+        this(alias, USER_CERTIFICATE_HISTORY);
+    }
 
-  /** Create a <code>SION.user_certificate_history</code> table reference */
-  public UserCertificateHistory() {
-    this(DSL.name("user_certificate_history"), null);
-  }
+    /** Create a <code>SION.user_certificate_history</code> table reference */
+    public UserCertificateHistory() {
+        this(DSL.name("user_certificate_history"), null);
+    }
 
-  public <O extends Record> UserCertificateHistory(
-      Table<O> child, ForeignKey<O, UserCertificateHistoryRecord> key) {
-    super(child, key, USER_CERTIFICATE_HISTORY);
-  }
+    public <O extends Record> UserCertificateHistory(Table<O> child,
+                    ForeignKey<O, UserCertificateHistoryRecord> key) {
+        super(child, key, USER_CERTIFICATE_HISTORY);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public Identity<UserCertificateHistoryRecord, Long> getIdentity() {
-    return (Identity<UserCertificateHistoryRecord, Long>) super.getIdentity();
-  }
+    @Override
+    public Identity<UserCertificateHistoryRecord, Long> getIdentity() {
+        return (Identity<UserCertificateHistoryRecord, Long>) super.getIdentity();
+    }
 
-  @Override
-  public UniqueKey<UserCertificateHistoryRecord> getPrimaryKey() {
-    return Keys.KEY_USER_CERTIFICATE_HISTORY_PRIMARY;
-  }
+    @Override
+    public UniqueKey<UserCertificateHistoryRecord> getPrimaryKey() {
+        return Keys.KEY_USER_CERTIFICATE_HISTORY_PRIMARY;
+    }
 
-  @Override
-  public List<ForeignKey<UserCertificateHistoryRecord, ?>> getReferences() {
-    return Arrays.asList(
-        Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1,
-        Keys.FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1,
-        Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
-  }
+    @Override
+    public List<ForeignKey<UserCertificateHistoryRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1,
+                        Keys.FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1,
+                        Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
+    }
 
-  private transient Member _fkDeveloperToUserCertificateHistory_1;
-  private transient Certificate _certificate;
-  private transient Member _fkDeveloperToUserCertificateHistory_2;
+    private transient Member _fkDeveloperToUserCertificateHistory_1;
+    private transient Certificate _certificate;
+    private transient Member _fkDeveloperToUserCertificateHistory_2;
 
-  /**
-   * Get the implicit join path to the <code>SION.member</code> table, via the <code>
-   * FK_developer_TO_user_certificate_history_1</code> key.
-   */
-  public Member fkDeveloperToUserCertificateHistory_1() {
-    if (_fkDeveloperToUserCertificateHistory_1 == null)
-      _fkDeveloperToUserCertificateHistory_1 =
-          new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1);
+    /**
+     * Get the implicit join path to the <code>SION.member</code> table, via the <code>
+     * FK_developer_TO_user_certificate_history_1</code> key.
+     */
+    public Member fkDeveloperToUserCertificateHistory_1() {
+        if (_fkDeveloperToUserCertificateHistory_1 == null)
+            _fkDeveloperToUserCertificateHistory_1 =
+                            new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1);
 
-    return _fkDeveloperToUserCertificateHistory_1;
-  }
+        return _fkDeveloperToUserCertificateHistory_1;
+    }
 
-  /** Get the implicit join path to the <code>SION.certificate</code> table. */
-  public Certificate certificate() {
-    if (_certificate == null)
-      _certificate = new Certificate(this, Keys.FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1);
+    /** Get the implicit join path to the <code>SION.certificate</code> table. */
+    public Certificate certificate() {
+        if (_certificate == null)
+            _certificate = new Certificate(this, Keys.FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1);
 
-    return _certificate;
-  }
+        return _certificate;
+    }
 
-  /**
-   * Get the implicit join path to the <code>SION.member</code> table, via the <code>
-   * FK_developer_TO_user_certificate_history_2</code> key.
-   */
-  public Member fkDeveloperToUserCertificateHistory_2() {
-    if (_fkDeveloperToUserCertificateHistory_2 == null)
-      _fkDeveloperToUserCertificateHistory_2 =
-          new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
+    /**
+     * Get the implicit join path to the <code>SION.member</code> table, via the <code>
+     * FK_developer_TO_user_certificate_history_2</code> key.
+     */
+    public Member fkDeveloperToUserCertificateHistory_2() {
+        if (_fkDeveloperToUserCertificateHistory_2 == null)
+            _fkDeveloperToUserCertificateHistory_2 =
+                            new Member(this, Keys.FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2);
 
-    return _fkDeveloperToUserCertificateHistory_2;
-  }
+        return _fkDeveloperToUserCertificateHistory_2;
+    }
 
-  @Override
-  public UserCertificateHistory as(String alias) {
-    return new UserCertificateHistory(DSL.name(alias), this);
-  }
+    @Override
+    public UserCertificateHistory as(String alias) {
+        return new UserCertificateHistory(DSL.name(alias), this);
+    }
 
-  @Override
-  public UserCertificateHistory as(Name alias) {
-    return new UserCertificateHistory(alias, this);
-  }
+    @Override
+    public UserCertificateHistory as(Name alias) {
+        return new UserCertificateHistory(alias, this);
+    }
 
-  @Override
-  public UserCertificateHistory as(Table<?> alias) {
-    return new UserCertificateHistory(alias.getQualifiedName(), this);
-  }
+    @Override
+    public UserCertificateHistory as(Table<?> alias) {
+        return new UserCertificateHistory(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public UserCertificateHistory rename(String name) {
-    return new UserCertificateHistory(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public UserCertificateHistory rename(String name) {
+        return new UserCertificateHistory(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public UserCertificateHistory rename(Name name) {
-    return new UserCertificateHistory(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public UserCertificateHistory rename(Name name) {
+        return new UserCertificateHistory(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public UserCertificateHistory rename(Table<?> name) {
-    return new UserCertificateHistory(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public UserCertificateHistory rename(Table<?> name) {
+        return new UserCertificateHistory(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row6 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row6 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row6<Long, LocalDateTime, LocalDateTime, String, String, String> fieldsRow() {
-    return (Row6) super.fieldsRow();
-  }
+    @Override
+    public Row6<Long, LocalDateTime, LocalDateTime, String, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function6<
-              ? super Long,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? super String,
-              ? super String,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function6<? super Long, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function6<
-              ? super Long,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? super String,
-              ? super String,
-              ? super String,
-              ? extends U>
-          from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function6<? super Long, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }

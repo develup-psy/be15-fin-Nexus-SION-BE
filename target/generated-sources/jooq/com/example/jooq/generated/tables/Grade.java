@@ -32,168 +32,139 @@ import com.example.jooq.generated.tables.records.GradeRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Grade extends TableImpl<GradeRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.grade</code> */
-  public static final Grade GRADE = new Grade();
+    /** The reference instance of <code>SION.grade</code> */
+    public static final Grade GRADE = new Grade();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<GradeRecord> getRecordType() {
-    return GradeRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<GradeRecord> getRecordType() {
+        return GradeRecord.class;
+    }
 
-  /** The column <code>SION.grade.grade_code</code>. */
-  public final TableField<GradeRecord, GradeGradeCode> GRADE_CODE =
-      createField(
-          DSL.name("grade_code"),
-          SQLDataType.VARCHAR(1)
-              .nullable(false)
-              .asEnumDataType(com.example.jooq.generated.enums.GradeGradeCode.class),
-          this,
-          "");
+    /** The column <code>SION.grade.grade_code</code>. */
+    public final TableField<GradeRecord, GradeGradeCode> GRADE_CODE = createField(
+                    DSL.name("grade_code"),
+                    SQLDataType.VARCHAR(1).nullable(false).asEnumDataType(
+                                    com.example.jooq.generated.enums.GradeGradeCode.class),
+                    this, "");
 
-  /** The column <code>SION.grade.min_score</code>. */
-  public final TableField<GradeRecord, Integer> MIN_SCORE =
-      createField(DSL.name("min_score"), SQLDataType.INTEGER.nullable(false), this, "");
+    /** The column <code>SION.grade.min_score</code>. */
+    public final TableField<GradeRecord, Integer> MIN_SCORE = createField(DSL.name("min_score"),
+                    SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.grade.max_score</code>. */
-  public final TableField<GradeRecord, Integer> MAX_SCORE =
-      createField(
-          DSL.name("max_score"),
-          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
-          this,
-          "");
+    /** The column <code>SION.grade.max_score</code>. */
+    public final TableField<GradeRecord, Integer> MAX_SCORE =
+                    createField(DSL.name("max_score"), SQLDataType.INTEGER.defaultValue(
+                                    DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
 
-  /** The column <code>SION.grade.monthly_unit_price</code>. */
-  public final TableField<GradeRecord, Integer> MONTHLY_UNIT_PRICE =
-      createField(DSL.name("monthly_unit_price"), SQLDataType.INTEGER.nullable(false), this, "");
+    /** The column <code>SION.grade.monthly_unit_price</code>. */
+    public final TableField<GradeRecord, Integer> MONTHLY_UNIT_PRICE = createField(
+                    DSL.name("monthly_unit_price"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.grade.created_at</code>. */
-  public final TableField<GradeRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.grade.created_at</code>. */
+    public final TableField<GradeRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.grade.updated_at</code>. */
-  public final TableField<GradeRecord, LocalDateTime> UPDATED_AT =
-      createField(
-          DSL.name("updated_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.grade.updated_at</code>. */
+    public final TableField<GradeRecord, LocalDateTime> UPDATED_AT = createField(
+                    DSL.name("updated_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  private Grade(Name alias, Table<GradeRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private Grade(Name alias, Table<GradeRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private Grade(Name alias, Table<GradeRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private Grade(Name alias, Table<GradeRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.grade</code> table reference */
-  public Grade(String alias) {
-    this(DSL.name(alias), GRADE);
-  }
+    /** Create an aliased <code>SION.grade</code> table reference */
+    public Grade(String alias) {
+        this(DSL.name(alias), GRADE);
+    }
 
-  /** Create an aliased <code>SION.grade</code> table reference */
-  public Grade(Name alias) {
-    this(alias, GRADE);
-  }
+    /** Create an aliased <code>SION.grade</code> table reference */
+    public Grade(Name alias) {
+        this(alias, GRADE);
+    }
 
-  /** Create a <code>SION.grade</code> table reference */
-  public Grade() {
-    this(DSL.name("grade"), null);
-  }
+    /** Create a <code>SION.grade</code> table reference */
+    public Grade() {
+        this(DSL.name("grade"), null);
+    }
 
-  public <O extends Record> Grade(Table<O> child, ForeignKey<O, GradeRecord> key) {
-    super(child, key, GRADE);
-  }
+    public <O extends Record> Grade(Table<O> child, ForeignKey<O, GradeRecord> key) {
+        super(child, key, GRADE);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public UniqueKey<GradeRecord> getPrimaryKey() {
-    return Keys.KEY_GRADE_PRIMARY;
-  }
+    @Override
+    public UniqueKey<GradeRecord> getPrimaryKey() {
+        return Keys.KEY_GRADE_PRIMARY;
+    }
 
-  @Override
-  public Grade as(String alias) {
-    return new Grade(DSL.name(alias), this);
-  }
+    @Override
+    public Grade as(String alias) {
+        return new Grade(DSL.name(alias), this);
+    }
 
-  @Override
-  public Grade as(Name alias) {
-    return new Grade(alias, this);
-  }
+    @Override
+    public Grade as(Name alias) {
+        return new Grade(alias, this);
+    }
 
-  @Override
-  public Grade as(Table<?> alias) {
-    return new Grade(alias.getQualifiedName(), this);
-  }
+    @Override
+    public Grade as(Table<?> alias) {
+        return new Grade(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public Grade rename(String name) {
-    return new Grade(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public Grade rename(String name) {
+        return new Grade(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public Grade rename(Name name) {
-    return new Grade(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public Grade rename(Name name) {
+        return new Grade(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public Grade rename(Table<?> name) {
-    return new Grade(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public Grade rename(Table<?> name) {
+        return new Grade(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row6 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row6 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row6<GradeGradeCode, Integer, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
-    return (Row6) super.fieldsRow();
-  }
+    @Override
+    public Row6<GradeGradeCode, Integer, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row6) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function6<
-              ? super GradeGradeCode,
-              ? super Integer,
-              ? super Integer,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? extends U>
-          from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function6<? super GradeGradeCode, ? super Integer, ? super Integer, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function6<
-              ? super GradeGradeCode,
-              ? super Integer,
-              ? super Integer,
-              ? super Integer,
-              ? super LocalDateTime,
-              ? super LocalDateTime,
-              ? extends U>
-          from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function6<? super GradeGradeCode, ? super Integer, ? super Integer, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }

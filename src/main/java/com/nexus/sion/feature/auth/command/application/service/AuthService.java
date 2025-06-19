@@ -4,5 +4,5 @@ import com.nexus.sion.feature.auth.command.application.dto.response.TokenRespons
 
 public interface AuthService {
 
-  TokenResponse testLogin();
+    TokenResponse testLogin();
 }

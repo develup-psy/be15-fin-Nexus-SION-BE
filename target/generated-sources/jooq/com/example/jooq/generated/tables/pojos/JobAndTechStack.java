@@ -10,155 +10,165 @@ import java.time.LocalDateTime;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class JobAndTechStack implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private Long jobAndTechStackId;
-  private String techStackId;
-  private Long projectAndJobId;
-  private Integer priority;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+    private Long jobAndTechStackId;
+    private String techStackId;
+    private Long projectAndJobId;
+    private Integer priority;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-  public JobAndTechStack() {}
+    public JobAndTechStack() {}
 
-  public JobAndTechStack(JobAndTechStack value) {
-    this.jobAndTechStackId = value.jobAndTechStackId;
-    this.techStackId = value.techStackId;
-    this.projectAndJobId = value.projectAndJobId;
-    this.priority = value.priority;
-    this.createdAt = value.createdAt;
-    this.updatedAt = value.updatedAt;
-  }
+    public JobAndTechStack(JobAndTechStack value) {
+        this.jobAndTechStackId = value.jobAndTechStackId;
+        this.techStackId = value.techStackId;
+        this.projectAndJobId = value.projectAndJobId;
+        this.priority = value.priority;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+    }
 
-  public JobAndTechStack(
-      Long jobAndTechStackId,
-      String techStackId,
-      Long projectAndJobId,
-      Integer priority,
-      LocalDateTime createdAt,
-      LocalDateTime updatedAt) {
-    this.jobAndTechStackId = jobAndTechStackId;
-    this.techStackId = techStackId;
-    this.projectAndJobId = projectAndJobId;
-    this.priority = priority;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
+    public JobAndTechStack(Long jobAndTechStackId, String techStackId, Long projectAndJobId,
+                    Integer priority, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.jobAndTechStackId = jobAndTechStackId;
+        this.techStackId = techStackId;
+        this.projectAndJobId = projectAndJobId;
+        this.priority = priority;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
-  public Long getJobAndTechStackId() {
-    return this.jobAndTechStackId;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
+    public Long getJobAndTechStackId() {
+        return this.jobAndTechStackId;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
-  public void setJobAndTechStackId(Long jobAndTechStackId) {
-    this.jobAndTechStackId = jobAndTechStackId;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
+    public void setJobAndTechStackId(Long jobAndTechStackId) {
+        this.jobAndTechStackId = jobAndTechStackId;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public String getTechStackId() {
-    return this.techStackId;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
+    public String getTechStackId() {
+        return this.techStackId;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public void setTechStackId(String techStackId) {
-    this.techStackId = techStackId;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
+    public void setTechStackId(String techStackId) {
+        this.techStackId = techStackId;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
-  public Long getProjectAndJobId() {
-    return this.projectAndJobId;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
+    public Long getProjectAndJobId() {
+        return this.projectAndJobId;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
-  public void setProjectAndJobId(Long projectAndJobId) {
-    this.projectAndJobId = projectAndJobId;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
+    public void setProjectAndJobId(Long projectAndJobId) {
+        this.projectAndJobId = projectAndJobId;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.priority</code>. */
-  public Integer getPriority() {
-    return this.priority;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.priority</code>. */
+    public Integer getPriority() {
+        return this.priority;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.priority</code>. */
-  public void setPriority(Integer priority) {
-    this.priority = priority;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.priority</code>. */
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.created_at</code>. */
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.created_at</code>. */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  /** Getter for <code>SION.job_and_tech_stack.updated_at</code>. */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
+    /** Getter for <code>SION.job_and_tech_stack.updated_at</code>. */
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
 
-  /** Setter for <code>SION.job_and_tech_stack.updated_at</code>. */
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+    /** Setter for <code>SION.job_and_tech_stack.updated_at</code>. */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    final JobAndTechStack other = (JobAndTechStack) obj;
-    if (this.jobAndTechStackId == null) {
-      if (other.jobAndTechStackId != null) return false;
-    } else if (!this.jobAndTechStackId.equals(other.jobAndTechStackId)) return false;
-    if (this.techStackId == null) {
-      if (other.techStackId != null) return false;
-    } else if (!this.techStackId.equals(other.techStackId)) return false;
-    if (this.projectAndJobId == null) {
-      if (other.projectAndJobId != null) return false;
-    } else if (!this.projectAndJobId.equals(other.projectAndJobId)) return false;
-    if (this.priority == null) {
-      if (other.priority != null) return false;
-    } else if (!this.priority.equals(other.priority)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
-    if (this.updatedAt == null) {
-      if (other.updatedAt != null) return false;
-    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
-    return true;
-  }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final JobAndTechStack other = (JobAndTechStack) obj;
+        if (this.jobAndTechStackId == null) {
+            if (other.jobAndTechStackId != null)
+                return false;
+        } else if (!this.jobAndTechStackId.equals(other.jobAndTechStackId))
+            return false;
+        if (this.techStackId == null) {
+            if (other.techStackId != null)
+                return false;
+        } else if (!this.techStackId.equals(other.techStackId))
+            return false;
+        if (this.projectAndJobId == null) {
+            if (other.projectAndJobId != null)
+                return false;
+        } else if (!this.projectAndJobId.equals(other.projectAndJobId))
+            return false;
+        if (this.priority == null) {
+            if (other.priority != null)
+                return false;
+        } else if (!this.priority.equals(other.priority))
+            return false;
+        if (this.createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!this.createdAt.equals(other.createdAt))
+            return false;
+        if (this.updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!this.updatedAt.equals(other.updatedAt))
+            return false;
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result =
-        prime * result + ((this.jobAndTechStackId == null) ? 0 : this.jobAndTechStackId.hashCode());
-    result = prime * result + ((this.techStackId == null) ? 0 : this.techStackId.hashCode());
-    result =
-        prime * result + ((this.projectAndJobId == null) ? 0 : this.projectAndJobId.hashCode());
-    result = prime * result + ((this.priority == null) ? 0 : this.priority.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.jobAndTechStackId == null) ? 0
+                        : this.jobAndTechStackId.hashCode());
+        result = prime * result + ((this.techStackId == null) ? 0 : this.techStackId.hashCode());
+        result = prime * result
+                        + ((this.projectAndJobId == null) ? 0 : this.projectAndJobId.hashCode());
+        result = prime * result + ((this.priority == null) ? 0 : this.priority.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("JobAndTechStack (");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("JobAndTechStack (");
 
-    sb.append(jobAndTechStackId);
-    sb.append(", ").append(techStackId);
-    sb.append(", ").append(projectAndJobId);
-    sb.append(", ").append(priority);
-    sb.append(", ").append(createdAt);
-    sb.append(", ").append(updatedAt);
+        sb.append(jobAndTechStackId);
+        sb.append(", ").append(techStackId);
+        sb.append(", ").append(projectAndJobId);
+        sb.append(", ").append(priority);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
 
-    sb.append(")");
-    return sb.toString();
-  }
+        sb.append(")");
+        return sb.toString();
+    }
 }

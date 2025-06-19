@@ -16,20 +16,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/members")
 public class MemberQueryController {
 
-  private final MemberQueryService memberQueryService;
+    private final MemberQueryService memberQueryService;
 
-  @GetMapping
-  public ResponseEntity<ApiResponse<PageResponse<MemberListResponse>>> getMembers(
-      @ModelAttribute MemberListRequest request) {
-    PageResponse<MemberListResponse> pageResponse = memberQueryService.getAllMembers(request);
-    return ResponseEntity.ok(ApiResponse.success(pageResponse));
-  }
+    @GetMapping
+    public ResponseEntity<ApiResponse<PageResponse<MemberListResponse>>> getMembers(
+                    @ModelAttribute MemberListRequest request) {
+        PageResponse<MemberListResponse> pageResponse = memberQueryService.getAllMembers(request);
+        return ResponseEntity.ok(ApiResponse.success(pageResponse));
+    }
 
-  @GetMapping("/search")
-  public ApiResponse<PageResponse<MemberListResponse>> searchDevelopers(
-      @RequestParam String keyword,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
-    return ApiResponse.success(memberQueryService.searchMembers(keyword, page, size));
-  }
+    @GetMapping("/search")
+    public ApiResponse<PageResponse<MemberListResponse>> searchDevelopers(
+                    @RequestParam String keyword, @RequestParam(defaultValue = "0") int page,
+                    @RequestParam(defaultValue = "10") int size) {
+        return ApiResponse.success(memberQueryService.searchMembers(keyword, page, size));
+    }
 }
