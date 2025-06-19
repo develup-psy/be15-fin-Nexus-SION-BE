@@ -20,7 +20,7 @@ public class MemberQueryController {
 
   @GetMapping
   public ResponseEntity<ApiResponse<PageResponse<MemberListResponse>>> getMembers(
-      @RequestBody MemberListRequest request) {
+      @ModelAttribute MemberListRequest request) {
     PageResponse<MemberListResponse> pageResponse = memberQueryService.getAllMembers(request);
     return ResponseEntity.ok(ApiResponse.success(pageResponse));
   }
