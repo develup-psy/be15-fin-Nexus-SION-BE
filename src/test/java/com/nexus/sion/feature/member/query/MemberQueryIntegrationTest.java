@@ -23,14 +23,10 @@ class MemberQueryIntegrationTest {
   @Test
   void getAllMembers_success() throws Exception {
     mockMvc
-            .perform(
-                    get("/members")
-                            .param("page", "0")
-                            .param("size", "10")
-                            .param("status", "AVAILABLE"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.content", not(empty())))
-            .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
+        .perform(
+            get("/members").param("page", "0").param("size", "10").param("status", "AVAILABLE"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.content", not(empty())))
+        .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
   }
 }
-
