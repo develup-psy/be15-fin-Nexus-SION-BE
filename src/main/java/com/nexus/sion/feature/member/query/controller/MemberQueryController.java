@@ -27,10 +27,9 @@ public class MemberQueryController {
 
   @GetMapping("/search")
   public ApiResponse<PageResponse<MemberListResponse>> searchDevelopers(
-          @RequestParam String keyword,
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size
-  ) {
+      @RequestParam String keyword,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     return ApiResponse.success(memberQueryService.searchMembers(keyword, page, size));
   }
 }
