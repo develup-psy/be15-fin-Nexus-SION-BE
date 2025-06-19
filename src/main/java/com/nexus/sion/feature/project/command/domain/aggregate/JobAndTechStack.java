@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.project.command.domain.aggregate.entity;
+package com.nexus.sion.feature.project.command.domain.aggregate;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +23,8 @@ public class JobAndTechStack {
   @Column(name = "tech_stack_id", length = 30, nullable = false)
   private String techStackId;
 
-  @ManyToOne
-  @JoinColumn(name = "project_and_job_id", nullable = false)
-  private ProjectAndJob projectAndJob;
+  @Column(name = "project_and_job_id", nullable = false)
+  private Long projectAndJob;
 
   @Column(name = "priority")
   private Integer priority;
