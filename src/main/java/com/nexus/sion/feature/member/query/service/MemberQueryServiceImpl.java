@@ -16,6 +16,9 @@ import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -62,6 +65,14 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     long total = memberQueryRepository.countMembers(condition);
     var content = memberQueryRepository.findAllMembers(request, condition, sortField);
 
+    return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  @Transactional(readOnly = true)
+  public PageResponse<MemberListResponse> searchMembers(String keyword, int page, int size) {
+    int offset = page * size;
+    List<MemberListResponse> content = memberQueryRepository.searchAvailableMembers(keyword, offset, size);
+    int total = memberQueryRepository.countSearchMembers(keyword);
     return PageResponse.fromJooq(content, total, page, size);
   }
 }

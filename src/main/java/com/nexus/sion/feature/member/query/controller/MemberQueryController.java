@@ -24,4 +24,13 @@ public class MemberQueryController {
     PageResponse<MemberListResponse> pageResponse = memberQueryService.getAllMembers(request);
     return ResponseEntity.ok(ApiResponse.success(pageResponse));
   }
+
+  @GetMapping("/search")
+  public ApiResponse<PageResponse<MemberListResponse>> searchDevelopers(
+          @RequestParam String keyword,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size
+  ) {
+    return ApiResponse.success(memberQueryService.searchMembers(keyword, page, size));
+  }
 }
