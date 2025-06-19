@@ -38,9 +38,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.modelmapper:modelmapper:3.2.1'
     implementation 'com.diffplug.spotless:spotless-plugin-gradle:7.0.4'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
@@ -48,6 +50,16 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     jooqGenerator 'org.mariadb.jdbc:mariadb-java-client'
+
+
+    //aws
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
+
+    implementation 'software.amazon.awssdk:s3:2.21.5'
+
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
 }
 
 sourceSets {
