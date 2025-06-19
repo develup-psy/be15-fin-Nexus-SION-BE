@@ -99,16 +99,22 @@ class MemberQueryServiceImplTest {
     int size = 5;
     int offset = page * size;
 
-    List<MemberListResponse> mockResults = List.of(
+    List<MemberListResponse> mockResults =
+        List.of(
             new MemberListResponse(
-                    "EMP001", "홍길동", "01012345678", "hong@example.com",
-                    "INSIDER", "A", "AVAILABLE", null,
-                    null, "Java", 3
-            )
-    );
+                "EMP001",
+                "홍길동",
+                "01012345678",
+                "hong@example.com",
+                "INSIDER",
+                "A",
+                "AVAILABLE",
+                null,
+                null,
+                "Java",
+                3));
 
-    when(memberQueryRepository.searchAvailableMembers(keyword, offset, size))
-            .thenReturn(mockResults);
+    when(memberQueryRepository.searchMembers(keyword, offset, size)).thenReturn(mockResults);
     when(memberQueryRepository.countSearchMembers(keyword)).thenReturn(1);
 
     // when
@@ -118,7 +124,7 @@ class MemberQueryServiceImplTest {
     assertThat(result.getContent()).hasSize(1);
     assertThat(result.getContent().get(0).name()).isEqualTo("홍길동");
 
-    verify(memberQueryRepository, times(1)).searchAvailableMembers(keyword, offset, size);
+    verify(memberQueryRepository, times(1)).searchMembers(keyword, offset, size);
     verify(memberQueryRepository, times(1)).countSearchMembers(keyword);
   }
 }
