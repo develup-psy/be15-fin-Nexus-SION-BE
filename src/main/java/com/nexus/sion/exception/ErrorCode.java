@@ -15,7 +15,15 @@ public enum ErrorCode {
   EXPIRED_JWT("10004", "JWT 토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
   INVALID_JWT("10005", "잘못된 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
   UNSUPPORTED_JWT("10006", "지원하지 않는 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
-  EMPTY_JWT("10007", "JWT 클레임이 비어있습니다.", HttpStatus.UNAUTHORIZED);
+  EMPTY_JWT("10007", "JWT 클레임이 비어있습니다.", HttpStatus.UNAUTHORIZED),
+
+  USER_NOT_FOUND("20001", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  USER_INFO_NOT_FOUND("20002", "정보 조회에 실패했습니다.", HttpStatus.NOT_FOUND),
+  ALREADY_REGISTERED_EMAIL("20003", "이미 가입한 이메일입니다.", HttpStatus.CONFLICT),
+  ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER("20004", "이미 가입한 사번입니다.", HttpStatus.CONFLICT),
+  INVALID_PASSWORD_FORMAT("20004", "최소 8자, 영문자, 숫자, 특수문자 포함해야합니다.", HttpStatus.BAD_REQUEST),
+  INVALID_CURRENT_PASSWORD("20005", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
+
 
   private final String code;
   private final String message;
