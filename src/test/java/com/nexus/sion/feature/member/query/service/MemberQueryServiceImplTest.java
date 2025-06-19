@@ -89,4 +89,42 @@ class MemberQueryServiceImplTest {
         () -> memberQueryService.getAllMembers(request),
         ErrorCode.INVALID_MEMBER_STATUS.getMessage());
   }
+
+  @DisplayName("검색 결과 반환")
+  @Test
+  void searchAvailableMembers_returnMatchingResults() {
+    // given
+    String keyword = "홍";
+    int page = 0;
+    int size = 5;
+    int offset = page * size;
+
+    List<MemberListResponse> mockResults =
+        List.of(
+            new MemberListResponse(
+                "EMP001",
+                "홍길동",
+                "01012345678",
+                "hong@example.com",
+                "INSIDER",
+                "A",
+                "AVAILABLE",
+                null,
+                null,
+                "Java",
+                3));
+
+    when(memberQueryRepository.searchMembers(keyword, offset, size)).thenReturn(mockResults);
+    when(memberQueryRepository.countSearchMembers(keyword)).thenReturn(1);
+
+    // when
+    PageResponse<MemberListResponse> result = memberQueryService.searchMembers(keyword, page, size);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).name()).isEqualTo("홍길동");
+
+    verify(memberQueryRepository, times(1)).searchMembers(keyword, offset, size);
+    verify(memberQueryRepository, times(1)).countSearchMembers(keyword);
+  }
 }

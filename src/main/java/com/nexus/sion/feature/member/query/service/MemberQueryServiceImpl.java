@@ -2,9 +2,12 @@ package com.nexus.sion.feature.member.query.service;
 
 import static com.example.jooq.generated.tables.Member.MEMBER;
 
+import java.util.List;
+
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
@@ -62,6 +65,14 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     long total = memberQueryRepository.countMembers(condition);
     var content = memberQueryRepository.findAllMembers(request, condition, sortField);
 
+    return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  @Transactional(readOnly = true)
+  public PageResponse<MemberListResponse> searchMembers(String keyword, int page, int size) {
+    int offset = page * size;
+    List<MemberListResponse> content = memberQueryRepository.searchMembers(keyword, offset, size);
+    int total = memberQueryRepository.countSearchMembers(keyword);
     return PageResponse.fromJooq(content, total, page, size);
   }
 }
