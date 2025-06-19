@@ -24,7 +24,6 @@ public enum ErrorCode {
   INVALID_PASSWORD_FORMAT("20004", "최소 8자, 영문자, 숫자, 특수문자 포함해야합니다.", HttpStatus.BAD_REQUEST),
   INVALID_CURRENT_PASSWORD("20005", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
 
-
   private final String code;
   private final String message;
   private final HttpStatus httpStatus;
