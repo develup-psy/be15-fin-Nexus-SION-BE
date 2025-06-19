@@ -26,9 +26,11 @@ public class UserCommandService {
         if (!PasswordValidator.isValid(request.getPassword())) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD_FORMAT);
         }
+        System.out.println("이메일 비교");
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
         }
+        System.out.println("사번 비교");
         if (userRepository.existsByEmployeeIdentificationNumber(request.getEmployeeIdentificationNumber())) {
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER);
         }
