@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SquadQueryController {
 
-    private final SquadQueryService squadQueryService;
+  private final SquadQueryService squadQueryService;
 
-    @GetMapping("/project/{projectCode}")
-    public List<SquadListResponse> getSquads(@PathVariable String projectCode) {
-        SquadListRequest request = new SquadListRequest();
-        request.setProjectCode(projectCode);
-        return squadQueryService.findSquads(request);
-    }
+  @GetMapping("/project/{projectCode}")
+  public List<SquadListResponse> getSquads(@PathVariable String projectCode) {
+    SquadListRequest request = new SquadListRequest();
+    request.setProjectCode(projectCode);
+    return squadQueryService.findSquads(request);
+  }
 }

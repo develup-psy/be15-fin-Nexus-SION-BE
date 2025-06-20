@@ -18,23 +18,24 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 class SquadQueryIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @DisplayName("프로젝트 코드로 스쿼드 목록을 조회한다")
-    @WithMockUser(username = "testuser")
-    @Test
-    void getSquadsByProjectCode_success() throws Exception {
-        // given
-        String projectCode = "ha_1_1"; // 테스트용 프로젝트 코드 (사전 데이터 필요)
+  @DisplayName("프로젝트 코드로 스쿼드 목록을 조회한다")
+  @WithMockUser(username = "testuser")
+  @Test
+  void getSquadsByProjectCode_success() throws Exception {
+    // given
+    String projectCode = "ha_1_1"; // 테스트용 프로젝트 코드 (사전 데이터 필요)
 
-        // when & then
-        mockMvc.perform(get("/api/v1/squads/project/{projectCode}", projectCode))
-                        .andExpect(status().isOk()).andExpect(jsonPath("$", not(empty())))
-                        .andExpect(jsonPath("$[0].squadCode", not(emptyOrNullString())))
-                        .andExpect(jsonPath("$[0].squadName", not(emptyOrNullString())))
-                        .andExpect(jsonPath("$[0].members", not(empty())))
-                        .andExpect(jsonPath("$[0].members[0].name", not(emptyOrNullString())))
-                        .andExpect(jsonPath("$[0].members[0].job", not(emptyOrNullString())));
-    }
+    // when & then
+    mockMvc
+        .perform(get("/api/v1/squads/project/{projectCode}", projectCode))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", not(empty())))
+        .andExpect(jsonPath("$[0].squadCode", not(emptyOrNullString())))
+        .andExpect(jsonPath("$[0].squadName", not(emptyOrNullString())))
+        .andExpect(jsonPath("$[0].members", not(empty())))
+        .andExpect(jsonPath("$[0].members[0].name", not(emptyOrNullString())))
+        .andExpect(jsonPath("$[0].members[0].job", not(emptyOrNullString())));
+  }
 }

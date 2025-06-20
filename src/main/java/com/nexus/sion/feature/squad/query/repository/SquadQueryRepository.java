@@ -10,10 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import com.example.jooq.generated.enums.SquadOriginType;
 import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
+import com.example.jooq.generated.enums.SquadOriginType;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 
@@ -66,11 +66,11 @@ public class SquadQueryRepository {
 
               return new SquadListResponse(
                   code,
-                      name,
-                      isAiRecommended,
-                      memberMap.getOrDefault(code, List.of()),
-                      period, cost
-              );
+                  name,
+                  isAiRecommended,
+                  memberMap.getOrDefault(code, List.of()),
+                  period,
+                  cost);
             })
         .toList();
   }

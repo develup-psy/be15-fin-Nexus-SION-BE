@@ -31,55 +31,57 @@ import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 @Import(SquadQueryControllerTest.SecurityTestConfig.class)
 class SquadQueryControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private SquadQueryService squadQueryService;
+  @Autowired private SquadQueryService squadQueryService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @TestConfiguration
-    static class MockConfig {
-        @Bean
-        public SquadQueryService squadQueryService() {
-            return mock(SquadQueryService.class);
-        }
+  @TestConfiguration
+  static class MockConfig {
+    @Bean
+    public SquadQueryService squadQueryService() {
+      return mock(SquadQueryService.class);
     }
+  }
 
-    @TestConfiguration
-    static class SecurityTestConfig {
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http.csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-            return http.build();
-        }
+  @TestConfiguration
+  static class SecurityTestConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+      http.csrf(AbstractHttpConfigurer::disable)
+          .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+      return http.build();
     }
+  }
 
-    @Test
-    @DisplayName("프로젝트 코드로 스쿼드 리스트 조회 성공")
-    void getSquads_Success() throws Exception {
-        // given
-        String projectCode = "ha_1_1";
-        SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("김개발", "Backend");
-        SquadListResponse squad = new SquadListResponse(
-                "ha_1_1_1",           // squadCode
-                "SQUAD 1",             // squadName
-                false,                 // isAiRecommended
-                List.of(member),       // members
-                "3개월",                // estimatedPeriod
-                "1,000만원"            // estimatedCost
-        );
+  @Test
+  @DisplayName("프로젝트 코드로 스쿼드 리스트 조회 성공")
+  void getSquads_Success() throws Exception {
+    // given
+    String projectCode = "ha_1_1";
+    SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("김개발", "Backend");
+    SquadListResponse squad =
+        new SquadListResponse(
+            "ha_1_1_1", // squadCode
+            "SQUAD 1", // squadName
+            false, // isAiRecommended
+            List.of(member), // members
+            "3개월", // estimatedPeriod
+            "1,000만원" // estimatedCost
+            );
 
+    SquadListRequest request = new SquadListRequest();
+    request.setProjectCode(projectCode);
 
-        SquadListRequest request = new SquadListRequest();
-        request.setProjectCode(projectCode);
+    when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(List.of(squad));
 
-        when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(List.of(squad));
-
-        mockMvc.perform(get("/api/v1/squads/project/{projectCode}", projectCode)
-                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].squadCode").value("ha_1_1_1")).andDo(print());
-    }
+    mockMvc
+        .perform(
+            get("/api/v1/squads/project/{projectCode}", projectCode)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].squadCode").value("ha_1_1_1"))
+        .andDo(print());
+  }
 }

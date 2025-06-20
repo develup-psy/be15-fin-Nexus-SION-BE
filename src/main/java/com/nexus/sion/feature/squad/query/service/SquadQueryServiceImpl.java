@@ -16,16 +16,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SquadQueryServiceImpl implements SquadQueryService {
 
-    private final SquadQueryRepository squadQueryRepository;
+  private final SquadQueryRepository squadQueryRepository;
 
-    @Override
-    public List<SquadListResponse> findSquads(SquadListRequest request) {
-        List<SquadListResponse> squads = squadQueryRepository.findSquads(request);
+  @Override
+  public List<SquadListResponse> findSquads(SquadListRequest request) {
+    List<SquadListResponse> squads = squadQueryRepository.findSquads(request);
 
-        if (squads == null || squads.isEmpty()) {
-            throw new BusinessException(ErrorCode.SQUAD_NOT_FOUND);
-        }
-
-        return squads;
+    if (squads == null || squads.isEmpty()) {
+      throw new BusinessException(ErrorCode.SQUAD_NOT_FOUND);
     }
+
+    return squads;
+  }
 }

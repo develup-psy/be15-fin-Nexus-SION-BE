@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SquadListRequest {
-    private String projectCode;
+  private String projectCode;
 }
