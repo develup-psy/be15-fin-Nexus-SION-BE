@@ -12,212 +12,199 @@ import com.example.jooq.generated.enums.DeveloperTechStackHistoryRelatedTable;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class DeveloperTechStackHistory implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private Long developerTechStackHistoryId;
-    private Long developerTechStackId;
-    private Integer addedScore;
-    private Integer cumulativeScore;
-    private DeveloperTechStackHistoryRelatedTable relatedTable;
-    private Long relatedId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+  private Long developerTechStackHistoryId;
+  private Long developerTechStackId;
+  private Integer addedScore;
+  private Integer cumulativeScore;
+  private DeveloperTechStackHistoryRelatedTable relatedTable;
+  private Long relatedId;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
-    public DeveloperTechStackHistory() {}
+  public DeveloperTechStackHistory() {}
 
-    public DeveloperTechStackHistory(DeveloperTechStackHistory value) {
-        this.developerTechStackHistoryId = value.developerTechStackHistoryId;
-        this.developerTechStackId = value.developerTechStackId;
-        this.addedScore = value.addedScore;
-        this.cumulativeScore = value.cumulativeScore;
-        this.relatedTable = value.relatedTable;
-        this.relatedId = value.relatedId;
-        this.createdAt = value.createdAt;
-        this.updatedAt = value.updatedAt;
-    }
+  public DeveloperTechStackHistory(DeveloperTechStackHistory value) {
+    this.developerTechStackHistoryId = value.developerTechStackHistoryId;
+    this.developerTechStackId = value.developerTechStackId;
+    this.addedScore = value.addedScore;
+    this.cumulativeScore = value.cumulativeScore;
+    this.relatedTable = value.relatedTable;
+    this.relatedId = value.relatedId;
+    this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
+  }
 
-    public DeveloperTechStackHistory(Long developerTechStackHistoryId, Long developerTechStackId,
-                    Integer addedScore, Integer cumulativeScore,
-                    DeveloperTechStackHistoryRelatedTable relatedTable, Long relatedId,
-                    LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.developerTechStackHistoryId = developerTechStackHistoryId;
-        this.developerTechStackId = developerTechStackId;
-        this.addedScore = addedScore;
-        this.cumulativeScore = cumulativeScore;
-        this.relatedTable = relatedTable;
-        this.relatedId = relatedId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+  public DeveloperTechStackHistory(
+      Long developerTechStackHistoryId,
+      Long developerTechStackId,
+      Integer addedScore,
+      Integer cumulativeScore,
+      DeveloperTechStackHistoryRelatedTable relatedTable,
+      Long relatedId,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+    this.developerTechStackHistoryId = developerTechStackHistoryId;
+    this.developerTechStackId = developerTechStackId;
+    this.addedScore = addedScore;
+    this.cumulativeScore = cumulativeScore;
+    this.relatedTable = relatedTable;
+    this.relatedId = relatedId;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
 
-    /**
-     * Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>.
-     */
-    public Long getDeveloperTechStackHistoryId() {
-        return this.developerTechStackHistoryId;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
+  public Long getDeveloperTechStackHistoryId() {
+    return this.developerTechStackHistoryId;
+  }
 
-    /**
-     * Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>.
-     */
-    public void setDeveloperTechStackHistoryId(Long developerTechStackHistoryId) {
-        this.developerTechStackHistoryId = developerTechStackHistoryId;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
+  public void setDeveloperTechStackHistoryId(Long developerTechStackHistoryId) {
+    this.developerTechStackHistoryId = developerTechStackHistoryId;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
-    public Long getDeveloperTechStackId() {
-        return this.developerTechStackId;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
+  public Long getDeveloperTechStackId() {
+    return this.developerTechStackId;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
-    public void setDeveloperTechStackId(Long developerTechStackId) {
-        this.developerTechStackId = developerTechStackId;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
+  public void setDeveloperTechStackId(Long developerTechStackId) {
+    this.developerTechStackId = developerTechStackId;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.added_score</code>. */
-    public Integer getAddedScore() {
-        return this.addedScore;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.added_score</code>. */
+  public Integer getAddedScore() {
+    return this.addedScore;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.added_score</code>. */
-    public void setAddedScore(Integer addedScore) {
-        this.addedScore = addedScore;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.added_score</code>. */
+  public void setAddedScore(Integer addedScore) {
+    this.addedScore = addedScore;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.cumulative_score</code>. */
-    public Integer getCumulativeScore() {
-        return this.cumulativeScore;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.cumulative_score</code>. */
+  public Integer getCumulativeScore() {
+    return this.cumulativeScore;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.cumulative_score</code>. */
-    public void setCumulativeScore(Integer cumulativeScore) {
-        this.cumulativeScore = cumulativeScore;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.cumulative_score</code>. */
+  public void setCumulativeScore(Integer cumulativeScore) {
+    this.cumulativeScore = cumulativeScore;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.related_table</code>. */
-    public DeveloperTechStackHistoryRelatedTable getRelatedTable() {
-        return this.relatedTable;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.related_table</code>. */
+  public DeveloperTechStackHistoryRelatedTable getRelatedTable() {
+    return this.relatedTable;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.related_table</code>. */
-    public void setRelatedTable(DeveloperTechStackHistoryRelatedTable relatedTable) {
-        this.relatedTable = relatedTable;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.related_table</code>. */
+  public void setRelatedTable(DeveloperTechStackHistoryRelatedTable relatedTable) {
+    this.relatedTable = relatedTable;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.related_id</code>. */
-    public Long getRelatedId() {
-        return this.relatedId;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.related_id</code>. */
+  public Long getRelatedId() {
+    return this.relatedId;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.related_id</code>. */
-    public void setRelatedId(Long relatedId) {
-        this.relatedId = relatedId;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.related_id</code>. */
+  public void setRelatedId(Long relatedId) {
+    this.relatedId = relatedId;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.created_at</code>. */
-    public LocalDateTime getCreatedAt() {
-        return this.createdAt;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.created_at</code>. */
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.created_at</code>. */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.created_at</code>. */
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    /** Getter for <code>SION.developer_tech_stack_history.updated_at</code>. */
-    public LocalDateTime getUpdatedAt() {
-        return this.updatedAt;
-    }
+  /** Getter for <code>SION.developer_tech_stack_history.updated_at</code>. */
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
 
-    /** Setter for <code>SION.developer_tech_stack_history.updated_at</code>. */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+  /** Setter for <code>SION.developer_tech_stack_history.updated_at</code>. */
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final DeveloperTechStackHistory other = (DeveloperTechStackHistory) obj;
-        if (this.developerTechStackHistoryId == null) {
-            if (other.developerTechStackHistoryId != null)
-                return false;
-        } else if (!this.developerTechStackHistoryId.equals(other.developerTechStackHistoryId))
-            return false;
-        if (this.developerTechStackId == null) {
-            if (other.developerTechStackId != null)
-                return false;
-        } else if (!this.developerTechStackId.equals(other.developerTechStackId))
-            return false;
-        if (this.addedScore == null) {
-            if (other.addedScore != null)
-                return false;
-        } else if (!this.addedScore.equals(other.addedScore))
-            return false;
-        if (this.cumulativeScore == null) {
-            if (other.cumulativeScore != null)
-                return false;
-        } else if (!this.cumulativeScore.equals(other.cumulativeScore))
-            return false;
-        if (this.relatedTable == null) {
-            if (other.relatedTable != null)
-                return false;
-        } else if (!this.relatedTable.equals(other.relatedTable))
-            return false;
-        if (this.relatedId == null) {
-            if (other.relatedId != null)
-                return false;
-        } else if (!this.relatedId.equals(other.relatedId))
-            return false;
-        if (this.createdAt == null) {
-            if (other.createdAt != null)
-                return false;
-        } else if (!this.createdAt.equals(other.createdAt))
-            return false;
-        if (this.updatedAt == null) {
-            if (other.updatedAt != null)
-                return false;
-        } else if (!this.updatedAt.equals(other.updatedAt))
-            return false;
-        return true;
-    }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    final DeveloperTechStackHistory other = (DeveloperTechStackHistory) obj;
+    if (this.developerTechStackHistoryId == null) {
+      if (other.developerTechStackHistoryId != null) return false;
+    } else if (!this.developerTechStackHistoryId.equals(other.developerTechStackHistoryId))
+      return false;
+    if (this.developerTechStackId == null) {
+      if (other.developerTechStackId != null) return false;
+    } else if (!this.developerTechStackId.equals(other.developerTechStackId)) return false;
+    if (this.addedScore == null) {
+      if (other.addedScore != null) return false;
+    } else if (!this.addedScore.equals(other.addedScore)) return false;
+    if (this.cumulativeScore == null) {
+      if (other.cumulativeScore != null) return false;
+    } else if (!this.cumulativeScore.equals(other.cumulativeScore)) return false;
+    if (this.relatedTable == null) {
+      if (other.relatedTable != null) return false;
+    } else if (!this.relatedTable.equals(other.relatedTable)) return false;
+    if (this.relatedId == null) {
+      if (other.relatedId != null) return false;
+    } else if (!this.relatedId.equals(other.relatedId)) return false;
+    if (this.createdAt == null) {
+      if (other.createdAt != null) return false;
+    } else if (!this.createdAt.equals(other.createdAt)) return false;
+    if (this.updatedAt == null) {
+      if (other.updatedAt != null) return false;
+    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.developerTechStackHistoryId == null) ? 0
-                        : this.developerTechStackHistoryId.hashCode());
-        result = prime * result + ((this.developerTechStackId == null) ? 0
-                        : this.developerTechStackId.hashCode());
-        result = prime * result + ((this.addedScore == null) ? 0 : this.addedScore.hashCode());
-        result = prime * result
-                        + ((this.cumulativeScore == null) ? 0 : this.cumulativeScore.hashCode());
-        result = prime * result + ((this.relatedTable == null) ? 0 : this.relatedTable.hashCode());
-        result = prime * result + ((this.relatedId == null) ? 0 : this.relatedId.hashCode());
-        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result =
+        prime * result
+            + ((this.developerTechStackHistoryId == null)
+                ? 0
+                : this.developerTechStackHistoryId.hashCode());
+    result =
+        prime * result
+            + ((this.developerTechStackId == null) ? 0 : this.developerTechStackId.hashCode());
+    result = prime * result + ((this.addedScore == null) ? 0 : this.addedScore.hashCode());
+    result =
+        prime * result + ((this.cumulativeScore == null) ? 0 : this.cumulativeScore.hashCode());
+    result = prime * result + ((this.relatedTable == null) ? 0 : this.relatedTable.hashCode());
+    result = prime * result + ((this.relatedId == null) ? 0 : this.relatedId.hashCode());
+    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+    return result;
+  }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("DeveloperTechStackHistory (");
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("DeveloperTechStackHistory (");
 
-        sb.append(developerTechStackHistoryId);
-        sb.append(", ").append(developerTechStackId);
-        sb.append(", ").append(addedScore);
-        sb.append(", ").append(cumulativeScore);
-        sb.append(", ").append(relatedTable);
-        sb.append(", ").append(relatedId);
-        sb.append(", ").append(createdAt);
-        sb.append(", ").append(updatedAt);
+    sb.append(developerTechStackHistoryId);
+    sb.append(", ").append(developerTechStackId);
+    sb.append(", ").append(addedScore);
+    sb.append(", ").append(cumulativeScore);
+    sb.append(", ").append(relatedTable);
+    sb.append(", ").append(relatedId);
+    sb.append(", ").append(createdAt);
+    sb.append(", ").append(updatedAt);
 
-        sb.append(")");
-        return sb.toString();
-    }
+    sb.append(")");
+    return sb.toString();
+  }
 }

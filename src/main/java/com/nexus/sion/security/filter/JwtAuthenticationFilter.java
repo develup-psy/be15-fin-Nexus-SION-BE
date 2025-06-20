@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,22 +25,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final UserDetailsService userDetailsService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                    FilterChain filterChain) throws ServletException, IOException {
-        String token = getJwtFromRequest(request);
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    String token = getJwtFromRequest(request);
 
-        if (!StringUtils.hasText(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+    if (!StringUtils.hasText(token)) {
+      filterChain.doFilter(request, response);
+      return;
+    }
 
-        try {
-            if (jwtTokenProvider.validateToken(token)) {
-                String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
+    try {
+      if (jwtTokenProvider.validateToken(token)) {
+        String employeeIdentificationNumber =
+            jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
 
                 UserDetails userDetails;
                 if(employeeIdentificationNumber.equals("test")) {
@@ -55,24 +56,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
                 }
 
-                PreAuthenticatedAuthenticationToken authentication =
-                                new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        PreAuthenticatedAuthenticationToken authentication =
+            new PreAuthenticatedAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (CustomJwtException e) {
-            request.setAttribute("jwtException", e);
-        }
-
-        filterChain.doFilter(request, response);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+    } catch (CustomJwtException e) {
+      request.setAttribute("jwtException", e);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    filterChain.doFilter(request, response);
+  }
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+  private String getJwtFromRequest(HttpServletRequest request) {
+    String bearerToken = request.getHeader("Authorization");
+
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+      return bearerToken.substring(7);
     }
+    return null;
+  }
 }

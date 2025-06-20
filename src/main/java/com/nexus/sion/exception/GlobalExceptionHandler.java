@@ -13,62 +13,56 @@ import com.nexus.sion.common.dto.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /* 비즈니스 예외처리 핸들러 */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException e) {
-        ErrorCode errorCode = e.getErrorCode();
-        ApiResponse<Void> response =
-                        ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
-    }
+  /* 비즈니스 예외처리 핸들러 */
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+    return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
 
-    /* 유효성 검사 예외처리 핸들러 */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidationException(
-                    MethodArgumentNotValidException e) {
-        ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
-        StringBuilder errorMessage = new StringBuilder(errorCode.getMessage());
-        for (FieldError error : e.getBindingResult().getFieldErrors()) {
-            errorMessage.append(String.format("[%s : %s]", error.getField(),
-                            error.getDefaultMessage()));
-        }
-        ApiResponse<Void> response =
-                        ApiResponse.failure(errorCode.getCode(), errorMessage.toString());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  /* 유효성 검사 예외처리 핸들러 */
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ApiResponse<Void>> handleValidationException(
+      MethodArgumentNotValidException e) {
+    ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
+    StringBuilder errorMessage = new StringBuilder(errorCode.getMessage());
+    for (FieldError error : e.getBindingResult().getFieldErrors()) {
+      errorMessage.append(String.format("[%s : %s]", error.getField(), error.getDefaultMessage()));
     }
+    ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorMessage.toString());
+    return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
 
-    /* 예상치 못한 예외 처리 핸들러 */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleException() {
-        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-        ApiResponse<Void> response =
-                        ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
-    }
+  /* 예상치 못한 예외 처리 핸들러 */
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ApiResponse<Void>> handleException() {
+    ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+    ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+    return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
 
-    /* Spring Security 인증 실패 예외 처리 핸들러 */
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBadCredentials() {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED_USER;
-        ApiResponse<Void> response =
-                        ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
-    }
+  /* Spring Security 인증 실패 예외 처리 핸들러 */
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<ApiResponse<Void>> handleBadCredentials() {
+    ErrorCode errorCode = ErrorCode.UNAUTHORIZED_USER;
+    ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+    return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
 
-    /* 권한 없는 사용자 예외 처리 핸들러 */
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAccessDenied() {
-        ErrorCode errorCode = ErrorCode.FORBIDDEN;
-        ApiResponse<Void> response =
-                ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
-    }
+  /* 권한 없는 사용자 예외 처리 핸들러 */
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ResponseEntity<ApiResponse<Void>> handleAccessDenied() {
+    ErrorCode errorCode = ErrorCode.FORBIDDEN;
+    ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+    return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
 
-    /* CustomJwtException 예외 처리 핸들러 */
-    @ExceptionHandler(CustomJwtException.class)
-    public ResponseEntity<ApiResponse<Void>> handleJwtException(CustomJwtException e) {
-        ApiResponse<Void> response = ApiResponse.failure(e.getErrorCode().getCode(),
-                        e.getErrorCode().getMessage());
-        return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
-    }
+  /* CustomJwtException 예외 처리 핸들러 */
+  @ExceptionHandler(CustomJwtException.class)
+  public ResponseEntity<ApiResponse<Void>> handleJwtException(CustomJwtException e) {
+    ApiResponse<Void> response =
+        ApiResponse.failure(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+    return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
+  }
 }

@@ -7,9 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class MemberCreateRequest {
-    private String employeeIdentificationNumber;
-    private String employeeName;
-    private String password;
-    private String phoneNumber;
-    private String email;
+  private String employeeIdentificationNumber;
+  private String employeeName;
+  private String password;
+  private String phoneNumber;
+  private String email;
 }

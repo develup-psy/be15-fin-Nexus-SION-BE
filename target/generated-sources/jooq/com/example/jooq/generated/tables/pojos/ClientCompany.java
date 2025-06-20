@@ -10,206 +10,191 @@ import java.time.LocalDateTime;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ClientCompany implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String clientCode;
-    private String companyName;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String contactPerson;
-    private String email;
-    private String contactNumber;
-    private String domainName;
+  private String clientCode;
+  private String companyName;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private String contactPerson;
+  private String email;
+  private String contactNumber;
+  private String domainName;
 
-    public ClientCompany() {}
+  public ClientCompany() {}
 
-    public ClientCompany(ClientCompany value) {
-        this.clientCode = value.clientCode;
-        this.companyName = value.companyName;
-        this.createdAt = value.createdAt;
-        this.updatedAt = value.updatedAt;
-        this.contactPerson = value.contactPerson;
-        this.email = value.email;
-        this.contactNumber = value.contactNumber;
-        this.domainName = value.domainName;
-    }
+  public ClientCompany(ClientCompany value) {
+    this.clientCode = value.clientCode;
+    this.companyName = value.companyName;
+    this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
+    this.contactPerson = value.contactPerson;
+    this.email = value.email;
+    this.contactNumber = value.contactNumber;
+    this.domainName = value.domainName;
+  }
 
-    public ClientCompany(String clientCode, String companyName, LocalDateTime createdAt,
-                    LocalDateTime updatedAt, String contactPerson, String email,
-                    String contactNumber, String domainName) {
-        this.clientCode = clientCode;
-        this.companyName = companyName;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.contactPerson = contactPerson;
-        this.email = email;
-        this.contactNumber = contactNumber;
-        this.domainName = domainName;
-    }
+  public ClientCompany(
+      String clientCode,
+      String companyName,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt,
+      String contactPerson,
+      String email,
+      String contactNumber,
+      String domainName) {
+    this.clientCode = clientCode;
+    this.companyName = companyName;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.contactPerson = contactPerson;
+    this.email = email;
+    this.contactNumber = contactNumber;
+    this.domainName = domainName;
+  }
 
-    /** Getter for <code>SION.client_company.client_code</code>. */
-    public String getClientCode() {
-        return this.clientCode;
-    }
+  /** Getter for <code>SION.client_company.client_code</code>. */
+  public String getClientCode() {
+    return this.clientCode;
+  }
 
-    /** Setter for <code>SION.client_company.client_code</code>. */
-    public void setClientCode(String clientCode) {
-        this.clientCode = clientCode;
-    }
+  /** Setter for <code>SION.client_company.client_code</code>. */
+  public void setClientCode(String clientCode) {
+    this.clientCode = clientCode;
+  }
 
-    /** Getter for <code>SION.client_company.company_name</code>. */
-    public String getCompanyName() {
-        return this.companyName;
-    }
+  /** Getter for <code>SION.client_company.company_name</code>. */
+  public String getCompanyName() {
+    return this.companyName;
+  }
 
-    /** Setter for <code>SION.client_company.company_name</code>. */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
+  /** Setter for <code>SION.client_company.company_name</code>. */
+  public void setCompanyName(String companyName) {
+    this.companyName = companyName;
+  }
 
-    /** Getter for <code>SION.client_company.created_at</code>. */
-    public LocalDateTime getCreatedAt() {
-        return this.createdAt;
-    }
+  /** Getter for <code>SION.client_company.created_at</code>. */
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
 
-    /** Setter for <code>SION.client_company.created_at</code>. */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+  /** Setter for <code>SION.client_company.created_at</code>. */
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
 
-    /** Getter for <code>SION.client_company.updated_at</code>. */
-    public LocalDateTime getUpdatedAt() {
-        return this.updatedAt;
-    }
+  /** Getter for <code>SION.client_company.updated_at</code>. */
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
 
-    /** Setter for <code>SION.client_company.updated_at</code>. */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+  /** Setter for <code>SION.client_company.updated_at</code>. */
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
 
-    /** Getter for <code>SION.client_company.contact_person</code>. */
-    public String getContactPerson() {
-        return this.contactPerson;
-    }
+  /** Getter for <code>SION.client_company.contact_person</code>. */
+  public String getContactPerson() {
+    return this.contactPerson;
+  }
 
-    /** Setter for <code>SION.client_company.contact_person</code>. */
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
-    }
+  /** Setter for <code>SION.client_company.contact_person</code>. */
+  public void setContactPerson(String contactPerson) {
+    this.contactPerson = contactPerson;
+  }
 
-    /** Getter for <code>SION.client_company.email</code>. */
-    public String getEmail() {
-        return this.email;
-    }
+  /** Getter for <code>SION.client_company.email</code>. */
+  public String getEmail() {
+    return this.email;
+  }
 
-    /** Setter for <code>SION.client_company.email</code>. */
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  /** Setter for <code>SION.client_company.email</code>. */
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    /** Getter for <code>SION.client_company.contact_number</code>. */
-    public String getContactNumber() {
-        return this.contactNumber;
-    }
+  /** Getter for <code>SION.client_company.contact_number</code>. */
+  public String getContactNumber() {
+    return this.contactNumber;
+  }
 
-    /** Setter for <code>SION.client_company.contact_number</code>. */
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
+  /** Setter for <code>SION.client_company.contact_number</code>. */
+  public void setContactNumber(String contactNumber) {
+    this.contactNumber = contactNumber;
+  }
 
-    /** Getter for <code>SION.client_company.domain_name</code>. */
-    public String getDomainName() {
-        return this.domainName;
-    }
+  /** Getter for <code>SION.client_company.domain_name</code>. */
+  public String getDomainName() {
+    return this.domainName;
+  }
 
-    /** Setter for <code>SION.client_company.domain_name</code>. */
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
-    }
+  /** Setter for <code>SION.client_company.domain_name</code>. */
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final ClientCompany other = (ClientCompany) obj;
-        if (this.clientCode == null) {
-            if (other.clientCode != null)
-                return false;
-        } else if (!this.clientCode.equals(other.clientCode))
-            return false;
-        if (this.companyName == null) {
-            if (other.companyName != null)
-                return false;
-        } else if (!this.companyName.equals(other.companyName))
-            return false;
-        if (this.createdAt == null) {
-            if (other.createdAt != null)
-                return false;
-        } else if (!this.createdAt.equals(other.createdAt))
-            return false;
-        if (this.updatedAt == null) {
-            if (other.updatedAt != null)
-                return false;
-        } else if (!this.updatedAt.equals(other.updatedAt))
-            return false;
-        if (this.contactPerson == null) {
-            if (other.contactPerson != null)
-                return false;
-        } else if (!this.contactPerson.equals(other.contactPerson))
-            return false;
-        if (this.email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!this.email.equals(other.email))
-            return false;
-        if (this.contactNumber == null) {
-            if (other.contactNumber != null)
-                return false;
-        } else if (!this.contactNumber.equals(other.contactNumber))
-            return false;
-        if (this.domainName == null) {
-            if (other.domainName != null)
-                return false;
-        } else if (!this.domainName.equals(other.domainName))
-            return false;
-        return true;
-    }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    final ClientCompany other = (ClientCompany) obj;
+    if (this.clientCode == null) {
+      if (other.clientCode != null) return false;
+    } else if (!this.clientCode.equals(other.clientCode)) return false;
+    if (this.companyName == null) {
+      if (other.companyName != null) return false;
+    } else if (!this.companyName.equals(other.companyName)) return false;
+    if (this.createdAt == null) {
+      if (other.createdAt != null) return false;
+    } else if (!this.createdAt.equals(other.createdAt)) return false;
+    if (this.updatedAt == null) {
+      if (other.updatedAt != null) return false;
+    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
+    if (this.contactPerson == null) {
+      if (other.contactPerson != null) return false;
+    } else if (!this.contactPerson.equals(other.contactPerson)) return false;
+    if (this.email == null) {
+      if (other.email != null) return false;
+    } else if (!this.email.equals(other.email)) return false;
+    if (this.contactNumber == null) {
+      if (other.contactNumber != null) return false;
+    } else if (!this.contactNumber.equals(other.contactNumber)) return false;
+    if (this.domainName == null) {
+      if (other.domainName != null) return false;
+    } else if (!this.domainName.equals(other.domainName)) return false;
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.clientCode == null) ? 0 : this.clientCode.hashCode());
-        result = prime * result + ((this.companyName == null) ? 0 : this.companyName.hashCode());
-        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-        result = prime * result
-                        + ((this.contactPerson == null) ? 0 : this.contactPerson.hashCode());
-        result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
-        result = prime * result
-                        + ((this.contactNumber == null) ? 0 : this.contactNumber.hashCode());
-        result = prime * result + ((this.domainName == null) ? 0 : this.domainName.hashCode());
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.clientCode == null) ? 0 : this.clientCode.hashCode());
+    result = prime * result + ((this.companyName == null) ? 0 : this.companyName.hashCode());
+    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+    result = prime * result + ((this.contactPerson == null) ? 0 : this.contactPerson.hashCode());
+    result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
+    result = prime * result + ((this.contactNumber == null) ? 0 : this.contactNumber.hashCode());
+    result = prime * result + ((this.domainName == null) ? 0 : this.domainName.hashCode());
+    return result;
+  }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("ClientCompany (");
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder("ClientCompany (");
 
-        sb.append(clientCode);
-        sb.append(", ").append(companyName);
-        sb.append(", ").append(createdAt);
-        sb.append(", ").append(updatedAt);
-        sb.append(", ").append(contactPerson);
-        sb.append(", ").append(email);
-        sb.append(", ").append(contactNumber);
-        sb.append(", ").append(domainName);
+    sb.append(clientCode);
+    sb.append(", ").append(companyName);
+    sb.append(", ").append(createdAt);
+    sb.append(", ").append(updatedAt);
+    sb.append(", ").append(contactPerson);
+    sb.append(", ").append(email);
+    sb.append(", ").append(contactNumber);
+    sb.append(", ").append(domainName);
 
-        sb.append(")");
-        return sb.toString();
-    }
+    sb.append(")");
+    return sb.toString();
+  }
 }

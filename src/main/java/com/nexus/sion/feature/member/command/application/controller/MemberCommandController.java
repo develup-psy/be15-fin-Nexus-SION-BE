@@ -21,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "", description = "")
 public class MemberCommandController {
 
-    private final MemberCommandService userCommandService;
+  private final MemberCommandService userCommandService;
 
-    @Operation(summary = "회원 가입", description = "회원 가입 기능")
-    @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<Void>> register(@RequestBody MemberCreateRequest request) {
-        userCommandService.registerUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
-    }
+  @Operation(summary = "회원 가입", description = "회원 가입 기능")
+  @PostMapping("/signup")
+  public ResponseEntity<ApiResponse<Void>> register(@RequestBody MemberCreateRequest request) {
+    userCommandService.registerUser(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+  }
 }
