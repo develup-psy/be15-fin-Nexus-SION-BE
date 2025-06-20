@@ -6,10 +6,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
 import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.feature.auth.command.application.service.AuthService;
 
@@ -35,6 +37,13 @@ public class AuthController {
         return buildTokenResponse(token);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<TokenResponse>> login(
+            @RequestBody LoginRequest loginRequest) {
+        TokenResponse tokenResponse = authService.login(loginRequest);
+        return buildTokenResponse(tokenResponse);
+    }
+
     /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
     private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
                     TokenResponse tokenResponse) {
@@ -43,4 +52,5 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
                         .body(ApiResponse.success(tokenResponse));
     }
+
 }

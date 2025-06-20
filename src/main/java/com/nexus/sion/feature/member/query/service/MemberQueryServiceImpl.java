@@ -28,27 +28,42 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 
     @Override
     public PageResponse<MemberListResponse> getAllMembers(MemberListRequest request) {
-        int page=request.getPage();int size=request.getSize();String sortBy=request.getSortBy()!=null?request.getSortBy():"employeeName";String sortDir=request.getSortDir()!=null?request.getSortDir():"asc";
+        int page = request.getPage();
+        int size = request.getSize();
+        String sortBy = request.getSortBy() != null ? request.getSortBy() : "employeeName";
+        String sortDir = request.getSortDir() != null ? request.getSortDir() : "asc";
 
         // 기본 조건 - 삭제되지 않고, 개발자인 멤버만 조회
         Condition condition=MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.INSIDER));
 
         // 상태 필터
-        if(request.getStatus()!=null){try{condition=condition.and(MEMBER.STATUS.eq(MemberStatus.valueOf(request.getStatus().toUpperCase())));}catch(IllegalArgumentException e){throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);}}
+        if (request.getStatus() != null) {
+            try {
+                condition = condition.and(MEMBER.STATUS.eq(MemberStatus.valueOf(request.getStatus().toUpperCase())));
+            } catch (IllegalArgumentException e) {
+                throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);
+            }
+        }
 
         // 정렬 필드
-        SortField<?>sortField=switch(sortBy){case"employeeId"->"desc".equalsIgnoreCase(sortDir)?MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.desc():MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.asc();case"joinedAt"->"desc".equalsIgnoreCase(sortDir)?MEMBER.JOINED_AT.desc():MEMBER.JOINED_AT.asc();default->"desc".equalsIgnoreCase(sortDir)?MEMBER.EMPLOYEE_NAME.desc():MEMBER.EMPLOYEE_NAME.asc();};
+        SortField<?> sortField = switch (sortBy) {
+            case "employeeId" ->
+                    "desc".equalsIgnoreCase(sortDir) ? MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.desc() : MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.asc();
+            case "joinedAt" -> "desc".equalsIgnoreCase(sortDir) ? MEMBER.JOINED_AT.desc() : MEMBER.JOINED_AT.asc();
+            default -> "desc".equalsIgnoreCase(sortDir) ? MEMBER.EMPLOYEE_NAME.desc() : MEMBER.EMPLOYEE_NAME.asc();
+        };
 
-        long total=memberQueryRepository.countMembers(condition);var content=memberQueryRepository.findAllMembers(request,condition,sortField);
+        long total = memberQueryRepository.countMembers(condition);
+        var content = memberQueryRepository.findAllMembers(request, condition, sortField);
 
-        return PageResponse.fromJooq(content,total,page,size);
+        return PageResponse.fromJooq(content, total, page, size);
     }
 
     @Transactional(readOnly = true)
     public PageResponse<MemberListResponse> searchMembers(String keyword, int page, int size) {
         int offset = page * size;
         List<MemberListResponse> content =
-                        memberQueryRepository.searchMembers(keyword, offset, size);
+                memberQueryRepository.searchMembers(keyword, offset, size);
         int total = memberQueryRepository.countSearchMembers(keyword);
         return PageResponse.fromJooq(content, total, page, size);
     }
