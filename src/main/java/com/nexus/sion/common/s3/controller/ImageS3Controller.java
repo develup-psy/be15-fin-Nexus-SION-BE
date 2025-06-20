@@ -2,26 +2,22 @@ package com.nexus.sion.common.s3.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.nexus.sion.common.s3.service.ImageS3Service;
-
+import com.nexus.sion.common.s3.dto.S3UploadResponse;
+import com.nexus.sion.common.s3.service.DocumentS3Service;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/image")
+@RequestMapping("/api/document")
 @RequiredArgsConstructor
 public class ImageS3Controller {
 
-    private final ImageS3Service s3Service;
+    private final DocumentS3Service s3Service;
 
-    // 서버 직접 업로드 방식
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam MultipartFile file, @RequestParam String prefix, // 폴더 명
-                    @RequestParam String filename) {
-        return s3Service.uploadFile(file, prefix, filename);
+    public S3UploadResponse uploadFile(@RequestParam MultipartFile file, @RequestParam String prefix) {
+        return s3Service.uploadFile(file, prefix);
     }
 
-    // 삭제
     @DeleteMapping("/delete")
     public String deleteFile(@RequestParam String prefix, @RequestParam String filename) {
         s3Service.deleteFile(prefix, filename);
