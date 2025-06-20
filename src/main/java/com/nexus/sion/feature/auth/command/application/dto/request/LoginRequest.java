@@ -1,11 +1,12 @@
 package com.nexus.sion.feature.auth.command.application.dto.request;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequest {
-    private final String employeeIdentificationNumber;
-    private final String password;
+    private String employeeIdentificationNumber;
+    private String password;
 }
