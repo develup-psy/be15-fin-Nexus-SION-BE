@@ -34,10 +34,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (jwtTokenProvider.validateToken(token)) {
-                String userId = jwtTokenProvider.getUserIdFromJwt(token);
+                String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
 
                 PreAuthenticatedAuthenticationToken authentication =
-                                new PreAuthenticatedAuthenticationToken(userId, null, null);
+                                new PreAuthenticatedAuthenticationToken(employeeIdentificationNumber, null, null);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
