@@ -57,10 +57,8 @@ public class DocumentS3Service {
         }
     }
 
-    private boolean isAllowedContentType(String contentType) {
-        return "application/pdf".equals(contentType)
-                        || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                        .equals(contentType)
-                        || "application/vnd.ms-excel".equals(contentType);
-    }
+  private boolean isAllowedContentType(String contentType) {
+    return "application/pdf".equals(contentType);
+  }
+
 }
