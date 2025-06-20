@@ -1,5 +1,6 @@
 package com.nexus.sion.exception;
 
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -70,5 +71,14 @@ public class GlobalExceptionHandler {
         ApiResponse<Void> response = ApiResponse.failure(e.getErrorCode().getCode(),
                         e.getErrorCode().getMessage());
         return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
+    }
+
+    /* Redis 예외 처리 핸들러 */
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    public ResponseEntity<ApiResponse<Void>> handleRedisConnectionFailure() {
+        ErrorCode errorCode = ErrorCode.REDIS_CONNECTION_FAILURE;
+        ApiResponse<Void> response =
+                ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+        return new ResponseEntity<>(response, errorCode.getHttpStatus());
     }
 }
