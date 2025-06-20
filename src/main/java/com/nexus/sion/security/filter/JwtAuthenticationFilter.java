@@ -3,7 +3,6 @@ package com.nexus.sion.security.filter;
 import java.io.IOException;
 import java.util.Collections;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.nexus.sion.exception.CustomJwtException;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.security.jwt.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -44,17 +44,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String employeeIdentificationNumber =
             jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
 
-                UserDetails userDetails;
-                if(employeeIdentificationNumber.equals("test")) {
-                    // 테스트 로그인용 설정 추가
-                    userDetails = new org.springframework.security.core.userdetails.User(
-                            employeeIdentificationNumber,
-                            "test-password",
-                            Collections.singleton(new SimpleGrantedAuthority(MemberRole.ADMIN.name()))
-                    );
-                } else {
-                    userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
-                }
+        UserDetails userDetails;
+        if (employeeIdentificationNumber.equals("test")) {
+          // 테스트 로그인용 설정 추가
+          userDetails =
+              new org.springframework.security.core.userdetails.User(
+                  employeeIdentificationNumber,
+                  "test-password",
+                  Collections.singleton(new SimpleGrantedAuthority(MemberRole.ADMIN.name())));
+        } else {
+          userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
+        }
 
         PreAuthenticatedAuthenticationToken authentication =
             new PreAuthenticatedAuthenticationToken(

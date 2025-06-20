@@ -4,11 +4,10 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import java.time.LocalDate;
+
 import jakarta.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,45 +17,52 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class MemberQueryIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private MemberRepository memberRepository;
+  @Autowired private MemberRepository memberRepository;
 
-    @BeforeEach
-    void setUp() {
-        memberRepository.save(Member.builder()
-                .employeeIdentificationNumber("EMP001")
-                .employeeName("홍길동")
-                .password("encoded_password")
-                .email("example@example.com")
-                .phoneNumber("01011111111")
-                .role(MemberRole.INSIDER)
-                .status(MemberStatus.AVAILABLE)
-                .birthday(LocalDate.of(1990, 1, 1))
-                .salary(50000000L)
-                .build());
+  @BeforeEach
+  void setUp() {
+    memberRepository.save(
+        Member.builder()
+            .employeeIdentificationNumber("EMP001")
+            .employeeName("홍길동")
+            .password("encoded_password")
+            .email("example@example.com")
+            .phoneNumber("01011111111")
+            .role(MemberRole.INSIDER)
+            .status(MemberStatus.AVAILABLE)
+            .birthday(LocalDate.of(1990, 1, 1))
+            .salary(50000000L)
+            .build());
 
-        memberRepository.flush();
-    }
+    memberRepository.flush();
+  }
 
-    @DisplayName("회원 목록을 정상적으로 조회한다")
-    @WithMockUser(username = "testuser")
-    @Test
-    void getAllMembers_success() throws Exception {
-        mockMvc.perform(get("/members").param("page", "0").param("size", "10").param("status",
-                        "AVAILABLE")).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content", not(empty())))
-                .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
-    }
+  @DisplayName("회원 목록을 정상적으로 조회한다")
+  @WithMockUser(username = "testuser")
+  @Test
+  void getAllMembers_success() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/members")
+                .param("page", "0")
+                .param("size", "10")
+                .param("status", "AVAILABLE"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.content", not(empty())))
+        .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
+  }
 
   @DisplayName("키워드로 검색 시 정상적인 회원 목록을 반환한다")
   @WithMockUser(username = "testuser")
@@ -112,6 +118,6 @@ class MemberQueryIntegrationTest {
         .perform(get("/api/v1/members/{employeeId}", nonExistingId))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.errorCode").value("USER_NOT_FOUND"));
+        .andExpect(jsonPath("$.errorCode").value("20001"));
   }
 }
