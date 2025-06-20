@@ -2,6 +2,7 @@ package com.nexus.sion.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +52,15 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED_USER;
         ApiResponse<Void> response =
                         ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
+        return new ResponseEntity<>(response, errorCode.getHttpStatus());
+    }
+
+    /* 권한 없는 사용자 예외 처리 핸들러 */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied() {
+        ErrorCode errorCode = ErrorCode.FORBIDDEN;
+        ApiResponse<Void> response =
+                ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
         return new ResponseEntity<>(response, errorCode.getHttpStatus());
     }
 
