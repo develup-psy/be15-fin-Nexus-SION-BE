@@ -34,188 +34,225 @@ import com.example.jooq.generated.tables.records.SquadEmployeeRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.squad_employee</code> */
-    public static final SquadEmployee SQUAD_EMPLOYEE = new SquadEmployee();
+  /** The reference instance of <code>SION.squad_employee</code> */
+  public static final SquadEmployee SQUAD_EMPLOYEE = new SquadEmployee();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<SquadEmployeeRecord> getRecordType() {
-        return SquadEmployeeRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<SquadEmployeeRecord> getRecordType() {
+    return SquadEmployeeRecord.class;
+  }
 
-    /** The column <code>SION.squad_employee.squad_employee_id</code>. */
-    public final TableField<SquadEmployeeRecord, Long> SQUAD_EMPLOYEE_ID = createField(
-                    DSL.name("squad_employee_id"), SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.squad_employee.squad_employee_id</code>. */
+  public final TableField<SquadEmployeeRecord, Long> SQUAD_EMPLOYEE_ID =
+      createField(DSL.name("squad_employee_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    /** The column <code>SION.squad_employee.assigned_date</code>. */
-    public final TableField<SquadEmployeeRecord, LocalDate> ASSIGNED_DATE = createField(
-                    DSL.name("assigned_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
+  /** The column <code>SION.squad_employee.assigned_date</code>. */
+  public final TableField<SquadEmployeeRecord, LocalDate> ASSIGNED_DATE =
+      createField(DSL.name("assigned_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
-    /** The column <code>SION.squad_employee.employee_identification_number</code>. */
-    public final TableField<SquadEmployeeRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
-                    createField(DSL.name("employee_identification_number"),
-                                    SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.squad_employee.employee_identification_number</code>. */
+  public final TableField<SquadEmployeeRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
+      createField(
+          DSL.name("employee_identification_number"),
+          SQLDataType.VARCHAR(30).nullable(false),
+          this,
+          "");
 
-    /** The column <code>SION.squad_employee.project_and_job_id</code>. */
-    public final TableField<SquadEmployeeRecord, Long> PROJECT_AND_JOB_ID = createField(
-                    DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.squad_employee.project_and_job_id</code>. */
+  public final TableField<SquadEmployeeRecord, Long> PROJECT_AND_JOB_ID =
+      createField(DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    /** The column <code>SION.squad_employee.is_leader</code>. */
-    public final TableField<SquadEmployeeRecord, Byte> IS_LEADER =
-                    createField(DSL.name("is_leader"),
-                                    SQLDataType.TINYINT.nullable(false).defaultValue(
-                                                    DSL.field(DSL.raw("0"), SQLDataType.TINYINT)),
-                                    this, "");
+  /** The column <code>SION.squad_employee.is_leader</code>. */
+  public final TableField<SquadEmployeeRecord, Byte> IS_LEADER =
+      createField(
+          DSL.name("is_leader"),
+          SQLDataType.TINYINT
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.TINYINT)),
+          this,
+          "");
 
-    /** The column <code>SION.squad_employee.created_at</code>. */
-    public final TableField<SquadEmployeeRecord, LocalDateTime> CREATED_AT = createField(
-                    DSL.name("created_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.squad_employee.created_at</code>. */
+  public final TableField<SquadEmployeeRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.squad_employee.updated_at</code>. */
-    public final TableField<SquadEmployeeRecord, LocalDateTime> UPDATED_AT = createField(
-                    DSL.name("updated_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.squad_employee.updated_at</code>. */
+  public final TableField<SquadEmployeeRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.squad_employee.squad_code</code>. */
-    public final TableField<SquadEmployeeRecord, String> SQUAD_CODE = createField(
-                    DSL.name("squad_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.squad_employee.squad_code</code>. */
+  public final TableField<SquadEmployeeRecord, String> SQUAD_CODE =
+      createField(DSL.name("squad_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-    /** The column <code>SION.squad_employee.total_skill_score</code>. */
-    public final TableField<SquadEmployeeRecord, Integer> TOTAL_SKILL_SCORE =
-                    createField(DSL.name("total_skill_score"), SQLDataType.INTEGER.defaultValue(
-                                    DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)), this, "");
+  /** The column <code>SION.squad_employee.total_skill_score</code>. */
+  public final TableField<SquadEmployeeRecord, Integer> TOTAL_SKILL_SCORE =
+      createField(
+          DSL.name("total_skill_score"),
+          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
+          this,
+          "");
 
-    private SquadEmployee(Name alias, Table<SquadEmployeeRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  private SquadEmployee(Name alias, Table<SquadEmployeeRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    private SquadEmployee(Name alias, Table<SquadEmployeeRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  private SquadEmployee(Name alias, Table<SquadEmployeeRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    /** Create an aliased <code>SION.squad_employee</code> table reference */
-    public SquadEmployee(String alias) {
-        this(DSL.name(alias), SQUAD_EMPLOYEE);
-    }
+  /** Create an aliased <code>SION.squad_employee</code> table reference */
+  public SquadEmployee(String alias) {
+    this(DSL.name(alias), SQUAD_EMPLOYEE);
+  }
 
-    /** Create an aliased <code>SION.squad_employee</code> table reference */
-    public SquadEmployee(Name alias) {
-        this(alias, SQUAD_EMPLOYEE);
-    }
+  /** Create an aliased <code>SION.squad_employee</code> table reference */
+  public SquadEmployee(Name alias) {
+    this(alias, SQUAD_EMPLOYEE);
+  }
 
-    /** Create a <code>SION.squad_employee</code> table reference */
-    public SquadEmployee() {
-        this(DSL.name("squad_employee"), null);
-    }
+  /** Create a <code>SION.squad_employee</code> table reference */
+  public SquadEmployee() {
+    this(DSL.name("squad_employee"), null);
+  }
 
-    public <O extends Record> SquadEmployee(Table<O> child,
-                    ForeignKey<O, SquadEmployeeRecord> key) {
-        super(child, key, SQUAD_EMPLOYEE);
-    }
+  public <O extends Record> SquadEmployee(Table<O> child, ForeignKey<O, SquadEmployeeRecord> key) {
+    super(child, key, SQUAD_EMPLOYEE);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    @Override
-    public UniqueKey<SquadEmployeeRecord> getPrimaryKey() {
-        return Keys.KEY_SQUAD_EMPLOYEE_PRIMARY;
-    }
+  @Override
+  public UniqueKey<SquadEmployeeRecord> getPrimaryKey() {
+    return Keys.KEY_SQUAD_EMPLOYEE_PRIMARY;
+  }
 
-    @Override
-    public List<ForeignKey<SquadEmployeeRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1,
-                        Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1,
-                        Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
-    }
+  @Override
+  public List<ForeignKey<SquadEmployeeRecord, ?>> getReferences() {
+    return Arrays.asList(
+        Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1,
+        Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1,
+        Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
+  }
 
-    private transient Member _member;
-    private transient ProjectAndJob _projectAndJob;
-    private transient Squad _squad;
+  private transient Member _member;
+  private transient ProjectAndJob _projectAndJob;
+  private transient Squad _squad;
 
-    /** Get the implicit join path to the <code>SION.member</code> table. */
-    public Member member() {
-        if (_member == null)
-            _member = new Member(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
+  /** Get the implicit join path to the <code>SION.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
 
-        return _member;
-    }
+    return _member;
+  }
 
-    /** Get the implicit join path to the <code>SION.project_and_job</code> table. */
-    public ProjectAndJob projectAndJob() {
-        if (_projectAndJob == null)
-            _projectAndJob = new ProjectAndJob(this, Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1);
+  /** Get the implicit join path to the <code>SION.project_and_job</code> table. */
+  public ProjectAndJob projectAndJob() {
+    if (_projectAndJob == null)
+      _projectAndJob = new ProjectAndJob(this, Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1);
 
-        return _projectAndJob;
-    }
+    return _projectAndJob;
+  }
 
-    /** Get the implicit join path to the <code>SION.squad</code> table. */
-    public Squad squad() {
-        if (_squad == null)
-            _squad = new Squad(this, Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
+  /** Get the implicit join path to the <code>SION.squad</code> table. */
+  public Squad squad() {
+    if (_squad == null) _squad = new Squad(this, Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
 
-        return _squad;
-    }
+    return _squad;
+  }
 
-    @Override
-    public SquadEmployee as(String alias) {
-        return new SquadEmployee(DSL.name(alias), this);
-    }
+  @Override
+  public SquadEmployee as(String alias) {
+    return new SquadEmployee(DSL.name(alias), this);
+  }
 
-    @Override
-    public SquadEmployee as(Name alias) {
-        return new SquadEmployee(alias, this);
-    }
+  @Override
+  public SquadEmployee as(Name alias) {
+    return new SquadEmployee(alias, this);
+  }
 
-    @Override
-    public SquadEmployee as(Table<?> alias) {
-        return new SquadEmployee(alias.getQualifiedName(), this);
-    }
+  @Override
+  public SquadEmployee as(Table<?> alias) {
+    return new SquadEmployee(alias.getQualifiedName(), this);
+  }
 
-    /** Rename this table */
-    @Override
-    public SquadEmployee rename(String name) {
-        return new SquadEmployee(DSL.name(name), null);
-    }
+  /** Rename this table */
+  @Override
+  public SquadEmployee rename(String name) {
+    return new SquadEmployee(DSL.name(name), null);
+  }
 
-    /** Rename this table */
-    @Override
-    public SquadEmployee rename(Name name) {
-        return new SquadEmployee(name, null);
-    }
+  /** Rename this table */
+  @Override
+  public SquadEmployee rename(Name name) {
+    return new SquadEmployee(name, null);
+  }
 
-    /** Rename this table */
-    @Override
-    public SquadEmployee rename(Table<?> name) {
-        return new SquadEmployee(name.getQualifiedName(), null);
-    }
+  /** Rename this table */
+  @Override
+  public SquadEmployee rename(Table<?> name) {
+    return new SquadEmployee(name.getQualifiedName(), null);
+  }
 
-    // -------------------------------------------------------------------------
-    // Row9 type methods
-    // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Row9 type methods
+  // -------------------------------------------------------------------------
 
-    @Override
-    public Row9<Long, LocalDate, String, Long, Byte, LocalDateTime, LocalDateTime, String, Integer> fieldsRow() {
-        return (Row9) super.fieldsRow();
-    }
+  @Override
+  public Row9<Long, LocalDate, String, Long, Byte, LocalDateTime, LocalDateTime, String, Integer>
+      fieldsRow() {
+    return (Row9) super.fieldsRow();
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function9<? super Long, ? super LocalDate, ? super String, ? super Long, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Integer, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function9<
+              ? super Long,
+              ? super LocalDate,
+              ? super String,
+              ? super Long,
+              ? super Byte,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
+              ? super Integer,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function9<? super Long, ? super LocalDate, ? super String, ? super Long, ? super Byte, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Integer, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function9<
+              ? super Long,
+              ? super LocalDate,
+              ? super String,
+              ? super Long,
+              ? super Byte,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
+              ? super Integer,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }

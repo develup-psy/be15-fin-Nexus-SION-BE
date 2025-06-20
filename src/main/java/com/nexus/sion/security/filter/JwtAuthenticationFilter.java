@@ -22,43 +22,47 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final UserDetailsService userDetailsService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                    FilterChain filterChain) throws ServletException, IOException {
-        String token = getJwtFromRequest(request);
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    String token = getJwtFromRequest(request);
 
-        if (!StringUtils.hasText(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        try {
-            if (jwtTokenProvider.validateToken(token)) {
-                String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
-
-                PreAuthenticatedAuthenticationToken authentication =
-                                new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (CustomJwtException e) {
-            request.setAttribute("jwtException", e);
-        }
-
-        filterChain.doFilter(request, response);
+    if (!StringUtils.hasText(token)) {
+      filterChain.doFilter(request, response);
+      return;
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    try {
+      if (jwtTokenProvider.validateToken(token)) {
+        String employeeIdentificationNumber =
+            jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+        UserDetails userDetails =
+            userDetailsService.loadUserByUsername(employeeIdentificationNumber);
+
+        PreAuthenticatedAuthenticationToken authentication =
+            new PreAuthenticatedAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+    } catch (CustomJwtException e) {
+      request.setAttribute("jwtException", e);
     }
+
+    filterChain.doFilter(request, response);
+  }
+
+  private String getJwtFromRequest(HttpServletRequest request) {
+    String bearerToken = request.getHeader("Authorization");
+
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+      return bearerToken.substring(7);
+    }
+    return null;
+  }
 }

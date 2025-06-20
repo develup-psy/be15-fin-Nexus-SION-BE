@@ -31,138 +31,163 @@ import com.example.jooq.generated.tables.records.CertificateRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Certificate extends TableImpl<CertificateRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.certificate</code> */
-    public static final Certificate CERTIFICATE = new Certificate();
+  /** The reference instance of <code>SION.certificate</code> */
+  public static final Certificate CERTIFICATE = new Certificate();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<CertificateRecord> getRecordType() {
-        return CertificateRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<CertificateRecord> getRecordType() {
+    return CertificateRecord.class;
+  }
 
-    /** The column <code>SION.certificate.certificate_name</code>. */
-    public final TableField<CertificateRecord, String> CERTIFICATE_NAME =
-                    createField(DSL.name("certificate_name"),
-                                    SQLDataType.VARCHAR(100).nullable(false), this, "");
+  /** The column <code>SION.certificate.certificate_name</code>. */
+  public final TableField<CertificateRecord, String> CERTIFICATE_NAME =
+      createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    /** The column <code>SION.certificate.issuing_organization_id</code>. */
-    public final TableField<CertificateRecord, LocalDateTime> ISSUING_ORGANIZATION_ID =
-                    createField(DSL.name("issuing_organization_id"),
-                                    SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+  /** The column <code>SION.certificate.issuing_organization_id</code>. */
+  public final TableField<CertificateRecord, LocalDateTime> ISSUING_ORGANIZATION_ID =
+      createField(
+          DSL.name("issuing_organization_id"),
+          SQLDataType.LOCALDATETIME(0).nullable(false),
+          this,
+          "");
 
-    /** The column <code>SION.certificate.issue_date</code>. */
-    public final TableField<CertificateRecord, LocalDateTime> ISSUE_DATE = createField(
-                    DSL.name("issue_date"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+  /** The column <code>SION.certificate.issue_date</code>. */
+  public final TableField<CertificateRecord, LocalDateTime> ISSUE_DATE =
+      createField(DSL.name("issue_date"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-    /** The column <code>SION.certificate.expiry_date</code>. */
-    public final TableField<CertificateRecord, LocalDateTime> EXPIRY_DATE =
-                    createField(DSL.name("expiry_date"),
-                                    SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+  /** The column <code>SION.certificate.expiry_date</code>. */
+  public final TableField<CertificateRecord, LocalDateTime> EXPIRY_DATE =
+      createField(DSL.name("expiry_date"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-    /** The column <code>SION.certificate.created_at</code>. */
-    public final TableField<CertificateRecord, LocalDateTime> CREATED_AT = createField(
-                    DSL.name("created_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.certificate.created_at</code>. */
+  public final TableField<CertificateRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.certificate.updated_at</code>. */
-    public final TableField<CertificateRecord, LocalDateTime> UPDATED_AT = createField(
-                    DSL.name("updated_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.certificate.updated_at</code>. */
+  public final TableField<CertificateRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private Certificate(Name alias, Table<CertificateRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  private Certificate(Name alias, Table<CertificateRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    private Certificate(Name alias, Table<CertificateRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  private Certificate(Name alias, Table<CertificateRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    /** Create an aliased <code>SION.certificate</code> table reference */
-    public Certificate(String alias) {
-        this(DSL.name(alias), CERTIFICATE);
-    }
+  /** Create an aliased <code>SION.certificate</code> table reference */
+  public Certificate(String alias) {
+    this(DSL.name(alias), CERTIFICATE);
+  }
 
-    /** Create an aliased <code>SION.certificate</code> table reference */
-    public Certificate(Name alias) {
-        this(alias, CERTIFICATE);
-    }
+  /** Create an aliased <code>SION.certificate</code> table reference */
+  public Certificate(Name alias) {
+    this(alias, CERTIFICATE);
+  }
 
-    /** Create a <code>SION.certificate</code> table reference */
-    public Certificate() {
-        this(DSL.name("certificate"), null);
-    }
+  /** Create a <code>SION.certificate</code> table reference */
+  public Certificate() {
+    this(DSL.name("certificate"), null);
+  }
 
-    public <O extends Record> Certificate(Table<O> child, ForeignKey<O, CertificateRecord> key) {
-        super(child, key, CERTIFICATE);
-    }
+  public <O extends Record> Certificate(Table<O> child, ForeignKey<O, CertificateRecord> key) {
+    super(child, key, CERTIFICATE);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    @Override
-    public UniqueKey<CertificateRecord> getPrimaryKey() {
-        return Keys.KEY_CERTIFICATE_PRIMARY;
-    }
+  @Override
+  public UniqueKey<CertificateRecord> getPrimaryKey() {
+    return Keys.KEY_CERTIFICATE_PRIMARY;
+  }
 
-    @Override
-    public Certificate as(String alias) {
-        return new Certificate(DSL.name(alias), this);
-    }
+  @Override
+  public Certificate as(String alias) {
+    return new Certificate(DSL.name(alias), this);
+  }
 
-    @Override
-    public Certificate as(Name alias) {
-        return new Certificate(alias, this);
-    }
+  @Override
+  public Certificate as(Name alias) {
+    return new Certificate(alias, this);
+  }
 
-    @Override
-    public Certificate as(Table<?> alias) {
-        return new Certificate(alias.getQualifiedName(), this);
-    }
+  @Override
+  public Certificate as(Table<?> alias) {
+    return new Certificate(alias.getQualifiedName(), this);
+  }
 
-    /** Rename this table */
-    @Override
-    public Certificate rename(String name) {
-        return new Certificate(DSL.name(name), null);
-    }
+  /** Rename this table */
+  @Override
+  public Certificate rename(String name) {
+    return new Certificate(DSL.name(name), null);
+  }
 
-    /** Rename this table */
-    @Override
-    public Certificate rename(Name name) {
-        return new Certificate(name, null);
-    }
+  /** Rename this table */
+  @Override
+  public Certificate rename(Name name) {
+    return new Certificate(name, null);
+  }
 
-    /** Rename this table */
-    @Override
-    public Certificate rename(Table<?> name) {
-        return new Certificate(name.getQualifiedName(), null);
-    }
+  /** Rename this table */
+  @Override
+  public Certificate rename(Table<?> name) {
+    return new Certificate(name.getQualifiedName(), null);
+  }
 
-    // -------------------------------------------------------------------------
-    // Row6 type methods
-    // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Row6 type methods
+  // -------------------------------------------------------------------------
 
-    @Override
-    public Row6<String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
-    }
+  @Override
+  public Row6<String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime>
+      fieldsRow() {
+    return (Row6) super.fieldsRow();
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function6<? super String, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function6<
+              ? super String,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function6<? super String, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function6<
+              ? super String,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }
