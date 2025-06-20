@@ -23,6 +23,8 @@ public enum ErrorCode {
 
     EMPTY_JWT("10007", "JWT 클레임이 비어있습니다.", HttpStatus.UNAUTHORIZED),
 
+    FORBIDDEN("10008", "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
+
 
     USER_NOT_FOUND("20001", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
