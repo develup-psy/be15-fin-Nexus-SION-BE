@@ -1,10 +1,15 @@
 package com.nexus.sion.feature.member.query.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,7 +89,7 @@ class MemberQueryServiceImplTest {
     MemberListRequest request = MemberListRequest.builder().status("INVALID_STATUS").build();
 
     // when & then
-    org.junit.jupiter.api.Assertions.assertThrows(
+    assertThrows(
         BusinessException.class,
         () -> memberQueryService.getAllMembers(request),
         ErrorCode.INVALID_MEMBER_STATUS.getMessage());
@@ -126,5 +131,58 @@ class MemberQueryServiceImplTest {
 
     verify(memberQueryRepository, times(1)).searchMembers(keyword, offset, size);
     verify(memberQueryRepository, times(1)).countSearchMembers(keyword);
+  }
+
+  @DisplayName("사번으로 회원 상세 조회 성공")
+  @Test
+  void getMemberDetail_success() {
+    // given
+    String employeeId = "DEV001";
+    MemberDetailResponse mockResponse = new MemberDetailResponse(
+            employeeId,
+            "홍길동",
+            "profile.jpg",
+            "01012345678",
+            "백엔드 개발자",
+            "플랫폼팀",
+            LocalDate.of(1998, 4, 15),
+            LocalDateTime.of(2022, 1, 1, 0, 0),
+            "hong@example.com",
+            3,
+            55000000L,
+            "AVAILABLE",
+            "A",
+            "INSIDER"
+    );
+
+    when(memberQueryRepository.findByEmployeeId(employeeId))
+            .thenReturn(Optional.of(mockResponse));
+
+    // when
+    MemberDetailResponse result = memberQueryService.getMemberDetail(employeeId);
+
+    // then
+    assertThat(result.employeeId()).isEqualTo(employeeId);
+    assertThat(result.name()).isEqualTo("홍길동");
+    assertThat(result.email()).isEqualTo("hong@example.com");
+
+    verify(memberQueryRepository, times(1)).findByEmployeeId(employeeId);
+  }
+
+  @DisplayName("사번으로 회원 상세 조회 시 존재하지 않으면 BusinessException 발생")
+  @Test
+  void getMemberDetail_notFound_throwsException() {
+    // given
+    String employeeId = "UNKNOWN001";
+    when(memberQueryRepository.findByEmployeeId(employeeId)).thenReturn(Optional.empty());
+
+    // when & then
+    BusinessException exception = assertThrows(
+            BusinessException.class,
+            () -> memberQueryService.getMemberDetail(employeeId)
+    );
+
+    assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUND);
+    verify(memberQueryRepository, times(1)).findByEmployeeId(employeeId);
   }
 }
