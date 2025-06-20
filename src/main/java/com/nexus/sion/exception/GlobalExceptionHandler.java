@@ -1,6 +1,7 @@
 package com.nexus.sion.exception;
 
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -40,11 +41,11 @@ public class GlobalExceptionHandler {
 
     /* 예상치 못한 예외 처리 핸들러 */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleException() {
-        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
+        String[] errorSplit = e.getClass().toString().split("\\.");
         ApiResponse<Void> response =
-                        ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
+                        ApiResponse.failure(errorSplit[errorSplit.length-1], e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /* Spring Security 인증 실패 예외 처리 핸들러 */
@@ -73,12 +74,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
     }
 
-    /* Redis 예외 처리 핸들러 */
-    @ExceptionHandler(RedisConnectionFailureException.class)
-    public ResponseEntity<ApiResponse<Void>> handleRedisConnectionFailure() {
-        ErrorCode errorCode = ErrorCode.REDIS_CONNECTION_FAILURE;
-        ApiResponse<Void> response =
-                ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
-        return new ResponseEntity<>(response, errorCode.getHttpStatus());
-    }
 }
