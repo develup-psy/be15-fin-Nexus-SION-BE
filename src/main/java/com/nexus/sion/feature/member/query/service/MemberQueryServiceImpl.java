@@ -30,7 +30,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     public PageResponse<MemberListResponse> getAllMembers(MemberListRequest request) {
         int page=request.getPage();int size=request.getSize();String sortBy=request.getSortBy()!=null?request.getSortBy():"employeeName";String sortDir=request.getSortDir()!=null?request.getSortDir():"asc";
 
-        // 기본 조건
+        // 기본 조건 - 삭제되지 않고, 개발자인 멤버만 조회
         Condition condition=MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.INSIDER));
 
         // 상태 필터
