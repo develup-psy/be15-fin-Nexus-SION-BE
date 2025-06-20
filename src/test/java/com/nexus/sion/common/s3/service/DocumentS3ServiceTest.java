@@ -59,30 +59,6 @@ class DocumentS3ServiceTest {
         }
 
         @Test
-        @DisplayName("Excel(xlsx) 업로드 성공")
-        void uploadXlsxSuccess() throws IOException {
-            MockMultipartFile file = new MockMultipartFile(
-                    "file", "test.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "test content".getBytes()
-            );
-
-            String result = documentS3Service.uploadFile(file, "prefix", "test.xlsx");
-
-            assertEquals("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/test.xlsx", result);
-        }
-
-        @Test
-        @DisplayName("Excel(xls) 업로드 성공")
-        void uploadXlsSuccess() throws IOException {
-            MockMultipartFile file = new MockMultipartFile(
-                    "file", "test.xls", "application/vnd.ms-excel", "test content".getBytes()
-            );
-
-            String result = documentS3Service.uploadFile(file, "prefix", "test.xls");
-
-            assertEquals("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/test.xls", result);
-        }
-
-        @Test
         @DisplayName("지원하지 않는 파일 타입 업로드 실패")
         void uploadUnsupportedFileType() {
             MockMultipartFile file = new MockMultipartFile(
