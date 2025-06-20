@@ -72,7 +72,7 @@ sourceSets {
 
 spotless {
     java {
-        eclipse().configFile('config/eclipse-java-formatter.xml')
+        googleJavaFormat()
         // 아래 순서로 import문 정렬
         importOrder('java', 'javax', 'jakarta', 'org', 'com')
         // 사용하지 않는 import 제거
