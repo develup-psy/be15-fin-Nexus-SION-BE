@@ -32,149 +32,190 @@ import com.example.jooq.generated.tables.records.TrainingProgramRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.training_program</code> */
-    public static final TrainingProgram TRAINING_PROGRAM = new TrainingProgram();
+  /** The reference instance of <code>SION.training_program</code> */
+  public static final TrainingProgram TRAINING_PROGRAM = new TrainingProgram();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<TrainingProgramRecord> getRecordType() {
-        return TrainingProgramRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<TrainingProgramRecord> getRecordType() {
+    return TrainingProgramRecord.class;
+  }
 
-    /** The column <code>SION.training_program.training_name</code>. */
-    public final TableField<TrainingProgramRecord, String> TRAINING_NAME = createField(
-                    DSL.name("training_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+  /** The column <code>SION.training_program.training_name</code>. */
+  public final TableField<TrainingProgramRecord, String> TRAINING_NAME =
+      createField(DSL.name("training_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-    /** The column <code>SION.training_program.description</code>. */
-    public final TableField<TrainingProgramRecord, String> DESCRIPTION =
-                    createField(DSL.name("description"), SQLDataType.VARCHAR(255).defaultValue(
-                                    DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+  /** The column <code>SION.training_program.description</code>. */
+  public final TableField<TrainingProgramRecord, String> DESCRIPTION =
+      createField(
+          DSL.name("description"),
+          SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
-    /** The column <code>SION.training_program.training_type</code>. */
-    public final TableField<TrainingProgramRecord, TrainingProgramTrainingType> TRAINING_TYPE =
-                    createField(DSL.name("training_type"),
-                                    SQLDataType.VARCHAR(3).nullable(false).asEnumDataType(
-                                                    com.example.jooq.generated.enums.TrainingProgramTrainingType.class),
-                                    this, "");
+  /** The column <code>SION.training_program.training_type</code>. */
+  public final TableField<TrainingProgramRecord, TrainingProgramTrainingType> TRAINING_TYPE =
+      createField(
+          DSL.name("training_type"),
+          SQLDataType.VARCHAR(3)
+              .nullable(false)
+              .asEnumDataType(com.example.jooq.generated.enums.TrainingProgramTrainingType.class),
+          this,
+          "");
 
-    /** The column <code>SION.training_program.organizer</code>. */
-    public final TableField<TrainingProgramRecord, String> ORGANIZER = createField(
-                    DSL.name("organizer"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.training_program.organizer</code>. */
+  public final TableField<TrainingProgramRecord, String> ORGANIZER =
+      createField(DSL.name("organizer"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-    /** The column <code>SION.training_program.started_at</code>. */
-    public final TableField<TrainingProgramRecord, LocalDateTime> STARTED_AT = createField(
-                    DSL.name("started_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+  /** The column <code>SION.training_program.started_at</code>. */
+  public final TableField<TrainingProgramRecord, LocalDateTime> STARTED_AT =
+      createField(DSL.name("started_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-    /** The column <code>SION.training_program.ended_at</code>. */
-    public final TableField<TrainingProgramRecord, LocalDateTime> ENDED_AT = createField(
-                    DSL.name("ended_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+  /** The column <code>SION.training_program.ended_at</code>. */
+  public final TableField<TrainingProgramRecord, LocalDateTime> ENDED_AT =
+      createField(DSL.name("ended_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-    /** The column <code>SION.training_program.created_at</code>. */
-    public final TableField<TrainingProgramRecord, LocalDateTime> CREATED_AT = createField(
-                    DSL.name("created_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.training_program.created_at</code>. */
+  public final TableField<TrainingProgramRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.training_program.updated_at</code>. */
-    public final TableField<TrainingProgramRecord, LocalDateTime> UPDATED_AT = createField(
-                    DSL.name("updated_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.training_program.updated_at</code>. */
+  public final TableField<TrainingProgramRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private TrainingProgram(Name alias, Table<TrainingProgramRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  private TrainingProgram(Name alias, Table<TrainingProgramRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    private TrainingProgram(Name alias, Table<TrainingProgramRecord> aliased,
-                    Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  private TrainingProgram(Name alias, Table<TrainingProgramRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    /** Create an aliased <code>SION.training_program</code> table reference */
-    public TrainingProgram(String alias) {
-        this(DSL.name(alias), TRAINING_PROGRAM);
-    }
+  /** Create an aliased <code>SION.training_program</code> table reference */
+  public TrainingProgram(String alias) {
+    this(DSL.name(alias), TRAINING_PROGRAM);
+  }
 
-    /** Create an aliased <code>SION.training_program</code> table reference */
-    public TrainingProgram(Name alias) {
-        this(alias, TRAINING_PROGRAM);
-    }
+  /** Create an aliased <code>SION.training_program</code> table reference */
+  public TrainingProgram(Name alias) {
+    this(alias, TRAINING_PROGRAM);
+  }
 
-    /** Create a <code>SION.training_program</code> table reference */
-    public TrainingProgram() {
-        this(DSL.name("training_program"), null);
-    }
+  /** Create a <code>SION.training_program</code> table reference */
+  public TrainingProgram() {
+    this(DSL.name("training_program"), null);
+  }
 
-    public <O extends Record> TrainingProgram(Table<O> child,
-                    ForeignKey<O, TrainingProgramRecord> key) {
-        super(child, key, TRAINING_PROGRAM);
-    }
+  public <O extends Record> TrainingProgram(
+      Table<O> child, ForeignKey<O, TrainingProgramRecord> key) {
+    super(child, key, TRAINING_PROGRAM);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    @Override
-    public UniqueKey<TrainingProgramRecord> getPrimaryKey() {
-        return Keys.KEY_TRAINING_PROGRAM_PRIMARY;
-    }
+  @Override
+  public UniqueKey<TrainingProgramRecord> getPrimaryKey() {
+    return Keys.KEY_TRAINING_PROGRAM_PRIMARY;
+  }
 
-    @Override
-    public TrainingProgram as(String alias) {
-        return new TrainingProgram(DSL.name(alias), this);
-    }
+  @Override
+  public TrainingProgram as(String alias) {
+    return new TrainingProgram(DSL.name(alias), this);
+  }
 
-    @Override
-    public TrainingProgram as(Name alias) {
-        return new TrainingProgram(alias, this);
-    }
+  @Override
+  public TrainingProgram as(Name alias) {
+    return new TrainingProgram(alias, this);
+  }
 
-    @Override
-    public TrainingProgram as(Table<?> alias) {
-        return new TrainingProgram(alias.getQualifiedName(), this);
-    }
+  @Override
+  public TrainingProgram as(Table<?> alias) {
+    return new TrainingProgram(alias.getQualifiedName(), this);
+  }
 
-    /** Rename this table */
-    @Override
-    public TrainingProgram rename(String name) {
-        return new TrainingProgram(DSL.name(name), null);
-    }
+  /** Rename this table */
+  @Override
+  public TrainingProgram rename(String name) {
+    return new TrainingProgram(DSL.name(name), null);
+  }
 
-    /** Rename this table */
-    @Override
-    public TrainingProgram rename(Name name) {
-        return new TrainingProgram(name, null);
-    }
+  /** Rename this table */
+  @Override
+  public TrainingProgram rename(Name name) {
+    return new TrainingProgram(name, null);
+  }
 
-    /** Rename this table */
-    @Override
-    public TrainingProgram rename(Table<?> name) {
-        return new TrainingProgram(name.getQualifiedName(), null);
-    }
+  /** Rename this table */
+  @Override
+  public TrainingProgram rename(Table<?> name) {
+    return new TrainingProgram(name.getQualifiedName(), null);
+  }
 
-    // -------------------------------------------------------------------------
-    // Row8 type methods
-    // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Row8 type methods
+  // -------------------------------------------------------------------------
 
-    @Override
-    public Row8<String, String, TrainingProgramTrainingType, String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
-    }
+  @Override
+  public Row8<
+          String,
+          String,
+          TrainingProgramTrainingType,
+          String,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime>
+      fieldsRow() {
+    return (Row8) super.fieldsRow();
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function8<? super String, ? super String, ? super TrainingProgramTrainingType, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function8<
+              ? super String,
+              ? super String,
+              ? super TrainingProgramTrainingType,
+              ? super String,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function8<? super String, ? super String, ? super TrainingProgramTrainingType, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function8<
+              ? super String,
+              ? super String,
+              ? super TrainingProgramTrainingType,
+              ? super String,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }

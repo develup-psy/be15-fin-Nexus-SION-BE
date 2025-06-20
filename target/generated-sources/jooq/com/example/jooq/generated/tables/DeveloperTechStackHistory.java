@@ -34,174 +34,212 @@ import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class DeveloperTechStackHistory extends TableImpl<DeveloperTechStackHistoryRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.developer_tech_stack_history</code> */
-    public static final DeveloperTechStackHistory DEVELOPER_TECH_STACK_HISTORY =
-                    new DeveloperTechStackHistory();
+  /** The reference instance of <code>SION.developer_tech_stack_history</code> */
+  public static final DeveloperTechStackHistory DEVELOPER_TECH_STACK_HISTORY =
+      new DeveloperTechStackHistory();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<DeveloperTechStackHistoryRecord> getRecordType() {
-        return DeveloperTechStackHistoryRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<DeveloperTechStackHistoryRecord> getRecordType() {
+    return DeveloperTechStackHistoryRecord.class;
+  }
 
-    /**
-     * The column <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>.
-     */
-    public final TableField<DeveloperTechStackHistoryRecord, Long> DEVELOPER_TECH_STACK_HISTORY_ID =
-                    createField(DSL.name("developer_tech_stack_history_id"),
-                                    SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, Long> DEVELOPER_TECH_STACK_HISTORY_ID =
+      createField(
+          DSL.name("developer_tech_stack_history_id"),
+          SQLDataType.BIGINT.nullable(false),
+          this,
+          "");
 
-    /** The column <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, Long> DEVELOPER_TECH_STACK_ID =
-                    createField(DSL.name("developer_tech_stack_id"),
-                                    SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, Long> DEVELOPER_TECH_STACK_ID =
+      createField(
+          DSL.name("developer_tech_stack_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    /** The column <code>SION.developer_tech_stack_history.added_score</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, Integer> ADDED_SCORE = createField(
-                    DSL.name("added_score"), SQLDataType.INTEGER.nullable(false), this, "");
+  /** The column <code>SION.developer_tech_stack_history.added_score</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, Integer> ADDED_SCORE =
+      createField(DSL.name("added_score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /** The column <code>SION.developer_tech_stack_history.cumulative_score</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, Integer> CUMULATIVE_SCORE =
-                    createField(DSL.name("cumulative_score"), SQLDataType.INTEGER.nullable(false),
-                                    this, "");
+  /** The column <code>SION.developer_tech_stack_history.cumulative_score</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, Integer> CUMULATIVE_SCORE =
+      createField(DSL.name("cumulative_score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /** The column <code>SION.developer_tech_stack_history.related_table</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, DeveloperTechStackHistoryRelatedTable> RELATED_TABLE =
-                    createField(DSL.name("related_table"),
-                                    SQLDataType.VARCHAR(24).nullable(false).asEnumDataType(
-                                                    com.example.jooq.generated.enums.DeveloperTechStackHistoryRelatedTable.class),
-                                    this, "");
+  /** The column <code>SION.developer_tech_stack_history.related_table</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, DeveloperTechStackHistoryRelatedTable>
+      RELATED_TABLE =
+          createField(
+              DSL.name("related_table"),
+              SQLDataType.VARCHAR(24)
+                  .nullable(false)
+                  .asEnumDataType(
+                      com.example.jooq.generated.enums.DeveloperTechStackHistoryRelatedTable.class),
+              this,
+              "");
 
-    /** The column <code>SION.developer_tech_stack_history.related_id</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, Long> RELATED_ID = createField(
-                    DSL.name("related_id"), SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.developer_tech_stack_history.related_id</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, Long> RELATED_ID =
+      createField(DSL.name("related_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    /** The column <code>SION.developer_tech_stack_history.created_at</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, LocalDateTime> CREATED_AT =
-                    createField(DSL.name("created_at"),
-                                    SQLDataType.LOCALDATETIME(0).nullable(false)
-                                                    .defaultValue(DSL.field(
-                                                                    DSL.raw("current_timestamp()"),
-                                                                    SQLDataType.LOCALDATETIME)),
-                                    this, "");
+  /** The column <code>SION.developer_tech_stack_history.created_at</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.developer_tech_stack_history.updated_at</code>. */
-    public final TableField<DeveloperTechStackHistoryRecord, LocalDateTime> UPDATED_AT =
-                    createField(DSL.name("updated_at"),
-                                    SQLDataType.LOCALDATETIME(0).nullable(false)
-                                                    .defaultValue(DSL.field(
-                                                                    DSL.raw("current_timestamp()"),
-                                                                    SQLDataType.LOCALDATETIME)),
-                                    this, "");
+  /** The column <code>SION.developer_tech_stack_history.updated_at</code>. */
+  public final TableField<DeveloperTechStackHistoryRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private DeveloperTechStackHistory(Name alias, Table<DeveloperTechStackHistoryRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  private DeveloperTechStackHistory(Name alias, Table<DeveloperTechStackHistoryRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    private DeveloperTechStackHistory(Name alias, Table<DeveloperTechStackHistoryRecord> aliased,
-                    Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  private DeveloperTechStackHistory(
+      Name alias, Table<DeveloperTechStackHistoryRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    /** Create an aliased <code>SION.developer_tech_stack_history</code> table reference */
-    public DeveloperTechStackHistory(String alias) {
-        this(DSL.name(alias), DEVELOPER_TECH_STACK_HISTORY);
-    }
+  /** Create an aliased <code>SION.developer_tech_stack_history</code> table reference */
+  public DeveloperTechStackHistory(String alias) {
+    this(DSL.name(alias), DEVELOPER_TECH_STACK_HISTORY);
+  }
 
-    /** Create an aliased <code>SION.developer_tech_stack_history</code> table reference */
-    public DeveloperTechStackHistory(Name alias) {
-        this(alias, DEVELOPER_TECH_STACK_HISTORY);
-    }
+  /** Create an aliased <code>SION.developer_tech_stack_history</code> table reference */
+  public DeveloperTechStackHistory(Name alias) {
+    this(alias, DEVELOPER_TECH_STACK_HISTORY);
+  }
 
-    /** Create a <code>SION.developer_tech_stack_history</code> table reference */
-    public DeveloperTechStackHistory() {
-        this(DSL.name("developer_tech_stack_history"), null);
-    }
+  /** Create a <code>SION.developer_tech_stack_history</code> table reference */
+  public DeveloperTechStackHistory() {
+    this(DSL.name("developer_tech_stack_history"), null);
+  }
 
-    public <O extends Record> DeveloperTechStackHistory(Table<O> child,
-                    ForeignKey<O, DeveloperTechStackHistoryRecord> key) {
-        super(child, key, DEVELOPER_TECH_STACK_HISTORY);
-    }
+  public <O extends Record> DeveloperTechStackHistory(
+      Table<O> child, ForeignKey<O, DeveloperTechStackHistoryRecord> key) {
+    super(child, key, DEVELOPER_TECH_STACK_HISTORY);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    @Override
-    public UniqueKey<DeveloperTechStackHistoryRecord> getPrimaryKey() {
-        return Keys.KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY;
-    }
+  @Override
+  public UniqueKey<DeveloperTechStackHistoryRecord> getPrimaryKey() {
+    return Keys.KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY;
+  }
 
-    @Override
-    public List<ForeignKey<DeveloperTechStackHistoryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1);
-    }
+  @Override
+  public List<ForeignKey<DeveloperTechStackHistoryRecord, ?>> getReferences() {
+    return Arrays.asList(Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1);
+  }
 
-    private transient DeveloperTechStack _developerTechStack;
+  private transient DeveloperTechStack _developerTechStack;
 
-    /** Get the implicit join path to the <code>SION.developer_tech_stack</code> table. */
-    public DeveloperTechStack developerTechStack() {
-        if (_developerTechStack == null)
-            _developerTechStack = new DeveloperTechStack(this,
-                            Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1);
+  /** Get the implicit join path to the <code>SION.developer_tech_stack</code> table. */
+  public DeveloperTechStack developerTechStack() {
+    if (_developerTechStack == null)
+      _developerTechStack =
+          new DeveloperTechStack(
+              this, Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1);
 
-        return _developerTechStack;
-    }
+    return _developerTechStack;
+  }
 
-    @Override
-    public DeveloperTechStackHistory as(String alias) {
-        return new DeveloperTechStackHistory(DSL.name(alias), this);
-    }
+  @Override
+  public DeveloperTechStackHistory as(String alias) {
+    return new DeveloperTechStackHistory(DSL.name(alias), this);
+  }
 
-    @Override
-    public DeveloperTechStackHistory as(Name alias) {
-        return new DeveloperTechStackHistory(alias, this);
-    }
+  @Override
+  public DeveloperTechStackHistory as(Name alias) {
+    return new DeveloperTechStackHistory(alias, this);
+  }
 
-    @Override
-    public DeveloperTechStackHistory as(Table<?> alias) {
-        return new DeveloperTechStackHistory(alias.getQualifiedName(), this);
-    }
+  @Override
+  public DeveloperTechStackHistory as(Table<?> alias) {
+    return new DeveloperTechStackHistory(alias.getQualifiedName(), this);
+  }
 
-    /** Rename this table */
-    @Override
-    public DeveloperTechStackHistory rename(String name) {
-        return new DeveloperTechStackHistory(DSL.name(name), null);
-    }
+  /** Rename this table */
+  @Override
+  public DeveloperTechStackHistory rename(String name) {
+    return new DeveloperTechStackHistory(DSL.name(name), null);
+  }
 
-    /** Rename this table */
-    @Override
-    public DeveloperTechStackHistory rename(Name name) {
-        return new DeveloperTechStackHistory(name, null);
-    }
+  /** Rename this table */
+  @Override
+  public DeveloperTechStackHistory rename(Name name) {
+    return new DeveloperTechStackHistory(name, null);
+  }
 
-    /** Rename this table */
-    @Override
-    public DeveloperTechStackHistory rename(Table<?> name) {
-        return new DeveloperTechStackHistory(name.getQualifiedName(), null);
-    }
+  /** Rename this table */
+  @Override
+  public DeveloperTechStackHistory rename(Table<?> name) {
+    return new DeveloperTechStackHistory(name.getQualifiedName(), null);
+  }
 
-    // -------------------------------------------------------------------------
-    // Row8 type methods
-    // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Row8 type methods
+  // -------------------------------------------------------------------------
 
-    @Override
-    public Row8<Long, Long, Integer, Integer, DeveloperTechStackHistoryRelatedTable, Long, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
-    }
+  @Override
+  public Row8<
+          Long,
+          Long,
+          Integer,
+          Integer,
+          DeveloperTechStackHistoryRelatedTable,
+          Long,
+          LocalDateTime,
+          LocalDateTime>
+      fieldsRow() {
+    return (Row8) super.fieldsRow();
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function8<? super Long, ? super Long, ? super Integer, ? super Integer, ? super DeveloperTechStackHistoryRelatedTable, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function8<
+              ? super Long,
+              ? super Long,
+              ? super Integer,
+              ? super Integer,
+              ? super DeveloperTechStackHistoryRelatedTable,
+              ? super Long,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function8<? super Long, ? super Long, ? super Integer, ? super Integer, ? super DeveloperTechStackHistoryRelatedTable, ? super Long, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function8<
+              ? super Long,
+              ? super Long,
+              ? super Integer,
+              ? super Integer,
+              ? super DeveloperTechStackHistoryRelatedTable,
+              ? super Long,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }

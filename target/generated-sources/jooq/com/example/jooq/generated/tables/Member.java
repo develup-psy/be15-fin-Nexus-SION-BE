@@ -3,6 +3,7 @@
  */
 package com.example.jooq.generated.tables;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function15;
+import org.jooq.Function18;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row15;
+import org.jooq.Row18;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -36,210 +37,336 @@ import com.example.jooq.generated.tables.records.MemberRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Member extends TableImpl<MemberRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.member</code> */
-    public static final Member MEMBER = new Member();
+  /** The reference instance of <code>SION.member</code> */
+  public static final Member MEMBER = new Member();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<MemberRecord> getRecordType() {
-        return MemberRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<MemberRecord> getRecordType() {
+    return MemberRecord.class;
+  }
 
-    /** The column <code>SION.member.employee_identification_number</code>. */
-    public final TableField<MemberRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
-                    createField(DSL.name("employee_identification_number"),
-                                    SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.member.employee_identification_number</code>. */
+  public final TableField<MemberRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
+      createField(
+          DSL.name("employee_identification_number"),
+          SQLDataType.VARCHAR(30).nullable(false),
+          this,
+          "");
 
-    /** The column <code>SION.member.employee_name</code>. */
-    public final TableField<MemberRecord, String> EMPLOYEE_NAME = createField(
-                    DSL.name("employee_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.member.employee_name</code>. */
+  public final TableField<MemberRecord, String> EMPLOYEE_NAME =
+      createField(DSL.name("employee_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-    /** The column <code>SION.member.password</code>. */
-    public final TableField<MemberRecord, String> PASSWORD = createField(DSL.name("password"),
-                    SQLDataType.VARCHAR(255).nullable(false), this, "");
+  /** The column <code>SION.member.password</code>. */
+  public final TableField<MemberRecord, String> PASSWORD =
+      createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-    /** The column <code>SION.member.profile_image_url</code>. */
-    public final TableField<MemberRecord, String> PROFILE_IMAGE_URL =
-                    createField(DSL.name("profile_image_url"),
-                                    SQLDataType.VARCHAR(100)
-                                                    .defaultValue(DSL.field(DSL.raw("NULL"),
-                                                                    SQLDataType.VARCHAR)),
-                                    this, "");
+  /** The column <code>SION.member.profile_image_url</code>. */
+  public final TableField<MemberRecord, String> PROFILE_IMAGE_URL =
+      createField(
+          DSL.name("profile_image_url"),
+          SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
-    /** The column <code>SION.member.phone_number</code>. */
-    public final TableField<MemberRecord, String> PHONE_NUMBER = createField(
-                    DSL.name("phone_number"), SQLDataType.VARCHAR(11).nullable(false), this, "");
+  /** The column <code>SION.member.phone_number</code>. */
+  public final TableField<MemberRecord, String> PHONE_NUMBER =
+      createField(DSL.name("phone_number"), SQLDataType.VARCHAR(11).nullable(false), this, "");
 
-    /** The column <code>SION.member.joined_at</code>. */
-    public final TableField<MemberRecord, LocalDateTime> JOINED_AT = createField(
-                    DSL.name("joined_at"),
-                    SQLDataType.LOCALDATETIME(0).defaultValue(
-                                    DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.member.position_name</code>. */
+  public final TableField<MemberRecord, String> POSITION_NAME =
+      createField(
+          DSL.name("position_name"),
+          SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
-    /** The column <code>SION.member.email</code>. */
-    public final TableField<MemberRecord, String> EMAIL = createField(DSL.name("email"),
-                    SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.member.department_name</code>. */
+  public final TableField<MemberRecord, String> DEPARTMENT_NAME =
+      createField(
+          DSL.name("department_name"),
+          SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
-    /** The column <code>SION.member.career_years</code>. */
-    public final TableField<MemberRecord, Integer> CAREER_YEARS =
-                    createField(DSL.name("career_years"),
-                                    SQLDataType.INTEGER.defaultValue(
-                                                    DSL.field(DSL.raw("1"), SQLDataType.INTEGER)),
-                                    this, "");
+  /** The column <code>SION.member.birthday</code>. */
+  public final TableField<MemberRecord, LocalDate> BIRTHDAY =
+      createField(
+          DSL.name("birthday"),
+          SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)),
+          this,
+          "");
 
-    /** The column <code>SION.member.salary</code>. */
-    public final TableField<MemberRecord, Long> SALARY = createField(DSL.name("salary"),
-                    SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)),
-                    this, "");
+  /** The column <code>SION.member.joined_at</code>. */
+  public final TableField<MemberRecord, LocalDateTime> JOINED_AT =
+      createField(
+          DSL.name("joined_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.member.status</code>. */
-    public final TableField<MemberRecord, MemberStatus> STATUS = createField(DSL.name("status"),
-                    SQLDataType.VARCHAR(11)
-                                    .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
-                                    .asEnumDataType(com.example.jooq.generated.enums.MemberStatus.class),
-                    this, "");
+  /** The column <code>SION.member.email</code>. */
+  public final TableField<MemberRecord, String> EMAIL =
+      createField(DSL.name("email"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-    /** The column <code>SION.member.grade_code</code>. */
-    public final TableField<MemberRecord, MemberGradeCode> GRADE_CODE = createField(
-                    DSL.name("grade_code"),
-                    SQLDataType.VARCHAR(1)
-                                    .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
-                                    .asEnumDataType(com.example.jooq.generated.enums.MemberGradeCode.class),
-                    this, "");
+  /** The column <code>SION.member.career_years</code>. */
+  public final TableField<MemberRecord, Integer> CAREER_YEARS =
+      createField(
+          DSL.name("career_years"),
+          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("1"), SQLDataType.INTEGER)),
+          this,
+          "");
 
-    /** The column <code>SION.member.created_at</code>. */
-    public final TableField<MemberRecord, LocalDateTime> CREATED_AT = createField(
-                    DSL.name("created_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.member.salary</code>. */
+  public final TableField<MemberRecord, Long> SALARY =
+      createField(
+          DSL.name("salary"),
+          SQLDataType.BIGINT.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.BIGINT)),
+          this,
+          "");
 
-    /** The column <code>SION.member.updated_at</code>. */
-    public final TableField<MemberRecord, LocalDateTime> UPDATED_AT = createField(
-                    DSL.name("updated_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.member.status</code>. */
+  public final TableField<MemberRecord, MemberStatus> STATUS =
+      createField(
+          DSL.name("status"),
+          SQLDataType.VARCHAR(11)
+              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
+              .asEnumDataType(com.example.jooq.generated.enums.MemberStatus.class),
+          this,
+          "");
 
-    /** The column <code>SION.member.deleted_at</code>. */
-    public final TableField<MemberRecord, LocalDateTime> DELETED_AT = createField(
-                    DSL.name("deleted_at"),
-                    SQLDataType.LOCALDATETIME(0).defaultValue(
-                                    DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.member.grade_code</code>. */
+  public final TableField<MemberRecord, MemberGradeCode> GRADE_CODE =
+      createField(
+          DSL.name("grade_code"),
+          SQLDataType.VARCHAR(1)
+              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
+              .asEnumDataType(com.example.jooq.generated.enums.MemberGradeCode.class),
+          this,
+          "");
 
-    /** The column <code>SION.member.role</code>. */
-    public final TableField<MemberRecord, MemberRole> ROLE = createField(DSL.name("role"),
-                    SQLDataType.VARCHAR(8).nullable(false).asEnumDataType(
-                                    com.example.jooq.generated.enums.MemberRole.class),
-                    this, "");
+  /** The column <code>SION.member.created_at</code>. */
+  public final TableField<MemberRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private Member(Name alias, Table<MemberRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  /** The column <code>SION.member.updated_at</code>. */
+  public final TableField<MemberRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private Member(Name alias, Table<MemberRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  /** The column <code>SION.member.deleted_at</code>. */
+  public final TableField<MemberRecord, LocalDateTime> DELETED_AT =
+      createField(
+          DSL.name("deleted_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** Create an aliased <code>SION.member</code> table reference */
-    public Member(String alias) {
-        this(DSL.name(alias), MEMBER);
-    }
+  /** The column <code>SION.member.role</code>. */
+  public final TableField<MemberRecord, MemberRole> ROLE =
+      createField(
+          DSL.name("role"),
+          SQLDataType.VARCHAR(8)
+              .nullable(false)
+              .asEnumDataType(com.example.jooq.generated.enums.MemberRole.class),
+          this,
+          "");
 
-    /** Create an aliased <code>SION.member</code> table reference */
-    public Member(Name alias) {
-        this(alias, MEMBER);
-    }
+  private Member(Name alias, Table<MemberRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    /** Create a <code>SION.member</code> table reference */
-    public Member() {
-        this(DSL.name("member"), null);
-    }
+  private Member(Name alias, Table<MemberRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    public <O extends Record> Member(Table<O> child, ForeignKey<O, MemberRecord> key) {
-        super(child, key, MEMBER);
-    }
+  /** Create an aliased <code>SION.member</code> table reference */
+  public Member(String alias) {
+    this(DSL.name(alias), MEMBER);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  /** Create an aliased <code>SION.member</code> table reference */
+  public Member(Name alias) {
+    this(alias, MEMBER);
+  }
 
-    @Override
-    public UniqueKey<MemberRecord> getPrimaryKey() {
-        return Keys.KEY_MEMBER_PRIMARY;
-    }
+  /** Create a <code>SION.member</code> table reference */
+  public Member() {
+    this(DSL.name("member"), null);
+  }
 
-    @Override
-    public List<ForeignKey<MemberRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_GRADE_TO_DEVELOPER_1);
-    }
+  public <O extends Record> Member(Table<O> child, ForeignKey<O, MemberRecord> key) {
+    super(child, key, MEMBER);
+  }
 
-    private transient Grade _grade;
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    /** Get the implicit join path to the <code>SION.grade</code> table. */
-    public Grade grade() {
-        if (_grade == null)
-            _grade = new Grade(this, Keys.FK_GRADE_TO_DEVELOPER_1);
+  @Override
+  public UniqueKey<MemberRecord> getPrimaryKey() {
+    return Keys.KEY_MEMBER_PRIMARY;
+  }
 
-        return _grade;
-    }
+  @Override
+  public List<ForeignKey<MemberRecord, ?>> getReferences() {
+    return Arrays.asList(
+        Keys.FK_POSITION_TO_MEMBER_1, Keys.FK_DEPARTMENT_TO_MEMBER_1, Keys.FK_GRADE_TO_DEVELOPER_1);
+  }
 
-    @Override
-    public Member as(String alias) {
-        return new Member(DSL.name(alias), this);
-    }
+  private transient Position _position;
+  private transient Department _department;
+  private transient Grade _grade;
 
-    @Override
-    public Member as(Name alias) {
-        return new Member(alias, this);
-    }
+  /** Get the implicit join path to the <code>SION.position</code> table. */
+  public Position position() {
+    if (_position == null) _position = new Position(this, Keys.FK_POSITION_TO_MEMBER_1);
 
-    @Override
-    public Member as(Table<?> alias) {
-        return new Member(alias.getQualifiedName(), this);
-    }
+    return _position;
+  }
 
-    /** Rename this table */
-    @Override
-    public Member rename(String name) {
-        return new Member(DSL.name(name), null);
-    }
+  /** Get the implicit join path to the <code>SION.department</code> table. */
+  public Department department() {
+    if (_department == null) _department = new Department(this, Keys.FK_DEPARTMENT_TO_MEMBER_1);
 
-    /** Rename this table */
-    @Override
-    public Member rename(Name name) {
-        return new Member(name, null);
-    }
+    return _department;
+  }
 
-    /** Rename this table */
-    @Override
-    public Member rename(Table<?> name) {
-        return new Member(name.getQualifiedName(), null);
-    }
+  /** Get the implicit join path to the <code>SION.grade</code> table. */
+  public Grade grade() {
+    if (_grade == null) _grade = new Grade(this, Keys.FK_GRADE_TO_DEVELOPER_1);
 
-    // -------------------------------------------------------------------------
-    // Row15 type methods
-    // -------------------------------------------------------------------------
+    return _grade;
+  }
 
-    @Override
-    public Row15<String, String, String, String, String, LocalDateTime, String, Integer, Long, MemberStatus, MemberGradeCode, LocalDateTime, LocalDateTime, LocalDateTime, MemberRole> fieldsRow() {
-        return (Row15) super.fieldsRow();
-    }
+  @Override
+  public Member as(String alias) {
+    return new Member(DSL.name(alias), this);
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function15<? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  @Override
+  public Member as(Name alias) {
+    return new Member(alias, this);
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function15<? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  @Override
+  public Member as(Table<?> alias) {
+    return new Member(alias.getQualifiedName(), this);
+  }
+
+  /** Rename this table */
+  @Override
+  public Member rename(String name) {
+    return new Member(DSL.name(name), null);
+  }
+
+  /** Rename this table */
+  @Override
+  public Member rename(Name name) {
+    return new Member(name, null);
+  }
+
+  /** Rename this table */
+  @Override
+  public Member rename(Table<?> name) {
+    return new Member(name.getQualifiedName(), null);
+  }
+
+  // -------------------------------------------------------------------------
+  // Row18 type methods
+  // -------------------------------------------------------------------------
+
+  @Override
+  public Row18<
+          String,
+          String,
+          String,
+          String,
+          String,
+          String,
+          String,
+          LocalDate,
+          LocalDateTime,
+          String,
+          Integer,
+          Long,
+          MemberStatus,
+          MemberGradeCode,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime,
+          MemberRole>
+      fieldsRow() {
+    return (Row18) super.fieldsRow();
+  }
+
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function18<
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super LocalDate,
+              ? super LocalDateTime,
+              ? super String,
+              ? super Integer,
+              ? super Long,
+              ? super MemberStatus,
+              ? super MemberGradeCode,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super MemberRole,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
+
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function18<
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super String,
+              ? super LocalDate,
+              ? super LocalDateTime,
+              ? super String,
+              ? super Integer,
+              ? super Long,
+              ? super MemberStatus,
+              ? super MemberGradeCode,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super MemberRole,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }

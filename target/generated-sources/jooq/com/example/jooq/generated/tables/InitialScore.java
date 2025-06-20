@@ -31,131 +31,152 @@ import com.example.jooq.generated.tables.records.InitialScoreRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class InitialScore extends TableImpl<InitialScoreRecord> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /** The reference instance of <code>SION.initial_score</code> */
-    public static final InitialScore INITIAL_SCORE = new InitialScore();
+  /** The reference instance of <code>SION.initial_score</code> */
+  public static final InitialScore INITIAL_SCORE = new InitialScore();
 
-    /** The class holding records for this type */
-    @Override
-    public Class<InitialScoreRecord> getRecordType() {
-        return InitialScoreRecord.class;
-    }
+  /** The class holding records for this type */
+  @Override
+  public Class<InitialScoreRecord> getRecordType() {
+    return InitialScoreRecord.class;
+  }
 
-    /** The column <code>SION.initial_score.id</code>. */
-    public final TableField<InitialScoreRecord, Long> ID =
-                    createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>SION.initial_score.id</code>. */
+  public final TableField<InitialScoreRecord, Long> ID =
+      createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    /** The column <code>SION.initial_score.years</code>. */
-    public final TableField<InitialScoreRecord, Integer> YEARS =
-                    createField(DSL.name("years"), SQLDataType.INTEGER.nullable(false), this, "");
+  /** The column <code>SION.initial_score.years</code>. */
+  public final TableField<InitialScoreRecord, Integer> YEARS =
+      createField(DSL.name("years"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /** The column <code>SION.initial_score.score</code>. */
-    public final TableField<InitialScoreRecord, Integer> SCORE =
-                    createField(DSL.name("score"), SQLDataType.INTEGER.nullable(false), this, "");
+  /** The column <code>SION.initial_score.score</code>. */
+  public final TableField<InitialScoreRecord, Integer> SCORE =
+      createField(DSL.name("score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /** The column <code>SION.initial_score.created_at</code>. */
-    public final TableField<InitialScoreRecord, LocalDateTime> CREATED_AT = createField(
-                    DSL.name("created_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.initial_score.created_at</code>. */
+  public final TableField<InitialScoreRecord, LocalDateTime> CREATED_AT =
+      createField(
+          DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    /** The column <code>SION.initial_score.updated_at</code>. */
-    public final TableField<InitialScoreRecord, LocalDateTime> UPDATED_AT = createField(
-                    DSL.name("updated_at"),
-                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
-                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-                    this, "");
+  /** The column <code>SION.initial_score.updated_at</code>. */
+  public final TableField<InitialScoreRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
 
-    private InitialScore(Name alias, Table<InitialScoreRecord> aliased) {
-        this(alias, aliased, null);
-    }
+  private InitialScore(Name alias, Table<InitialScoreRecord> aliased) {
+    this(alias, aliased, null);
+  }
 
-    private InitialScore(Name alias, Table<InitialScoreRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+  private InitialScore(Name alias, Table<InitialScoreRecord> aliased, Field<?>[] parameters) {
+    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+  }
 
-    /** Create an aliased <code>SION.initial_score</code> table reference */
-    public InitialScore(String alias) {
-        this(DSL.name(alias), INITIAL_SCORE);
-    }
+  /** Create an aliased <code>SION.initial_score</code> table reference */
+  public InitialScore(String alias) {
+    this(DSL.name(alias), INITIAL_SCORE);
+  }
 
-    /** Create an aliased <code>SION.initial_score</code> table reference */
-    public InitialScore(Name alias) {
-        this(alias, INITIAL_SCORE);
-    }
+  /** Create an aliased <code>SION.initial_score</code> table reference */
+  public InitialScore(Name alias) {
+    this(alias, INITIAL_SCORE);
+  }
 
-    /** Create a <code>SION.initial_score</code> table reference */
-    public InitialScore() {
-        this(DSL.name("initial_score"), null);
-    }
+  /** Create a <code>SION.initial_score</code> table reference */
+  public InitialScore() {
+    this(DSL.name("initial_score"), null);
+  }
 
-    public <O extends Record> InitialScore(Table<O> child, ForeignKey<O, InitialScoreRecord> key) {
-        super(child, key, INITIAL_SCORE);
-    }
+  public <O extends Record> InitialScore(Table<O> child, ForeignKey<O, InitialScoreRecord> key) {
+    super(child, key, INITIAL_SCORE);
+  }
 
-    @Override
-    public Schema getSchema() {
-        return aliased() ? null : Sion.SION;
-    }
+  @Override
+  public Schema getSchema() {
+    return aliased() ? null : Sion.SION;
+  }
 
-    @Override
-    public UniqueKey<InitialScoreRecord> getPrimaryKey() {
-        return Keys.KEY_INITIAL_SCORE_PRIMARY;
-    }
+  @Override
+  public UniqueKey<InitialScoreRecord> getPrimaryKey() {
+    return Keys.KEY_INITIAL_SCORE_PRIMARY;
+  }
 
-    @Override
-    public InitialScore as(String alias) {
-        return new InitialScore(DSL.name(alias), this);
-    }
+  @Override
+  public InitialScore as(String alias) {
+    return new InitialScore(DSL.name(alias), this);
+  }
 
-    @Override
-    public InitialScore as(Name alias) {
-        return new InitialScore(alias, this);
-    }
+  @Override
+  public InitialScore as(Name alias) {
+    return new InitialScore(alias, this);
+  }
 
-    @Override
-    public InitialScore as(Table<?> alias) {
-        return new InitialScore(alias.getQualifiedName(), this);
-    }
+  @Override
+  public InitialScore as(Table<?> alias) {
+    return new InitialScore(alias.getQualifiedName(), this);
+  }
 
-    /** Rename this table */
-    @Override
-    public InitialScore rename(String name) {
-        return new InitialScore(DSL.name(name), null);
-    }
+  /** Rename this table */
+  @Override
+  public InitialScore rename(String name) {
+    return new InitialScore(DSL.name(name), null);
+  }
 
-    /** Rename this table */
-    @Override
-    public InitialScore rename(Name name) {
-        return new InitialScore(name, null);
-    }
+  /** Rename this table */
+  @Override
+  public InitialScore rename(Name name) {
+    return new InitialScore(name, null);
+  }
 
-    /** Rename this table */
-    @Override
-    public InitialScore rename(Table<?> name) {
-        return new InitialScore(name.getQualifiedName(), null);
-    }
+  /** Rename this table */
+  @Override
+  public InitialScore rename(Table<?> name) {
+    return new InitialScore(name.getQualifiedName(), null);
+  }
 
-    // -------------------------------------------------------------------------
-    // Row5 type methods
-    // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Row5 type methods
+  // -------------------------------------------------------------------------
 
-    @Override
-    public Row5<Long, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row5) super.fieldsRow();
-    }
+  @Override
+  public Row5<Long, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
+    return (Row5) super.fieldsRow();
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-    public <U> SelectField<U> mapping(
-                    Function5<? super Long, ? super Integer, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+  public <U> SelectField<U> mapping(
+      Function5<
+              ? super Long,
+              ? super Integer,
+              ? super Integer,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(Records.mapping(from));
+  }
 
-    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-    public <U> SelectField<U> mapping(Class<U> toType,
-                    Function5<? super Long, ? super Integer, ? super Integer, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-        return convertFrom(toType, Records.mapping(from));
-    }
+  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+  public <U> SelectField<U> mapping(
+      Class<U> toType,
+      Function5<
+              ? super Long,
+              ? super Integer,
+              ? super Integer,
+              ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? extends U>
+          from) {
+    return convertFrom(toType, Records.mapping(from));
+  }
 }
