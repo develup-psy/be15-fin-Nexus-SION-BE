@@ -24,7 +24,7 @@ class MemberQueryIntegrationTest {
   void getAllMembers_success() throws Exception {
     mockMvc
         .perform(
-            get("/members").param("page", "0").param("size", "10").param("status", "AVAILABLE"))
+            get("/api/v1/members").param("page", "0").param("size", "10").param("status", "AVAILABLE"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.content", not(empty())))
         .andExpect(jsonPath("$.data.totalElements", greaterThan(0)));
@@ -42,7 +42,7 @@ class MemberQueryIntegrationTest {
     // when & then
     mockMvc
         .perform(
-            get("/members/search")
+            get("/api/v1/members/search")
                 .param("keyword", keyword)
                 .param("page", String.valueOf(page))
                 .param("size", String.valueOf(size)))
@@ -52,5 +52,38 @@ class MemberQueryIntegrationTest {
         .andExpect(jsonPath("$.data.content[0].name", containsString("홍")))
         .andExpect(jsonPath("$.data.totalElements", greaterThan(0)))
         .andExpect(jsonPath("$.data.currentPage").value(page));
+  }
+
+  @DisplayName("사번으로 회원 상세 조회 성공")
+  @WithMockUser(username = "testuser")
+  @Test
+  void getMemberDetail_success() throws Exception {
+    // given
+    String employeeId = "EMP001";
+
+    // when & then
+    mockMvc
+            .perform(get("/api/v1/members/{employeeId}", employeeId))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.employeeId").value(employeeId))
+            .andExpect(jsonPath("$.data.name", not(emptyString())))
+            .andExpect(jsonPath("$.data.email", containsString("@")))
+            .andExpect(jsonPath("$.data.status", notNullValue()));
+  }
+
+  @DisplayName("존재하지 않는 사번으로 조회 시 404 응답")
+  @WithMockUser(username = "testuser")
+  @Test
+  void getMemberDetail_notFound() throws Exception {
+    // given
+    String nonExistingId = "NOT_EXIST_999";
+
+    // when & then
+    mockMvc
+            .perform(get("/api/v1/members/{employeeId}", nonExistingId))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.errorCode").value("USER_NOT_FOUND"));
   }
 }
