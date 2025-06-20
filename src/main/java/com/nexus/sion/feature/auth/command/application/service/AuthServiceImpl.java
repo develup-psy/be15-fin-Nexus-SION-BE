@@ -11,16 +11,16 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-  private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-  /* 테스트 로그인  */
-  @Transactional
-  public TokenResponse testLogin() {
+    /* 테스트 로그인 */
+    @Transactional
+    public TokenResponse testLogin() {
 
-    // 토큰 발급
-    String accessToken = jwtTokenProvider.createToken(1);
-    String refreshToken = jwtTokenProvider.createRefreshToken(1);
+        // 토큰 발급
+        String accessToken = jwtTokenProvider.createToken(1);
+        String refreshToken = jwtTokenProvider.createRefreshToken(1);
 
-    return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-  }
+        return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+    }
 }

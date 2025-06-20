@@ -18,24 +18,21 @@ import com.nexus.sion.exception.ErrorCode;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-  @Override
-  public void commence(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      AuthenticationException authException)
-      throws IOException, ServletException {
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                    AuthenticationException authException) throws IOException, ServletException {
 
-    CustomJwtException jwtEx = (CustomJwtException) request.getAttribute("jwtException");
+        CustomJwtException jwtEx = (CustomJwtException) request.getAttribute("jwtException");
 
-    ApiResponse<Void> errorResponse =
-        (jwtEx != null)
-            ? ApiResponse.failure(jwtEx.getErrorCode().getCode(), jwtEx.getErrorCode().getMessage())
-            : ApiResponse.failure(
-                ErrorCode.UNAUTHORIZED_USER.getCode(), ErrorCode.UNAUTHORIZED_USER.getMessage());
+        ApiResponse<Void> errorResponse = (jwtEx != null)
+                        ? ApiResponse.failure(jwtEx.getErrorCode().getCode(),
+                                        jwtEx.getErrorCode().getMessage())
+                        : ApiResponse.failure(ErrorCode.UNAUTHORIZED_USER.getCode(),
+                                        ErrorCode.UNAUTHORIZED_USER.getMessage());
 
-    response.setContentType("application/json;charset=UTF-8");
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-    response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
-  }
+        response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
+    }
 }

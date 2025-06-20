@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -18,63 +19,74 @@ import lombok.*;
 @Builder
 public class Member {
 
-  @Id
-  @Column(name = "employee_identification_number", length = 30)
-  private String employeeIdentificationNumber;
+    @Id
+    @Column(name = "employee_identification_number", length = 30)
+    private String employeeIdentificationNumber;
 
-  @Column(name = "employee_name", nullable = false, length = 30)
-  private String employeeName;
+    @Column(name = "employee_name", nullable = false, length = 30)
+    private String employeeName;
 
-  @Column(nullable = false, length = 255)
-  private String password;
+    @Column(nullable = false, length = 255)
+    private String password;
 
-  @Column(name = "profile_image_url", length = 100)
-  private String profileImageUrl;
+    @Column(name = "profile_image_url", length = 100)
+    private String profileImageUrl;
 
-  @Column(name = "phone_number", nullable = false, length = 11)
-  private String phoneNumber;
+    @Column(name = "phone_number", nullable = false, length = 11)
+    private String phoneNumber;
 
-  @Column(name = "joined_at")
-  private LocalDateTime joinedAt;
+    @Column(name = "joined_at")
+    private LocalDateTime joinedAt;
 
-  @Column(nullable = false, length = 30)
-  private String email;
+    @Column(nullable = false, length = 30)
+    private String email;
 
-  @Builder.Default
-  @Column(name = "career_years")
-  private Integer careerYears = 1;
+    @Builder.Default
+    @Column(name = "career_years")
+    private Integer careerYears = 1;
 
-  private Long salary;
+    private Long salary;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status")
-  private MemberStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private MemberStatus status;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "grade_code")
-  private GradeCode gradeCode;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade_code")
+    private GradeCode gradeCode;
 
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
-  @Column(name = "deleted_at")
-  private LocalDateTime deletedAt;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "role", nullable = false)
-  private MemberRole role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private MemberRole role;
 
-  @PrePersist
-  protected void onCreate() {
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = this.createdAt;
-  }
+    @Column(nullable = false)
+    private LocalDate birthday;
 
-  @PreUpdate
-  protected void onUpdate() {
-    this.updatedAt = LocalDateTime.now();
-  }
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setEncodedPassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
+    public void setAdminRole() {
+        role = MemberRole.ADMIN;
+    }
 }

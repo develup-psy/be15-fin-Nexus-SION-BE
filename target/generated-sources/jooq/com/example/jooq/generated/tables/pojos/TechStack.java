@@ -10,93 +10,103 @@ import java.time.LocalDateTime;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class TechStack implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private String techStackName;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+    private String techStackName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-  public TechStack() {}
+    public TechStack() {}
 
-  public TechStack(TechStack value) {
-    this.techStackName = value.techStackName;
-    this.createdAt = value.createdAt;
-    this.updatedAt = value.updatedAt;
-  }
+    public TechStack(TechStack value) {
+        this.techStackName = value.techStackName;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+    }
 
-  public TechStack(String techStackName, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.techStackName = techStackName;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-  }
+    public TechStack(String techStackName, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.techStackName = techStackName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
-  /** Getter for <code>SION.tech_stack.tech_stack_name</code>. */
-  public String getTechStackName() {
-    return this.techStackName;
-  }
+    /** Getter for <code>SION.tech_stack.tech_stack_name</code>. */
+    public String getTechStackName() {
+        return this.techStackName;
+    }
 
-  /** Setter for <code>SION.tech_stack.tech_stack_name</code>. */
-  public void setTechStackName(String techStackName) {
-    this.techStackName = techStackName;
-  }
+    /** Setter for <code>SION.tech_stack.tech_stack_name</code>. */
+    public void setTechStackName(String techStackName) {
+        this.techStackName = techStackName;
+    }
 
-  /** Getter for <code>SION.tech_stack.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
+    /** Getter for <code>SION.tech_stack.created_at</code>. */
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
 
-  /** Setter for <code>SION.tech_stack.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    /** Setter for <code>SION.tech_stack.created_at</code>. */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  /** Getter for <code>SION.tech_stack.updated_at</code>. */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
+    /** Getter for <code>SION.tech_stack.updated_at</code>. */
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
 
-  /** Setter for <code>SION.tech_stack.updated_at</code>. */
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+    /** Setter for <code>SION.tech_stack.updated_at</code>. */
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    final TechStack other = (TechStack) obj;
-    if (this.techStackName == null) {
-      if (other.techStackName != null) return false;
-    } else if (!this.techStackName.equals(other.techStackName)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
-    if (this.updatedAt == null) {
-      if (other.updatedAt != null) return false;
-    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
-    return true;
-  }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final TechStack other = (TechStack) obj;
+        if (this.techStackName == null) {
+            if (other.techStackName != null)
+                return false;
+        } else if (!this.techStackName.equals(other.techStackName))
+            return false;
+        if (this.createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!this.createdAt.equals(other.createdAt))
+            return false;
+        if (this.updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!this.updatedAt.equals(other.updatedAt))
+            return false;
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.techStackName == null) ? 0 : this.techStackName.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                        + ((this.techStackName == null) ? 0 : this.techStackName.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("TechStack (");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("TechStack (");
 
-    sb.append(techStackName);
-    sb.append(", ").append(createdAt);
-    sb.append(", ").append(updatedAt);
+        sb.append(techStackName);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
 
-    sb.append(")");
-    return sb.toString();
-  }
+        sb.append(")");
+        return sb.toString();
+    }
 }

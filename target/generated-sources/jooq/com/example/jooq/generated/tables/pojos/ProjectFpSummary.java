@@ -11,194 +11,208 @@ import java.time.LocalDateTime;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ProjectFpSummary implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private String projectFpSummaryId;
-  private Integer totalFp;
-  private Integer avgEffortPerFp;
-  private BigDecimal totalEffort;
-  private BigDecimal estimatedDuration;
-  private BigDecimal estimatedCost;
-  private LocalDateTime createdAt;
-  private String projectCode;
+    private String projectFpSummaryId;
+    private Integer totalFp;
+    private Integer avgEffortPerFp;
+    private BigDecimal totalEffort;
+    private BigDecimal estimatedDuration;
+    private BigDecimal estimatedCost;
+    private LocalDateTime createdAt;
+    private String projectCode;
 
-  public ProjectFpSummary() {}
+    public ProjectFpSummary() {}
 
-  public ProjectFpSummary(ProjectFpSummary value) {
-    this.projectFpSummaryId = value.projectFpSummaryId;
-    this.totalFp = value.totalFp;
-    this.avgEffortPerFp = value.avgEffortPerFp;
-    this.totalEffort = value.totalEffort;
-    this.estimatedDuration = value.estimatedDuration;
-    this.estimatedCost = value.estimatedCost;
-    this.createdAt = value.createdAt;
-    this.projectCode = value.projectCode;
-  }
+    public ProjectFpSummary(ProjectFpSummary value) {
+        this.projectFpSummaryId = value.projectFpSummaryId;
+        this.totalFp = value.totalFp;
+        this.avgEffortPerFp = value.avgEffortPerFp;
+        this.totalEffort = value.totalEffort;
+        this.estimatedDuration = value.estimatedDuration;
+        this.estimatedCost = value.estimatedCost;
+        this.createdAt = value.createdAt;
+        this.projectCode = value.projectCode;
+    }
 
-  public ProjectFpSummary(
-      String projectFpSummaryId,
-      Integer totalFp,
-      Integer avgEffortPerFp,
-      BigDecimal totalEffort,
-      BigDecimal estimatedDuration,
-      BigDecimal estimatedCost,
-      LocalDateTime createdAt,
-      String projectCode) {
-    this.projectFpSummaryId = projectFpSummaryId;
-    this.totalFp = totalFp;
-    this.avgEffortPerFp = avgEffortPerFp;
-    this.totalEffort = totalEffort;
-    this.estimatedDuration = estimatedDuration;
-    this.estimatedCost = estimatedCost;
-    this.createdAt = createdAt;
-    this.projectCode = projectCode;
-  }
+    public ProjectFpSummary(String projectFpSummaryId, Integer totalFp, Integer avgEffortPerFp,
+                    BigDecimal totalEffort, BigDecimal estimatedDuration, BigDecimal estimatedCost,
+                    LocalDateTime createdAt, String projectCode) {
+        this.projectFpSummaryId = projectFpSummaryId;
+        this.totalFp = totalFp;
+        this.avgEffortPerFp = avgEffortPerFp;
+        this.totalEffort = totalEffort;
+        this.estimatedDuration = estimatedDuration;
+        this.estimatedCost = estimatedCost;
+        this.createdAt = createdAt;
+        this.projectCode = projectCode;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public String getProjectFpSummaryId() {
-    return this.projectFpSummaryId;
-  }
+    /** Getter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
+    public String getProjectFpSummaryId() {
+        return this.projectFpSummaryId;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public void setProjectFpSummaryId(String projectFpSummaryId) {
-    this.projectFpSummaryId = projectFpSummaryId;
-  }
+    /** Setter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
+    public void setProjectFpSummaryId(String projectFpSummaryId) {
+        this.projectFpSummaryId = projectFpSummaryId;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.total_fp</code>. */
-  public Integer getTotalFp() {
-    return this.totalFp;
-  }
+    /** Getter for <code>SION.project_fp_summary.total_fp</code>. */
+    public Integer getTotalFp() {
+        return this.totalFp;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.total_fp</code>. */
-  public void setTotalFp(Integer totalFp) {
-    this.totalFp = totalFp;
-  }
+    /** Setter for <code>SION.project_fp_summary.total_fp</code>. */
+    public void setTotalFp(Integer totalFp) {
+        this.totalFp = totalFp;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
-  public Integer getAvgEffortPerFp() {
-    return this.avgEffortPerFp;
-  }
+    /** Getter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
+    public Integer getAvgEffortPerFp() {
+        return this.avgEffortPerFp;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
-  public void setAvgEffortPerFp(Integer avgEffortPerFp) {
-    this.avgEffortPerFp = avgEffortPerFp;
-  }
+    /** Setter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
+    public void setAvgEffortPerFp(Integer avgEffortPerFp) {
+        this.avgEffortPerFp = avgEffortPerFp;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.total_effort</code>. */
-  public BigDecimal getTotalEffort() {
-    return this.totalEffort;
-  }
+    /** Getter for <code>SION.project_fp_summary.total_effort</code>. */
+    public BigDecimal getTotalEffort() {
+        return this.totalEffort;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.total_effort</code>. */
-  public void setTotalEffort(BigDecimal totalEffort) {
-    this.totalEffort = totalEffort;
-  }
+    /** Setter for <code>SION.project_fp_summary.total_effort</code>. */
+    public void setTotalEffort(BigDecimal totalEffort) {
+        this.totalEffort = totalEffort;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.estimated_duration</code>. */
-  public BigDecimal getEstimatedDuration() {
-    return this.estimatedDuration;
-  }
+    /** Getter for <code>SION.project_fp_summary.estimated_duration</code>. */
+    public BigDecimal getEstimatedDuration() {
+        return this.estimatedDuration;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.estimated_duration</code>. */
-  public void setEstimatedDuration(BigDecimal estimatedDuration) {
-    this.estimatedDuration = estimatedDuration;
-  }
+    /** Setter for <code>SION.project_fp_summary.estimated_duration</code>. */
+    public void setEstimatedDuration(BigDecimal estimatedDuration) {
+        this.estimatedDuration = estimatedDuration;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.estimated_cost</code>. */
-  public BigDecimal getEstimatedCost() {
-    return this.estimatedCost;
-  }
+    /** Getter for <code>SION.project_fp_summary.estimated_cost</code>. */
+    public BigDecimal getEstimatedCost() {
+        return this.estimatedCost;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.estimated_cost</code>. */
-  public void setEstimatedCost(BigDecimal estimatedCost) {
-    this.estimatedCost = estimatedCost;
-  }
+    /** Setter for <code>SION.project_fp_summary.estimated_cost</code>. */
+    public void setEstimatedCost(BigDecimal estimatedCost) {
+        this.estimatedCost = estimatedCost;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
+    /** Getter for <code>SION.project_fp_summary.created_at</code>. */
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    /** Setter for <code>SION.project_fp_summary.created_at</code>. */
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  /** Getter for <code>SION.project_fp_summary.project_code</code>. */
-  public String getProjectCode() {
-    return this.projectCode;
-  }
+    /** Getter for <code>SION.project_fp_summary.project_code</code>. */
+    public String getProjectCode() {
+        return this.projectCode;
+    }
 
-  /** Setter for <code>SION.project_fp_summary.project_code</code>. */
-  public void setProjectCode(String projectCode) {
-    this.projectCode = projectCode;
-  }
+    /** Setter for <code>SION.project_fp_summary.project_code</code>. */
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    final ProjectFpSummary other = (ProjectFpSummary) obj;
-    if (this.projectFpSummaryId == null) {
-      if (other.projectFpSummaryId != null) return false;
-    } else if (!this.projectFpSummaryId.equals(other.projectFpSummaryId)) return false;
-    if (this.totalFp == null) {
-      if (other.totalFp != null) return false;
-    } else if (!this.totalFp.equals(other.totalFp)) return false;
-    if (this.avgEffortPerFp == null) {
-      if (other.avgEffortPerFp != null) return false;
-    } else if (!this.avgEffortPerFp.equals(other.avgEffortPerFp)) return false;
-    if (this.totalEffort == null) {
-      if (other.totalEffort != null) return false;
-    } else if (!this.totalEffort.equals(other.totalEffort)) return false;
-    if (this.estimatedDuration == null) {
-      if (other.estimatedDuration != null) return false;
-    } else if (!this.estimatedDuration.equals(other.estimatedDuration)) return false;
-    if (this.estimatedCost == null) {
-      if (other.estimatedCost != null) return false;
-    } else if (!this.estimatedCost.equals(other.estimatedCost)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
-    if (this.projectCode == null) {
-      if (other.projectCode != null) return false;
-    } else if (!this.projectCode.equals(other.projectCode)) return false;
-    return true;
-  }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final ProjectFpSummary other = (ProjectFpSummary) obj;
+        if (this.projectFpSummaryId == null) {
+            if (other.projectFpSummaryId != null)
+                return false;
+        } else if (!this.projectFpSummaryId.equals(other.projectFpSummaryId))
+            return false;
+        if (this.totalFp == null) {
+            if (other.totalFp != null)
+                return false;
+        } else if (!this.totalFp.equals(other.totalFp))
+            return false;
+        if (this.avgEffortPerFp == null) {
+            if (other.avgEffortPerFp != null)
+                return false;
+        } else if (!this.avgEffortPerFp.equals(other.avgEffortPerFp))
+            return false;
+        if (this.totalEffort == null) {
+            if (other.totalEffort != null)
+                return false;
+        } else if (!this.totalEffort.equals(other.totalEffort))
+            return false;
+        if (this.estimatedDuration == null) {
+            if (other.estimatedDuration != null)
+                return false;
+        } else if (!this.estimatedDuration.equals(other.estimatedDuration))
+            return false;
+        if (this.estimatedCost == null) {
+            if (other.estimatedCost != null)
+                return false;
+        } else if (!this.estimatedCost.equals(other.estimatedCost))
+            return false;
+        if (this.createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!this.createdAt.equals(other.createdAt))
+            return false;
+        if (this.projectCode == null) {
+            if (other.projectCode != null)
+                return false;
+        } else if (!this.projectCode.equals(other.projectCode))
+            return false;
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result =
-        prime * result
-            + ((this.projectFpSummaryId == null) ? 0 : this.projectFpSummaryId.hashCode());
-    result = prime * result + ((this.totalFp == null) ? 0 : this.totalFp.hashCode());
-    result = prime * result + ((this.avgEffortPerFp == null) ? 0 : this.avgEffortPerFp.hashCode());
-    result = prime * result + ((this.totalEffort == null) ? 0 : this.totalEffort.hashCode());
-    result =
-        prime * result + ((this.estimatedDuration == null) ? 0 : this.estimatedDuration.hashCode());
-    result = prime * result + ((this.estimatedCost == null) ? 0 : this.estimatedCost.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
-    result = prime * result + ((this.projectCode == null) ? 0 : this.projectCode.hashCode());
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.projectFpSummaryId == null) ? 0
+                        : this.projectFpSummaryId.hashCode());
+        result = prime * result + ((this.totalFp == null) ? 0 : this.totalFp.hashCode());
+        result = prime * result
+                        + ((this.avgEffortPerFp == null) ? 0 : this.avgEffortPerFp.hashCode());
+        result = prime * result + ((this.totalEffort == null) ? 0 : this.totalEffort.hashCode());
+        result = prime * result + ((this.estimatedDuration == null) ? 0
+                        : this.estimatedDuration.hashCode());
+        result = prime * result
+                        + ((this.estimatedCost == null) ? 0 : this.estimatedCost.hashCode());
+        result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+        result = prime * result + ((this.projectCode == null) ? 0 : this.projectCode.hashCode());
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder("ProjectFpSummary (");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("ProjectFpSummary (");
 
-    sb.append(projectFpSummaryId);
-    sb.append(", ").append(totalFp);
-    sb.append(", ").append(avgEffortPerFp);
-    sb.append(", ").append(totalEffort);
-    sb.append(", ").append(estimatedDuration);
-    sb.append(", ").append(estimatedCost);
-    sb.append(", ").append(createdAt);
-    sb.append(", ").append(projectCode);
+        sb.append(projectFpSummaryId);
+        sb.append(", ").append(totalFp);
+        sb.append(", ").append(avgEffortPerFp);
+        sb.append(", ").append(totalEffort);
+        sb.append(", ").append(estimatedDuration);
+        sb.append(", ").append(estimatedCost);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(projectCode);
 
-    sb.append(")");
-    return sb.toString();
-  }
+        sb.append(")");
+        return sb.toString();
+    }
 }

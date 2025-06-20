@@ -31,130 +31,123 @@ import com.example.jooq.generated.tables.records.TechStackRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class TechStack extends TableImpl<TechStackRecord> {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.tech_stack</code> */
-  public static final TechStack TECH_STACK = new TechStack();
+    /** The reference instance of <code>SION.tech_stack</code> */
+    public static final TechStack TECH_STACK = new TechStack();
 
-  /** The class holding records for this type */
-  @Override
-  public Class<TechStackRecord> getRecordType() {
-    return TechStackRecord.class;
-  }
+    /** The class holding records for this type */
+    @Override
+    public Class<TechStackRecord> getRecordType() {
+        return TechStackRecord.class;
+    }
 
-  /** The column <code>SION.tech_stack.tech_stack_name</code>. */
-  public final TableField<TechStackRecord, String> TECH_STACK_NAME =
-      createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+    /** The column <code>SION.tech_stack.tech_stack_name</code>. */
+    public final TableField<TechStackRecord, String> TECH_STACK_NAME = createField(
+                    DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.tech_stack.created_at</code>. */
-  public final TableField<TechStackRecord, LocalDateTime> CREATED_AT =
-      createField(
-          DSL.name("created_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.tech_stack.created_at</code>. */
+    public final TableField<TechStackRecord, LocalDateTime> CREATED_AT = createField(
+                    DSL.name("created_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  /** The column <code>SION.tech_stack.updated_at</code>. */
-  public final TableField<TechStackRecord, LocalDateTime> UPDATED_AT =
-      createField(
-          DSL.name("updated_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
-          this,
-          "");
+    /** The column <code>SION.tech_stack.updated_at</code>. */
+    public final TableField<TechStackRecord, LocalDateTime> UPDATED_AT = createField(
+                    DSL.name("updated_at"),
+                    SQLDataType.LOCALDATETIME(0).nullable(false).defaultValue(DSL.field(
+                                    DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+                    this, "");
 
-  private TechStack(Name alias, Table<TechStackRecord> aliased) {
-    this(alias, aliased, null);
-  }
+    private TechStack(Name alias, Table<TechStackRecord> aliased) {
+        this(alias, aliased, null);
+    }
 
-  private TechStack(Name alias, Table<TechStackRecord> aliased, Field<?>[] parameters) {
-    super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-  }
+    private TechStack(Name alias, Table<TechStackRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    }
 
-  /** Create an aliased <code>SION.tech_stack</code> table reference */
-  public TechStack(String alias) {
-    this(DSL.name(alias), TECH_STACK);
-  }
+    /** Create an aliased <code>SION.tech_stack</code> table reference */
+    public TechStack(String alias) {
+        this(DSL.name(alias), TECH_STACK);
+    }
 
-  /** Create an aliased <code>SION.tech_stack</code> table reference */
-  public TechStack(Name alias) {
-    this(alias, TECH_STACK);
-  }
+    /** Create an aliased <code>SION.tech_stack</code> table reference */
+    public TechStack(Name alias) {
+        this(alias, TECH_STACK);
+    }
 
-  /** Create a <code>SION.tech_stack</code> table reference */
-  public TechStack() {
-    this(DSL.name("tech_stack"), null);
-  }
+    /** Create a <code>SION.tech_stack</code> table reference */
+    public TechStack() {
+        this(DSL.name("tech_stack"), null);
+    }
 
-  public <O extends Record> TechStack(Table<O> child, ForeignKey<O, TechStackRecord> key) {
-    super(child, key, TECH_STACK);
-  }
+    public <O extends Record> TechStack(Table<O> child, ForeignKey<O, TechStackRecord> key) {
+        super(child, key, TECH_STACK);
+    }
 
-  @Override
-  public Schema getSchema() {
-    return aliased() ? null : Sion.SION;
-  }
+    @Override
+    public Schema getSchema() {
+        return aliased() ? null : Sion.SION;
+    }
 
-  @Override
-  public UniqueKey<TechStackRecord> getPrimaryKey() {
-    return Keys.KEY_TECH_STACK_PRIMARY;
-  }
+    @Override
+    public UniqueKey<TechStackRecord> getPrimaryKey() {
+        return Keys.KEY_TECH_STACK_PRIMARY;
+    }
 
-  @Override
-  public TechStack as(String alias) {
-    return new TechStack(DSL.name(alias), this);
-  }
+    @Override
+    public TechStack as(String alias) {
+        return new TechStack(DSL.name(alias), this);
+    }
 
-  @Override
-  public TechStack as(Name alias) {
-    return new TechStack(alias, this);
-  }
+    @Override
+    public TechStack as(Name alias) {
+        return new TechStack(alias, this);
+    }
 
-  @Override
-  public TechStack as(Table<?> alias) {
-    return new TechStack(alias.getQualifiedName(), this);
-  }
+    @Override
+    public TechStack as(Table<?> alias) {
+        return new TechStack(alias.getQualifiedName(), this);
+    }
 
-  /** Rename this table */
-  @Override
-  public TechStack rename(String name) {
-    return new TechStack(DSL.name(name), null);
-  }
+    /** Rename this table */
+    @Override
+    public TechStack rename(String name) {
+        return new TechStack(DSL.name(name), null);
+    }
 
-  /** Rename this table */
-  @Override
-  public TechStack rename(Name name) {
-    return new TechStack(name, null);
-  }
+    /** Rename this table */
+    @Override
+    public TechStack rename(Name name) {
+        return new TechStack(name, null);
+    }
 
-  /** Rename this table */
-  @Override
-  public TechStack rename(Table<?> name) {
-    return new TechStack(name.getQualifiedName(), null);
-  }
+    /** Rename this table */
+    @Override
+    public TechStack rename(Table<?> name) {
+        return new TechStack(name.getQualifiedName(), null);
+    }
 
-  // -------------------------------------------------------------------------
-  // Row3 type methods
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Row3 type methods
+    // -------------------------------------------------------------------------
 
-  @Override
-  public Row3<String, LocalDateTime, LocalDateTime> fieldsRow() {
-    return (Row3) super.fieldsRow();
-  }
+    @Override
+    public Row3<String, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row3) super.fieldsRow();
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
-  public <U> SelectField<U> mapping(
-      Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-    return convertFrom(Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
+    public <U> SelectField<U> mapping(
+                    Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
 
-  /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
-  public <U> SelectField<U> mapping(
-      Class<U> toType,
-      Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
-    return convertFrom(toType, Records.mapping(from));
-  }
+    /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
+    public <U> SelectField<U> mapping(Class<U> toType,
+                    Function3<? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
+    }
 }
