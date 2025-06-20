@@ -27,8 +27,8 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponse testLogin() {
 
         // 토큰 발급
-        String accessToken = jwtTokenProvider.createToken("1", MemberRole.ADMIN.name());
-        String refreshToken = jwtTokenProvider.createRefreshToken("1", MemberRole.ADMIN.name());
+        String accessToken = jwtTokenProvider.createToken("test", MemberRole.ADMIN.name());
+        String refreshToken = jwtTokenProvider.createRefreshToken("test", MemberRole.ADMIN.name());
 
         return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
     }

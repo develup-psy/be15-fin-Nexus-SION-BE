@@ -1,12 +1,16 @@
 package com.nexus.sion.security.filter;
 
 import java.io.IOException;
+import java.util.Collections;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,7 +43,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.validateToken(token)) {
                 String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(token);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
+                UserDetails userDetails;
+                if(employeeIdentificationNumber.equals("test")) {
+                    // 테스트 로그인용 설정 추가
+                    userDetails = new org.springframework.security.core.userdetails.User(
+                            employeeIdentificationNumber,
+                            "test-password",
+                            Collections.singleton(new SimpleGrantedAuthority(MemberRole.ADMIN.name()))
+                    );
+                } else {
+                    userDetails = userDetailsService.loadUserByUsername(employeeIdentificationNumber);
+                }
 
                 PreAuthenticatedAuthenticationToken authentication =
                                 new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
