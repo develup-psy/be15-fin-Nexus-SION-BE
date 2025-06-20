@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +22,7 @@ import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
+import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
 
@@ -138,7 +138,8 @@ class MemberQueryServiceImplTest {
   void getMemberDetail_success() {
     // given
     String employeeId = "DEV001";
-    MemberDetailResponse mockResponse = new MemberDetailResponse(
+    MemberDetailResponse mockResponse =
+        new MemberDetailResponse(
             employeeId,
             "홍길동",
             "profile.jpg",
@@ -152,11 +153,9 @@ class MemberQueryServiceImplTest {
             55000000L,
             "AVAILABLE",
             "A",
-            "INSIDER"
-    );
+            "INSIDER");
 
-    when(memberQueryRepository.findByEmployeeId(employeeId))
-            .thenReturn(Optional.of(mockResponse));
+    when(memberQueryRepository.findByEmployeeId(employeeId)).thenReturn(Optional.of(mockResponse));
 
     // when
     MemberDetailResponse result = memberQueryService.getMemberDetail(employeeId);
@@ -177,10 +176,8 @@ class MemberQueryServiceImplTest {
     when(memberQueryRepository.findByEmployeeId(employeeId)).thenReturn(Optional.empty());
 
     // when & then
-    BusinessException exception = assertThrows(
-            BusinessException.class,
-            () -> memberQueryService.getMemberDetail(employeeId)
-    );
+    BusinessException exception =
+        assertThrows(BusinessException.class, () -> memberQueryService.getMemberDetail(employeeId));
 
     assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUND);
     verify(memberQueryRepository, times(1)).findByEmployeeId(employeeId);

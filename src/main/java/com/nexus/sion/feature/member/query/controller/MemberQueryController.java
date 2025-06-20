@@ -31,7 +31,8 @@ public class MemberQueryController {
       @RequestParam String keyword,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
-    return ResponseEntity.ok(ApiResponse.success(memberQueryService.searchMembers(keyword, page, size)));
+    return ResponseEntity.ok(
+        ApiResponse.success(memberQueryService.searchMembers(keyword, page, size)));
   }
 
   @GetMapping("/{employeeId}")
