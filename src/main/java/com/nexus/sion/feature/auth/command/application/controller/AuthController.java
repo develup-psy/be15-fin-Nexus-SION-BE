@@ -37,6 +37,13 @@ public class AuthController {
         return buildTokenResponse(token);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<TokenResponse>> login(
+            @RequestBody LoginRequest loginRequest) {
+        TokenResponse tokenResponse = authService.login(loginRequest);
+        return buildTokenResponse(tokenResponse);
+    }
+
     /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
     private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
                     TokenResponse tokenResponse) {
@@ -46,10 +53,4 @@ public class AuthController {
                         .body(ApiResponse.success(tokenResponse));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<TokenResponse>> login(
-                    @RequestBody LoginRequest loginRequest) {
-        TokenResponse tokenResponse = authService.login(loginRequest);
-        return null;
-    }
 }
