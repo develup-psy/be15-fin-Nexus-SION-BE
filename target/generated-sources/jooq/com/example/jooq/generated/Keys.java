@@ -3,11 +3,6 @@
  */
 package com.example.jooq.generated;
 
-import org.jooq.ForeignKey;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.DSL;
-import org.jooq.impl.Internal;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
@@ -58,428 +53,80 @@ import com.example.jooq.generated.tables.records.TrainingProgramRecord;
 import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
 import com.example.jooq.generated.tables.records.UserTrainingHistoryRecord;
 
-/** A class modelling foreign key relationships and constraints of tables in SION. */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+import org.jooq.ForeignKey;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+
+
+/**
+ * A class modelling foreign key relationships and constraints of tables in
+ * sion.
+ */
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
 
-  // -------------------------------------------------------------------------
-  // UNIQUE and PRIMARY KEY definitions
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // UNIQUE and PRIMARY KEY definitions
+    // -------------------------------------------------------------------------
 
-  public static final UniqueKey<CertificateRecord> KEY_CERTIFICATE_PRIMARY =
-      Internal.createUniqueKey(
-          Certificate.CERTIFICATE,
-          DSL.name("KEY_certificate_PRIMARY"),
-          new TableField[] {Certificate.CERTIFICATE.CERTIFICATE_NAME},
-          true);
-  public static final UniqueKey<ClientCompanyRecord> KEY_CLIENT_COMPANY_PRIMARY =
-      Internal.createUniqueKey(
-          ClientCompany.CLIENT_COMPANY,
-          DSL.name("KEY_client_company_PRIMARY"),
-          new TableField[] {ClientCompany.CLIENT_COMPANY.CLIENT_CODE},
-          true);
-  public static final UniqueKey<DepartmentRecord> KEY_DEPARTMENT_PRIMARY =
-      Internal.createUniqueKey(
-          Department.DEPARTMENT,
-          DSL.name("KEY_department_PRIMARY"),
-          new TableField[] {Department.DEPARTMENT.DEPARTMENT_NAME},
-          true);
-  public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY =
-      Internal.createUniqueKey(
-          DeveloperTechStack.DEVELOPER_TECH_STACK,
-          DSL.name("KEY_developer_tech_stack_PRIMARY"),
-          new TableField[] {DeveloperTechStack.DEVELOPER_TECH_STACK.DEVELOPER_TECH_STACK_ID},
-          true);
-  public static final UniqueKey<DeveloperTechStackHistoryRecord>
-      KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY =
-          Internal.createUniqueKey(
-              DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
-              DSL.name("KEY_developer_tech_stack_history_PRIMARY"),
-              new TableField[] {
-                DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY
-                    .DEVELOPER_TECH_STACK_HISTORY_ID
-              },
-              true);
-  public static final UniqueKey<DomainRecord> KEY_DOMAIN_PRIMARY =
-      Internal.createUniqueKey(
-          Domain.DOMAIN,
-          DSL.name("KEY_domain_PRIMARY"),
-          new TableField[] {Domain.DOMAIN.NAME},
-          true);
-  public static final UniqueKey<GradeRecord> KEY_GRADE_PRIMARY =
-      Internal.createUniqueKey(
-          Grade.GRADE,
-          DSL.name("KEY_grade_PRIMARY"),
-          new TableField[] {Grade.GRADE.GRADE_CODE},
-          true);
-  public static final UniqueKey<InitialScoreRecord> KEY_INITIAL_SCORE_PRIMARY =
-      Internal.createUniqueKey(
-          InitialScore.INITIAL_SCORE,
-          DSL.name("KEY_initial_score_PRIMARY"),
-          new TableField[] {InitialScore.INITIAL_SCORE.ID},
-          true);
-  public static final UniqueKey<JobRecord> KEY_JOB_PRIMARY =
-      Internal.createUniqueKey(
-          Job.JOB, DSL.name("KEY_job_PRIMARY"), new TableField[] {Job.JOB.NAME}, true);
-  public static final UniqueKey<JobAndTechStackRecord> KEY_JOB_AND_TECH_STACK_PRIMARY =
-      Internal.createUniqueKey(
-          JobAndTechStack.JOB_AND_TECH_STACK,
-          DSL.name("KEY_job_and_tech_stack_PRIMARY"),
-          new TableField[] {JobAndTechStack.JOB_AND_TECH_STACK.JOB_AND_TECH_STACK_ID},
-          true);
-  public static final UniqueKey<MemberRecord> KEY_MEMBER_PRIMARY =
-      Internal.createUniqueKey(
-          Member.MEMBER,
-          DSL.name("KEY_member_PRIMARY"),
-          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-          true);
-  public static final UniqueKey<PositionRecord> KEY_POSITION_PRIMARY =
-      Internal.createUniqueKey(
-          Position.POSITION,
-          DSL.name("KEY_position_PRIMARY"),
-          new TableField[] {Position.POSITION.POSITION_NAME},
-          true);
-  public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY =
-      Internal.createUniqueKey(
-          Project.PROJECT,
-          DSL.name("KEY_project_PRIMARY"),
-          new TableField[] {Project.PROJECT.PROJECT_CODE},
-          true);
-  public static final UniqueKey<ProjectAndJobRecord> KEY_PROJECT_AND_JOB_PRIMARY =
-      Internal.createUniqueKey(
-          ProjectAndJob.PROJECT_AND_JOB,
-          DSL.name("KEY_project_and_job_PRIMARY"),
-          new TableField[] {ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID},
-          true);
-  public static final UniqueKey<ProjectEvaluationRecord> KEY_PROJECT_EVALUATION_PRIMARY =
-      Internal.createUniqueKey(
-          ProjectEvaluation.PROJECT_EVALUATION,
-          DSL.name("KEY_project_evaluation_PRIMARY"),
-          new TableField[] {ProjectEvaluation.PROJECT_EVALUATION.PROJECT_EVALUATION_ID},
-          true);
-  public static final UniqueKey<ProjectFpSummaryRecord> KEY_PROJECT_FP_SUMMARY_PRIMARY =
-      Internal.createUniqueKey(
-          ProjectFpSummary.PROJECT_FP_SUMMARY,
-          DSL.name("KEY_project_fp_summary_PRIMARY"),
-          new TableField[] {ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID},
-          true);
-  public static final UniqueKey<ProjectFunctionEstimateRecord>
-      KEY_PROJECT_FUNCTION_ESTIMATE_PRIMARY =
-          Internal.createUniqueKey(
-              ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE,
-              DSL.name("KEY_project_function_estimate_PRIMARY"),
-              new TableField[] {
-                ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FUNCTION_ESTIMATE_ID
-              },
-              true);
-  public static final UniqueKey<SquadRecord> KEY_SQUAD_PRIMARY =
-      Internal.createUniqueKey(
-          Squad.SQUAD,
-          DSL.name("KEY_squad_PRIMARY"),
-          new TableField[] {Squad.SQUAD.SQUAD_CODE},
-          true);
-  public static final UniqueKey<SquadCommentRecord> KEY_SQUAD_COMMENT_PRIMARY =
-      Internal.createUniqueKey(
-          SquadComment.SQUAD_COMMENT,
-          DSL.name("KEY_squad_comment_PRIMARY"),
-          new TableField[] {SquadComment.SQUAD_COMMENT.COMMENT_ID},
-          true);
-  public static final UniqueKey<SquadEmployeeRecord> KEY_SQUAD_EMPLOYEE_PRIMARY =
-      Internal.createUniqueKey(
-          SquadEmployee.SQUAD_EMPLOYEE,
-          DSL.name("KEY_squad_employee_PRIMARY"),
-          new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID},
-          true);
-  public static final UniqueKey<TechStackRecord> KEY_TECH_STACK_PRIMARY =
-      Internal.createUniqueKey(
-          TechStack.TECH_STACK,
-          DSL.name("KEY_tech_stack_PRIMARY"),
-          new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
-          true);
-  public static final UniqueKey<TrainingProgramRecord> KEY_TRAINING_PROGRAM_PRIMARY =
-      Internal.createUniqueKey(
-          TrainingProgram.TRAINING_PROGRAM,
-          DSL.name("KEY_training_program_PRIMARY"),
-          new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
-          true);
-  public static final UniqueKey<UserCertificateHistoryRecord> KEY_USER_CERTIFICATE_HISTORY_PRIMARY =
-      Internal.createUniqueKey(
-          UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-          DSL.name("KEY_user_certificate_history_PRIMARY"),
-          new TableField[] {
-            UserCertificateHistory.USER_CERTIFICATE_HISTORY.USER_CERTIFICATE_HISTORY_ID
-          },
-          true);
-  public static final UniqueKey<UserTrainingHistoryRecord> KEY_USER_TRAINING_HISTORY_PRIMARY =
-      Internal.createUniqueKey(
-          UserTrainingHistory.USER_TRAINING_HISTORY,
-          DSL.name("KEY_user_training_history_PRIMARY"),
-          new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.USER_TRAINIG_HISTORY_ID},
-          true);
+    public static final UniqueKey<CertificateRecord> KEY_CERTIFICATE_PRIMARY = Internal.createUniqueKey(Certificate.CERTIFICATE, DSL.name("KEY_certificate_PRIMARY"), new TableField[] { Certificate.CERTIFICATE.CERTIFICATE_NAME }, true);
+    public static final UniqueKey<ClientCompanyRecord> KEY_CLIENT_COMPANY_PRIMARY = Internal.createUniqueKey(ClientCompany.CLIENT_COMPANY, DSL.name("KEY_client_company_PRIMARY"), new TableField[] { ClientCompany.CLIENT_COMPANY.CLIENT_CODE }, true);
+    public static final UniqueKey<DepartmentRecord> KEY_DEPARTMENT_PRIMARY = Internal.createUniqueKey(Department.DEPARTMENT, DSL.name("KEY_department_PRIMARY"), new TableField[] { Department.DEPARTMENT.DEPARTMENT_NAME }, true);
+    public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY = Internal.createUniqueKey(DeveloperTechStack.DEVELOPER_TECH_STACK, DSL.name("KEY_developer_tech_stack_PRIMARY"), new TableField[] { DeveloperTechStack.DEVELOPER_TECH_STACK.DEVELOPER_TECH_STACK_ID }, true);
+    public static final UniqueKey<DeveloperTechStackHistoryRecord> KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY = Internal.createUniqueKey(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY, DSL.name("KEY_developer_tech_stack_history_PRIMARY"), new TableField[] { DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_HISTORY_ID }, true);
+    public static final UniqueKey<DomainRecord> KEY_DOMAIN_PRIMARY = Internal.createUniqueKey(Domain.DOMAIN, DSL.name("KEY_domain_PRIMARY"), new TableField[] { Domain.DOMAIN.NAME }, true);
+    public static final UniqueKey<GradeRecord> KEY_GRADE_PRIMARY = Internal.createUniqueKey(Grade.GRADE, DSL.name("KEY_grade_PRIMARY"), new TableField[] { Grade.GRADE.GRADE_CODE }, true);
+    public static final UniqueKey<InitialScoreRecord> KEY_INITIAL_SCORE_PRIMARY = Internal.createUniqueKey(InitialScore.INITIAL_SCORE, DSL.name("KEY_initial_score_PRIMARY"), new TableField[] { InitialScore.INITIAL_SCORE.ID }, true);
+    public static final UniqueKey<JobRecord> KEY_JOB_PRIMARY = Internal.createUniqueKey(Job.JOB, DSL.name("KEY_job_PRIMARY"), new TableField[] { Job.JOB.NAME }, true);
+    public static final UniqueKey<JobAndTechStackRecord> KEY_JOB_AND_TECH_STACK_PRIMARY = Internal.createUniqueKey(JobAndTechStack.JOB_AND_TECH_STACK, DSL.name("KEY_job_and_tech_stack_PRIMARY"), new TableField[] { JobAndTechStack.JOB_AND_TECH_STACK.JOB_AND_TECH_STACK_ID }, true);
+    public static final UniqueKey<MemberRecord> KEY_MEMBER_PRIMARY = Internal.createUniqueKey(Member.MEMBER, DSL.name("KEY_member_PRIMARY"), new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final UniqueKey<PositionRecord> KEY_POSITION_PRIMARY = Internal.createUniqueKey(Position.POSITION, DSL.name("KEY_position_PRIMARY"), new TableField[] { Position.POSITION.POSITION_NAME }, true);
+    public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = Internal.createUniqueKey(Project.PROJECT, DSL.name("KEY_project_PRIMARY"), new TableField[] { Project.PROJECT.PROJECT_CODE }, true);
+    public static final UniqueKey<ProjectAndJobRecord> KEY_PROJECT_AND_JOB_PRIMARY = Internal.createUniqueKey(ProjectAndJob.PROJECT_AND_JOB, DSL.name("KEY_project_and_job_PRIMARY"), new TableField[] { ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID }, true);
+    public static final UniqueKey<ProjectEvaluationRecord> KEY_PROJECT_EVALUATION_PRIMARY = Internal.createUniqueKey(ProjectEvaluation.PROJECT_EVALUATION, DSL.name("KEY_project_evaluation_PRIMARY"), new TableField[] { ProjectEvaluation.PROJECT_EVALUATION.PROJECT_EVALUATION_ID }, true);
+    public static final UniqueKey<ProjectFpSummaryRecord> KEY_PROJECT_FP_SUMMARY_PRIMARY = Internal.createUniqueKey(ProjectFpSummary.PROJECT_FP_SUMMARY, DSL.name("KEY_project_fp_summary_PRIMARY"), new TableField[] { ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID }, true);
+    public static final UniqueKey<ProjectFunctionEstimateRecord> KEY_PROJECT_FUNCTION_ESTIMATE_PRIMARY = Internal.createUniqueKey(ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE, DSL.name("KEY_project_function_estimate_PRIMARY"), new TableField[] { ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FUNCTION_ESTIMATE_ID }, true);
+    public static final UniqueKey<SquadRecord> KEY_SQUAD_PRIMARY = Internal.createUniqueKey(Squad.SQUAD, DSL.name("KEY_squad_PRIMARY"), new TableField[] { Squad.SQUAD.SQUAD_CODE }, true);
+    public static final UniqueKey<SquadCommentRecord> KEY_SQUAD_COMMENT_PRIMARY = Internal.createUniqueKey(SquadComment.SQUAD_COMMENT, DSL.name("KEY_squad_comment_PRIMARY"), new TableField[] { SquadComment.SQUAD_COMMENT.COMMENT_ID }, true);
+    public static final UniqueKey<SquadEmployeeRecord> KEY_SQUAD_EMPLOYEE_PRIMARY = Internal.createUniqueKey(SquadEmployee.SQUAD_EMPLOYEE, DSL.name("KEY_squad_employee_PRIMARY"), new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID }, true);
+    public static final UniqueKey<TechStackRecord> KEY_TECH_STACK_PRIMARY = Internal.createUniqueKey(TechStack.TECH_STACK, DSL.name("KEY_tech_stack_PRIMARY"), new TableField[] { TechStack.TECH_STACK.TECH_STACK_NAME }, true);
+    public static final UniqueKey<TrainingProgramRecord> KEY_TRAINING_PROGRAM_PRIMARY = Internal.createUniqueKey(TrainingProgram.TRAINING_PROGRAM, DSL.name("KEY_training_program_PRIMARY"), new TableField[] { TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME }, true);
+    public static final UniqueKey<UserCertificateHistoryRecord> KEY_USER_CERTIFICATE_HISTORY_PRIMARY = Internal.createUniqueKey(UserCertificateHistory.USER_CERTIFICATE_HISTORY, DSL.name("KEY_user_certificate_history_PRIMARY"), new TableField[] { UserCertificateHistory.USER_CERTIFICATE_HISTORY.USER_CERTIFICATE_HISTORY_ID }, true);
+    public static final UniqueKey<UserTrainingHistoryRecord> KEY_USER_TRAINING_HISTORY_PRIMARY = Internal.createUniqueKey(UserTrainingHistory.USER_TRAINING_HISTORY, DSL.name("KEY_user_training_history_PRIMARY"), new TableField[] { UserTrainingHistory.USER_TRAINING_HISTORY.USER_TRAINIG_HISTORY_ID }, true);
 
-  // -------------------------------------------------------------------------
-  // FOREIGN KEY definitions
-  // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
 
-  public static final ForeignKey<ClientCompanyRecord, DomainRecord> FK_DOMAIN_TO_CLIENT_COMPANY_1 =
-      Internal.createForeignKey(
-          ClientCompany.CLIENT_COMPANY,
-          DSL.name("FK_domain_TO_client_company_1"),
-          new TableField[] {ClientCompany.CLIENT_COMPANY.DOMAIN_NAME},
-          Keys.KEY_DOMAIN_PRIMARY,
-          new TableField[] {Domain.DOMAIN.NAME},
-          true);
-  public static final ForeignKey<DeveloperTechStackRecord, MemberRecord>
-      FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1 =
-          Internal.createForeignKey(
-              DeveloperTechStack.DEVELOPER_TECH_STACK,
-              DSL.name("FK_developer_TO_developer_tech_stack_1"),
-              new TableField[] {
-                DeveloperTechStack.DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER
-              },
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<DeveloperTechStackRecord, TechStackRecord>
-      FK_TECH_STACK_TO_DEVELOPER_TECH_STACK_1 =
-          Internal.createForeignKey(
-              DeveloperTechStack.DEVELOPER_TECH_STACK,
-              DSL.name("FK_tech_stack_TO_developer_tech_stack_1"),
-              new TableField[] {DeveloperTechStack.DEVELOPER_TECH_STACK.TECH_STACK_NAME},
-              Keys.KEY_TECH_STACK_PRIMARY,
-              new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
-              true);
-  public static final ForeignKey<DeveloperTechStackHistoryRecord, DeveloperTechStackRecord>
-      FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1 =
-          Internal.createForeignKey(
-              DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
-              DSL.name("FK_developer_tech_stack_TO_developer_tech_stack_history_1"),
-              new TableField[] {
-                DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID
-              },
-              Keys.KEY_DEVELOPER_TECH_STACK_PRIMARY,
-              new TableField[] {DeveloperTechStack.DEVELOPER_TECH_STACK.DEVELOPER_TECH_STACK_ID},
-              true);
-  public static final ForeignKey<JobAndTechStackRecord, ProjectAndJobRecord>
-      FK_PROJECT_AND_JOB_TO_JOB_AND_TECH_STACK_1 =
-          Internal.createForeignKey(
-              JobAndTechStack.JOB_AND_TECH_STACK,
-              DSL.name("FK_project_and_job_TO_job_and_tech_stack_1"),
-              new TableField[] {JobAndTechStack.JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID},
-              Keys.KEY_PROJECT_AND_JOB_PRIMARY,
-              new TableField[] {ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID},
-              true);
-  public static final ForeignKey<JobAndTechStackRecord, TechStackRecord>
-      FK_TECH_STACK_TO_JOB_AND_TECH_STACK_1 =
-          Internal.createForeignKey(
-              JobAndTechStack.JOB_AND_TECH_STACK,
-              DSL.name("FK_tech_stack_TO_job_and_tech_stack_1"),
-              new TableField[] {JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME},
-              Keys.KEY_TECH_STACK_PRIMARY,
-              new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
-              true);
-  public static final ForeignKey<MemberRecord, DepartmentRecord> FK_DEPARTMENT_TO_MEMBER_1 =
-      Internal.createForeignKey(
-          Member.MEMBER,
-          DSL.name("FK_department_TO_member_1"),
-          new TableField[] {Member.MEMBER.DEPARTMENT_NAME},
-          Keys.KEY_DEPARTMENT_PRIMARY,
-          new TableField[] {Department.DEPARTMENT.DEPARTMENT_NAME},
-          true);
-  public static final ForeignKey<MemberRecord, GradeRecord> FK_GRADE_TO_DEVELOPER_1 =
-      Internal.createForeignKey(
-          Member.MEMBER,
-          DSL.name("FK_grade_TO_developer_1"),
-          new TableField[] {Member.MEMBER.GRADE_CODE},
-          Keys.KEY_GRADE_PRIMARY,
-          new TableField[] {Grade.GRADE.GRADE_CODE},
-          true);
-  public static final ForeignKey<MemberRecord, PositionRecord> FK_POSITION_TO_MEMBER_1 =
-      Internal.createForeignKey(
-          Member.MEMBER,
-          DSL.name("FK_position_TO_member_1"),
-          new TableField[] {Member.MEMBER.POSITION_NAME},
-          Keys.KEY_POSITION_PRIMARY,
-          new TableField[] {Position.POSITION.POSITION_NAME},
-          true);
-  public static final ForeignKey<ProjectRecord, ClientCompanyRecord>
-      FK_CLIENT_COMPANY_TO_PROJECT_1 =
-          Internal.createForeignKey(
-              Project.PROJECT,
-              DSL.name("FK_client_company_TO_project_1"),
-              new TableField[] {Project.PROJECT.CLIENT_CODE},
-              Keys.KEY_CLIENT_COMPANY_PRIMARY,
-              new TableField[] {ClientCompany.CLIENT_COMPANY.CLIENT_CODE},
-              true);
-  public static final ForeignKey<ProjectRecord, DomainRecord> FK_DOMAIN_TO_PROJECT_1 =
-      Internal.createForeignKey(
-          Project.PROJECT,
-          DSL.name("FK_domain_TO_project_1"),
-          new TableField[] {Project.PROJECT.NAME},
-          Keys.KEY_DOMAIN_PRIMARY,
-          new TableField[] {Domain.DOMAIN.NAME},
-          true);
-  public static final ForeignKey<ProjectAndJobRecord, JobRecord> FK_JOB_TO_PROJECT_AND_JOB_1 =
-      Internal.createForeignKey(
-          ProjectAndJob.PROJECT_AND_JOB,
-          DSL.name("FK_job_TO_project_and_job_1"),
-          new TableField[] {ProjectAndJob.PROJECT_AND_JOB.JOB_NAME},
-          Keys.KEY_JOB_PRIMARY,
-          new TableField[] {Job.JOB.NAME},
-          true);
-  public static final ForeignKey<ProjectEvaluationRecord, ProjectRecord>
-      FK_PROJECT_TO_PROJECT_EVALUATION_1 =
-          Internal.createForeignKey(
-              ProjectEvaluation.PROJECT_EVALUATION,
-              DSL.name("FK_project_TO_project_evaluation_1"),
-              new TableField[] {ProjectEvaluation.PROJECT_EVALUATION.PROJECT_CODE},
-              Keys.KEY_PROJECT_PRIMARY,
-              new TableField[] {Project.PROJECT.PROJECT_CODE},
-              true);
-  public static final ForeignKey<ProjectEvaluationRecord, SquadEmployeeRecord>
-      FK_SQUAD_EMPLOYEE_TO_PROJECT_EVALUATION_1 =
-          Internal.createForeignKey(
-              ProjectEvaluation.PROJECT_EVALUATION,
-              DSL.name("FK_squad_employee_TO_project_evaluation_1"),
-              new TableField[] {ProjectEvaluation.PROJECT_EVALUATION.DEVELOPER_ID},
-              Keys.KEY_SQUAD_EMPLOYEE_PRIMARY,
-              new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID},
-              true);
-  public static final ForeignKey<ProjectEvaluationRecord, SquadEmployeeRecord>
-      FK_SQUAD_EMPLOYEE_TO_PROJECT_EVALUATION_2 =
-          Internal.createForeignKey(
-              ProjectEvaluation.PROJECT_EVALUATION,
-              DSL.name("FK_squad_employee_TO_project_evaluation_2"),
-              new TableField[] {ProjectEvaluation.PROJECT_EVALUATION.ESTIMATOR_ID},
-              Keys.KEY_SQUAD_EMPLOYEE_PRIMARY,
-              new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID},
-              true);
-  public static final ForeignKey<ProjectFpSummaryRecord, ProjectRecord>
-      FK_PROJECT_TO_PROJECT_FP_SUMMARY_1 =
-          Internal.createForeignKey(
-              ProjectFpSummary.PROJECT_FP_SUMMARY,
-              DSL.name("FK_project_TO_project_fp_summary_1"),
-              new TableField[] {ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_CODE},
-              Keys.KEY_PROJECT_PRIMARY,
-              new TableField[] {Project.PROJECT.PROJECT_CODE},
-              true);
-  public static final ForeignKey<ProjectFunctionEstimateRecord, ProjectFpSummaryRecord>
-      FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1 =
-          Internal.createForeignKey(
-              ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE,
-              DSL.name("FK_project_fp_summary_TO_project_function_estimate_1"),
-              new TableField[] {
-                ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FP_SUMMARY_ID
-              },
-              Keys.KEY_PROJECT_FP_SUMMARY_PRIMARY,
-              new TableField[] {ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID},
-              true);
-  public static final ForeignKey<SquadRecord, ProjectRecord> FK_PROJECT_TO_SQUAD_1 =
-      Internal.createForeignKey(
-          Squad.SQUAD,
-          DSL.name("FK_project_TO_squad_1"),
-          new TableField[] {Squad.SQUAD.PROJECT_CODE},
-          Keys.KEY_PROJECT_PRIMARY,
-          new TableField[] {Project.PROJECT.PROJECT_CODE},
-          true);
-  public static final ForeignKey<SquadCommentRecord, MemberRecord> FK_MEMBER_TO_SQUAD_COMMENT_1 =
-      Internal.createForeignKey(
-          SquadComment.SQUAD_COMMENT,
-          DSL.name("FK_member_TO_squad_comment_1"),
-          new TableField[] {SquadComment.SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER},
-          Keys.KEY_MEMBER_PRIMARY,
-          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-          true);
-  public static final ForeignKey<SquadCommentRecord, SquadRecord> FK_SQUAD_TO_SQUAD_COMMENT_1 =
-      Internal.createForeignKey(
-          SquadComment.SQUAD_COMMENT,
-          DSL.name("FK_squad_TO_squad_comment_1"),
-          new TableField[] {SquadComment.SQUAD_COMMENT.SQUAD_CODE},
-          Keys.KEY_SQUAD_PRIMARY,
-          new TableField[] {Squad.SQUAD.SQUAD_CODE},
-          true);
-  public static final ForeignKey<SquadEmployeeRecord, MemberRecord>
-      FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1 =
-          Internal.createForeignKey(
-              SquadEmployee.SQUAD_EMPLOYEE,
-              DSL.name("FK_developer_TO_squad_employee_1"),
-              new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<SquadEmployeeRecord, ProjectAndJobRecord>
-      FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1 =
-          Internal.createForeignKey(
-              SquadEmployee.SQUAD_EMPLOYEE,
-              DSL.name("FK_project_and_job_TO_squad_employee_1"),
-              new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID},
-              Keys.KEY_PROJECT_AND_JOB_PRIMARY,
-              new TableField[] {ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID},
-              true);
-  public static final ForeignKey<SquadEmployeeRecord, SquadRecord> FK_SQUAD_TO_SQUAD_EMPLOYEE_1 =
-      Internal.createForeignKey(
-          SquadEmployee.SQUAD_EMPLOYEE,
-          DSL.name("FK_squad_TO_squad_employee_1"),
-          new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.SQUAD_CODE},
-          Keys.KEY_SQUAD_PRIMARY,
-          new TableField[] {Squad.SQUAD.SQUAD_CODE},
-          true);
-  public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord>
-      FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1 =
-          Internal.createForeignKey(
-              UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_certificate_TO_user_certificate_history_1"),
-              new TableField[] {UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME},
-              Keys.KEY_CERTIFICATE_PRIMARY,
-              new TableField[] {Certificate.CERTIFICATE.CERTIFICATE_NAME},
-              true);
-  public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1 =
-          Internal.createForeignKey(
-              UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_developer_TO_user_certificate_history_1"),
-              new TableField[] {UserCertificateHistory.USER_CERTIFICATE_HISTORY.UPDATED_BY},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2 =
-          Internal.createForeignKey(
-              UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_developer_TO_user_certificate_history_2"),
-              new TableField[] {
-                UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER
-              },
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_developer_TO_user_training_history_1"),
-              new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.UPDATED_BY},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_developer_TO_user_training_history_2"),
-              new TableField[] {
-                UserTrainingHistory.USER_TRAINING_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER
-              },
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, TrainingProgramRecord>
-      FK_TRAINING_PROGRAM_TO_USER_TRAINING_HISTORY_1 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_training_program_TO_user_training_history_1"),
-              new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.TRAINING_NAME},
-              Keys.KEY_TRAINING_PROGRAM_PRIMARY,
-              new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
-              true);
+    public static final ForeignKey<ClientCompanyRecord, DomainRecord> FK_DOMAIN_TO_CLIENT_COMPANY_1 = Internal.createForeignKey(ClientCompany.CLIENT_COMPANY, DSL.name("FK_domain_TO_client_company_1"), new TableField[] { ClientCompany.CLIENT_COMPANY.DOMAIN_NAME }, Keys.KEY_DOMAIN_PRIMARY, new TableField[] { Domain.DOMAIN.NAME }, true);
+    public static final ForeignKey<DeveloperTechStackRecord, MemberRecord> FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1 = Internal.createForeignKey(DeveloperTechStack.DEVELOPER_TECH_STACK, DSL.name("FK_developer_TO_developer_tech_stack_1"), new TableField[] { DeveloperTechStack.DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<DeveloperTechStackRecord, TechStackRecord> FK_TECH_STACK_TO_DEVELOPER_TECH_STACK_1 = Internal.createForeignKey(DeveloperTechStack.DEVELOPER_TECH_STACK, DSL.name("FK_tech_stack_TO_developer_tech_stack_1"), new TableField[] { DeveloperTechStack.DEVELOPER_TECH_STACK.TECH_STACK_NAME }, Keys.KEY_TECH_STACK_PRIMARY, new TableField[] { TechStack.TECH_STACK.TECH_STACK_NAME }, true);
+    public static final ForeignKey<DeveloperTechStackHistoryRecord, DeveloperTechStackRecord> FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1 = Internal.createForeignKey(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY, DSL.name("FK_developer_tech_stack_TO_developer_tech_stack_history_1"), new TableField[] { DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID }, Keys.KEY_DEVELOPER_TECH_STACK_PRIMARY, new TableField[] { DeveloperTechStack.DEVELOPER_TECH_STACK.DEVELOPER_TECH_STACK_ID }, true);
+    public static final ForeignKey<JobAndTechStackRecord, ProjectAndJobRecord> FK_PROJECT_AND_JOB_TO_JOB_AND_TECH_STACK_1 = Internal.createForeignKey(JobAndTechStack.JOB_AND_TECH_STACK, DSL.name("FK_project_and_job_TO_job_and_tech_stack_1"), new TableField[] { JobAndTechStack.JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID }, Keys.KEY_PROJECT_AND_JOB_PRIMARY, new TableField[] { ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID }, true);
+    public static final ForeignKey<JobAndTechStackRecord, TechStackRecord> FK_TECH_STACK_TO_JOB_AND_TECH_STACK_1 = Internal.createForeignKey(JobAndTechStack.JOB_AND_TECH_STACK, DSL.name("FK_tech_stack_TO_job_and_tech_stack_1"), new TableField[] { JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME }, Keys.KEY_TECH_STACK_PRIMARY, new TableField[] { TechStack.TECH_STACK.TECH_STACK_NAME }, true);
+    public static final ForeignKey<MemberRecord, DepartmentRecord> FK_DEPARTMENT_TO_MEMBER_1 = Internal.createForeignKey(Member.MEMBER, DSL.name("FK_department_TO_member_1"), new TableField[] { Member.MEMBER.DEPARTMENT_NAME }, Keys.KEY_DEPARTMENT_PRIMARY, new TableField[] { Department.DEPARTMENT.DEPARTMENT_NAME }, true);
+    public static final ForeignKey<MemberRecord, GradeRecord> FK_GRADE_TO_DEVELOPER_1 = Internal.createForeignKey(Member.MEMBER, DSL.name("FK_grade_TO_developer_1"), new TableField[] { Member.MEMBER.GRADE_CODE }, Keys.KEY_GRADE_PRIMARY, new TableField[] { Grade.GRADE.GRADE_CODE }, true);
+    public static final ForeignKey<MemberRecord, PositionRecord> FK_POSITION_TO_MEMBER_1 = Internal.createForeignKey(Member.MEMBER, DSL.name("FK_position_TO_member_1"), new TableField[] { Member.MEMBER.POSITION_NAME }, Keys.KEY_POSITION_PRIMARY, new TableField[] { Position.POSITION.POSITION_NAME }, true);
+    public static final ForeignKey<ProjectRecord, ClientCompanyRecord> FK_CLIENT_COMPANY_TO_PROJECT_1 = Internal.createForeignKey(Project.PROJECT, DSL.name("FK_client_company_TO_project_1"), new TableField[] { Project.PROJECT.CLIENT_CODE }, Keys.KEY_CLIENT_COMPANY_PRIMARY, new TableField[] { ClientCompany.CLIENT_COMPANY.CLIENT_CODE }, true);
+    public static final ForeignKey<ProjectRecord, DomainRecord> FK_DOMAIN_TO_PROJECT_1 = Internal.createForeignKey(Project.PROJECT, DSL.name("FK_domain_TO_project_1"), new TableField[] { Project.PROJECT.NAME }, Keys.KEY_DOMAIN_PRIMARY, new TableField[] { Domain.DOMAIN.NAME }, true);
+    public static final ForeignKey<ProjectAndJobRecord, JobRecord> FK_JOB_TO_PROJECT_AND_JOB_1 = Internal.createForeignKey(ProjectAndJob.PROJECT_AND_JOB, DSL.name("FK_job_TO_project_and_job_1"), new TableField[] { ProjectAndJob.PROJECT_AND_JOB.JOB_NAME }, Keys.KEY_JOB_PRIMARY, new TableField[] { Job.JOB.NAME }, true);
+    public static final ForeignKey<ProjectEvaluationRecord, ProjectRecord> FK_PROJECT_TO_PROJECT_EVALUATION_1 = Internal.createForeignKey(ProjectEvaluation.PROJECT_EVALUATION, DSL.name("FK_project_TO_project_evaluation_1"), new TableField[] { ProjectEvaluation.PROJECT_EVALUATION.PROJECT_CODE }, Keys.KEY_PROJECT_PRIMARY, new TableField[] { Project.PROJECT.PROJECT_CODE }, true);
+    public static final ForeignKey<ProjectEvaluationRecord, SquadEmployeeRecord> FK_SQUAD_EMPLOYEE_TO_PROJECT_EVALUATION_1 = Internal.createForeignKey(ProjectEvaluation.PROJECT_EVALUATION, DSL.name("FK_squad_employee_TO_project_evaluation_1"), new TableField[] { ProjectEvaluation.PROJECT_EVALUATION.DEVELOPER_ID }, Keys.KEY_SQUAD_EMPLOYEE_PRIMARY, new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID }, true);
+    public static final ForeignKey<ProjectEvaluationRecord, SquadEmployeeRecord> FK_SQUAD_EMPLOYEE_TO_PROJECT_EVALUATION_2 = Internal.createForeignKey(ProjectEvaluation.PROJECT_EVALUATION, DSL.name("FK_squad_employee_TO_project_evaluation_2"), new TableField[] { ProjectEvaluation.PROJECT_EVALUATION.ESTIMATOR_ID }, Keys.KEY_SQUAD_EMPLOYEE_PRIMARY, new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.SQUAD_EMPLOYEE_ID }, true);
+    public static final ForeignKey<ProjectFpSummaryRecord, ProjectRecord> FK_PROJECT_TO_PROJECT_FP_SUMMARY_1 = Internal.createForeignKey(ProjectFpSummary.PROJECT_FP_SUMMARY, DSL.name("FK_project_TO_project_fp_summary_1"), new TableField[] { ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_CODE }, Keys.KEY_PROJECT_PRIMARY, new TableField[] { Project.PROJECT.PROJECT_CODE }, true);
+    public static final ForeignKey<ProjectFunctionEstimateRecord, ProjectFpSummaryRecord> FK_PROJECT_FP_SUMMARY_TO_PROJECT_FUNCTION_ESTIMATE_1 = Internal.createForeignKey(ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE, DSL.name("FK_project_fp_summary_TO_project_function_estimate_1"), new TableField[] { ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FP_SUMMARY_ID }, Keys.KEY_PROJECT_FP_SUMMARY_PRIMARY, new TableField[] { ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID }, true);
+    public static final ForeignKey<SquadRecord, ProjectRecord> FK_PROJECT_TO_SQUAD_1 = Internal.createForeignKey(Squad.SQUAD, DSL.name("FK_project_TO_squad_1"), new TableField[] { Squad.SQUAD.PROJECT_CODE }, Keys.KEY_PROJECT_PRIMARY, new TableField[] { Project.PROJECT.PROJECT_CODE }, true);
+    public static final ForeignKey<SquadCommentRecord, MemberRecord> FK_MEMBER_TO_SQUAD_COMMENT_1 = Internal.createForeignKey(SquadComment.SQUAD_COMMENT, DSL.name("FK_member_TO_squad_comment_1"), new TableField[] { SquadComment.SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<SquadCommentRecord, SquadRecord> FK_SQUAD_TO_SQUAD_COMMENT_1 = Internal.createForeignKey(SquadComment.SQUAD_COMMENT, DSL.name("FK_squad_TO_squad_comment_1"), new TableField[] { SquadComment.SQUAD_COMMENT.SQUAD_CODE }, Keys.KEY_SQUAD_PRIMARY, new TableField[] { Squad.SQUAD.SQUAD_CODE }, true);
+    public static final ForeignKey<SquadEmployeeRecord, MemberRecord> FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1 = Internal.createForeignKey(SquadEmployee.SQUAD_EMPLOYEE, DSL.name("FK_developer_TO_squad_employee_1"), new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<SquadEmployeeRecord, ProjectAndJobRecord> FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1 = Internal.createForeignKey(SquadEmployee.SQUAD_EMPLOYEE, DSL.name("FK_project_and_job_TO_squad_employee_1"), new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID }, Keys.KEY_PROJECT_AND_JOB_PRIMARY, new TableField[] { ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID }, true);
+    public static final ForeignKey<SquadEmployeeRecord, SquadRecord> FK_SQUAD_TO_SQUAD_EMPLOYEE_1 = Internal.createForeignKey(SquadEmployee.SQUAD_EMPLOYEE, DSL.name("FK_squad_TO_squad_employee_1"), new TableField[] { SquadEmployee.SQUAD_EMPLOYEE.SQUAD_CODE }, Keys.KEY_SQUAD_PRIMARY, new TableField[] { Squad.SQUAD.SQUAD_CODE }, true);
+    public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord> FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1 = Internal.createForeignKey(UserCertificateHistory.USER_CERTIFICATE_HISTORY, DSL.name("FK_certificate_TO_user_certificate_history_1"), new TableField[] { UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME }, Keys.KEY_CERTIFICATE_PRIMARY, new TableField[] { Certificate.CERTIFICATE.CERTIFICATE_NAME }, true);
+    public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord> FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1 = Internal.createForeignKey(UserCertificateHistory.USER_CERTIFICATE_HISTORY, DSL.name("FK_developer_TO_user_certificate_history_1"), new TableField[] { UserCertificateHistory.USER_CERTIFICATE_HISTORY.UPDATED_BY }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord> FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2 = Internal.createForeignKey(UserCertificateHistory.USER_CERTIFICATE_HISTORY, DSL.name("FK_developer_TO_user_certificate_history_2"), new TableField[] { UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord> FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1 = Internal.createForeignKey(UserTrainingHistory.USER_TRAINING_HISTORY, DSL.name("FK_developer_TO_user_training_history_1"), new TableField[] { UserTrainingHistory.USER_TRAINING_HISTORY.UPDATED_BY }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord> FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2 = Internal.createForeignKey(UserTrainingHistory.USER_TRAINING_HISTORY, DSL.name("FK_developer_TO_user_training_history_2"), new TableField[] { UserTrainingHistory.USER_TRAINING_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER }, Keys.KEY_MEMBER_PRIMARY, new TableField[] { Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER }, true);
+    public static final ForeignKey<UserTrainingHistoryRecord, TrainingProgramRecord> FK_TRAINING_PROGRAM_TO_USER_TRAINING_HISTORY_1 = Internal.createForeignKey(UserTrainingHistory.USER_TRAINING_HISTORY, DSL.name("FK_training_program_TO_user_training_history_1"), new TableField[] { UserTrainingHistory.USER_TRAINING_HISTORY.TRAINING_NAME }, Keys.KEY_TRAINING_PROGRAM_PRIMARY, new TableField[] { TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME }, true);
 }
