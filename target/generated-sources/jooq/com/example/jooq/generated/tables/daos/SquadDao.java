@@ -89,6 +89,20 @@ public class SquadDao
   }
 
   /**
+   * Fetch records that have <code>description BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Squad> fetchRangeOfDescription(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Squad.SQUAD.DESCRIPTION, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>description IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Squad> fetchByDescription(String... values) {
+    return fetch(Squad.SQUAD.DESCRIPTION, values);
+  }
+
+  /**
    * Fetch records that have <code>is_active BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */

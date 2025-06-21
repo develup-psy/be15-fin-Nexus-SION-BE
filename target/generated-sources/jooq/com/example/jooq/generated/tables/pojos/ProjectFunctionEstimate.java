@@ -24,7 +24,7 @@ public class ProjectFunctionEstimate implements Serializable {
   private Integer relatedTablesCount;
   private Integer relatedFieldsCount;
   private LocalDateTime createdAt;
-  private String projectFpSummaryId;
+  private Long projectFpSummaryId;
 
   public ProjectFunctionEstimate() {}
 
@@ -51,7 +51,7 @@ public class ProjectFunctionEstimate implements Serializable {
       Integer relatedTablesCount,
       Integer relatedFieldsCount,
       LocalDateTime createdAt,
-      String projectFpSummaryId) {
+      Long projectFpSummaryId) {
     this.projectFunctionEstimateId = projectFunctionEstimateId;
     this.functionName = functionName;
     this.functionType = functionType;
@@ -155,12 +155,12 @@ public class ProjectFunctionEstimate implements Serializable {
   }
 
   /** Getter for <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public String getProjectFpSummaryId() {
+  public Long getProjectFpSummaryId() {
     return this.projectFpSummaryId;
   }
 
   /** Setter for <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public void setProjectFpSummaryId(String projectFpSummaryId) {
+  public void setProjectFpSummaryId(Long projectFpSummaryId) {
     this.projectFpSummaryId = projectFpSummaryId;
   }
 

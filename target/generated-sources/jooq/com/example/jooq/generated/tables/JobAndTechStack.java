@@ -48,9 +48,9 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
   public final TableField<JobAndTechStackRecord, Long> JOB_AND_TECH_STACK_ID =
       createField(DSL.name("job_and_tech_stack_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public final TableField<JobAndTechStackRecord, String> TECH_STACK_ID =
-      createField(DSL.name("tech_stack_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  public final TableField<JobAndTechStackRecord, String> TECH_STACK_NAME =
+      createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   /** The column <code>SION.job_and_tech_stack.project_and_job_id</code>. */
   public final TableField<JobAndTechStackRecord, Long> PROJECT_AND_JOB_ID =

@@ -5,6 +5,7 @@ package com.example.jooq.generated;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
+import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -13,12 +14,14 @@ import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
 import com.example.jooq.generated.tables.Member;
+import com.example.jooq.generated.tables.Position;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.ProjectEvaluation;
 import com.example.jooq.generated.tables.ProjectFpSummary;
 import com.example.jooq.generated.tables.ProjectFunctionEstimate;
 import com.example.jooq.generated.tables.Squad;
+import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
 import com.example.jooq.generated.tables.TrainingProgram;
@@ -34,6 +37,9 @@ public class Tables {
 
   /** The table <code>SION.client_company</code>. */
   public static final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
+
+  /** The table <code>SION.department</code>. */
+  public static final Department DEPARTMENT = Department.DEPARTMENT;
 
   /** The table <code>SION.developer_tech_stack</code>. */
   public static final DeveloperTechStack DEVELOPER_TECH_STACK =
@@ -61,6 +67,9 @@ public class Tables {
   /** The table <code>SION.member</code>. */
   public static final Member MEMBER = Member.MEMBER;
 
+  /** The table <code>SION.position</code>. */
+  public static final Position POSITION = Position.POSITION;
+
   /** The table <code>SION.project</code>. */
   public static final Project PROJECT = Project.PROJECT;
 
@@ -79,6 +88,9 @@ public class Tables {
 
   /** The table <code>SION.squad</code>. */
   public static final Squad SQUAD = Squad.SQUAD;
+
+  /** The table <code>SION.squad_comment</code>. */
+  public static final SquadComment SQUAD_COMMENT = SquadComment.SQUAD_COMMENT;
 
   /** The table <code>SION.squad_employee</code>. */
   public static final SquadEmployee SQUAD_EMPLOYEE = SquadEmployee.SQUAD_EMPLOYEE;

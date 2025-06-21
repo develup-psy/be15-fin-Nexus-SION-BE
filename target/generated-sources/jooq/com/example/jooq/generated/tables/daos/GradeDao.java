@@ -3,6 +3,7 @@
  */
 package com.example.jooq.generated.tables.daos;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +87,21 @@ public class GradeDao
   /** Fetch records that have <code>max_score IN (values)</code> */
   public List<com.example.jooq.generated.tables.pojos.Grade> fetchByMaxScore(Integer... values) {
     return fetch(Grade.GRADE.MAX_SCORE, values);
+  }
+
+  /**
+   * Fetch records that have <code>productivity BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchRangeOfProductivity(
+      BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+    return fetchRange(Grade.GRADE.PRODUCTIVITY, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>productivity IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchByProductivity(
+      BigDecimal... values) {
+    return fetch(Grade.GRADE.PRODUCTIVITY, values);
   }
 
   /**

@@ -12,6 +12,7 @@ import org.jooq.impl.SchemaImpl;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
+import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -20,12 +21,14 @@ import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
 import com.example.jooq.generated.tables.Member;
+import com.example.jooq.generated.tables.Position;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.ProjectEvaluation;
 import com.example.jooq.generated.tables.ProjectFpSummary;
 import com.example.jooq.generated.tables.ProjectFunctionEstimate;
 import com.example.jooq.generated.tables.Squad;
+import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
 import com.example.jooq.generated.tables.TrainingProgram;
@@ -46,6 +49,9 @@ public class Sion extends SchemaImpl {
 
   /** The table <code>SION.client_company</code>. */
   public final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
+
+  /** The table <code>SION.department</code>. */
+  public final Department DEPARTMENT = Department.DEPARTMENT;
 
   /** The table <code>SION.developer_tech_stack</code>. */
   public final DeveloperTechStack DEVELOPER_TECH_STACK = DeveloperTechStack.DEVELOPER_TECH_STACK;
@@ -72,6 +78,9 @@ public class Sion extends SchemaImpl {
   /** The table <code>SION.member</code>. */
   public final Member MEMBER = Member.MEMBER;
 
+  /** The table <code>SION.position</code>. */
+  public final Position POSITION = Position.POSITION;
+
   /** The table <code>SION.project</code>. */
   public final Project PROJECT = Project.PROJECT;
 
@@ -90,6 +99,9 @@ public class Sion extends SchemaImpl {
 
   /** The table <code>SION.squad</code>. */
   public final Squad SQUAD = Squad.SQUAD;
+
+  /** The table <code>SION.squad_comment</code>. */
+  public final SquadComment SQUAD_COMMENT = SquadComment.SQUAD_COMMENT;
 
   /** The table <code>SION.squad_employee</code>. */
   public final SquadEmployee SQUAD_EMPLOYEE = SquadEmployee.SQUAD_EMPLOYEE;
@@ -123,6 +135,7 @@ public class Sion extends SchemaImpl {
     return Arrays.asList(
         Certificate.CERTIFICATE,
         ClientCompany.CLIENT_COMPANY,
+        Department.DEPARTMENT,
         DeveloperTechStack.DEVELOPER_TECH_STACK,
         DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
         Domain.DOMAIN,
@@ -131,12 +144,14 @@ public class Sion extends SchemaImpl {
         Job.JOB,
         JobAndTechStack.JOB_AND_TECH_STACK,
         Member.MEMBER,
+        Position.POSITION,
         Project.PROJECT,
         ProjectAndJob.PROJECT_AND_JOB,
         ProjectEvaluation.PROJECT_EVALUATION,
         ProjectFpSummary.PROJECT_FP_SUMMARY,
         ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE,
         Squad.SQUAD,
+        SquadComment.SQUAD_COMMENT,
         SquadEmployee.SQUAD_EMPLOYEE,
         TechStack.TECH_STACK,
         TrainingProgram.TRAINING_PROGRAM,

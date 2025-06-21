@@ -12,6 +12,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function8;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -46,9 +47,12 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
   }
 
   /** The column <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public final TableField<ProjectFpSummaryRecord, String> PROJECT_FP_SUMMARY_ID =
+  public final TableField<ProjectFpSummaryRecord, Long> PROJECT_FP_SUMMARY_ID =
       createField(
-          DSL.name("project_fp_summary_id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+          DSL.name("project_fp_summary_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>SION.project_fp_summary.total_fp</code>. */
   public final TableField<ProjectFpSummaryRecord, Integer> TOTAL_FP =
@@ -131,6 +135,11 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
   }
 
   @Override
+  public Identity<ProjectFpSummaryRecord, Long> getIdentity() {
+    return (Identity<ProjectFpSummaryRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<ProjectFpSummaryRecord> getPrimaryKey() {
     return Keys.KEY_PROJECT_FP_SUMMARY_PRIMARY;
   }
@@ -187,7 +196,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
   // -------------------------------------------------------------------------
 
   @Override
-  public Row8<String, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
+  public Row8<Long, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
       fieldsRow() {
     return (Row8) super.fieldsRow();
   }
@@ -195,7 +204,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
       Function8<
-              ? super String,
+              ? super Long,
               ? super Integer,
               ? super Integer,
               ? super BigDecimal,
@@ -212,7 +221,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
   public <U> SelectField<U> mapping(
       Class<U> toType,
       Function8<
-              ? super String,
+              ? super Long,
               ? super Integer,
               ? super Integer,
               ? super BigDecimal,

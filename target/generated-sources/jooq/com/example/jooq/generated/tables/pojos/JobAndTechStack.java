@@ -13,7 +13,7 @@ public class JobAndTechStack implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Long jobAndTechStackId;
-  private String techStackId;
+  private String techStackName;
   private Long projectAndJobId;
   private Integer priority;
   private LocalDateTime createdAt;
@@ -23,7 +23,7 @@ public class JobAndTechStack implements Serializable {
 
   public JobAndTechStack(JobAndTechStack value) {
     this.jobAndTechStackId = value.jobAndTechStackId;
-    this.techStackId = value.techStackId;
+    this.techStackName = value.techStackName;
     this.projectAndJobId = value.projectAndJobId;
     this.priority = value.priority;
     this.createdAt = value.createdAt;
@@ -32,13 +32,13 @@ public class JobAndTechStack implements Serializable {
 
   public JobAndTechStack(
       Long jobAndTechStackId,
-      String techStackId,
+      String techStackName,
       Long projectAndJobId,
       Integer priority,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.jobAndTechStackId = jobAndTechStackId;
-    this.techStackId = techStackId;
+    this.techStackName = techStackName;
     this.projectAndJobId = projectAndJobId;
     this.priority = priority;
     this.createdAt = createdAt;
@@ -55,14 +55,14 @@ public class JobAndTechStack implements Serializable {
     this.jobAndTechStackId = jobAndTechStackId;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public String getTechStackId() {
-    return this.techStackId;
+  /** Getter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  public String getTechStackName() {
+    return this.techStackName;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public void setTechStackId(String techStackId) {
-    this.techStackId = techStackId;
+  /** Setter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  public void setTechStackName(String techStackName) {
+    this.techStackName = techStackName;
   }
 
   /** Getter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
@@ -114,9 +114,9 @@ public class JobAndTechStack implements Serializable {
     if (this.jobAndTechStackId == null) {
       if (other.jobAndTechStackId != null) return false;
     } else if (!this.jobAndTechStackId.equals(other.jobAndTechStackId)) return false;
-    if (this.techStackId == null) {
-      if (other.techStackId != null) return false;
-    } else if (!this.techStackId.equals(other.techStackId)) return false;
+    if (this.techStackName == null) {
+      if (other.techStackName != null) return false;
+    } else if (!this.techStackName.equals(other.techStackName)) return false;
     if (this.projectAndJobId == null) {
       if (other.projectAndJobId != null) return false;
     } else if (!this.projectAndJobId.equals(other.projectAndJobId)) return false;
@@ -138,7 +138,7 @@ public class JobAndTechStack implements Serializable {
     int result = 1;
     result =
         prime * result + ((this.jobAndTechStackId == null) ? 0 : this.jobAndTechStackId.hashCode());
-    result = prime * result + ((this.techStackId == null) ? 0 : this.techStackId.hashCode());
+    result = prime * result + ((this.techStackName == null) ? 0 : this.techStackName.hashCode());
     result =
         prime * result + ((this.projectAndJobId == null) ? 0 : this.projectAndJobId.hashCode());
     result = prime * result + ((this.priority == null) ? 0 : this.priority.hashCode());
@@ -152,7 +152,7 @@ public class JobAndTechStack implements Serializable {
     StringBuilder sb = new StringBuilder("JobAndTechStack (");
 
     sb.append(jobAndTechStackId);
-    sb.append(", ").append(techStackId);
+    sb.append(", ").append(techStackName);
     sb.append(", ").append(projectAndJobId);
     sb.append(", ").append(priority);
     sb.append(", ").append(createdAt);

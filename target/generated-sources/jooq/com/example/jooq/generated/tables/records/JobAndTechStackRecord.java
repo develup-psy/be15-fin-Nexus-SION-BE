@@ -30,13 +30,13 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
     return (Long) get(0);
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public void setTechStackId(String value) {
+  /** Setter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  public void setTechStackName(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.tech_stack_id</code>. */
-  public String getTechStackId() {
+  /** Getter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  public String getTechStackName() {
     return (String) get(1);
   }
 
@@ -110,7 +110,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
 
   @Override
   public Field<String> field2() {
-    return JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_ID;
+    return JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME;
   }
 
   @Override
@@ -140,7 +140,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
 
   @Override
   public String component2() {
-    return getTechStackId();
+    return getTechStackName();
   }
 
   @Override
@@ -170,7 +170,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
 
   @Override
   public String value2() {
-    return getTechStackId();
+    return getTechStackName();
   }
 
   @Override
@@ -201,7 +201,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
 
   @Override
   public JobAndTechStackRecord value2(String value) {
-    setTechStackId(value);
+    setTechStackName(value);
     return this;
   }
 
@@ -258,7 +258,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
   /** Create a detached, initialised JobAndTechStackRecord */
   public JobAndTechStackRecord(
       Long jobAndTechStackId,
-      String techStackId,
+      String techStackName,
       Long projectAndJobId,
       Integer priority,
       LocalDateTime createdAt,
@@ -266,7 +266,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
     super(JobAndTechStack.JOB_AND_TECH_STACK);
 
     setJobAndTechStackId(jobAndTechStackId);
-    setTechStackId(techStackId);
+    setTechStackName(techStackName);
     setProjectAndJobId(projectAndJobId);
     setPriority(priority);
     setCreatedAt(createdAt);
@@ -280,7 +280,7 @@ public class JobAndTechStackRecord extends UpdatableRecordImpl<JobAndTechStackRe
 
     if (value != null) {
       setJobAndTechStackId(value.getJobAndTechStackId());
-      setTechStackId(value.getTechStackId());
+      setTechStackName(value.getTechStackName());
       setProjectAndJobId(value.getProjectAndJobId());
       setPriority(value.getPriority());
       setCreatedAt(value.getCreatedAt());

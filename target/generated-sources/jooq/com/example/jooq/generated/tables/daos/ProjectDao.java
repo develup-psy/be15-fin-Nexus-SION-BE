@@ -239,6 +239,24 @@ public class ProjectDao
   }
 
   /**
+   * Fetch records that have <code>request_specification_url BETWEEN
+   * lowerInclusive AND upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchRangeOfRequestSpecificationUrl(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Project.PROJECT.REQUEST_SPECIFICATION_URL, lowerInclusive, upperInclusive);
+  }
+
+  /**
+   * Fetch records that have <code>request_specification_url IN
+   * (values)</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchByRequestSpecificationUrl(
+      String... values) {
+    return fetch(Project.PROJECT.REQUEST_SPECIFICATION_URL, values);
+  }
+
+  /**
    * Fetch records that have <code>name BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */

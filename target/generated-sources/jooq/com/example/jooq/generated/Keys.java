@@ -11,6 +11,7 @@ import org.jooq.impl.Internal;
 
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
+import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -19,12 +20,14 @@ import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
 import com.example.jooq.generated.tables.Member;
+import com.example.jooq.generated.tables.Position;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.ProjectEvaluation;
 import com.example.jooq.generated.tables.ProjectFpSummary;
 import com.example.jooq.generated.tables.ProjectFunctionEstimate;
 import com.example.jooq.generated.tables.Squad;
+import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
 import com.example.jooq.generated.tables.TrainingProgram;
@@ -32,6 +35,7 @@ import com.example.jooq.generated.tables.UserCertificateHistory;
 import com.example.jooq.generated.tables.UserTrainingHistory;
 import com.example.jooq.generated.tables.records.CertificateRecord;
 import com.example.jooq.generated.tables.records.ClientCompanyRecord;
+import com.example.jooq.generated.tables.records.DepartmentRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackRecord;
 import com.example.jooq.generated.tables.records.DomainRecord;
@@ -40,11 +44,13 @@ import com.example.jooq.generated.tables.records.InitialScoreRecord;
 import com.example.jooq.generated.tables.records.JobAndTechStackRecord;
 import com.example.jooq.generated.tables.records.JobRecord;
 import com.example.jooq.generated.tables.records.MemberRecord;
+import com.example.jooq.generated.tables.records.PositionRecord;
 import com.example.jooq.generated.tables.records.ProjectAndJobRecord;
 import com.example.jooq.generated.tables.records.ProjectEvaluationRecord;
 import com.example.jooq.generated.tables.records.ProjectFpSummaryRecord;
 import com.example.jooq.generated.tables.records.ProjectFunctionEstimateRecord;
 import com.example.jooq.generated.tables.records.ProjectRecord;
+import com.example.jooq.generated.tables.records.SquadCommentRecord;
 import com.example.jooq.generated.tables.records.SquadEmployeeRecord;
 import com.example.jooq.generated.tables.records.SquadRecord;
 import com.example.jooq.generated.tables.records.TechStackRecord;
@@ -71,6 +77,12 @@ public class Keys {
           ClientCompany.CLIENT_COMPANY,
           DSL.name("KEY_client_company_PRIMARY"),
           new TableField[] {ClientCompany.CLIENT_COMPANY.CLIENT_CODE},
+          true);
+  public static final UniqueKey<DepartmentRecord> KEY_DEPARTMENT_PRIMARY =
+      Internal.createUniqueKey(
+          Department.DEPARTMENT,
+          DSL.name("KEY_department_PRIMARY"),
+          new TableField[] {Department.DEPARTMENT.DEPARTMENT_NAME},
           true);
   public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY =
       Internal.createUniqueKey(
@@ -121,6 +133,12 @@ public class Keys {
           DSL.name("KEY_member_PRIMARY"),
           new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
           true);
+  public static final UniqueKey<PositionRecord> KEY_POSITION_PRIMARY =
+      Internal.createUniqueKey(
+          Position.POSITION,
+          DSL.name("KEY_position_PRIMARY"),
+          new TableField[] {Position.POSITION.POSITION_NAME},
+          true);
   public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY =
       Internal.createUniqueKey(
           Project.PROJECT,
@@ -159,6 +177,12 @@ public class Keys {
           Squad.SQUAD,
           DSL.name("KEY_squad_PRIMARY"),
           new TableField[] {Squad.SQUAD.SQUAD_CODE},
+          true);
+  public static final UniqueKey<SquadCommentRecord> KEY_SQUAD_COMMENT_PRIMARY =
+      Internal.createUniqueKey(
+          SquadComment.SQUAD_COMMENT,
+          DSL.name("KEY_squad_comment_PRIMARY"),
+          new TableField[] {SquadComment.SQUAD_COMMENT.COMMENT_ID},
           true);
   public static final UniqueKey<SquadEmployeeRecord> KEY_SQUAD_EMPLOYEE_PRIMARY =
       Internal.createUniqueKey(
@@ -250,10 +274,18 @@ public class Keys {
           Internal.createForeignKey(
               JobAndTechStack.JOB_AND_TECH_STACK,
               DSL.name("FK_tech_stack_TO_job_and_tech_stack_1"),
-              new TableField[] {JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_ID},
+              new TableField[] {JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME},
               Keys.KEY_TECH_STACK_PRIMARY,
               new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
               true);
+  public static final ForeignKey<MemberRecord, DepartmentRecord> FK_DEPARTMENT_TO_MEMBER_1 =
+      Internal.createForeignKey(
+          Member.MEMBER,
+          DSL.name("FK_department_TO_member_1"),
+          new TableField[] {Member.MEMBER.DEPARTMENT_NAME},
+          Keys.KEY_DEPARTMENT_PRIMARY,
+          new TableField[] {Department.DEPARTMENT.DEPARTMENT_NAME},
+          true);
   public static final ForeignKey<MemberRecord, GradeRecord> FK_GRADE_TO_DEVELOPER_1 =
       Internal.createForeignKey(
           Member.MEMBER,
@@ -261,6 +293,14 @@ public class Keys {
           new TableField[] {Member.MEMBER.GRADE_CODE},
           Keys.KEY_GRADE_PRIMARY,
           new TableField[] {Grade.GRADE.GRADE_CODE},
+          true);
+  public static final ForeignKey<MemberRecord, PositionRecord> FK_POSITION_TO_MEMBER_1 =
+      Internal.createForeignKey(
+          Member.MEMBER,
+          DSL.name("FK_position_TO_member_1"),
+          new TableField[] {Member.MEMBER.POSITION_NAME},
+          Keys.KEY_POSITION_PRIMARY,
+          new TableField[] {Position.POSITION.POSITION_NAME},
           true);
   public static final ForeignKey<ProjectRecord, ClientCompanyRecord>
       FK_CLIENT_COMPANY_TO_PROJECT_1 =
@@ -341,6 +381,22 @@ public class Keys {
           new TableField[] {Squad.SQUAD.PROJECT_CODE},
           Keys.KEY_PROJECT_PRIMARY,
           new TableField[] {Project.PROJECT.PROJECT_CODE},
+          true);
+  public static final ForeignKey<SquadCommentRecord, MemberRecord> FK_MEMBER_TO_SQUAD_COMMENT_1 =
+      Internal.createForeignKey(
+          SquadComment.SQUAD_COMMENT,
+          DSL.name("FK_member_TO_squad_comment_1"),
+          new TableField[] {SquadComment.SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<SquadCommentRecord, SquadRecord> FK_SQUAD_TO_SQUAD_COMMENT_1 =
+      Internal.createForeignKey(
+          SquadComment.SQUAD_COMMENT,
+          DSL.name("FK_squad_TO_squad_comment_1"),
+          new TableField[] {SquadComment.SQUAD_COMMENT.SQUAD_CODE},
+          Keys.KEY_SQUAD_PRIMARY,
+          new TableField[] {Squad.SQUAD.SQUAD_CODE},
           true);
   public static final ForeignKey<SquadEmployeeRecord, MemberRecord>
       FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1 =

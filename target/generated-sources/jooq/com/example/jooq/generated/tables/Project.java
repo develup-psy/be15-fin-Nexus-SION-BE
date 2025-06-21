@@ -11,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function14;
+import org.jooq.Function15;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row14;
+import org.jooq.Row15;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -80,7 +80,7 @@ public class Project extends TableImpl<ProjectRecord> {
           DSL.name("status"),
           SQLDataType.VARCHAR(11)
               .nullable(false)
-              .asEnumDataType(com.example.jooq.generated.enums.ProjectStatus.class),
+              .asEnumDataType(ProjectStatus.class),
           this,
           "");
 
@@ -124,6 +124,14 @@ public class Project extends TableImpl<ProjectRecord> {
   /** The column <code>SION.project.client_code</code>. */
   public final TableField<ProjectRecord, String> CLIENT_CODE =
       createField(DSL.name("client_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+
+  /** The column <code>SION.project.request_specification_url</code>. */
+  public final TableField<ProjectRecord, String> REQUEST_SPECIFICATION_URL =
+      createField(
+          DSL.name("request_specification_url"),
+          SQLDataType.VARCHAR(255).nullable(false),
+          this,
+          "");
 
   /** The column <code>SION.project.name</code>. */
   public final TableField<ProjectRecord, String> NAME =
@@ -223,11 +231,11 @@ public class Project extends TableImpl<ProjectRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row14 type methods
+  // Row15 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row14<
+  public Row15<
           String,
           String,
           String,
@@ -241,14 +249,15 @@ public class Project extends TableImpl<ProjectRecord> {
           LocalDateTime,
           LocalDateTime,
           String,
+          String,
           String>
       fieldsRow() {
-    return (Row14) super.fieldsRow();
+    return (Row15) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function14<
+      Function15<
               ? super String,
               ? super String,
               ? super String,
@@ -261,6 +270,7 @@ public class Project extends TableImpl<ProjectRecord> {
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? super String,
               ? extends U>
@@ -271,7 +281,7 @@ public class Project extends TableImpl<ProjectRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function14<
+      Function15<
               ? super String,
               ? super String,
               ? super String,
@@ -284,6 +294,7 @@ public class Project extends TableImpl<ProjectRecord> {
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? super String,
               ? extends U>

@@ -18,7 +18,7 @@ import com.example.jooq.generated.tables.records.ProjectFpSummaryRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ProjectFpSummaryDao
     extends DAOImpl<
-        ProjectFpSummaryRecord, com.example.jooq.generated.tables.pojos.ProjectFpSummary, String> {
+        ProjectFpSummaryRecord, com.example.jooq.generated.tables.pojos.ProjectFpSummary, Long> {
 
   /** Create a new ProjectFpSummaryDao without any configuration */
   public ProjectFpSummaryDao() {
@@ -36,7 +36,7 @@ public class ProjectFpSummaryDao
   }
 
   @Override
-  public String getId(com.example.jooq.generated.tables.pojos.ProjectFpSummary object) {
+  public Long getId(com.example.jooq.generated.tables.pojos.ProjectFpSummary object) {
     return object.getProjectFpSummaryId();
   }
 
@@ -45,26 +45,26 @@ public class ProjectFpSummaryDao
    * lowerInclusive AND upperInclusive</code>
    */
   public List<com.example.jooq.generated.tables.pojos.ProjectFpSummary>
-      fetchRangeOfProjectFpSummaryId(String lowerInclusive, String upperInclusive) {
+      fetchRangeOfProjectFpSummaryId(Long lowerInclusive, Long upperInclusive) {
     return fetchRange(
         ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID, lowerInclusive, upperInclusive);
   }
 
   /** Fetch records that have <code>project_fp_summary_id IN (values)</code> */
   public List<com.example.jooq.generated.tables.pojos.ProjectFpSummary> fetchByProjectFpSummaryId(
-      String... values) {
+      Long... values) {
     return fetch(ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID, values);
   }
 
   /** Fetch a unique record that has <code>project_fp_summary_id = value</code> */
   public com.example.jooq.generated.tables.pojos.ProjectFpSummary fetchOneByProjectFpSummaryId(
-      String value) {
+      Long value) {
     return fetchOne(ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID, value);
   }
 
   /** Fetch a unique record that has <code>project_fp_summary_id = value</code> */
   public Optional<com.example.jooq.generated.tables.pojos.ProjectFpSummary>
-      fetchOptionalByProjectFpSummaryId(String value) {
+      fetchOptionalByProjectFpSummaryId(Long value) {
     return fetchOptional(ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID, value);
   }
 

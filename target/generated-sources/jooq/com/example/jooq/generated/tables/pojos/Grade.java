@@ -4,6 +4,7 @@
 package com.example.jooq.generated.tables.pojos;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.example.jooq.generated.enums.GradeGradeCode;
@@ -17,6 +18,7 @@ public class Grade implements Serializable {
   private GradeGradeCode gradeCode;
   private Integer minScore;
   private Integer maxScore;
+  private BigDecimal productivity;
   private Integer monthlyUnitPrice;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -27,6 +29,7 @@ public class Grade implements Serializable {
     this.gradeCode = value.gradeCode;
     this.minScore = value.minScore;
     this.maxScore = value.maxScore;
+    this.productivity = value.productivity;
     this.monthlyUnitPrice = value.monthlyUnitPrice;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
@@ -36,12 +39,14 @@ public class Grade implements Serializable {
       GradeGradeCode gradeCode,
       Integer minScore,
       Integer maxScore,
+      BigDecimal productivity,
       Integer monthlyUnitPrice,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.gradeCode = gradeCode;
     this.minScore = minScore;
     this.maxScore = maxScore;
+    this.productivity = productivity;
     this.monthlyUnitPrice = monthlyUnitPrice;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -75,6 +80,16 @@ public class Grade implements Serializable {
   /** Setter for <code>SION.grade.max_score</code>. */
   public void setMaxScore(Integer maxScore) {
     this.maxScore = maxScore;
+  }
+
+  /** Getter for <code>SION.grade.productivity</code>. */
+  public BigDecimal getProductivity() {
+    return this.productivity;
+  }
+
+  /** Setter for <code>SION.grade.productivity</code>. */
+  public void setProductivity(BigDecimal productivity) {
+    this.productivity = productivity;
   }
 
   /** Getter for <code>SION.grade.monthly_unit_price</code>. */
@@ -122,6 +137,9 @@ public class Grade implements Serializable {
     if (this.maxScore == null) {
       if (other.maxScore != null) return false;
     } else if (!this.maxScore.equals(other.maxScore)) return false;
+    if (this.productivity == null) {
+      if (other.productivity != null) return false;
+    } else if (!this.productivity.equals(other.productivity)) return false;
     if (this.monthlyUnitPrice == null) {
       if (other.monthlyUnitPrice != null) return false;
     } else if (!this.monthlyUnitPrice.equals(other.monthlyUnitPrice)) return false;
@@ -141,6 +159,7 @@ public class Grade implements Serializable {
     result = prime * result + ((this.gradeCode == null) ? 0 : this.gradeCode.hashCode());
     result = prime * result + ((this.minScore == null) ? 0 : this.minScore.hashCode());
     result = prime * result + ((this.maxScore == null) ? 0 : this.maxScore.hashCode());
+    result = prime * result + ((this.productivity == null) ? 0 : this.productivity.hashCode());
     result =
         prime * result + ((this.monthlyUnitPrice == null) ? 0 : this.monthlyUnitPrice.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -155,6 +174,7 @@ public class Grade implements Serializable {
     sb.append(gradeCode);
     sb.append(", ").append(minScore);
     sb.append(", ").append(maxScore);
+    sb.append(", ").append(productivity);
     sb.append(", ").append(monthlyUnitPrice);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);

@@ -68,7 +68,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               SQLDataType.VARCHAR(3)
                   .nullable(false)
                   .asEnumDataType(
-                      com.example.jooq.generated.enums.ProjectFunctionEstimateFunctionType.class),
+                      ProjectFunctionEstimateFunctionType.class),
               this,
               "");
 
@@ -80,7 +80,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               SQLDataType.VARCHAR(7)
                   .nullable(false)
                   .asEnumDataType(
-                      com.example.jooq.generated.enums.ProjectFunctionEstimateComplexity.class),
+                      ProjectFunctionEstimateComplexity.class),
               this,
               "");
 
@@ -118,9 +118,8 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           "");
 
   /** The column <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public final TableField<ProjectFunctionEstimateRecord, String> PROJECT_FP_SUMMARY_ID =
-      createField(
-          DSL.name("project_fp_summary_id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+  public final TableField<ProjectFunctionEstimateRecord, Long> PROJECT_FP_SUMMARY_ID =
+      createField(DSL.name("project_fp_summary_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
   private ProjectFunctionEstimate(Name alias, Table<ProjectFunctionEstimateRecord> aliased) {
     this(alias, aliased, null);
@@ -230,7 +229,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           Integer,
           Integer,
           LocalDateTime,
-          String>
+          Long>
       fieldsRow() {
     return (Row10) super.fieldsRow();
   }
@@ -247,7 +246,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               ? super Integer,
               ? super Integer,
               ? super LocalDateTime,
-              ? super String,
+              ? super Long,
               ? extends U>
           from) {
     return convertFrom(Records.mapping(from));
@@ -266,7 +265,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               ? super Integer,
               ? super Integer,
               ? super LocalDateTime,
-              ? super String,
+              ? super Long,
               ? extends U>
           from) {
     return convertFrom(toType, Records.mapping(from));

@@ -68,19 +68,19 @@ public class JobAndTechStackDao
   }
 
   /**
-   * Fetch records that have <code>tech_stack_id BETWEEN lowerInclusive AND
+   * Fetch records that have <code>tech_stack_name BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.JobAndTechStack> fetchRangeOfTechStackId(
+  public List<com.example.jooq.generated.tables.pojos.JobAndTechStack> fetchRangeOfTechStackName(
       String lowerInclusive, String upperInclusive) {
     return fetchRange(
-        JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_ID, lowerInclusive, upperInclusive);
+        JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>tech_stack_id IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.JobAndTechStack> fetchByTechStackId(
+  /** Fetch records that have <code>tech_stack_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.JobAndTechStack> fetchByTechStackName(
       String... values) {
-    return fetch(JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_ID, values);
+    return fetch(JobAndTechStack.JOB_AND_TECH_STACK.TECH_STACK_NAME, values);
   }
 
   /**

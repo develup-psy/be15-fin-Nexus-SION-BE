@@ -11,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function11;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -57,6 +57,14 @@ public class Squad extends TableImpl<SquadRecord> {
   /** The column <code>SION.squad.title</code>. */
   public final TableField<SquadRecord, String> TITLE =
       createField(DSL.name("title"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+
+  /** The column <code>SION.squad.description</code>. */
+  public final TableField<SquadRecord, String> DESCRIPTION =
+      createField(
+          DSL.name("description"),
+          SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
   /** The column <code>SION.squad.is_active</code>. */
   public final TableField<SquadRecord, Byte> IS_ACTIVE =
@@ -104,7 +112,7 @@ public class Squad extends TableImpl<SquadRecord> {
           DSL.name("origin_type"),
           SQLDataType.VARCHAR(6)
               .nullable(false)
-              .asEnumDataType(com.example.jooq.generated.enums.SquadOriginType.class),
+              .asEnumDataType(SquadOriginType.class),
           this,
           "");
 
@@ -201,11 +209,12 @@ public class Squad extends TableImpl<SquadRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row10 type methods
+  // Row11 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row10<
+  public Row11<
+          String,
           String,
           String,
           String,
@@ -217,12 +226,13 @@ public class Squad extends TableImpl<SquadRecord> {
           SquadOriginType,
           String>
       fieldsRow() {
-    return (Row10) super.fieldsRow();
+    return (Row11) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function10<
+      Function11<
+              ? super String,
               ? super String,
               ? super String,
               ? super String,
@@ -241,7 +251,8 @@ public class Squad extends TableImpl<SquadRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function10<
+      Function11<
+              ? super String,
               ? super String,
               ? super String,
               ? super String,

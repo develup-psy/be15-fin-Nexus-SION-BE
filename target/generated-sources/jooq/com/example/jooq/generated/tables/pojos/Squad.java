@@ -18,6 +18,7 @@ public class Squad implements Serializable {
   private String squadCode;
   private String projectCode;
   private String title;
+  private String description;
   private Byte isActive;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -32,6 +33,7 @@ public class Squad implements Serializable {
     this.squadCode = value.squadCode;
     this.projectCode = value.projectCode;
     this.title = value.title;
+    this.description = value.description;
     this.isActive = value.isActive;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
@@ -45,6 +47,7 @@ public class Squad implements Serializable {
       String squadCode,
       String projectCode,
       String title,
+      String description,
       Byte isActive,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
@@ -55,6 +58,7 @@ public class Squad implements Serializable {
     this.squadCode = squadCode;
     this.projectCode = projectCode;
     this.title = title;
+    this.description = description;
     this.isActive = isActive;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -92,6 +96,16 @@ public class Squad implements Serializable {
   /** Setter for <code>SION.squad.title</code>. */
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  /** Getter for <code>SION.squad.description</code>. */
+  public String getDescription() {
+    return this.description;
+  }
+
+  /** Setter for <code>SION.squad.description</code>. */
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /** Getter for <code>SION.squad.is_active</code>. */
@@ -179,6 +193,9 @@ public class Squad implements Serializable {
     if (this.title == null) {
       if (other.title != null) return false;
     } else if (!this.title.equals(other.title)) return false;
+    if (this.description == null) {
+      if (other.description != null) return false;
+    } else if (!this.description.equals(other.description)) return false;
     if (this.isActive == null) {
       if (other.isActive != null) return false;
     } else if (!this.isActive.equals(other.isActive)) return false;
@@ -210,6 +227,7 @@ public class Squad implements Serializable {
     result = prime * result + ((this.squadCode == null) ? 0 : this.squadCode.hashCode());
     result = prime * result + ((this.projectCode == null) ? 0 : this.projectCode.hashCode());
     result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
+    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
     result = prime * result + ((this.isActive == null) ? 0 : this.isActive.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -230,6 +248,7 @@ public class Squad implements Serializable {
     sb.append(squadCode);
     sb.append(", ").append(projectCode);
     sb.append(", ").append(title);
+    sb.append(", ").append(description);
     sb.append(", ").append(isActive);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);

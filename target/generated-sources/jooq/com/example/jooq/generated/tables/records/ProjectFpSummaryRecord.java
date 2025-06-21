@@ -18,18 +18,18 @@ import com.example.jooq.generated.tables.ProjectFpSummary;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummaryRecord>
     implements Record8<
-        String, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String> {
+        Long, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String> {
 
   private static final long serialVersionUID = 1L;
 
   /** Setter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public void setProjectFpSummaryId(String value) {
+  public void setProjectFpSummaryId(Long value) {
     set(0, value);
   }
 
   /** Getter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public String getProjectFpSummaryId() {
-    return (String) get(0);
+  public Long getProjectFpSummaryId() {
+    return (Long) get(0);
   }
 
   /** Setter for <code>SION.project_fp_summary.total_fp</code>. */
@@ -107,7 +107,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
   // -------------------------------------------------------------------------
 
   @Override
-  public Record1<String> key() {
+  public Record1<Long> key() {
     return (Record1) super.key();
   }
 
@@ -116,19 +116,19 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
   // -------------------------------------------------------------------------
 
   @Override
-  public Row8<String, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
+  public Row8<Long, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
       fieldsRow() {
     return (Row8) super.fieldsRow();
   }
 
   @Override
-  public Row8<String, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
+  public Row8<Long, Integer, Integer, BigDecimal, BigDecimal, BigDecimal, LocalDateTime, String>
       valuesRow() {
     return (Row8) super.valuesRow();
   }
 
   @Override
-  public Field<String> field1() {
+  public Field<Long> field1() {
     return ProjectFpSummary.PROJECT_FP_SUMMARY.PROJECT_FP_SUMMARY_ID;
   }
 
@@ -168,7 +168,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
   }
 
   @Override
-  public String component1() {
+  public Long component1() {
     return getProjectFpSummaryId();
   }
 
@@ -208,7 +208,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
   }
 
   @Override
-  public String value1() {
+  public Long value1() {
     return getProjectFpSummaryId();
   }
 
@@ -248,7 +248,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
   }
 
   @Override
-  public ProjectFpSummaryRecord value1(String value) {
+  public ProjectFpSummaryRecord value1(Long value) {
     setProjectFpSummaryId(value);
     return this;
   }
@@ -297,7 +297,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
 
   @Override
   public ProjectFpSummaryRecord values(
-      String value1,
+      Long value1,
       Integer value2,
       Integer value3,
       BigDecimal value4,
@@ -327,7 +327,7 @@ public class ProjectFpSummaryRecord extends UpdatableRecordImpl<ProjectFpSummary
 
   /** Create a detached, initialised ProjectFpSummaryRecord */
   public ProjectFpSummaryRecord(
-      String projectFpSummaryId,
+      Long projectFpSummaryId,
       Integer totalFp,
       Integer avgEffortPerFp,
       BigDecimal totalEffort,

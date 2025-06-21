@@ -61,7 +61,7 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
           DSL.name("training_type"),
           SQLDataType.VARCHAR(3)
               .nullable(false)
-              .asEnumDataType(com.example.jooq.generated.enums.TrainingProgramTrainingType.class),
+              .asEnumDataType(TrainingProgramTrainingType.class),
           this,
           "");
 

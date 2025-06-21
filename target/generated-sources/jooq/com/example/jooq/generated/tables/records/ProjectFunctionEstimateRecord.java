@@ -29,7 +29,7 @@ public class ProjectFunctionEstimateRecord
         Integer,
         Integer,
         LocalDateTime,
-        String> {
+        Long> {
 
   private static final long serialVersionUID = 1L;
 
@@ -124,13 +124,13 @@ public class ProjectFunctionEstimateRecord
   }
 
   /** Setter for <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public void setProjectFpSummaryId(String value) {
+  public void setProjectFpSummaryId(Long value) {
     set(9, value);
   }
 
   /** Getter for <code>SION.project_function_estimate.project_fp_summary_id</code>. */
-  public String getProjectFpSummaryId() {
-    return (String) get(9);
+  public Long getProjectFpSummaryId() {
+    return (Long) get(9);
   }
 
   // -------------------------------------------------------------------------
@@ -157,7 +157,7 @@ public class ProjectFunctionEstimateRecord
           Integer,
           Integer,
           LocalDateTime,
-          String>
+          Long>
       fieldsRow() {
     return (Row10) super.fieldsRow();
   }
@@ -173,7 +173,7 @@ public class ProjectFunctionEstimateRecord
           Integer,
           Integer,
           LocalDateTime,
-          String>
+          Long>
       valuesRow() {
     return (Row10) super.valuesRow();
   }
@@ -224,7 +224,7 @@ public class ProjectFunctionEstimateRecord
   }
 
   @Override
-  public Field<String> field10() {
+  public Field<Long> field10() {
     return ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FP_SUMMARY_ID;
   }
 
@@ -274,7 +274,7 @@ public class ProjectFunctionEstimateRecord
   }
 
   @Override
-  public String component10() {
+  public Long component10() {
     return getProjectFpSummaryId();
   }
 
@@ -324,7 +324,7 @@ public class ProjectFunctionEstimateRecord
   }
 
   @Override
-  public String value10() {
+  public Long value10() {
     return getProjectFpSummaryId();
   }
 
@@ -383,7 +383,7 @@ public class ProjectFunctionEstimateRecord
   }
 
   @Override
-  public ProjectFunctionEstimateRecord value10(String value) {
+  public ProjectFunctionEstimateRecord value10(Long value) {
     setProjectFpSummaryId(value);
     return this;
   }
@@ -399,7 +399,7 @@ public class ProjectFunctionEstimateRecord
       Integer value7,
       Integer value8,
       LocalDateTime value9,
-      String value10) {
+      Long value10) {
     value1(value1);
     value2(value2);
     value3(value3);
@@ -433,7 +433,7 @@ public class ProjectFunctionEstimateRecord
       Integer relatedTablesCount,
       Integer relatedFieldsCount,
       LocalDateTime createdAt,
-      String projectFpSummaryId) {
+      Long projectFpSummaryId) {
     super(ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE);
 
     setProjectFunctionEstimateId(projectFunctionEstimateId);

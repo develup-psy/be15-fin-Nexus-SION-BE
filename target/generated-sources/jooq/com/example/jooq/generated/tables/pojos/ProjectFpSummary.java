@@ -13,7 +13,7 @@ public class ProjectFpSummary implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private String projectFpSummaryId;
+  private Long projectFpSummaryId;
   private Integer totalFp;
   private Integer avgEffortPerFp;
   private BigDecimal totalEffort;
@@ -36,7 +36,7 @@ public class ProjectFpSummary implements Serializable {
   }
 
   public ProjectFpSummary(
-      String projectFpSummaryId,
+      Long projectFpSummaryId,
       Integer totalFp,
       Integer avgEffortPerFp,
       BigDecimal totalEffort,
@@ -55,12 +55,12 @@ public class ProjectFpSummary implements Serializable {
   }
 
   /** Getter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public String getProjectFpSummaryId() {
+  public Long getProjectFpSummaryId() {
     return this.projectFpSummaryId;
   }
 
   /** Setter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
-  public void setProjectFpSummaryId(String projectFpSummaryId) {
+  public void setProjectFpSummaryId(Long projectFpSummaryId) {
     this.projectFpSummaryId = projectFpSummaryId;
   }
 

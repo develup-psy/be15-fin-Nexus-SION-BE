@@ -238,7 +238,7 @@ public class ProjectFunctionEstimateDao
    * lowerInclusive AND upperInclusive</code>
    */
   public List<com.example.jooq.generated.tables.pojos.ProjectFunctionEstimate>
-      fetchRangeOfProjectFpSummaryId(String lowerInclusive, String upperInclusive) {
+      fetchRangeOfProjectFpSummaryId(Long lowerInclusive, Long upperInclusive) {
     return fetchRange(
         ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FP_SUMMARY_ID,
         lowerInclusive,
@@ -247,7 +247,7 @@ public class ProjectFunctionEstimateDao
 
   /** Fetch records that have <code>project_fp_summary_id IN (values)</code> */
   public List<com.example.jooq.generated.tables.pojos.ProjectFunctionEstimate>
-      fetchByProjectFpSummaryId(String... values) {
+      fetchByProjectFpSummaryId(Long... values) {
     return fetch(ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE.PROJECT_FP_SUMMARY_ID, values);
   }
 }

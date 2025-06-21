@@ -28,6 +28,7 @@ public class Project implements Serializable {
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
   private String clientCode;
+  private String requestSpecificationUrl;
   private String name;
 
   public Project() {}
@@ -46,6 +47,7 @@ public class Project implements Serializable {
     this.updatedAt = value.updatedAt;
     this.deletedAt = value.deletedAt;
     this.clientCode = value.clientCode;
+    this.requestSpecificationUrl = value.requestSpecificationUrl;
     this.name = value.name;
   }
 
@@ -63,6 +65,7 @@ public class Project implements Serializable {
       LocalDateTime updatedAt,
       LocalDateTime deletedAt,
       String clientCode,
+      String requestSpecificationUrl,
       String name) {
     this.projectCode = projectCode;
     this.description = description;
@@ -77,6 +80,7 @@ public class Project implements Serializable {
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
     this.clientCode = clientCode;
+    this.requestSpecificationUrl = requestSpecificationUrl;
     this.name = name;
   }
 
@@ -210,6 +214,16 @@ public class Project implements Serializable {
     this.clientCode = clientCode;
   }
 
+  /** Getter for <code>SION.project.request_specification_url</code>. */
+  public String getRequestSpecificationUrl() {
+    return this.requestSpecificationUrl;
+  }
+
+  /** Setter for <code>SION.project.request_specification_url</code>. */
+  public void setRequestSpecificationUrl(String requestSpecificationUrl) {
+    this.requestSpecificationUrl = requestSpecificationUrl;
+  }
+
   /** Getter for <code>SION.project.name</code>. */
   public String getName() {
     return this.name;
@@ -265,6 +279,9 @@ public class Project implements Serializable {
     if (this.clientCode == null) {
       if (other.clientCode != null) return false;
     } else if (!this.clientCode.equals(other.clientCode)) return false;
+    if (this.requestSpecificationUrl == null) {
+      if (other.requestSpecificationUrl != null) return false;
+    } else if (!this.requestSpecificationUrl.equals(other.requestSpecificationUrl)) return false;
     if (this.name == null) {
       if (other.name != null) return false;
     } else if (!this.name.equals(other.name)) return false;
@@ -290,6 +307,11 @@ public class Project implements Serializable {
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     result = prime * result + ((this.deletedAt == null) ? 0 : this.deletedAt.hashCode());
     result = prime * result + ((this.clientCode == null) ? 0 : this.clientCode.hashCode());
+    result =
+        prime * result
+            + ((this.requestSpecificationUrl == null)
+                ? 0
+                : this.requestSpecificationUrl.hashCode());
     result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
     return result;
   }
@@ -311,6 +333,7 @@ public class Project implements Serializable {
     sb.append(", ").append(updatedAt);
     sb.append(", ").append(deletedAt);
     sb.append(", ").append(clientCode);
+    sb.append(", ").append(requestSpecificationUrl);
     sb.append(", ").append(name);
 
     sb.append(")");

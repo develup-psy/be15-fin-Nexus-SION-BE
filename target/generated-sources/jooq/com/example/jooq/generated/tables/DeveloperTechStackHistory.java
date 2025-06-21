@@ -75,7 +75,7 @@ public class DeveloperTechStackHistory extends TableImpl<DeveloperTechStackHisto
               SQLDataType.VARCHAR(24)
                   .nullable(false)
                   .asEnumDataType(
-                      com.example.jooq.generated.enums.DeveloperTechStackHistoryRelatedTable.class),
+                      DeveloperTechStackHistoryRelatedTable.class),
               this,
               "");
 

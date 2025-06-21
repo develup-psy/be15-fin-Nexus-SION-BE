@@ -3,6 +3,7 @@
  */
 package com.example.jooq.generated.tables.daos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -128,6 +129,50 @@ public class MemberDao
   /** Fetch records that have <code>phone_number IN (values)</code> */
   public List<com.example.jooq.generated.tables.pojos.Member> fetchByPhoneNumber(String... values) {
     return fetch(Member.MEMBER.PHONE_NUMBER, values);
+  }
+
+  /**
+   * Fetch records that have <code>position_name BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfPositionName(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Member.MEMBER.POSITION_NAME, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>position_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchByPositionName(
+      String... values) {
+    return fetch(Member.MEMBER.POSITION_NAME, values);
+  }
+
+  /**
+   * Fetch records that have <code>department_name BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfDepartmentName(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Member.MEMBER.DEPARTMENT_NAME, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>department_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchByDepartmentName(
+      String... values) {
+    return fetch(Member.MEMBER.DEPARTMENT_NAME, values);
+  }
+
+  /**
+   * Fetch records that have <code>birthday BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfBirthday(
+      LocalDate lowerInclusive, LocalDate upperInclusive) {
+    return fetchRange(Member.MEMBER.BIRTHDAY, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>birthday IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchByBirthday(LocalDate... values) {
+    return fetch(Member.MEMBER.BIRTHDAY, values);
   }
 
   /**

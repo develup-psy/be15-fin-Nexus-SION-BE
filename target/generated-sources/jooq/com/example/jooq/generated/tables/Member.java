@@ -3,6 +3,7 @@
  */
 package com.example.jooq.generated.tables;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function15;
+import org.jooq.Function18;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row15;
+import org.jooq.Row18;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -75,6 +76,30 @@ public class Member extends TableImpl<MemberRecord> {
   public final TableField<MemberRecord, String> PHONE_NUMBER =
       createField(DSL.name("phone_number"), SQLDataType.VARCHAR(11).nullable(false), this, "");
 
+  /** The column <code>SION.member.position_name</code>. */
+  public final TableField<MemberRecord, String> POSITION_NAME =
+      createField(
+          DSL.name("position_name"),
+          SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
+
+  /** The column <code>SION.member.department_name</code>. */
+  public final TableField<MemberRecord, String> DEPARTMENT_NAME =
+      createField(
+          DSL.name("department_name"),
+          SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
+
+  /** The column <code>SION.member.birthday</code>. */
+  public final TableField<MemberRecord, LocalDate> BIRTHDAY =
+      createField(
+          DSL.name("birthday"),
+          SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)),
+          this,
+          "");
+
   /** The column <code>SION.member.joined_at</code>. */
   public final TableField<MemberRecord, LocalDateTime> JOINED_AT =
       createField(
@@ -110,7 +135,7 @@ public class Member extends TableImpl<MemberRecord> {
           DSL.name("status"),
           SQLDataType.VARCHAR(11)
               .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
-              .asEnumDataType(com.example.jooq.generated.enums.MemberStatus.class),
+              .asEnumDataType(MemberStatus.class),
           this,
           "");
 
@@ -120,7 +145,7 @@ public class Member extends TableImpl<MemberRecord> {
           DSL.name("grade_code"),
           SQLDataType.VARCHAR(1)
               .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
-              .asEnumDataType(com.example.jooq.generated.enums.MemberGradeCode.class),
+              .asEnumDataType(MemberGradeCode.class),
           this,
           "");
 
@@ -159,7 +184,7 @@ public class Member extends TableImpl<MemberRecord> {
           DSL.name("role"),
           SQLDataType.VARCHAR(8)
               .nullable(false)
-              .asEnumDataType(com.example.jooq.generated.enums.MemberRole.class),
+              .asEnumDataType(MemberRole.class),
           this,
           "");
 
@@ -202,10 +227,27 @@ public class Member extends TableImpl<MemberRecord> {
 
   @Override
   public List<ForeignKey<MemberRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_GRADE_TO_DEVELOPER_1);
+    return Arrays.asList(
+        Keys.FK_POSITION_TO_MEMBER_1, Keys.FK_DEPARTMENT_TO_MEMBER_1, Keys.FK_GRADE_TO_DEVELOPER_1);
   }
 
+  private transient Position _position;
+  private transient Department _department;
   private transient Grade _grade;
+
+  /** Get the implicit join path to the <code>SION.position</code> table. */
+  public Position position() {
+    if (_position == null) _position = new Position(this, Keys.FK_POSITION_TO_MEMBER_1);
+
+    return _position;
+  }
+
+  /** Get the implicit join path to the <code>SION.department</code> table. */
+  public Department department() {
+    if (_department == null) _department = new Department(this, Keys.FK_DEPARTMENT_TO_MEMBER_1);
+
+    return _department;
+  }
 
   /** Get the implicit join path to the <code>SION.grade</code> table. */
   public Grade grade() {
@@ -248,16 +290,19 @@ public class Member extends TableImpl<MemberRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row15 type methods
+  // Row18 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row15<
+  public Row18<
           String,
           String,
           String,
           String,
           String,
+          String,
+          String,
+          LocalDate,
           LocalDateTime,
           String,
           Integer,
@@ -269,17 +314,20 @@ public class Member extends TableImpl<MemberRecord> {
           LocalDateTime,
           MemberRole>
       fieldsRow() {
-    return (Row15) super.fieldsRow();
+    return (Row18) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function15<
+      Function18<
               ? super String,
               ? super String,
               ? super String,
               ? super String,
               ? super String,
+              ? super String,
+              ? super String,
+              ? super LocalDate,
               ? super LocalDateTime,
               ? super String,
               ? super Integer,
@@ -298,12 +346,15 @@ public class Member extends TableImpl<MemberRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function15<
+      Function18<
               ? super String,
               ? super String,
               ? super String,
               ? super String,
               ? super String,
+              ? super String,
+              ? super String,
+              ? super LocalDate,
               ? super LocalDateTime,
               ? super String,
               ? super Integer,

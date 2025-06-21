@@ -4,6 +4,7 @@
 package com.example.jooq.generated.tables.pojos;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.example.jooq.generated.enums.MemberGradeCode;
@@ -21,6 +22,9 @@ public class Member implements Serializable {
   private String password;
   private String profileImageUrl;
   private String phoneNumber;
+  private String positionName;
+  private String departmentName;
+  private LocalDate birthday;
   private LocalDateTime joinedAt;
   private String email;
   private Integer careerYears;
@@ -40,6 +44,9 @@ public class Member implements Serializable {
     this.password = value.password;
     this.profileImageUrl = value.profileImageUrl;
     this.phoneNumber = value.phoneNumber;
+    this.positionName = value.positionName;
+    this.departmentName = value.departmentName;
+    this.birthday = value.birthday;
     this.joinedAt = value.joinedAt;
     this.email = value.email;
     this.careerYears = value.careerYears;
@@ -58,6 +65,9 @@ public class Member implements Serializable {
       String password,
       String profileImageUrl,
       String phoneNumber,
+      String positionName,
+      String departmentName,
+      LocalDate birthday,
       LocalDateTime joinedAt,
       String email,
       Integer careerYears,
@@ -73,6 +83,9 @@ public class Member implements Serializable {
     this.password = password;
     this.profileImageUrl = profileImageUrl;
     this.phoneNumber = phoneNumber;
+    this.positionName = positionName;
+    this.departmentName = departmentName;
+    this.birthday = birthday;
     this.joinedAt = joinedAt;
     this.email = email;
     this.careerYears = careerYears;
@@ -133,6 +146,36 @@ public class Member implements Serializable {
   /** Setter for <code>SION.member.phone_number</code>. */
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  /** Getter for <code>SION.member.position_name</code>. */
+  public String getPositionName() {
+    return this.positionName;
+  }
+
+  /** Setter for <code>SION.member.position_name</code>. */
+  public void setPositionName(String positionName) {
+    this.positionName = positionName;
+  }
+
+  /** Getter for <code>SION.member.department_name</code>. */
+  public String getDepartmentName() {
+    return this.departmentName;
+  }
+
+  /** Setter for <code>SION.member.department_name</code>. */
+  public void setDepartmentName(String departmentName) {
+    this.departmentName = departmentName;
+  }
+
+  /** Getter for <code>SION.member.birthday</code>. */
+  public LocalDate getBirthday() {
+    return this.birthday;
+  }
+
+  /** Setter for <code>SION.member.birthday</code>. */
+  public void setBirthday(LocalDate birthday) {
+    this.birthday = birthday;
   }
 
   /** Getter for <code>SION.member.joined_at</code>. */
@@ -257,6 +300,15 @@ public class Member implements Serializable {
     if (this.phoneNumber == null) {
       if (other.phoneNumber != null) return false;
     } else if (!this.phoneNumber.equals(other.phoneNumber)) return false;
+    if (this.positionName == null) {
+      if (other.positionName != null) return false;
+    } else if (!this.positionName.equals(other.positionName)) return false;
+    if (this.departmentName == null) {
+      if (other.departmentName != null) return false;
+    } else if (!this.departmentName.equals(other.departmentName)) return false;
+    if (this.birthday == null) {
+      if (other.birthday != null) return false;
+    } else if (!this.birthday.equals(other.birthday)) return false;
     if (this.joinedAt == null) {
       if (other.joinedAt != null) return false;
     } else if (!this.joinedAt.equals(other.joinedAt)) return false;
@@ -304,6 +356,9 @@ public class Member implements Serializable {
     result =
         prime * result + ((this.profileImageUrl == null) ? 0 : this.profileImageUrl.hashCode());
     result = prime * result + ((this.phoneNumber == null) ? 0 : this.phoneNumber.hashCode());
+    result = prime * result + ((this.positionName == null) ? 0 : this.positionName.hashCode());
+    result = prime * result + ((this.departmentName == null) ? 0 : this.departmentName.hashCode());
+    result = prime * result + ((this.birthday == null) ? 0 : this.birthday.hashCode());
     result = prime * result + ((this.joinedAt == null) ? 0 : this.joinedAt.hashCode());
     result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
     result = prime * result + ((this.careerYears == null) ? 0 : this.careerYears.hashCode());
@@ -326,6 +381,9 @@ public class Member implements Serializable {
     sb.append(", ").append(password);
     sb.append(", ").append(profileImageUrl);
     sb.append(", ").append(phoneNumber);
+    sb.append(", ").append(positionName);
+    sb.append(", ").append(departmentName);
+    sb.append(", ").append(birthday);
     sb.append(", ").append(joinedAt);
     sb.append(", ").append(email);
     sb.append(", ").append(careerYears);
