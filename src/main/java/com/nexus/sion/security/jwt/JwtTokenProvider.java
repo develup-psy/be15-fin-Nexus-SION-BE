@@ -36,11 +36,12 @@ public class JwtTokenProvider {
   }
 
   /* accessToken 생성 메서드 */
-  public String createToken(int userId) {
+  public String createToken(String employeeIdentificationNumber, String role) {
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + expiration);
     return Jwts.builder()
-        .subject(String.valueOf(userId))
+        .subject(employeeIdentificationNumber)
+        .claim("role", role)
         .issuedAt(now)
         .expiration(expiryDate)
         .signWith(secretKey)
@@ -48,11 +49,12 @@ public class JwtTokenProvider {
   }
 
   /* refreshToken 생성 메서드 */
-  public String createRefreshToken(int userId) {
+  public String createRefreshToken(String employeeIdentificationNumber, String role) {
     Date now = new Date();
     Date expiryDate = new Date(now.getTime() + refreshExpiration);
     return Jwts.builder()
-        .subject(String.valueOf(userId))
+        .subject(employeeIdentificationNumber)
+        .claim("role", role)
         .issuedAt(now)
         .expiration(expiryDate)
         .signWith(secretKey)
@@ -78,7 +80,7 @@ public class JwtTokenProvider {
     }
   }
 
-  public String getUserIdFromJwt(String token) {
+  public String getEmployeeIdentificationNumberFromJwt(String token) {
     Claims claims =
         Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     return claims.getSubject();

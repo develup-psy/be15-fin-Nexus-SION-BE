@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.nexus.sion.security.filter.JwtAuthenticationFilter;
+import com.nexus.sion.security.handler.RestAccessDeniedHandler;
 import com.nexus.sion.security.handler.RestAuthenticationEntryPoint;
 import com.nexus.sion.security.jwt.JwtTokenProvider;
 
@@ -27,7 +29,9 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
+  private final UserDetailsService userDetailsService;
   private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+  private final RestAccessDeniedHandler restAccessDeniedHandler;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -41,8 +45,11 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .exceptionHandling(
-            exception -> exception.authenticationEntryPoint(restAuthenticationEntryPoint) // 인증 실패
-            )
+            exception ->
+                exception
+                    .authenticationEntryPoint(restAuthenticationEntryPoint) // 인증
+                    // 실패
+                    .accessDeniedHandler(restAccessDeniedHandler))
         // 요청 http method, url 기준으로 인증, 인가 필요 여부 설정
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/api/v1/**").permitAll().anyRequest().authenticated())
@@ -54,7 +61,7 @@ public class SecurityConfig {
 
   @Bean
   public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    return new JwtAuthenticationFilter(jwtTokenProvider);
+    return new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService);
   }
 
   @Bean

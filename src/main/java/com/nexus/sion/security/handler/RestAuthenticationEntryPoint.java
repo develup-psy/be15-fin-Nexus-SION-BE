@@ -15,8 +15,13 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.exception.CustomJwtException;
 import com.nexus.sion.exception.ErrorCode;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+  private final ObjectMapper objectMapper;
 
   @Override
   public void commence(
@@ -36,6 +41,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     response.setContentType("application/json;charset=UTF-8");
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-    response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
+    response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
   }
 }

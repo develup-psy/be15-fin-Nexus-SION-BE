@@ -33,7 +33,7 @@ public class PageResponse<T> {
   @Schema(description = "이전 페이지 존재 여부")
   private boolean hasPrevious;
 
-  /* JPA 사용 방법*/
+  /* JPA 사용 방법 */
   public static <T> PageResponse<T> from(Page<T> page) {
     return PageResponse.<T>builder()
         .totalElements(page.getTotalElements())
