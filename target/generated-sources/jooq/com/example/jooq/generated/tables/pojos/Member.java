@@ -9,6 +9,7 @@ import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -27,6 +28,7 @@ public class Member implements Serializable {
     private String phoneNumber;
     private String positionName;
     private String departmentName;
+    private LocalDate birthday;
     private LocalDateTime joinedAt;
     private String email;
     private Integer careerYears;
@@ -48,6 +50,7 @@ public class Member implements Serializable {
         this.phoneNumber = value.phoneNumber;
         this.positionName = value.positionName;
         this.departmentName = value.departmentName;
+        this.birthday = value.birthday;
         this.joinedAt = value.joinedAt;
         this.email = value.email;
         this.careerYears = value.careerYears;
@@ -68,6 +71,7 @@ public class Member implements Serializable {
         String phoneNumber,
         String positionName,
         String departmentName,
+        LocalDate birthday,
         LocalDateTime joinedAt,
         String email,
         Integer careerYears,
@@ -86,6 +90,7 @@ public class Member implements Serializable {
         this.phoneNumber = phoneNumber;
         this.positionName = positionName;
         this.departmentName = departmentName;
+        this.birthday = birthday;
         this.joinedAt = joinedAt;
         this.email = email;
         this.careerYears = careerYears;
@@ -194,6 +199,20 @@ public class Member implements Serializable {
      */
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    /**
+     * Getter for <code>sion.member.birthday</code>.
+     */
+    public LocalDate getBirthday() {
+        return this.birthday;
+    }
+
+    /**
+     * Setter for <code>sion.member.birthday</code>.
+     */
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     /**
@@ -387,6 +406,12 @@ public class Member implements Serializable {
         }
         else if (!this.departmentName.equals(other.departmentName))
             return false;
+        if (this.birthday == null) {
+            if (other.birthday != null)
+                return false;
+        }
+        else if (!this.birthday.equals(other.birthday))
+            return false;
         if (this.joinedAt == null) {
             if (other.joinedAt != null)
                 return false;
@@ -461,6 +486,7 @@ public class Member implements Serializable {
         result = prime * result + ((this.phoneNumber == null) ? 0 : this.phoneNumber.hashCode());
         result = prime * result + ((this.positionName == null) ? 0 : this.positionName.hashCode());
         result = prime * result + ((this.departmentName == null) ? 0 : this.departmentName.hashCode());
+        result = prime * result + ((this.birthday == null) ? 0 : this.birthday.hashCode());
         result = prime * result + ((this.joinedAt == null) ? 0 : this.joinedAt.hashCode());
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.careerYears == null) ? 0 : this.careerYears.hashCode());
@@ -485,6 +511,7 @@ public class Member implements Serializable {
         sb.append(", ").append(phoneNumber);
         sb.append(", ").append(positionName);
         sb.append(", ").append(departmentName);
+        sb.append(", ").append(birthday);
         sb.append(", ").append(joinedAt);
         sb.append(", ").append(email);
         sb.append(", ").append(careerYears);

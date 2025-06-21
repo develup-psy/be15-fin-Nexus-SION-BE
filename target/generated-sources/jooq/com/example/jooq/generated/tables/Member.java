@@ -11,6 +11,7 @@ import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 import com.example.jooq.generated.tables.records.MemberRecord;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -18,11 +19,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function17;
+import org.jooq.Function18;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row17;
+import org.jooq.Row18;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -89,6 +90,11 @@ public class Member extends TableImpl<MemberRecord> {
      * The column <code>sion.member.department_name</code>.
      */
     public final TableField<MemberRecord, String> DEPARTMENT_NAME = createField(DSL.name("department_name"), SQLDataType.VARCHAR(100).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>sion.member.birthday</code>.
+     */
+    public final TableField<MemberRecord, LocalDate> BIRTHDAY = createField(DSL.name("birthday"), SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)), this, "");
 
     /**
      * The column <code>sion.member.joined_at</code>.
@@ -262,18 +268,18 @@ public class Member extends TableImpl<MemberRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row17 type methods
+    // Row18 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row17<String, String, String, String, String, String, String, LocalDateTime, String, Integer, Long, MemberStatus, MemberGradeCode, LocalDateTime, LocalDateTime, LocalDateTime, MemberRole> fieldsRow() {
-        return (Row17) super.fieldsRow();
+    public Row18<String, String, String, String, String, String, String, LocalDate, LocalDateTime, String, Integer, Long, MemberStatus, MemberGradeCode, LocalDateTime, LocalDateTime, LocalDateTime, MemberRole> fieldsRow() {
+        return (Row18) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function17<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function18<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -281,7 +287,7 @@ public class Member extends TableImpl<MemberRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function17<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function18<? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super LocalDateTime, ? super String, ? super Integer, ? super Long, ? super MemberStatus, ? super MemberGradeCode, ? super LocalDateTime, ? super LocalDateTime, ? super LocalDateTime, ? super MemberRole, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

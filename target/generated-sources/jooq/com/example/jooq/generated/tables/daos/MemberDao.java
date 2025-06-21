@@ -10,6 +10,7 @@ import com.example.jooq.generated.enums.MemberStatus;
 import com.example.jooq.generated.tables.Member;
 import com.example.jooq.generated.tables.records.MemberRecord;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -163,6 +164,21 @@ public class MemberDao extends DAOImpl<MemberRecord, com.example.jooq.generated.
      */
     public List<com.example.jooq.generated.tables.pojos.Member> fetchByDepartmentName(String... values) {
         return fetch(Member.MEMBER.DEPARTMENT_NAME, values);
+    }
+
+    /**
+     * Fetch records that have <code>birthday BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfBirthday(LocalDate lowerInclusive, LocalDate upperInclusive) {
+        return fetchRange(Member.MEMBER.BIRTHDAY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>birthday IN (values)</code>
+     */
+    public List<com.example.jooq.generated.tables.pojos.Member> fetchByBirthday(LocalDate... values) {
+        return fetch(Member.MEMBER.BIRTHDAY, values);
     }
 
     /**
