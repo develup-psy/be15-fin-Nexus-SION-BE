@@ -36,6 +36,15 @@ public class Member {
   @Column(name = "phone_number", nullable = false, length = 11)
   private String phoneNumber;
 
+  @Column(name = "position_name")
+  private String positionName;
+
+  @Column(name = "department_name")
+  private String departmentName;
+
+  @Column(name = "birthday")
+  private LocalDate birthDay;
+
   @Column(name = "joined_at")
   private LocalDateTime joinedAt;
 
