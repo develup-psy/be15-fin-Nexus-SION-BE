@@ -44,7 +44,9 @@ public enum ErrorCode {
                                                                                                                     HttpStatus.BAD_REQUEST), INVALID_MEMBER_STATUS(
                                                                                                                                     "20007",
                                                                                                                                     "유효하지 않은 상태값 입니다.",
-                                                                                                                                    HttpStatus.BAD_REQUEST);
+                                                                                                                                    HttpStatus.BAD_REQUEST),
+    // project
+    PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT);
 
     private final String code;
     private final String message;

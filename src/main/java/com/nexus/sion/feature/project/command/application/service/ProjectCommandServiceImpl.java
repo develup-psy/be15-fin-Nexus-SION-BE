@@ -8,6 +8,8 @@ import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.repository.*;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +24,13 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
     @Override
     public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
+
+        // 프로젝트 코드 중복 체크
+        if (projectCommandRepository.existsByProjectCode(request.getProjectCode())) {
+            throw new BusinessException(ErrorCode.PROJECT_CODE_DUPLICATED);
+        }
+
+        // 프로젝트 저장
         Project project = Project.builder()
                 .projectCode(request.getProjectCode())
                 .name(request.getName())
@@ -39,6 +48,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                 .build();
         projectCommandRepository.save(project);
 
+        // 직무 및 기술스택 저장
         request.getJobs().forEach(job -> {
             ProjectAndJob projectAndJob = ProjectAndJob.builder()
                     .projectCode(request.getProjectCode())
