@@ -201,4 +201,21 @@ class AuthServiceImplTest {
           authService.refreshToken(providedRefreshToken);
         });
   }
+
+  @Test
+  void logout_success() {
+    // given
+    String refreshToken = "mockRefreshToken";
+    String employeeId = "123456";
+
+    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(refreshToken)).thenReturn(employeeId);
+
+    // when
+    authService.logout(refreshToken);
+
+    // then
+    verify(jwtTokenProvider).validateToken(refreshToken);
+    verify(jwtTokenProvider).getEmployeeIdentificationNumberFromJwt(refreshToken);
+    verify(redisTemplate).delete(employeeId);
+  }
 }
