@@ -33,7 +33,7 @@ public enum ErrorCode {
   INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
 
   // project
-
+  PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
   // squad
   SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   PROJECT_CODE_INVALID("40002", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST);
