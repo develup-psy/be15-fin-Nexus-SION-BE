@@ -6,7 +6,6 @@ import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
 
 import java.util.*;
 
-import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.SortField;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
+import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 
 import lombok.RequiredArgsConstructor;
@@ -113,35 +113,41 @@ public class StatisticsQueryRepository {
   }
 
   public PageResponse<TechStackCareerDto> findStackAverageCareerPaged(
-          List<String> techStackNames, int page, int size, String sort, String direction
-  ) {
+      List<String> techStackNames, int page, int size, String sort, String direction) {
     int offset = page * size;
     boolean desc = "desc".equalsIgnoreCase(direction);
 
-    Field<?> sortField = switch (sort) {
-      case "averageCareer" -> DSL.avg(MEMBER.CAREER_YEARS);
-      case "count" -> DSL.countDistinct(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER);
-      default -> DEVELOPER_TECH_STACK.TECH_STACK_NAME;
-    };
+    Field<?> sortField =
+        switch (sort) {
+          case "averageCareer" -> DSL.avg(MEMBER.CAREER_YEARS);
+          case "count" -> DSL.countDistinct(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER);
+          default -> DEVELOPER_TECH_STACK.TECH_STACK_NAME;
+        };
 
     SortField<?> orderBy = desc ? sortField.desc() : sortField.asc();
 
     // 전체 개수
-    long total = dsl.select(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
+    long total =
+        dsl.select(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
             .from(DEVELOPER_TECH_STACK)
             .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
             .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
-            .fetch().size();
+            .fetch()
+            .size();
 
     // 데이터 조회
-    List<TechStackCareerDto> content = dsl.select(
-                    DEVELOPER_TECH_STACK.TECH_STACK_NAME,
-                    DSL.avg(MEMBER.CAREER_YEARS).as("averageCareer"),
-                    DSL.min(MEMBER.CAREER_YEARS).as("minCareer"),
-                    DSL.max(MEMBER.CAREER_YEARS).as("maxCareer"),
-                    DSL.countDistinct(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER).as("count"))
+    List<TechStackCareerDto> content =
+        dsl.select(
+                DEVELOPER_TECH_STACK.TECH_STACK_NAME,
+                DSL.avg(MEMBER.CAREER_YEARS).as("averageCareer"),
+                DSL.min(MEMBER.CAREER_YEARS).as("minCareer"),
+                DSL.max(MEMBER.CAREER_YEARS).as("maxCareer"),
+                DSL.countDistinct(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER).as("count"))
             .from(DEVELOPER_TECH_STACK)
-            .join(MEMBER).on(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .join(MEMBER)
+            .on(
+                DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
             .and(MEMBER.DELETED_AT.isNull())
             .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)

@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TechStackCareerDto {
-    private String techStackName;
-    private Double averageCareer;
-    private Double minCareer;
-    private Double maxCareer;
-    private Integer count;
+  private String techStackName;
+  private Double averageCareer;
+  private Double minCareer;
+  private Double maxCareer;
+  private Integer count;
 }
