@@ -1,5 +1,15 @@
 package com.nexus.sion.feature.member.command.application.service;
 
+import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +26,10 @@ import com.nexus.sion.feature.member.util.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +38,10 @@ public class MemberCommandService {
   private final ModelMapper modelMapper;
   private final PasswordEncoder passwordEncoder;
   private final MemberRepository memberRepository;
+  private final DepartmentRepository departmentRepository;
+  private final PositionRepository positionRepository;
+  private final DeveloperTechStackRepository developerTechStackRepository;
+  private final InitialScoreRepository initialScoreRepository;
 
   @Transactional
   public void registerUser(MemberCreateRequest request) {
@@ -52,5 +70,93 @@ public class MemberCommandService {
     member.setEncodedPassword(passwordEncoder.encode(request.getPassword()));
     member.setAdminRole();
     memberRepository.save(member);
+  }
+
+
+  @Transactional
+  public void addMembers(List<MemberAddRequest> requests) {
+    for (MemberAddRequest request : requests) {
+
+      // Position 검증
+      if (request.positionName() != null && !positionRepository.existsById(request.positionName())) {
+        throw new BusinessException(ErrorCode.POSITION_NOT_FOUND);
+      }
+
+      // Department 검증
+      if (request.departmentName() != null && !departmentRepository.existsById(request.departmentName())) {
+        throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
+      }
+
+      // 이메일 형식 체크 로직
+      if (!Validator.isEmailValid(request.email())) {
+        throw new BusinessException(ErrorCode.INVALID_EMAIL_FORMAT);
+      }
+
+      // 중복 이메일 체크 로직
+      if (memberRepository.existsByEmail(request.email())) {
+        throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
+      }
+
+      // 핸드폰번호 체크 로직
+      if (!Validator.isPhonenumberValid(request.phoneNumber())) {
+        throw new BusinessException(ErrorCode.INVALID_PHONE_NUMBER_FORMAT);
+      }
+
+      // 중복 사번 체크 로직
+      if (memberRepository.existsByEmployeeIdentificationNumber(
+              request.employeeIdentificationNumber())) {
+        throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER);
+      }
+
+
+      int initialScore = initialScoreRepository
+              .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
+              .map(InitialScore::getScore)
+              .orElse(0);
+
+      //TODO: 계산한 점수 토대로 등급 산정 로직 추가
+
+
+      // Member 저장
+      Member member = Member.builder()
+              .employeeIdentificationNumber(request.employeeIdentificationNumber())
+              .employeeName(request.employeeName())
+              .phoneNumber(request.phoneNumber())
+              .birthday(request.birthday())
+              .joinedAt(request.joinedAt())
+              .email(request.email())
+              .careerYears(request.careerYears())
+              .positionName(request.positionName())
+              .departmentName(request.departmentName())
+              .profileImageUrl(request.profileImageUrl())
+              .salary(request.salary())
+              .gradeCode(GradeCode.D)
+              .role(MemberRole.INSIDER)
+              .status(MemberStatus.AVAILABLE)
+              .password(passwordEncoder.encode("123456"))
+              .createdAt(LocalDateTime.now())
+              .updatedAt(LocalDateTime.now())
+              .build();
+
+      memberRepository.save(member);
+
+
+      //TODO: TechStack 검증 로직 추가
+
+      // 기술스택 저장
+      if (request.techStackNames() != null) {
+        List<DeveloperTechStack> techStacks = request.techStackNames().stream()
+                .map(stack -> DeveloperTechStack.builder()
+                        .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                        .techStackName(stack)
+                        .totalScore(initialScore) // 기본값
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+
+        developerTechStackRepository.saveAll(techStacks);
+      }
+    }
   }
 }
