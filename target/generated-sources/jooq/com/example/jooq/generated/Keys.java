@@ -327,6 +327,15 @@ public class Keys {
           Keys.KEY_JOB_PRIMARY,
           new TableField[] {Job.JOB.NAME},
           true);
+  public static final ForeignKey<ProjectAndJobRecord, ProjectRecord>
+      FK_PROJECT_TO_PROJECT_AND_JOB_1 =
+          Internal.createForeignKey(
+              ProjectAndJob.PROJECT_AND_JOB,
+              DSL.name("FK_project_TO_project_and_job_1"),
+              new TableField[] {ProjectAndJob.PROJECT_AND_JOB.PROJECT_CODE},
+              Keys.KEY_PROJECT_PRIMARY,
+              new TableField[] {Project.PROJECT.PROJECT_CODE},
+              true);
   public static final ForeignKey<ProjectEvaluationRecord, ProjectRecord>
       FK_PROJECT_TO_PROJECT_EVALUATION_1 =
           Internal.createForeignKey(

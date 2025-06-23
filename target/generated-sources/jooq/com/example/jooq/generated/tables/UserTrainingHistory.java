@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -47,7 +48,10 @@ public class UserTrainingHistory extends TableImpl<UserTrainingHistoryRecord> {
   /** The column <code>sion.user_training_history.user_trainig_history_id</code>. */
   public final TableField<UserTrainingHistoryRecord, Long> USER_TRAINIG_HISTORY_ID =
       createField(
-          DSL.name("user_trainig_history_id"), SQLDataType.BIGINT.nullable(false), this, "");
+          DSL.name("user_trainig_history_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>sion.user_training_history.created_at</code>. */
   public final TableField<UserTrainingHistoryRecord, LocalDateTime> CREATED_AT =
@@ -117,6 +121,11 @@ public class UserTrainingHistory extends TableImpl<UserTrainingHistoryRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<UserTrainingHistoryRecord, Long> getIdentity() {
+    return (Identity<UserTrainingHistoryRecord, Long>) super.getIdentity();
   }
 
   @Override
