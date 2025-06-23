@@ -107,4 +107,12 @@ public class AuthServiceImpl implements AuthService {
 
     return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
   }
+
+  @Override
+  public void logout(String refreshToken) {
+    // refresh token의 서명 및 만료 검증
+    jwtTokenProvider.validateToken(refreshToken);
+    String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(refreshToken);
+    redisTemplate.delete(employeeIdentificationNumber); // Redis에 저장된 refresh token 삭제
+  }
 }
