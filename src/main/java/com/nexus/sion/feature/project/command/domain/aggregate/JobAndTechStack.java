@@ -20,8 +20,8 @@ public class JobAndTechStack {
   @Column(name = "job_and_tech_stack_id")
   private Long id;
 
-  @Column(name = "tech_stack_id", length = 30, nullable = false)
-  private String techStackId;
+  @Column(name = "tech_stack_name", length = 30, nullable = false)
+  private String techStackName;
 
   @Column(name = "project_and_job_id", nullable = false)
   private Long projectAndJob;

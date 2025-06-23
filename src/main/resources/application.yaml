@@ -32,11 +32,6 @@ spring:
           min-idle: 1  # 최소 유휴 연결 수
           max-wait: 2000ms  # 최대 대기 시간
 
-#logging:
-#  level:
-#    root: DEBUG
-#    com.nexus.sion: DEBUG
-
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_ACCESS_EXPIRATION}
