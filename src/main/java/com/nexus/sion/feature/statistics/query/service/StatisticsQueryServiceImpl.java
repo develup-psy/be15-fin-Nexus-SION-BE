@@ -1,15 +1,14 @@
 package com.nexus.sion.feature.statistics.query.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
+import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.repository.StatisticsQueryRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +29,11 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   @Override
   public PageResponse<DeveloperDto> getAllDevelopers(int page, int size) {
     return repository.findAllDevelopers(page, size);
+  }
+
+  @Override
+  public PageResponse<TechStackCareerDto> getStackAverageCareersPaged(
+          List<String> stackNames, int page, int size, String sort, String direction) {
+    return repository.findStackAverageCareerPaged(stackNames, page, size, sort, direction);
   }
 }
