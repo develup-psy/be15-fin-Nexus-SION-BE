@@ -20,48 +20,45 @@ import software.amazon.awssdk.services.s3.model.*;
 @RequiredArgsConstructor
 public class DocumentS3Service {
 
-    private final S3Client s3Client;
+  private final S3Client s3Client;
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucketName;
 
-<<<<<<< HEAD
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB 제한
+  private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB 제한
 
-    public S3UploadResponse uploadFile(MultipartFile file, String prefix) {
-        try {
-            String contentType = file.getContentType();
-            if (!isAllowedContentType(contentType)) {
-                throw new IllegalArgumentException("허용되지 않은 파일 타입입니다. (허용: PDF)");
-            }
+  public S3UploadResponse uploadFile(MultipartFile file, String prefix) {
+    try {
+      String contentType = file.getContentType();
+      if (!isAllowedContentType(contentType)) {
+        throw new IllegalArgumentException("허용되지 않은 파일 타입입니다. (허용: PDF)");
+      }
 
       if (file.getSize() > MAX_FILE_SIZE) {
         throw new IllegalArgumentException("파일 크기가 10MB를 초과합니다.");
       }
 
-            String originalFilename = file.getOriginalFilename();
-            String extension = "";
+      String originalFilename = file.getOriginalFilename();
+      String extension = "";
 
-            int idx = originalFilename.lastIndexOf('.');
-            if (idx > 0) {
-                extension = originalFilename.substring(idx);
-            }
+      int idx = originalFilename.lastIndexOf('.');
+      if (idx > 0) {
+        extension = originalFilename.substring(idx);
+      }
 
-            String uniqueFilename = UUID.randomUUID() + extension;
-            String s3Key = prefix + "/" + uniqueFilename;
+      String uniqueFilename = UUID.randomUUID() + extension;
+      String s3Key = prefix + "/" + uniqueFilename;
 
-            s3Client.putObject(
-                            PutObjectRequest.builder().bucket(bucketName).key(s3Key)
-                                            .contentType(contentType).build(),
-                            RequestBody.fromBytes(file.getBytes()));
+      s3Client.putObject(
+          PutObjectRequest.builder().bucket(bucketName).key(s3Key).contentType(contentType).build(),
+          RequestBody.fromBytes(file.getBytes()));
 
-            String url = "https://" + bucketName + ".s3.amazonaws.com/" + s3Key;
+      String url = "https://" + bucketName + ".s3.amazonaws.com/" + s3Key;
 
-            return new S3UploadResponse(url, uniqueFilename, originalFilename);
+      return new S3UploadResponse(url, uniqueFilename, originalFilename);
 
-        } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
-        }
+    } catch (IOException e) {
+      throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
     }
   }
 

@@ -35,7 +35,7 @@ class ProjectCommandServiceImplTest {
   }
 
   @Test
-  void 프로젝트_정상_등록() {
+  void registerProject_Success() {
     // given
     ProjectRegisterRequest request = createRequest();
 
@@ -53,7 +53,7 @@ class ProjectCommandServiceImplTest {
   }
 
   @Test
-  void 프로젝트_코드_중복_등록_실패() {
+  void registerProject_Fail_When_Duplicated_ProjectCode() {
     // given
     ProjectRegisterRequest request = createRequest();
 
@@ -77,9 +77,9 @@ class ProjectCommandServiceImplTest {
 
     ProjectRegisterRequest request = new ProjectRegisterRequest();
     request.setProjectCode("P123");
-    request.setName("프로젝트 A");
-    request.setDescription("프로젝트 설명");
-    request.setTitle("프로젝트 제목");
+    request.setName("Project A");
+    request.setDescription("Project Description");
+    request.setTitle("Project Title");
     request.setBudget(1000000L);
     request.setStartDate(LocalDate.now());
     request.setExpectedEndDate(LocalDate.now().plusDays(30));
