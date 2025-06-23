@@ -52,7 +52,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             job.getTechStacks().forEach(tech -> {
                 JobAndTechStack jobAndTechStack = JobAndTechStack.builder()
                         .projectAndJob(projectAndJob.getId())
-                        .techStackId(tech.getTechStackId())
+                        .techStackName(tech.getTechStackName())
                         .priority(tech.getPriority())
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())

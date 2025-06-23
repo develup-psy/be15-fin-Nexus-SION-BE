@@ -34,7 +34,7 @@ public class ProjectRegisterRequest {
     @Getter
     @Setter
     public static class TechStackInfo {
-        private String techStackId;
+        private String techStackName;
         private Integer priority;
     }
 }
