@@ -1,5 +1,17 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
@@ -8,18 +20,6 @@ import com.nexus.sion.feature.project.command.application.dto.request.ProjectReg
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class ProjectCommandServiceImplTest {
 
@@ -44,7 +44,7 @@ class ProjectCommandServiceImplTest {
         ProjectRegisterRequest request = createRequest();
 
         when(projectCommandRepository.existsByProjectCode(request.getProjectCode()))
-                .thenReturn(false);
+                        .thenReturn(false);
 
         // when
         ProjectRegisterResponse response = projectCommandService.registerProject(request);
@@ -63,12 +63,12 @@ class ProjectCommandServiceImplTest {
         ProjectRegisterRequest request = createRequest();
 
         when(projectCommandRepository.existsByProjectCode(request.getProjectCode()))
-                .thenReturn(true);
+                        .thenReturn(true);
 
         // when & then
         assertThatThrownBy(() -> projectCommandService.registerProject(request))
-                .isInstanceOf(BusinessException.class)
-                .hasMessage(ErrorCode.PROJECT_CODE_DUPLICATED.getMessage());
+                        .isInstanceOf(BusinessException.class)
+                        .hasMessage(ErrorCode.PROJECT_CODE_DUPLICATED.getMessage());
     }
 
     private ProjectRegisterRequest createRequest() {

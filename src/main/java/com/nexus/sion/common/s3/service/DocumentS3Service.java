@@ -50,13 +50,9 @@ public class DocumentS3Service {
             String s3Key = prefix + "/" + uniqueFilename;
 
             s3Client.putObject(
-                    PutObjectRequest.builder()
-                            .bucket(bucketName)
-                            .key(s3Key)
-                            .contentType(contentType)
-                            .build(),
-                    RequestBody.fromBytes(file.getBytes())
-            );
+                            PutObjectRequest.builder().bucket(bucketName).key(s3Key)
+                                            .contentType(contentType).build(),
+                            RequestBody.fromBytes(file.getBytes()));
 
             String url = "https://" + bucketName + ".s3.amazonaws.com/" + s3Key;
 
@@ -71,19 +67,17 @@ public class DocumentS3Service {
         try {
             String s3Key = prefix + "/" + filename;
             s3Client.deleteObject(
-                    DeleteObjectRequest.builder()
-                            .bucket(bucketName)
-                            .key(s3Key)
-                            .build()
-            );
+                            DeleteObjectRequest.builder().bucket(bucketName).key(s3Key).build());
         } catch (S3Exception e) {
-            throw new RuntimeException("S3 파일 삭제 중 오류가 발생했습니다: " + e.awsErrorDetails().errorMessage());
+            throw new RuntimeException(
+                            "S3 파일 삭제 중 오류가 발생했습니다: " + e.awsErrorDetails().errorMessage());
         }
     }
 
     private boolean isAllowedContentType(String contentType) {
         return "application/pdf".equals(contentType)
-                || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".equals(contentType)
-                || "application/vnd.ms-excel".equals(contentType);
+                        || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                        .equals(contentType)
+                        || "application/vnd.ms-excel".equals(contentType);
     }
 }

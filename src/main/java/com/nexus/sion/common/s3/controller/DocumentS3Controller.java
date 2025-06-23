@@ -2,8 +2,10 @@ package com.nexus.sion.common.s3.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.nexus.sion.common.s3.dto.S3UploadResponse;
 import com.nexus.sion.common.s3.service.DocumentS3Service;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -14,7 +16,8 @@ public class DocumentS3Controller {
     private final DocumentS3Service s3Service;
 
     @PostMapping("/upload")
-    public S3UploadResponse uploadFile(@RequestParam MultipartFile file, @RequestParam String prefix) {
+    public S3UploadResponse uploadFile(@RequestParam MultipartFile file,
+                    @RequestParam String prefix) {
         return s3Service.uploadFile(file, prefix);
     }
 
