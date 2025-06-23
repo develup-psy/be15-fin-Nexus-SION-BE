@@ -91,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     String accessToken = jwtTokenProvider.createToken(employeeIdentificationNumber, member.getRole().name());
-    String refreshToken = jwtTokenProvider.createToken(employeeIdentificationNumber, member.getRole().name());
+    String refreshToken = jwtTokenProvider.createRefreshToken(employeeIdentificationNumber, member.getRole().name());
 
     RefreshToken newToken = RefreshToken.builder()
             .token(refreshToken)
