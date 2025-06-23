@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 
@@ -23,9 +24,20 @@ public class SquadQueryServiceImpl implements SquadQueryService {
     List<SquadListResponse> squads = squadQueryRepository.findSquads(request);
 
     if (squads == null || squads.isEmpty()) {
-      throw new BusinessException(ErrorCode.SQUAD_NOT_FOUND);
+      throw new BusinessException(ErrorCode.PROJECT_SQUAD_NOT_FOUND);
     }
 
     return squads;
+  }
+
+  @Override
+  public SquadDetailResponse getSquadDetailByCode(String squadCode) {
+    SquadDetailResponse response = squadQueryRepository.findSquadDetailByCode(squadCode);
+
+    if (response == null) {
+      throw new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
+    }
+
+    return response;
   }
 }
