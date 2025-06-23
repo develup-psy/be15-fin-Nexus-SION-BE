@@ -2,7 +2,6 @@ package com.nexus.sion.feature.auth.command.application.controller;
 
 import static com.nexus.sion.common.utils.CookieUtils.createRefreshTokenCookie;
 
-import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
+import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
 import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.feature.auth.command.application.service.AuthService;
 
@@ -45,7 +45,8 @@ public class AuthController {
   }
 
   @PostMapping("/refresh")
-  public ResponseEntity<ApiResponse<TokenResponse>> refreshToken(@RequestBody RefreshTokenRequest request) {
+  public ResponseEntity<ApiResponse<TokenResponse>> refreshToken(
+      @RequestBody RefreshTokenRequest request) {
     TokenResponse response = authService.refreshToken(request.getRefreshToken());
     return buildTokenResponse(response);
   }
@@ -60,6 +61,4 @@ public class AuthController {
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
         .body(ApiResponse.success(tokenResponse));
   }
-
-
 }

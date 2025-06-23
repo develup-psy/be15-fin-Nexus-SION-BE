@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import java.time.Duration;
 import java.util.Optional;
 
-import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
 import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
+import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
@@ -36,11 +36,9 @@ class AuthServiceImplTest {
 
   @Mock private JwtTokenProvider jwtTokenProvider;
 
-  @Mock
-  private RedisTemplate<String, RefreshToken> redisTemplate;
+  @Mock private RedisTemplate<String, RefreshToken> redisTemplate;
 
-  @Mock
-  private ValueOperations<String, RefreshToken> valueOperations;
+  @Mock private ValueOperations<String, RefreshToken> valueOperations;
 
   @InjectMocks private AuthServiceImpl authService;
 
@@ -120,7 +118,6 @@ class AuthServiceImplTest {
     assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_CURRENT_PASSWORD);
   }
 
-
   @Test
   void refreshToken_success() {
     // given
@@ -129,21 +126,22 @@ class AuthServiceImplTest {
     String accessToken = "new-access-token";
     String newRefreshToken = "new-refresh-token";
 
-    Member member = Member.builder()
+    Member member =
+        Member.builder()
             .employeeIdentificationNumber(employeeId)
             .role(MemberRole.ADMIN) // 너희 프로젝트 enum에 따라 수정
             .build();
 
-    RefreshToken storedRefreshToken = RefreshToken.builder()
-            .token(providedRefreshToken)
-            .build();
+    RefreshToken storedRefreshToken = RefreshToken.builder().token(providedRefreshToken).build();
 
     // mock 설정
     when(jwtTokenProvider.validateToken(providedRefreshToken)).thenReturn(true);
-    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken)).thenReturn(employeeId);
+    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken))
+        .thenReturn(employeeId);
     when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     when(valueOperations.get(employeeId)).thenReturn(storedRefreshToken);
-    when(memberRepository.findByEmployeeIdentificationNumberAndDeletedAtIsNull(employeeId)).thenReturn(Optional.of(member));
+    when(memberRepository.findByEmployeeIdentificationNumberAndDeletedAtIsNull(employeeId))
+        .thenReturn(Optional.of(member));
     when(jwtTokenProvider.createToken(employeeId, "ADMIN")).thenReturn(accessToken);
     when(jwtTokenProvider.createRefreshToken(employeeId, "ADMIN")).thenReturn(newRefreshToken);
 
@@ -167,14 +165,17 @@ class AuthServiceImplTest {
     String employeeId = "EMP001";
 
     when(jwtTokenProvider.validateToken(providedRefreshToken)).thenReturn(true);
-    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken)).thenReturn(employeeId);
+    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken))
+        .thenReturn(employeeId);
     when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     when(valueOperations.get(employeeId)).thenReturn(null); // Redis에 없음
 
     // when & then
-    assertThrows(BadCredentialsException.class, () -> {
-      authService.refreshToken(providedRefreshToken);
-    });
+    assertThrows(
+        BadCredentialsException.class,
+        () -> {
+          authService.refreshToken(providedRefreshToken);
+        });
   }
 
   @DisplayName("리프레시 토큰이 Redis에 있지만 값이 다르면 예외 발생")
@@ -185,20 +186,19 @@ class AuthServiceImplTest {
     String employeeId = "EMP002";
     String storedToken = "stored-token";
 
-    RefreshToken redisToken = RefreshToken.builder()
-            .token(storedToken)
-            .build();
+    RefreshToken redisToken = RefreshToken.builder().token(storedToken).build();
 
     when(jwtTokenProvider.validateToken(providedRefreshToken)).thenReturn(true);
-    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken)).thenReturn(employeeId);
+    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken))
+        .thenReturn(employeeId);
     when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     when(valueOperations.get(employeeId)).thenReturn(redisToken);
 
     // when & then
-    assertThrows(BadCredentialsException.class, () -> {
-      authService.refreshToken(providedRefreshToken);
-    });
+    assertThrows(
+        BadCredentialsException.class,
+        () -> {
+          authService.refreshToken(providedRefreshToken);
+        });
   }
-
-
 }

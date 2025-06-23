@@ -73,7 +73,8 @@ public class AuthServiceImpl implements AuthService {
   public TokenResponse refreshToken(String providedRefreshToken) {
     // 리프레시 토큰 유효성 검사, 저장 되어 있는 userId 추출
     jwtTokenProvider.validateToken(providedRefreshToken);
-    String employeeIdentificationNumber = jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken);
+    String employeeIdentificationNumber =
+        jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(providedRefreshToken);
 
     // Redis에 저장된 리프레시 토큰 조회
     RefreshToken storedRefreshToken = redisTemplate.opsForValue().get(employeeIdentificationNumber);
@@ -87,26 +88,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     // 삭제되지 않은 멤버 조회
-    Member member = memberRepository.findByEmployeeIdentificationNumberAndDeletedAtIsNull(employeeIdentificationNumber)
+    Member member =
+        memberRepository
+            .findByEmployeeIdentificationNumberAndDeletedAtIsNull(employeeIdentificationNumber)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-    String accessToken = jwtTokenProvider.createToken(employeeIdentificationNumber, member.getRole().name());
-    String refreshToken = jwtTokenProvider.createRefreshToken(employeeIdentificationNumber, member.getRole().name());
+    String accessToken =
+        jwtTokenProvider.createToken(employeeIdentificationNumber, member.getRole().name());
+    String refreshToken =
+        jwtTokenProvider.createRefreshToken(employeeIdentificationNumber, member.getRole().name());
 
-    RefreshToken newToken = RefreshToken.builder()
-            .token(refreshToken)
-            .build();
+    RefreshToken newToken = RefreshToken.builder().token(refreshToken).build();
 
     // Redis에 새로운 리프레시 토큰 저장 ( 기존 토큰 덮어쓰기 )
-    redisTemplate.opsForValue().set(
-            member.getEmployeeIdentificationNumber(),
-            newToken,
-            Duration.ofDays(7)
-    );
+    redisTemplate
+        .opsForValue()
+        .set(member.getEmployeeIdentificationNumber(), newToken, Duration.ofDays(7));
 
-    return TokenResponse.builder()
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
-            .build();
+    return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
   }
 }
