@@ -14,7 +14,7 @@ public class TechStackCommandServiceImpl implements TechStackCommandService {
     private final ModelMapper modelMapper;
     private final TechStackRepository techStackRepository;
 
-    public void registerTechStack(TechStackCreateRequest request) {;
+    public void registerTechStack(TechStackCreateRequest request) {
         // 기존에 존재하는 기술스택은 저장하지 않고 종료
         if(techStackRepository.existsById(request.getTechStackName())) {
             return;
