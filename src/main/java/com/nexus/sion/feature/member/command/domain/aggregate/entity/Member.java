@@ -43,7 +43,7 @@ public class Member {
   private String departmentName;
 
   @Column(name = "birthday")
-  private LocalDate birthDay;
+  private LocalDate birthday;
 
   @Column(name = "joined_at")
   private LocalDateTime joinedAt;
@@ -77,9 +77,6 @@ public class Member {
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
   private MemberRole role;
-
-  @Column(nullable = false)
-  private LocalDate birthday;
 
   @PrePersist
   protected void onCreate() {
