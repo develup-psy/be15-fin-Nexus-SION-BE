@@ -1,15 +1,9 @@
 package com.nexus.sion.feature.member.command.application.service;
 
-import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
-import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
-import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
-import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -18,17 +12,23 @@ import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,18 +72,19 @@ public class MemberCommandService {
     memberRepository.save(member);
   }
 
-
   @Transactional
   public void addMembers(List<MemberAddRequest> requests) {
     for (MemberAddRequest request : requests) {
 
       // Position 검증
-      if (request.positionName() != null && !positionRepository.existsById(request.positionName())) {
+      if (request.positionName() != null
+          && !positionRepository.existsById(request.positionName())) {
         throw new BusinessException(ErrorCode.POSITION_NOT_FOUND);
       }
 
       // Department 검증
-      if (request.departmentName() != null && !departmentRepository.existsById(request.departmentName())) {
+      if (request.departmentName() != null
+          && !departmentRepository.existsById(request.departmentName())) {
         throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
       }
 
@@ -104,21 +105,21 @@ public class MemberCommandService {
 
       // 중복 사번 체크 로직
       if (memberRepository.existsByEmployeeIdentificationNumber(
-              request.employeeIdentificationNumber())) {
+          request.employeeIdentificationNumber())) {
         throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER);
       }
 
-
-      int initialScore = initialScoreRepository
+      int initialScore =
+          initialScoreRepository
               .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
               .map(InitialScore::getScore)
               .orElse(0);
 
-      //TODO: 계산한 점수 토대로 등급 산정 로직 추가
-
+      // TODO: 계산한 점수 토대로 등급 산정 로직 추가
 
       // Member 저장
-      Member member = Member.builder()
+      Member member =
+          Member.builder()
               .employeeIdentificationNumber(request.employeeIdentificationNumber())
               .employeeName(request.employeeName())
               .phoneNumber(request.phoneNumber())
@@ -140,19 +141,21 @@ public class MemberCommandService {
 
       memberRepository.save(member);
 
-
-      //TODO: TechStack 검증 로직 추가
+      // TODO: TechStack 검증 로직 추가
 
       // 기술스택 저장
       if (request.techStackNames() != null) {
-        List<DeveloperTechStack> techStacks = request.techStackNames().stream()
-                .map(stack -> DeveloperTechStack.builder()
-                        .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
-                        .techStackName(stack)
-                        .totalScore(initialScore) // 기본값
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .build())
+        List<DeveloperTechStack> techStacks =
+            request.techStackNames().stream()
+                .map(
+                    stack ->
+                        DeveloperTechStack.builder()
+                            .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                            .techStackName(stack)
+                            .totalScore(initialScore) // 기본값
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .build())
                 .collect(Collectors.toList());
 
         developerTechStackRepository.saveAll(techStacks);

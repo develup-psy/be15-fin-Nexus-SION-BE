@@ -1,13 +1,12 @@
 package com.nexus.sion.feature.member.command.domain.repository;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
 
 public interface DeveloperTechStackRepository extends JpaRepository<DeveloperTechStack, Long> {
 
-    List<DeveloperTechStack> findAllByEmployeeIdentificationNumber(String employeeId);
-
-
+  List<DeveloperTechStack> findAllByEmployeeIdentificationNumber(String employeeId);
 }

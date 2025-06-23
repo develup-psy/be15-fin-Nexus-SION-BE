@@ -6,16 +6,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Department;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Position;
-import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
-import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
-import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.transaction.Transactional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +22,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,14 +40,11 @@ class MemberCommandIntegrationTest {
 
   @Autowired private MemberRepository memberRepository;
 
-  @Autowired
-  private PositionRepository positionRepository;
+  @Autowired private PositionRepository positionRepository;
 
-  @Autowired
-  private DepartmentRepository departmentRepository;
+  @Autowired private DepartmentRepository departmentRepository;
 
-  @Autowired
-  private DeveloperTechStackRepository developerTechStackRepository;
+  @Autowired private DeveloperTechStackRepository developerTechStackRepository;
 
   @Test
   @DisplayName("회원 가입 성공")
@@ -86,7 +79,8 @@ class MemberCommandIntegrationTest {
   @DisplayName("개발자 다건 등록 - 성공")
   @WithMockUser
   void addMembers_success() throws Exception {
-    MemberAddRequest request = new MemberAddRequest(
+    MemberAddRequest request =
+        new MemberAddRequest(
             "EMP999",
             "홍길동",
             "01012345678",
@@ -98,15 +92,13 @@ class MemberCommandIntegrationTest {
             "UX",
             "https://cdn.example.com/profile.jpg",
             5000L,
-            List.of("JAVA")
-    );
+            List.of("JAVA"));
 
     String json = objectMapper.writeValueAsString(List.of(request));
 
-    mockMvc.perform(post("/api/v1/members")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(json))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true));
+    mockMvc
+        .perform(post("/api/v1/members").contentType(MediaType.APPLICATION_JSON).content(json))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
   }
 }
