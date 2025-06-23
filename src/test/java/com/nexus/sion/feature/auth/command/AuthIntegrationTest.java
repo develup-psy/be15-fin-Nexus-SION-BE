@@ -23,7 +23,7 @@ import com.nexus.sion.feature.member.command.repository.MemberRepository;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional // 테스트가 끝나면 DB를 원래 상태로 되돌린다.
-public class AuthControllerIntegrationTest {
+public class AuthIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
 
