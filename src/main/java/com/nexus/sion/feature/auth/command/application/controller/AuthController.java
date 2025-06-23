@@ -44,6 +44,12 @@ public class AuthController {
     return buildTokenResponse(tokenResponse);
   }
 
+  @PostMapping("/refresh")
+  public ResponseEntity<ApiResponse<TokenResponse>> refreshToken(@RequestBody RefreshTokenRequest request) {
+    TokenResponse response = authService.refreshToken(request.getRefreshToken());
+    return buildTokenResponse(response);
+  }
+
   /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
   private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
       TokenResponse tokenResponse) {
@@ -55,9 +61,5 @@ public class AuthController {
         .body(ApiResponse.success(tokenResponse));
   }
 
-  @PostMapping("/refresh")
-  public ResponseEntity<ApiResponse<TokenResponse>> refreshToken(@RequestBody RefreshTokenRequest request) {
-    TokenResponse response = authService.refreshToken(request.getRefreshToken());
-    return ResponseEntity.ok(ApiResponse.success(response));
-  }
+
 }
