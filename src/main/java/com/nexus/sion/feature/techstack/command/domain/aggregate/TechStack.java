@@ -19,9 +19,8 @@ import lombok.ToString;
 @ToString
 public class TechStack {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "tech_stack_name")
-  private Long techStackName;
+  private String techStackName;
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
