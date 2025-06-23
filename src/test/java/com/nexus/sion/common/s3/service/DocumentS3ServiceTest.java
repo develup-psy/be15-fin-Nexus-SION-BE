@@ -14,13 +14,19 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 
+import com.nexus.sion.common.s3.dto.S3UploadResponse;
+
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 class DocumentS3ServiceTest {
 
-  @Mock private S3Client s3Client;
+  @Mock
+  private S3Client s3Client;
 
-  @InjectMocks private DocumentS3Service documentS3Service;
+  @InjectMocks
+  private DocumentS3Service documentS3Service;
 
   private static final String BUCKET_NAME = "test-bucket";
 
@@ -46,45 +52,52 @@ class DocumentS3ServiceTest {
   class UploadFileTest {
 
     @Test
-    @DisplayName("PDF 업로드 성공")
-    void uploadPdfSuccess() throws IOException {
-      MockMultipartFile file =
-          new MockMultipartFile("file", "test.pdf", "application/pdf", "test content".getBytes());
+    @DisplayName("정상 업로드 (PDF)")
+    void uploadFileSuccessPdf() throws IOException {
+      MockMultipartFile file = new MockMultipartFile(
+              "file", "test.pdf", "application/pdf", "test content".getBytes()
+      );
 
-      String result = documentS3Service.uploadFile(file, "prefix", "test.pdf");
+      when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+              .thenReturn(PutObjectResponse.builder().build());
 
-      assertEquals("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/test.pdf", result);
+      S3UploadResponse response = documentS3Service.uploadFile(file, "prefix");
+
+      assertNotNull(response);
+      assertTrue(response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
+      assertTrue(response.getSavedFileName().endsWith(".pdf"));
+      assertEquals("test.pdf", response.getOriginalFileName());
+
+      verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
     }
 
     @Test
-    @DisplayName("지원하지 않는 파일 타입 업로드 실패")
-    void uploadUnsupportedFileType() {
-      MockMultipartFile file =
-          new MockMultipartFile("file", "test.txt", "text/plain", "test content".getBytes());
+    @DisplayName("허용되지 않은 파일 형식")
+    void uploadFileInvalidContentType() {
+      MockMultipartFile file = new MockMultipartFile(
+              "file", "test.txt", "text/plain", "test content".getBytes()
+      );
 
-      IllegalArgumentException exception =
-          assertThrows(
+      IllegalArgumentException exception = assertThrows(
               IllegalArgumentException.class,
-              () -> {
-                documentS3Service.uploadFile(file, "prefix", "test.txt");
-              });
+              () -> documentS3Service.uploadFile(file, "prefix")
+      );
 
-      assertEquals("허용되지 않은 파일 타입입니다. (허용: PDF, Excel)", exception.getMessage());
+      assertEquals("허용되지 않은 파일 타입입니다. (허용: PDF)", exception.getMessage());
     }
 
     @Test
     @DisplayName("파일 크기 10MB 초과")
     void uploadFileTooLarge() {
-      byte[] largeContent = new byte[10 * 1024 * 1024 + 1]; // 10MB 초과
-      MockMultipartFile file =
-          new MockMultipartFile("file", "large.pdf", "application/pdf", largeContent);
+      byte[] largeContent = new byte[10 * 1024 * 1024 + 1];
+      MockMultipartFile file = new MockMultipartFile(
+              "file", "large.pdf", "application/pdf", largeContent
+      );
 
-      IllegalArgumentException exception =
-          assertThrows(
+      IllegalArgumentException exception = assertThrows(
               IllegalArgumentException.class,
-              () -> {
-                documentS3Service.uploadFile(file, "prefix", "large.pdf");
-              });
+              () -> documentS3Service.uploadFile(file, "prefix")
+      );
 
       assertEquals("파일 크기가 10MB를 초과합니다.", exception.getMessage());
     }
@@ -95,10 +108,14 @@ class DocumentS3ServiceTest {
   class DeleteFileTest {
 
     @Test
-    @DisplayName("파일 삭제 성공")
+    @DisplayName("정상 삭제")
     void deleteFileSuccess() {
-      documentS3Service.deleteFile("prefix", "test.pdf");
-      // 예외 안 나면 성공으로 간주
+      when(s3Client.deleteObject(any(DeleteObjectRequest.class)))
+              .thenReturn(DeleteObjectResponse.builder().build());
+
+      assertDoesNotThrow(() -> documentS3Service.deleteFile("prefix", "test.pdf"));
+
+      verify(s3Client, times(1)).deleteObject(any(DeleteObjectRequest.class));
     }
   }
 }
