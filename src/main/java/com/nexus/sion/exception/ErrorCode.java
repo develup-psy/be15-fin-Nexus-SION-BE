@@ -17,7 +17,6 @@ public enum ErrorCode {
   UNSUPPORTED_JWT("10006", "지원하지 않는 JWT 토큰입니다.", HttpStatus.UNAUTHORIZED),
   EMPTY_JWT("10007", "JWT 클레임이 비어있습니다.", HttpStatus.UNAUTHORIZED),
   FORBIDDEN("10008", "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
-  REDIS_CONNECTION_FAILURE("10009", "REDIS db와의 연결이 없습니다.", HttpStatus.NOT_FOUND),
 
   USER_NOT_FOUND("20001", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   USER_INFO_NOT_FOUND("20002", "정보 조회에 실패했습니다.", HttpStatus.NOT_FOUND),
