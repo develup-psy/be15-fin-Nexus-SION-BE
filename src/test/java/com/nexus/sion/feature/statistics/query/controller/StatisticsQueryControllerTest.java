@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,34 @@ class StatisticsQueryControllerTest {
         .perform(get("/api/v1/statistics/developers?page=1&size=10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.content[0].name").value("홍길동"));
+  }
+
+  @Test
+  @DisplayName("스택별 평균 경력 조회 성공")
+  void getStackAverageCareerPaged_success() throws Exception {
+    List<TechStackCareerDto> data = List.of(
+            new TechStackCareerDto("Java", 5.4, 2.0, 8.0, 4),
+            new TechStackCareerDto("Spring Boot", 5.1, 2.0, 8.0, 3)
+    );
+
+    PageResponse<TechStackCareerDto> page = PageResponse.fromJooq(data, 2, 0, 10);
+
+    when(service.getStackAverageCareersPaged(
+            List.of("Java", "Spring Boot"),
+            0, 10, "techStackName", "asc"
+    )).thenReturn(page);
+
+    mockMvc
+            .perform(get("/api/v1/statistics/stack/average-career")
+                    .param("selectedStacks", "Java", "Spring Boot")
+                    .param("page", "0")
+                    .param("size", "10")
+                    .param("sort", "techStackName")
+                    .param("direction", "asc"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.content[0].techStackName").value("Java"))
+            .andExpect(jsonPath("$.data.content[0].averageCareer").value(5.4))
+            .andExpect(jsonPath("$.data.content[1].techStackName").value("Spring Boot"))
+            .andExpect(jsonPath("$.data.content[1].averageCareer").value(5.1));
   }
 }
