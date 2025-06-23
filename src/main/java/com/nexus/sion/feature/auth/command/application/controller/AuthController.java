@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.auth.command.application.controller;
 
+import static com.nexus.sion.common.utils.CookieUtils.createDeleteRefreshTokenCookie;
 import static com.nexus.sion.common.utils.CookieUtils.createRefreshTokenCookie;
 
 import org.springframework.http.HttpHeaders;
@@ -53,12 +54,16 @@ public class AuthController {
     return buildTokenResponse(response);
   }
 
-  //
-  //  @PostMapping("/logout")
-  //  public ResponseEntity<ApiResponse<TokenResponse>> logout(@RequestBody ) {
-  //    TokenResponse tokenResponse = authService.login(loginRequest);
-  //    return buildTokenResponse(tokenResponse);
-  //  }
+  @PostMapping("/logout")
+  public ResponseEntity<ApiResponse<Void>> logout(@RequestBody RefreshTokenRequest request) {
+    authService.logout(request.getRefreshToken());
+
+    ResponseCookie deleteCookie = createDeleteRefreshTokenCookie(); // 만료용 쿠키 생성
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+        .body(ApiResponse.success(null));
+  }
 
   /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
   private ResponseEntity<ApiResponse<AccessTokenResponse>> buildTokenResponse(

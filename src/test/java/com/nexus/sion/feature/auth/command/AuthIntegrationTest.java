@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -189,5 +190,33 @@ public class AuthIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().is4xxClientError());
+  }
+
+  @Test
+  void logout_shouldInvalidateTokenAndSetDeleteCookie() throws Exception {
+    // given
+    String refreshToken = redisTemplate.opsForValue().get(employeeId).getToken();
+    RefreshTokenRequest request = new RefreshTokenRequest(refreshToken);
+
+    // when
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post("/api/v1/members/logout")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse();
+
+    // then
+    String setCookieHeader = response.getHeader(HttpHeaders.SET_COOKIE);
+    assertThat(setCookieHeader).isNotNull();
+    assertThat(setCookieHeader).contains("refreshToken=");
+    assertThat(setCookieHeader.toLowerCase()).contains("max-age=0");
+
+    // Redis에서 토큰이 제거되었는지 확인
+    Object deleted = redisTemplate.opsForValue().get(employeeId);
+    assertThat(deleted).isNull();
   }
 }
