@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.Duration;
 import java.util.Arrays;
 
-import com.nexus.sion.feature.auth.command.application.dto.response.AccessTokenResponse;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +26,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
 import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
-import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
@@ -84,18 +82,18 @@ public class AuthIntegrationTest {
   void login_success() throws Exception {
     LoginRequest loginRequest = new LoginRequest(employeeId, "password123");
 
-    MvcResult result = mockMvc
-        .perform(
-            post("/api/v1/members/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(loginRequest)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.accessToken").exists())
+    MvcResult result =
+        mockMvc
+            .perform(
+                post("/api/v1/members/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(loginRequest)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.accessToken").exists())
             .andReturn();
 
     String setCookieHeader = result.getResponse().getHeader(HttpHeaders.SET_COOKIE);
     assertThat(setCookieHeader).contains("refreshToken=");
-
   }
 
   @Test
@@ -146,16 +144,18 @@ public class AuthIntegrationTest {
     String setCookieHeader = result.getResponse().getHeader(HttpHeaders.SET_COOKIE);
     assertThat(setCookieHeader).contains("refreshToken=");
 
-// refreshToken=...; 로부터 실제 토큰 문자열만 파싱
-    String cookieRefreshToken = Arrays.stream(setCookieHeader.split(";"))
+    // refreshToken=...; 로부터 실제 토큰 문자열만 파싱
+    String cookieRefreshToken =
+        Arrays.stream(setCookieHeader.split(";"))
             .filter(part -> part.trim().startsWith("refreshToken="))
             .map(part -> part.trim().substring("refreshToken=".length()))
             .findFirst()
             .orElseThrow(() -> new AssertionError("refreshToken not found in Set-Cookie header"));
 
-// 쿠키에 포함된 리프레시 토큰이 응답 객체(또는 Redis 저장값)과 일치하는지 검증
+    // 쿠키에 포함된 리프레시 토큰이 응답 객체(또는 Redis 저장값)과 일치하는지 검증
     assertThat(cookieRefreshToken).isNotBlank();
-    assertThat(cookieRefreshToken).isEqualTo(redisTemplate.opsForValue().get(employeeId).getToken());
+    assertThat(cookieRefreshToken)
+        .isEqualTo(redisTemplate.opsForValue().get(employeeId).getToken());
   }
 
   @Test

@@ -2,7 +2,6 @@ package com.nexus.sion.feature.auth.command.application.controller;
 
 import static com.nexus.sion.common.utils.CookieUtils.createRefreshTokenCookie;
 
-import com.nexus.sion.feature.auth.command.application.dto.response.AccessTokenResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
 import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
+import com.nexus.sion.feature.auth.command.application.dto.response.AccessTokenResponse;
 import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.feature.auth.command.application.service.AuthService;
 
@@ -40,7 +40,8 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<ApiResponse<AccessTokenResponse>> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<ApiResponse<AccessTokenResponse>> login(
+      @RequestBody LoginRequest loginRequest) {
     TokenResponse tokenResponse = authService.login(loginRequest);
     return buildTokenResponse(tokenResponse);
   }
@@ -51,12 +52,13 @@ public class AuthController {
     TokenResponse response = authService.refreshToken(request.getRefreshToken());
     return buildTokenResponse(response);
   }
-//
-//  @PostMapping("/logout")
-//  public ResponseEntity<ApiResponse<TokenResponse>> logout(@RequestBody ) {
-//    TokenResponse tokenResponse = authService.login(loginRequest);
-//    return buildTokenResponse(tokenResponse);
-//  }
+
+  //
+  //  @PostMapping("/logout")
+  //  public ResponseEntity<ApiResponse<TokenResponse>> logout(@RequestBody ) {
+  //    TokenResponse tokenResponse = authService.login(loginRequest);
+  //    return buildTokenResponse(tokenResponse);
+  //  }
 
   /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
   private ResponseEntity<ApiResponse<AccessTokenResponse>> buildTokenResponse(
@@ -66,10 +68,8 @@ public class AuthController {
     // 쿠키 생성
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(ApiResponse.success(AccessTokenResponse
-                .builder()
-                .accessToken(tokenResponse.getAccessToken())
-                .build())
-        );
+        .body(
+            ApiResponse.success(
+                AccessTokenResponse.builder().accessToken(tokenResponse.getAccessToken()).build()));
   }
 }
