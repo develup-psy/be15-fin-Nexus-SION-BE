@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public enum ErrorCode {
+  // auth
   VALIDATION_ERROR("10001", "입력 값 검증 오류입니다.", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("10002", "내부 서버 오류입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
   UNAUTHORIZED_USER("10003", "인증되지 않은 사용자입니다.", HttpStatus.UNAUTHORIZED),
@@ -18,6 +19,7 @@ public enum ErrorCode {
   EMPTY_JWT("10007", "JWT 클레임이 비어있습니다.", HttpStatus.UNAUTHORIZED),
   FORBIDDEN("10008", "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
+  // member
   USER_NOT_FOUND("20001", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   USER_INFO_NOT_FOUND("20002", "정보 조회에 실패했습니다.", HttpStatus.NOT_FOUND),
   ALREADY_REGISTERED_EMAIL("20003", "이미 가입한 이메일입니다.", HttpStatus.CONFLICT),
@@ -28,7 +30,19 @@ public enum ErrorCode {
   INVALID_EMAIL_FORMAT(
       "20006", "이메일 형식이 올바르지 않습니다. 예: example@example.com", HttpStatus.BAD_REQUEST),
   INVALID_CURRENT_PASSWORD("20007", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
-  INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST);
+  INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
+
+  // project
+
+  // squad
+  SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+  PROJECT_CODE_INVALID("40002", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST);
+
+  // techstack
+
+  // statistics
+
+  // evaluation
 
   private final String code;
   private final String message;
