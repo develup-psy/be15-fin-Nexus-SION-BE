@@ -19,11 +19,6 @@ spring:
       hibernate:
         format_sql: true
 
-#logging:
-#  level:
-#    root: DEBUG
-#    com.nexus.sion: DEBUG
-
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_ACCESS_EXPIRATION}
