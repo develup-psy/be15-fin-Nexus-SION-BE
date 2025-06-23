@@ -39,13 +39,13 @@ class SquadQueryServiceImplTest {
 
     SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("홍길동", "백엔드");
     SquadListResponse squad =
-            new SquadListResponse(
-                    "SQD-1", // squadCode
-                    "백엔드팀", // squadName
-                    false, // isAiRecommended
-                    List.of(member), // members
-                    "2024-01-01 ~ 2024-04-01", // estimatedPeriod
-                    "₩3,000,000" // estimatedCost
+        new SquadListResponse(
+            "SQD-1", // squadCode
+            "백엔드팀", // squadName
+            false, // isAiRecommended
+            List.of(member), // members
+            "2024-01-01 ~ 2024-04-01", // estimatedPeriod
+            "₩3,000,000" // estimatedCost
             );
 
     List<SquadListResponse> mockResponse = List.of(squad);
@@ -70,8 +70,8 @@ class SquadQueryServiceImplTest {
 
     // when & then
     assertThatThrownBy(() -> squadQueryService.findSquads(request))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.PROJECT_SQUAD_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.PROJECT_SQUAD_NOT_FOUND.getMessage());
 
     verify(squadQueryRepository, times(1)).findSquads(request);
   }
@@ -83,26 +83,26 @@ class SquadQueryServiceImplTest {
     String squadCode = "SQD-001";
 
     SquadDetailResponse.MemberInfo member =
-            new SquadDetailResponse.MemberInfo(true, "https://img.com/p1.jpg", "백엔드", "홍길동");
+        new SquadDetailResponse.MemberInfo(true, "https://img.com/p1.jpg", "백엔드", "홍길동");
 
     SquadDetailResponse.CostBreakdown cost =
-            new SquadDetailResponse.CostBreakdown("홍길동", "백엔드", "A", "₩2,000,000");
+        new SquadDetailResponse.CostBreakdown("홍길동", "백엔드", "A", "₩2,000,000");
 
     SquadDetailResponse.SummaryInfo summary =
-            new SquadDetailResponse.SummaryInfo(Map.of("백엔드", 1L), Map.of("A", 1L));
+        new SquadDetailResponse.SummaryInfo(Map.of("백엔드", 1L), Map.of("A", 1L));
 
     SquadDetailResponse mockResponse =
-            new SquadDetailResponse(
-                    squadCode,
-                    "백엔드팀",
-                    true,
-                    "3개월",
-                    "₩2,000,000",
-                    summary,
-                    List.of("Java", "Spring"),
-                    List.of(member),
-                    List.of(cost),
-                    "직접 구성됨");
+        new SquadDetailResponse(
+            squadCode,
+            "백엔드팀",
+            true,
+            "3개월",
+            "₩2,000,000",
+            summary,
+            List.of("Java", "Spring"),
+            List.of(member),
+            List.of(cost),
+            "직접 구성됨");
 
     when(squadQueryRepository.findSquadDetailByCode(squadCode)).thenReturn(mockResponse);
 
@@ -123,15 +123,15 @@ class SquadQueryServiceImplTest {
     String squadCode = "INVALID";
 
     when(squadQueryRepository.findSquadDetailByCode(squadCode))
-            .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
+        .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      squadQueryService.getSquadDetailByCode(squadCode);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              squadQueryService.getSquadDetailByCode(squadCode);
+            });
 
     assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
     verify(squadQueryRepository, times(1)).findSquadDetailByCode(squadCode);
