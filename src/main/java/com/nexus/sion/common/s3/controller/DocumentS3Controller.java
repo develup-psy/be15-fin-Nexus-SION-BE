@@ -15,15 +15,15 @@ public class DocumentS3Controller {
 
   private final DocumentS3Service s3Service;
 
-    @PostMapping("/upload")
-    public S3UploadResponse uploadFile(@RequestParam MultipartFile file,
-                    @RequestParam String prefix) {
-        return s3Service.uploadFile(file, prefix);
-    }
+  @PostMapping("/upload")
+  public S3UploadResponse uploadFile(
+      @RequestParam MultipartFile file, @RequestParam String prefix) {
+    return s3Service.uploadFile(file, prefix);
+  }
 
-    @DeleteMapping("/delete")
-    public String deleteFile(@RequestParam String prefix, @RequestParam String filename) {
-        s3Service.deleteFile(prefix, filename);
-        return "삭제 완료";
-    }
+  @DeleteMapping("/delete")
+  public String deleteFile(@RequestParam String prefix, @RequestParam String filename) {
+    s3Service.deleteFile(prefix, filename);
+    return "삭제 완료";
+  }
 }

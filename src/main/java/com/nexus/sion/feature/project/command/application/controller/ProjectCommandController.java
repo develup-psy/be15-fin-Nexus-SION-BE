@@ -11,18 +11,17 @@ import com.nexus.sion.feature.project.command.application.service.ProjectCommand
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/projects")
 public class ProjectCommandController {
 
-    private final ProjectCommandService projectCommandService;
+  private final ProjectCommandService projectCommandService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<ProjectRegisterResponse>> registerProject(
-                    @RequestBody ProjectRegisterRequest request) {
-        ProjectRegisterResponse response = projectCommandService.registerProject(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
-    }
+  @PostMapping
+  public ResponseEntity<ApiResponse<ProjectRegisterResponse>> registerProject(
+      @RequestBody ProjectRegisterRequest request) {
+    ProjectRegisterResponse response = projectCommandService.registerProject(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
+  }
 }
