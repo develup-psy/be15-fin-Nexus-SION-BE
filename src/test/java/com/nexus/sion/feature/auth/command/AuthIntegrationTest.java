@@ -199,11 +199,12 @@ public class AuthIntegrationTest {
     RefreshTokenRequest request = new RefreshTokenRequest(refreshToken);
 
     // when
-    MockHttpServletResponse response = mockMvc.perform(
-                    post("/api/v1/members/logout")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            )
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post("/api/v1/members/logout")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();

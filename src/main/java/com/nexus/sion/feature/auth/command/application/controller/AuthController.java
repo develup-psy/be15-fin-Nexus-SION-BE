@@ -54,7 +54,6 @@ public class AuthController {
     return buildTokenResponse(response);
   }
 
-
   @PostMapping("/logout")
   public ResponseEntity<ApiResponse<Void>> logout(@RequestBody RefreshTokenRequest request) {
     authService.logout(request.getRefreshToken());
@@ -62,8 +61,8 @@ public class AuthController {
     ResponseCookie deleteCookie = createDeleteRefreshTokenCookie(); // 만료용 쿠키 생성
 
     return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-            .body(ApiResponse.success(null));
+        .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+        .body(ApiResponse.success(null));
   }
 
   /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */

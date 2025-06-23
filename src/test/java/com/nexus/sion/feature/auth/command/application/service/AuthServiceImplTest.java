@@ -208,7 +208,8 @@ class AuthServiceImplTest {
     String refreshToken = "mockRefreshToken";
     String employeeId = "123456";
 
-    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(refreshToken)).thenReturn(employeeId);
+    when(jwtTokenProvider.getEmployeeIdentificationNumberFromJwt(refreshToken))
+        .thenReturn(employeeId);
 
     // when
     authService.logout(refreshToken);
