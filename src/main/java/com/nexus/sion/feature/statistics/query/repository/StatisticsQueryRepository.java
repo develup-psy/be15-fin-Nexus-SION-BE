@@ -40,7 +40,7 @@ public class StatisticsQueryRepository {
   }
 
   public PageResponse<DeveloperDto> findAllDevelopers(int page, int size) {
-    int offset = (page - 1) * size;
+    int offset = page * size;
 
     List<String> memberCodes =
         dsl.select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)
