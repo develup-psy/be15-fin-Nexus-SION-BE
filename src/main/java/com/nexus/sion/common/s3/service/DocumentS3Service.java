@@ -22,9 +22,10 @@ public class DocumentS3Service {
 
     private final S3Client s3Client;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucketName;
+  @Value("${cloud.aws.s3.bucket}")
+  private String bucketName;
 
+<<<<<<< HEAD
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB 제한
 
     public S3UploadResponse uploadFile(MultipartFile file, String prefix) {
@@ -34,9 +35,9 @@ public class DocumentS3Service {
                 throw new IllegalArgumentException("허용되지 않은 파일 타입입니다. (허용: PDF)");
             }
 
-            if (file.getSize() > MAX_FILE_SIZE) {
-                throw new IllegalArgumentException("파일 크기가 10MB를 초과합니다.");
-            }
+      if (file.getSize() > MAX_FILE_SIZE) {
+        throw new IllegalArgumentException("파일 크기가 10MB를 초과합니다.");
+      }
 
             String originalFilename = file.getOriginalFilename();
             String extension = "";
@@ -62,22 +63,18 @@ public class DocumentS3Service {
             throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
         }
     }
+  }
 
-    public void deleteFile(String prefix, String filename) {
-        try {
-            String s3Key = prefix + "/" + filename;
-            s3Client.deleteObject(
-                            DeleteObjectRequest.builder().bucket(bucketName).key(s3Key).build());
-        } catch (S3Exception e) {
-            throw new RuntimeException(
-                            "S3 파일 삭제 중 오류가 발생했습니다: " + e.awsErrorDetails().errorMessage());
-        }
+  public void deleteFile(String prefix, String filename) {
+    try {
+      String s3Key = prefix + "/" + filename;
+      s3Client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(s3Key).build());
+    } catch (S3Exception e) {
+      throw new RuntimeException("S3 파일 삭제 중 오류가 발생했습니다: " + e.awsErrorDetails().errorMessage());
     }
+  }
 
-    private boolean isAllowedContentType(String contentType) {
-        return "application/pdf".equals(contentType)
-                        || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                        .equals(contentType)
-                        || "application/vnd.ms-excel".equals(contentType);
-    }
+  private boolean isAllowedContentType(String contentType) {
+    return "application/pdf".equals(contentType);
+  }
 }

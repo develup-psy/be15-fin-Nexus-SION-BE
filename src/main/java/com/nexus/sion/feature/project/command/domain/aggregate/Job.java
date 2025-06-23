@@ -15,13 +15,13 @@ import lombok.*;
 @Builder
 public class Job {
 
-    @Id
-    @Column(name = "name", length = 30)
-    private String name;
+  @Id
+  @Column(name = "name", length = 30)
+  private String name;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+  @Column(name = "created_at", nullable = false)
+  private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+  @Column(name = "updated_at", nullable = false)
+  private LocalDateTime updatedAt;
 }

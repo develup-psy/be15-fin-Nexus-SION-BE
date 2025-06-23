@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentS3Controller {
 
-    private final DocumentS3Service s3Service;
+  private final DocumentS3Service s3Service;
 
     @PostMapping("/upload")
     public S3UploadResponse uploadFile(@RequestParam MultipartFile file,

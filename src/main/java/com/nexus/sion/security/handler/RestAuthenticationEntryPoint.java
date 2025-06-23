@@ -15,24 +15,32 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.exception.CustomJwtException;
 import com.nexus.sion.exception.ErrorCode;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                    AuthenticationException authException) throws IOException, ServletException {
+  private final ObjectMapper objectMapper;
 
-        CustomJwtException jwtEx = (CustomJwtException) request.getAttribute("jwtException");
+  @Override
+  public void commence(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AuthenticationException authException)
+      throws IOException, ServletException {
 
-        ApiResponse<Void> errorResponse = (jwtEx != null)
-                        ? ApiResponse.failure(jwtEx.getErrorCode().getCode(),
-                                        jwtEx.getErrorCode().getMessage())
-                        : ApiResponse.failure(ErrorCode.UNAUTHORIZED_USER.getCode(),
-                                        ErrorCode.UNAUTHORIZED_USER.getMessage());
+    CustomJwtException jwtEx = (CustomJwtException) request.getAttribute("jwtException");
 
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    ApiResponse<Void> errorResponse =
+        (jwtEx != null)
+            ? ApiResponse.failure(jwtEx.getErrorCode().getCode(), jwtEx.getErrorCode().getMessage())
+            : ApiResponse.failure(
+                ErrorCode.UNAUTHORIZED_USER.getCode(), ErrorCode.UNAUTHORIZED_USER.getMessage());
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
-    }
+    response.setContentType("application/json;charset=UTF-8");
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+    response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+  }
 }

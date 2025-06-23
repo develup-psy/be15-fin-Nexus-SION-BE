@@ -8,11 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberListRequest {
-    private int page = 0;
-    private int size = 10;
+  private int page = 0;
+  private int size = 10;
 
-    private String status; // ex: "AVAILABLE", "IN_PROJECT", "UNAVAILABLE"
-    private String nameInitial;
-    private String sortBy;
-    private String sortDir;
+  private String status; // ex: "AVAILABLE", "IN_PROJECT", "UNAVAILABLE"
+  private String nameInitial;
+  private String sortBy;
+  private String sortDir;
 }
