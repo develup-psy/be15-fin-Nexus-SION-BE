@@ -7,20 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class TechStackCommandService {
 
-    private final ModelMapper modelMapper;
-    private final TechStackRepository techStackRepository;
-
-    public void registerTechStack(TechStackCreateRequest request) {;
-        // 기존에 존재하는 기술스택은 저장하지 않고 종료
-        if(techStackRepository.existsById(request.getTechStackName())) {
-            return;
-        }
-
-        TechStack techStack = modelMapper.map(request, TechStack.class);
-        techStackRepository.save(techStack);
-    }
+public interface TechStackCommandService {
+ void registerTechStack(TechStackCreateRequest request);
 }
