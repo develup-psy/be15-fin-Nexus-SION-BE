@@ -5,14 +5,11 @@ import lombok.*;
 
 @Builder
 @Getter
-@Schema(description = "JWT 토큰 응답 DTO")
+@Schema(description = "JWT 액세스 토큰 응답 DTO")
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Setter
-public class TokenResponse {
+public class AccessTokenResponse {
   @Schema(description = "Access Token")
   private String accessToken;
-
-  @Schema(description = "Refresh Token")
-  private String refreshToken;
 }

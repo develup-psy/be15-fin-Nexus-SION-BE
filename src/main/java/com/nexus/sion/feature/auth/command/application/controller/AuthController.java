@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
+import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
+import com.nexus.sion.feature.auth.command.application.dto.response.AccessTokenResponse;
 import com.nexus.sion.feature.auth.command.application.dto.response.TokenResponse;
 import com.nexus.sion.feature.auth.command.application.service.AuthService;
 
@@ -31,26 +33,43 @@ public class AuthController {
   /* 테스트 로그인 */
   @Operation(summary = "테스트용 로그인", description = "테스트용 로그인 후 JWT를 발급합니다.")
   @PostMapping("/login/test")
-  public ResponseEntity<ApiResponse<TokenResponse>> login() {
+  public ResponseEntity<ApiResponse<AccessTokenResponse>> login() {
     TokenResponse token = authService.testLogin();
     log.info(token.toString());
     return buildTokenResponse(token);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<ApiResponse<AccessTokenResponse>> login(
+      @RequestBody LoginRequest loginRequest) {
     TokenResponse tokenResponse = authService.login(loginRequest);
     return buildTokenResponse(tokenResponse);
   }
 
+  @PostMapping("/refresh")
+  public ResponseEntity<ApiResponse<AccessTokenResponse>> refreshToken(
+      @RequestBody RefreshTokenRequest request) {
+    TokenResponse response = authService.refreshToken(request.getRefreshToken());
+    return buildTokenResponse(response);
+  }
+
+  //
+  //  @PostMapping("/logout")
+  //  public ResponseEntity<ApiResponse<TokenResponse>> logout(@RequestBody ) {
+  //    TokenResponse tokenResponse = authService.login(loginRequest);
+  //    return buildTokenResponse(tokenResponse);
+  //  }
+
   /* accessToken 과 refreshToken을 body와 쿠키에 담아 반환 */
-  private ResponseEntity<ApiResponse<TokenResponse>> buildTokenResponse(
+  private ResponseEntity<ApiResponse<AccessTokenResponse>> buildTokenResponse(
       TokenResponse tokenResponse) {
     ResponseCookie cookie =
         createRefreshTokenCookie(tokenResponse.getRefreshToken()); // refreshToken
     // 쿠키 생성
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(ApiResponse.success(tokenResponse));
+        .body(
+            ApiResponse.success(
+                AccessTokenResponse.builder().accessToken(tokenResponse.getAccessToken()).build()));
   }
 }

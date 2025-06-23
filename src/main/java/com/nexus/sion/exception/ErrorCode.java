@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public enum ErrorCode {
-
   // auth
   VALIDATION_ERROR("10001", "입력 값 검증 오류입니다.", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("10002", "내부 서버 오류입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -30,8 +29,8 @@ public enum ErrorCode {
       "20005", "휴대폰 번호는 하이픈(-) 없이 10자리 또는 11자리 숫자로 입력해주세요. 예: 01012345678", HttpStatus.BAD_REQUEST),
   INVALID_EMAIL_FORMAT(
       "20006", "이메일 형식이 올바르지 않습니다. 예: example@example.com", HttpStatus.BAD_REQUEST),
-  INVALID_CURRENT_PASSWORD("20006", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
-  INVALID_MEMBER_STATUS("20007", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
+  INVALID_CURRENT_PASSWORD("20007", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
+  INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
 
   // project
 

@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TechStackCountDto {
-    private String techStackName;
-    private Integer count;
+  private String techStackName;
+  private Integer count;
 }
