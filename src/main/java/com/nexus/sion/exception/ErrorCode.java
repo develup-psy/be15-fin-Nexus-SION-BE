@@ -42,7 +42,7 @@ public enum ErrorCode {
   PROJECT_CODE_INVALID("40003", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
 
   // techstack
-  TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+  TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
   // statistics
 
