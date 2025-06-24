@@ -1,5 +1,9 @@
 package com.nexus.sion.feature.member.command.application.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 
@@ -28,5 +33,15 @@ public class MemberCommandController {
   public ResponseEntity<ApiResponse<Void>> register(@RequestBody MemberCreateRequest request) {
     userCommandService.registerUser(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+  }
+
+  @Operation(summary = "구성원 등록", description = "구성원 등록 기능")
+  @PostMapping
+  public ResponseEntity<ApiResponse<Void>> registerMembers(
+      @RequestBody @Valid List<MemberAddRequest> requests) {
+
+    userCommandService.addMembers(requests);
+
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

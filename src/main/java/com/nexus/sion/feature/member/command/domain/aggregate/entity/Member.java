@@ -36,6 +36,15 @@ public class Member {
   @Column(name = "phone_number", nullable = false, length = 11)
   private String phoneNumber;
 
+  @Column(name = "position_name")
+  private String positionName;
+
+  @Column(name = "department_name")
+  private String departmentName;
+
+  @Column(name = "birthday")
+  private LocalDate birthday;
+
   @Column(name = "joined_at")
   private LocalDateTime joinedAt;
 
@@ -68,9 +77,6 @@ public class Member {
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
   private MemberRole role;
-
-  @Column(nullable = false)
-  private LocalDate birthday;
 
   @PrePersist
   protected void onCreate() {
