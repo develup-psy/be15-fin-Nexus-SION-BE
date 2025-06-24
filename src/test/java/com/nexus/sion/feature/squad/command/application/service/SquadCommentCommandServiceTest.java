@@ -91,4 +91,27 @@ class SquadCommentCommandServiceTest {
 
     verify(squadCommentRepository, never()).delete(any());
   }
+
+  @Test
+  @DisplayName("코멘트가 다른 스쿼드에 속할 경우 삭제 시 예외가 발생한다")
+  void deleteComment_fail_whenSquadCodeMismatches() {
+    // given
+    String requestSquadCode = "ha_1_1_1";
+    Long commentId = 1L;
+    SquadComment comment = SquadComment.builder()
+            .id(commentId)
+            .squadCode("another_squad_code")
+            .employeeIdentificationNumber("EMM001")
+            .content("테스트")
+            .build();
+
+    when(squadCommentRepository.findById(commentId)).thenReturn(java.util.Optional.of(comment));
+
+    // when & then
+    assertThatThrownBy(() -> squadCommentCommandService.deleteComment(requestSquadCode, commentId))
+            .isInstanceOf(BusinessException.class)
+            .hasMessageContaining(ErrorCode.INVALID_COMMENT_ACCESS.getMessage());
+
+    verify(squadCommentRepository, never()).delete(any(SquadComment.class));
+  }
 }
