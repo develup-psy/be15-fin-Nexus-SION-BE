@@ -98,9 +98,9 @@ public class Member {
   }
 
   public void update(
-      String name,
-      String phone,
-      LocalDate birth,
+      String employeeName,
+      String phoneNumber,
+      LocalDate birthday,
       LocalDateTime joinedAt,
       String email,
       Integer careerYears,
@@ -108,9 +108,9 @@ public class Member {
       String departmentName,
       String profileImageUrl,
       Long salary) {
-    this.employeeName = name;
-    this.phoneNumber = phone;
-    this.birthday = birth;
+    this.employeeName = employeeName;
+    this.phoneNumber = phoneNumber;
+    this.birthday = birthday;
     this.joinedAt = joinedAt;
     this.email = email;
     this.careerYears = careerYears;
