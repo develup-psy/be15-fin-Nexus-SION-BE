@@ -5,7 +5,6 @@ import static com.example.jooq.generated.tables.JobAndTechStack.JOB_AND_TECH_STA
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
 import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
-import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
 
 import java.time.LocalDate;
 import java.util.*;

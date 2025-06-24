@@ -2,7 +2,7 @@ package com.nexus.sion.feature.statistics.query.controller;
 
 import java.util.List;
 
-import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
@@ -12,6 +12,7 @@ import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.service.StatisticsQueryService;
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,43 +25,51 @@ public class StatisticsQueryController {
   private final TechStackQueryService techStackQueryService;
 
   @PostMapping("/stack/member-count")
-  public ApiResponse<List<TechStackCountDto>> getStackCount(@RequestBody List<String> stacks) {
-    return ApiResponse.success(statisticsQueryService.getStackMemberCounts(stacks));
+  public ResponseEntity<ApiResponse<List<TechStackCountDto>>> getStackCount(
+      @RequestBody List<String> stacks) {
+    var response = statisticsQueryService.getStackMemberCounts(stacks);
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @GetMapping("/all-tech-stacks")
-  public ApiResponse<List<String>> getAllTechStacks() {
-    return ApiResponse.success(techStackQueryService.findAllStackNames());
+  public ResponseEntity<ApiResponse<List<String>>> getAllTechStacks() {
+    var response = techStackQueryService.findAllStackNames();
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @GetMapping("/developers")
-  public ApiResponse<PageResponse<DeveloperDto>> getAllDevelopers(
+  public ResponseEntity<ApiResponse<PageResponse<DeveloperDto>>> getAllDevelopers(
       @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
-    return ApiResponse.success(statisticsQueryService.getAllDevelopers(page, size));
+    var response = statisticsQueryService.getAllDevelopers(page, size);
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @GetMapping("/stack/average-career")
-  public ApiResponse<PageResponse<TechStackCareerDto>> getStackAverageCareerPaged(
+  public ResponseEntity<ApiResponse<PageResponse<TechStackCareerDto>>> getStackAverageCareerPaged(
       @RequestParam List<String> selectedStacks,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(defaultValue = "techStackName") String sort,
       @RequestParam(defaultValue = "asc") String direction) {
-    return ApiResponse.success(
-        statisticsQueryService.getStackAverageCareersPaged(selectedStacks, page, size, sort, direction));
+    var response =
+        statisticsQueryService.getStackAverageCareersPaged(
+            selectedStacks, page, size, sort, direction);
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @GetMapping("/stack/popular")
-  public ApiResponse<PageResponse<PopularTechStackDto>> getPopularTechStacks(
+  public ResponseEntity<ApiResponse<PageResponse<PopularTechStackDto>>> getPopularTechStacks(
       @RequestParam String period,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(name = "top", required = false) Integer top) {
 
     if (top != null) {
-      return ApiResponse.success(statisticsQueryService.getPopularTechStacksWithTop(period, top));
+      var response = statisticsQueryService.getPopularTechStacksWithTop(period, top);
+      return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    return ApiResponse.success(statisticsQueryService.getPopularTechStacks(period, page, size));
+    var response = statisticsQueryService.getPopularTechStacks(period, page, size);
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 }
