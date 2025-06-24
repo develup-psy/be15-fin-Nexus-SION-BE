@@ -148,6 +148,41 @@ class ProjectCommandServiceImplTest {
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
 
+  @Test
+  @DisplayName("프로젝트 상태 변경 성공")
+  void updateProjectStatus_Success() {
+    // given
+    String projectCode = "P123";
+    Project project =
+        Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
+
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(project));
+
+    // when
+    projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
+
+    // then
+    assertThat(project.getStatus()).isEqualTo(Project.ProjectStatus.COMPLETE);
+    assertThat(project.getActualEndDate()).isNotNull();
+    verify(projectCommandRepository).save(project);
+  }
+
+  @Test
+  @DisplayName("프로젝트 상태 변경 실패 - 존재하지 않는 프로젝트")
+  void updateProjectStatus_Fail_NotFound() {
+    // given
+    String projectCode = "NOT_EXIST";
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.empty());
+
+    // when & then
+    assertThatThrownBy(
+            () ->
+                projectCommandService.updateProjectStatus(
+                    projectCode, Project.ProjectStatus.IN_PROGRESS))
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+  }
+
   private ProjectRegisterRequest createRequest() {
     TechStackInfo techStack = new TechStackInfo();
     techStack.setTechStackName("Java");
