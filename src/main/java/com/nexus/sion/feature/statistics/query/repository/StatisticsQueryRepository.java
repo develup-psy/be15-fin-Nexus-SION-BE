@@ -169,6 +169,7 @@ public class StatisticsQueryRepository {
 
   public PageResponse<PopularTechStackDto> findPopularTechStacks(
       String period, int page, int sizeOrTop) {
+
     LocalDate now = LocalDate.now();
     LocalDate fromDate =
         switch (period.toLowerCase()) {
@@ -179,7 +180,7 @@ public class StatisticsQueryRepository {
           default -> throw new BusinessException(ErrorCode.INVALID_PERIOD);
         };
 
-    // usage CTE
+    // usage count CTE
     var usageCte =
         dsl.select(JOB_AND_TECH_STACK.TECH_STACK_NAME, DSL.count().as("usage_count"))
             .from(JOB_AND_TECH_STACK)
@@ -192,12 +193,16 @@ public class StatisticsQueryRepository {
             .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
             .asTable("usage");
 
-    // latest project CTE
-    var latestProjectCte =
+    // latest project name CTE using row_number()
+    var latestProjectSubCte =
         dsl.select(
                 JOB_AND_TECH_STACK.TECH_STACK_NAME,
-                DSL.max(PROJECT.START_DATE).as("latest_start"),
-                PROJECT.NAME)
+                PROJECT.NAME.as("latest_project_name"),
+                DSL.rowNumber()
+                    .over()
+                    .partitionBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
+                    .orderBy(PROJECT.START_DATE.desc())
+                    .as("rn"))
             .from(JOB_AND_TECH_STACK)
             .join(PROJECT_AND_JOB)
             .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
@@ -205,11 +210,18 @@ public class StatisticsQueryRepository {
             .on(PROJECT_AND_JOB.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
             .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
             .and(PROJECT.START_DATE.ge(fromDate))
-            .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME, PROJECT.NAME)
-            .asTable("latest");
+            .asTable("latest_project_sub");
 
-    // top job CTE
-    var topJobCte =
+    var latestProjectCte =
+        dsl.select(
+                latestProjectSubCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                latestProjectSubCte.field("latest_project_name", String.class))
+            .from(latestProjectSubCte)
+            .where(latestProjectSubCte.field("rn", Integer.class).eq(1))
+            .asTable("latest_project");
+
+    // top job CTE using first_value
+    var jobRankCte =
         dsl.select(
                 JOB_AND_TECH_STACK.TECH_STACK_NAME,
                 PROJECT_AND_JOB.JOB_NAME,
@@ -224,36 +236,39 @@ public class StatisticsQueryRepository {
             .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME, PROJECT_AND_JOB.JOB_NAME)
             .asTable("job_rank");
 
-    var topJobSubquery =
+    var topJobCte =
         dsl.selectDistinct(
-                topJobCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                DSL.firstValue(topJobCte.field(PROJECT_AND_JOB.JOB_NAME))
+                jobRankCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                DSL.firstValue(jobRankCte.field(PROJECT_AND_JOB.JOB_NAME))
                     .over()
-                    .partitionBy(topJobCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .orderBy(topJobCte.field("job_count").desc())
+                    .partitionBy(jobRankCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
+                    .orderBy(jobRankCte.field("job_count").desc())
                     .as("top_job_name"))
-            .from(topJobCte)
+            .from(jobRankCte)
             .asTable("top_job");
 
-    // 최종 조인 쿼리
+    // 최종 결과 쿼리
     var resultQuery =
         dsl.select(
                 usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
                 usageCte.field("usage_count", Long.class),
-                latestProjectCte.field(PROJECT.NAME),
-                topJobSubquery.field("top_job_name", String.class))
+                latestProjectCte.field("latest_project_name", String.class),
+                topJobCte.field("top_job_name", String.class))
             .from(usageCte)
             .leftJoin(latestProjectCte)
             .on(
                 usageCte
                     .field(JOB_AND_TECH_STACK.TECH_STACK_NAME)
                     .eq(latestProjectCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
-            .leftJoin(topJobSubquery)
+            .leftJoin(topJobCte)
             .on(
                 usageCte
                     .field(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-                    .eq(topJobSubquery.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
-            .orderBy(usageCte.field("usage_count").desc())
+                    .eq(topJobCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
+            .orderBy(
+                usageCte.field("usage_count").desc(),
+                latestProjectCte.field("latest_project_name").asc().nullsLast(),
+                usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME).asc())
             .limit(sizeOrTop)
             .offset(page * sizeOrTop);
 
@@ -262,8 +277,8 @@ public class StatisticsQueryRepository {
             record ->
                 PopularTechStackDto.builder()
                     .techStackName(record.get(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .usageCount(record.get("usage_count", int.class))
-                    .latestProjectName(record.get(PROJECT.NAME))
+                    .usageCount(record.get("usage_count", Integer.class))
+                    .latestProjectName(record.get("latest_project_name", String.class))
                     .topJobName(record.get("top_job_name", String.class))
                     .build());
 
