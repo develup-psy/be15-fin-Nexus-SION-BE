@@ -5,4 +5,6 @@ import com.nexus.sion.feature.project.command.application.dto.response.ProjectRe
 
 public interface ProjectCommandService {
   ProjectRegisterResponse registerProject(ProjectRegisterRequest request);
+
+  void updateProject(ProjectRegisterRequest request);
 }

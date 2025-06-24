@@ -6,6 +6,13 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,28 +24,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class TechStackCommandControllerIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private TechStackRepository techStackRepository;
+  @Autowired private TechStackRepository techStackRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("새로운 기술 스택을 등록하면 201이 반환된다.")
@@ -47,40 +45,44 @@ class TechStackCommandControllerIntegrationTest {
         String techStackName = "test";
         TechStackRequest request = new TechStackRequest(techStackName);
 
-        // when & then
-        mockMvc.perform(post("/api/v1/tech-stack")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+    // when & then
+    mockMvc
+        .perform(
+            post("/api/v1/tech-stack")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated());
 
-        // then - DB에 저장되었는지 확인
-        assertThat(techStackRepository.findById(techStackName)).isPresent();
-    }
+    // then - DB에 저장되었는지 확인
+    assertThat(techStackRepository.findById(techStackName)).isPresent();
+  }
 
-    @Test
-    @DisplayName("이미 존재하는 기술 스택은 저장하지 않는다.")
-    void registerExistingTechStack_doesNotSaveAgain() throws Exception {
-        // given
-        String existingTechStackName = "techStackName";
-        Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        TechStack existing = constructor.newInstance();
+  @Test
+  @DisplayName("이미 존재하는 기술 스택은 저장하지 않는다.")
+  void registerExistingTechStack_doesNotSaveAgain() throws Exception {
+    // given
+    String existingTechStackName = "techStackName";
+    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
+    constructor.setAccessible(true);
+    TechStack existing = constructor.newInstance();
 
-        // id 필드 설정
-        Field idField = TechStack.class.getDeclaredField(existingTechStackName);
-        idField.setAccessible(true);
-        idField.set(existing, existingTechStackName);
+    // id 필드 설정
+    Field idField = TechStack.class.getDeclaredField(existingTechStackName);
+    idField.setAccessible(true);
+    idField.set(existing, existingTechStackName);
 
         techStackRepository.save(existing);
         int existingCount = techStackRepository.findAll().size();
 
         TechStackRequest request = new TechStackRequest(existingTechStackName);
 
-        // when & then
-        mockMvc.perform(post("/api/v1/tech-stack")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated()); // 응답은 성공
+    // when & then
+    mockMvc
+        .perform(
+            post("/api/v1/tech-stack")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated()); // 응답은 성공
 
         // then - 여전히 하나만 존재
         assertThat(techStackRepository.findAll().size()).isEqualTo(existingCount);

@@ -4,9 +4,12 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,6 +38,7 @@ class ProjectCommandServiceImplTest {
   }
 
   @Test
+  @DisplayName("프로젝트 등록 성공")
   void registerProject_Success() {
     // given
     ProjectRegisterRequest request = createRequest();
@@ -53,6 +57,7 @@ class ProjectCommandServiceImplTest {
   }
 
   @Test
+  @DisplayName("중복 프로젝트 코드 등록 실패")
   void registerProject_Fail_When_Duplicated_ProjectCode() {
     // given
     ProjectRegisterRequest request = createRequest();
@@ -63,6 +68,46 @@ class ProjectCommandServiceImplTest {
     assertThatThrownBy(() -> projectCommandService.registerProject(request))
         .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.PROJECT_CODE_DUPLICATED.getMessage());
+  }
+
+  @Test
+  @DisplayName("프로젝트 수정 성공")
+  void updateProject_Success() {
+    // given
+    ProjectRegisterRequest request = createRequest();
+
+    Project existingProject =
+        Project.builder()
+            .projectCode(request.getProjectCode())
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
+
+    when(projectCommandRepository.findById(request.getProjectCode()))
+        .thenReturn(Optional.of(existingProject));
+    when(projectAndJobRepository.findByProjectCode(request.getProjectCode()))
+        .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
+
+    // when
+    projectCommandService.updateProject(request);
+
+    // then
+    verify(projectCommandRepository).save(existingProject);
+    verify(jobAndTechStackRepository).deleteByProjectJobId(anyLong());
+    verify(projectAndJobRepository).deleteByProjectCode(request.getProjectCode());
+  }
+
+  @Test
+  @DisplayName("없는 프로젝트 수정 시 예외 발생")
+  void updateProject_Fail_When_ProjectNotFound() {
+    // given
+    ProjectRegisterRequest request = createRequest();
+    when(projectCommandRepository.findById(request.getProjectCode())).thenReturn(Optional.empty());
+
+    // when & then
+    assertThatThrownBy(() -> projectCommandService.updateProject(request))
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
 
   private ProjectRegisterRequest createRequest() {
@@ -87,7 +132,6 @@ class ProjectCommandServiceImplTest {
     request.setNumberOfMembers(5);
     request.setRequestSpecificationUrl("https://s3.url/spec.pdf");
     request.setJobs(List.of(job));
-
     return request;
   }
 }
