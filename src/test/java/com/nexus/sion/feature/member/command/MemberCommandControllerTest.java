@@ -1,6 +1,10 @@
 package com.nexus.sion.feature.member.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,6 +14,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
+import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +29,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
-import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
-import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
+import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,7 +50,8 @@ class MemberCommandIntegrationTest {
 
   @Autowired private MemberRepository memberRepository;
 
-  @Autowired private MemberCommandService memberCommandService;
+  @Autowired
+  private MemberCommandService memberCommandService;
 
   @Test
   @DisplayName("회원 가입 성공")
@@ -104,8 +115,7 @@ class MemberCommandIntegrationTest {
   void updateMember_success() throws Exception {
     // given
     String employeeId = "001";
-    MemberUpdateRequest request =
-        new MemberUpdateRequest(
+    MemberUpdateRequest request = new MemberUpdateRequest(
             "홍길동",
             "01012345678",
             LocalDate.of(1990, 1, 1),
@@ -116,17 +126,16 @@ class MemberCommandIntegrationTest {
             "UX",
             "http://image.url",
             5000L,
-            List.of("Java", "Spring"));
+            List.of("Java", "Spring")
+    );
 
     String json = objectMapper.writeValueAsString(request);
 
     // when & then
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.put("/api/v1/members/{employeeId}", employeeId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.success").value(true));
+    mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/members/{employeeId}", employeeId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true));
   }
 }
