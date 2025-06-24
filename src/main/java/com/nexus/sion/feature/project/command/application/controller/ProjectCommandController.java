@@ -32,4 +32,10 @@ public class ProjectCommandController {
     projectCommandService.updateProject(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
+
+  @DeleteMapping("/{projectCode}")
+  public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable String projectCode) {
+    projectCommandService.deleteProject(projectCode);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
 }
