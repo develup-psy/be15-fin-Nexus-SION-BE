@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class TechStackDTO {
-    String techStackName;
+  String techStackName;
 }

@@ -22,11 +22,9 @@ import software.amazon.awssdk.services.s3.model.*;
 
 class DocumentS3ServiceTest {
 
-  @Mock
-  private S3Client s3Client;
+  @Mock private S3Client s3Client;
 
-  @InjectMocks
-  private DocumentS3Service documentS3Service;
+  @InjectMocks private DocumentS3Service documentS3Service;
 
   private static final String BUCKET_NAME = "test-bucket";
 
@@ -54,17 +52,17 @@ class DocumentS3ServiceTest {
     @Test
     @DisplayName("정상 업로드 (PDF)")
     void uploadFileSuccessPdf() throws IOException {
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "test.pdf", "application/pdf", "test content".getBytes()
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "test.pdf", "application/pdf", "test content".getBytes());
 
       when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
-              .thenReturn(PutObjectResponse.builder().build());
+          .thenReturn(PutObjectResponse.builder().build());
 
       S3UploadResponse response = documentS3Service.uploadFile(file, "prefix");
 
       assertNotNull(response);
-      assertTrue(response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
+      assertTrue(
+          response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
       assertTrue(response.getSavedFileName().endsWith(".pdf"));
       assertEquals("test.pdf", response.getOriginalFileName());
 
@@ -74,14 +72,12 @@ class DocumentS3ServiceTest {
     @Test
     @DisplayName("허용되지 않은 파일 형식")
     void uploadFileInvalidContentType() {
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "test.txt", "text/plain", "test content".getBytes()
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "test.txt", "text/plain", "test content".getBytes());
 
-      IllegalArgumentException exception = assertThrows(
-              IllegalArgumentException.class,
-              () -> documentS3Service.uploadFile(file, "prefix")
-      );
+      IllegalArgumentException exception =
+          assertThrows(
+              IllegalArgumentException.class, () -> documentS3Service.uploadFile(file, "prefix"));
 
       assertEquals("허용되지 않은 파일 타입입니다. (허용: PDF)", exception.getMessage());
     }
@@ -90,14 +86,12 @@ class DocumentS3ServiceTest {
     @DisplayName("파일 크기 10MB 초과")
     void uploadFileTooLarge() {
       byte[] largeContent = new byte[10 * 1024 * 1024 + 1];
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "large.pdf", "application/pdf", largeContent
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "large.pdf", "application/pdf", largeContent);
 
-      IllegalArgumentException exception = assertThrows(
-              IllegalArgumentException.class,
-              () -> documentS3Service.uploadFile(file, "prefix")
-      );
+      IllegalArgumentException exception =
+          assertThrows(
+              IllegalArgumentException.class, () -> documentS3Service.uploadFile(file, "prefix"));
 
       assertEquals("파일 크기가 10MB를 초과합니다.", exception.getMessage());
     }
@@ -111,7 +105,7 @@ class DocumentS3ServiceTest {
     @DisplayName("정상 삭제")
     void deleteFileSuccess() {
       when(s3Client.deleteObject(any(DeleteObjectRequest.class)))
-              .thenReturn(DeleteObjectResponse.builder().build());
+          .thenReturn(DeleteObjectResponse.builder().build());
 
       assertDoesNotThrow(() -> documentS3Service.deleteFile("prefix", "test.pdf"));
 
