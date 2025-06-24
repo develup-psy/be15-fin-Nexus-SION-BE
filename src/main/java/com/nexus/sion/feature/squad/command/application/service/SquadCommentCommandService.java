@@ -34,6 +34,7 @@ public class SquadCommentCommandService {
     squadCommentRepository.save(comment);
   }
 
+  @org.springframework.transaction.annotation.Transactional
   public void deleteComment(String squadCode, Long commentId) {
     SquadComment comment =
         squadCommentRepository
