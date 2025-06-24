@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.statistics;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -72,5 +73,23 @@ class StatisticsQueryIntergrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.data.content").isArray());
+  }
+
+  @Test
+  @DisplayName("GET /stack/popular - top 파라미터로 인기 기술스택 조회")
+  void getPopularTechStacks_withTopParam() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/statistics/stack/popular")
+                .param("period", "1m")
+                .param("top", "5")) // top 우선 적용
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data.content").isArray())
+        .andExpect(jsonPath("$.data.content", hasSize(lessThanOrEqualTo(5))))
+        .andExpect(jsonPath("$.data.content[0].techStackName").exists())
+        .andExpect(jsonPath("$.data.content[0].usageCount").exists())
+        .andExpect(jsonPath("$.data.content[0].latestProjectName").exists())
+        .andExpect(jsonPath("$.data.content[0].topJobName").exists());
   }
 }

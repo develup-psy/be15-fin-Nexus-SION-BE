@@ -46,13 +46,13 @@ public enum ErrorCode {
   COMMENT_CONTENT_EMPTY("40003", "코멘트 내용(content)은 공백일 수 없습니다.", HttpStatus.BAD_REQUEST),
   PROJECT_CODE_INVALID("40004", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
   COMMENT_NOT_FOUND("40005", "존재하지 않는 코멘트입니다.", HttpStatus.NOT_FOUND),
-  INVALID_COMMENT_ACCESS("40006", "해당 스쿼드의 코멘트가 아닙니다.", HttpStatus.FORBIDDEN);
-
+  INVALID_COMMENT_ACCESS("40006", "해당 스쿼드의 코멘트가 아닙니다.", HttpStatus.FORBIDDEN),
 
   // techstack
-  TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+  TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
 
   // statistics
+  INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST);
 
   // evaluation
 
