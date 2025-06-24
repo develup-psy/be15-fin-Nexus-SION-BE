@@ -71,7 +71,6 @@ public class Member {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
-  @Setter
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
@@ -96,6 +95,10 @@ public class Member {
 
   public void setAdminRole() {
     role = MemberRole.ADMIN;
+  }
+
+  public void markAsDeleted() {
+    this.deletedAt = LocalDateTime.now();
   }
 
   public void update(
