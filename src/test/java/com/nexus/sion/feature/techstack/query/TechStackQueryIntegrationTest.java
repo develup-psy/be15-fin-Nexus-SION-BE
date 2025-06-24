@@ -19,7 +19,7 @@ import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class TechStackIntegrationTest {
+class TechStackQueryIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
 
