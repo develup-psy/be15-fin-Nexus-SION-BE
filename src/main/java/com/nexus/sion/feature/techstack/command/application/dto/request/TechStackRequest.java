@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TechStackCreateRequest {
+public class TechStackRequest {
   String techStackName;
 }
