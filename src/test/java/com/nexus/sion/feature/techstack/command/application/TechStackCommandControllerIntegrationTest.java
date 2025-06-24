@@ -1,7 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackCreateRequest;
+import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class TechStackCommandControllerIntegrationTest {
     void registerNewTechStack_returnsCreated() throws Exception {
         // given
         String techStackName = "test";
-        TechStackCreateRequest request = new TechStackCreateRequest(techStackName);
+        TechStackRequest request = new TechStackRequest(techStackName);
 
         // when & then
         mockMvc.perform(post("/api/v1/tech-stack")
@@ -77,7 +77,7 @@ class TechStackCommandControllerIntegrationTest {
 
         techStackRepository.save(existing);
 
-        TechStackCreateRequest request = new TechStackCreateRequest(existingTechStackName);
+        TechStackRequest request = new TechStackRequest(existingTechStackName);
 
         // when & then
         mockMvc.perform(post("/api/v1/tech-stack")

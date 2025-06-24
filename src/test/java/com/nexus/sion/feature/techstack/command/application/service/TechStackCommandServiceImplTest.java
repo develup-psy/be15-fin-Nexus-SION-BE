@@ -1,7 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application.service;
 
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
-import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackCreateRequest;
+import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ class TechStackCommandServiceImplTest {
     @Test
     void registerTechStack_이미존재하면저장하지않음() {
         // given
-        TechStackCreateRequest request = new TechStackCreateRequest("Spring");
+        TechStackRequest request = new TechStackRequest("Spring");
         when(techStackRepository.existsById("Spring")).thenReturn(true);
 
         // when
@@ -37,7 +37,7 @@ class TechStackCommandServiceImplTest {
     @Test
     void registerTechStack_존재하지않으면저장() {
         // given
-        TechStackCreateRequest request = new TechStackCreateRequest("React");
+        TechStackRequest request = new TechStackRequest("React");
 
         when(techStackRepository.existsById("React")).thenReturn(false);
         when(modelMapper.map(request, TechStack.class)).thenReturn(mock(TechStack.class));
