@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -46,7 +47,11 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
 
   /** The column <code>sion.project_and_job.project_and_job_id</code>. */
   public final TableField<ProjectAndJobRecord, Long> PROJECT_AND_JOB_ID =
-      createField(DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("project_and_job_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>sion.project_and_job.required_number</code>. */
   public final TableField<ProjectAndJobRecord, Integer> REQUIRED_NUMBER =
@@ -113,16 +118,29 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
   }
 
   @Override
+  public Identity<ProjectAndJobRecord, Long> getIdentity() {
+    return (Identity<ProjectAndJobRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<ProjectAndJobRecord> getPrimaryKey() {
     return Keys.KEY_PROJECT_AND_JOB_PRIMARY;
   }
 
   @Override
   public List<ForeignKey<ProjectAndJobRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
+    return Arrays.asList(Keys.FK_PROJECT_TO_PROJECT_AND_JOB_1, Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
   }
 
+  private transient Project _project;
   private transient Job _job;
+
+  /** Get the implicit join path to the <code>sion.project</code> table. */
+  public Project project() {
+    if (_project == null) _project = new Project(this, Keys.FK_PROJECT_TO_PROJECT_AND_JOB_1);
+
+    return _project;
+  }
 
   /** Get the implicit join path to the <code>sion.job</code> table. */
   public Job job() {
