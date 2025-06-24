@@ -110,7 +110,7 @@ class TechStackCommandControllerIntegrationTest {
             delete("/api/v1/tech-stack")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk());
+        .andExpect(status().isNoContent());
 
     // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
     assertThat(techStackRepository.findById(techStackName)).isNotPresent();

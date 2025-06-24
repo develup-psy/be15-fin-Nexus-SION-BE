@@ -32,6 +32,6 @@ public class TechStackCommandController {
   @Operation(summary = "기술 스택 삭제", description = "기술 스택을 시스템에서 삭제합니다.")
   public ResponseEntity<ApiResponse<Void>> removeTechStack(@RequestBody TechStackRequest request) {
     techStackCommandService.removeTechStack(request);
-    return ResponseEntity.ok(ApiResponse.success(null));
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.success(null));
   }
 }
