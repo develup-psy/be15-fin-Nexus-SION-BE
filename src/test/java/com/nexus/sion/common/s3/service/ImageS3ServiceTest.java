@@ -22,11 +22,9 @@ import software.amazon.awssdk.services.s3.model.*;
 
 class ImageS3ServiceTest {
 
-  @Mock
-  private S3Client s3Client;
+  @Mock private S3Client s3Client;
 
-  @InjectMocks
-  private ImageS3Service imageS3Service;
+  @InjectMocks private ImageS3Service imageS3Service;
 
   private static final String BUCKET_NAME = "test-bucket";
 
@@ -54,17 +52,17 @@ class ImageS3ServiceTest {
     @Test
     @DisplayName("정상 업로드 (jpg)")
     void uploadFileSuccessJpg() throws IOException {
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "test.jpg", "image/jpg", "test content".getBytes()
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "test.jpg", "image/jpg", "test content".getBytes());
 
       when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
-              .thenReturn(PutObjectResponse.builder().build());
+          .thenReturn(PutObjectResponse.builder().build());
 
       S3UploadResponse response = imageS3Service.uploadFile(file, "prefix");
 
       assertNotNull(response);
-      assertTrue(response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
+      assertTrue(
+          response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
       assertTrue(response.getSavedFileName().endsWith(".jpg"));
       assertEquals("test.jpg", response.getOriginalFileName());
 
@@ -74,17 +72,17 @@ class ImageS3ServiceTest {
     @Test
     @DisplayName("정상 업로드 (png)")
     void uploadFileSuccessPng() throws IOException {
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "test.png", "image/png", "test content".getBytes()
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "test.png", "image/png", "test content".getBytes());
 
       when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
-              .thenReturn(PutObjectResponse.builder().build());
+          .thenReturn(PutObjectResponse.builder().build());
 
       S3UploadResponse response = imageS3Service.uploadFile(file, "prefix");
 
       assertNotNull(response);
-      assertTrue(response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
+      assertTrue(
+          response.getUrl().startsWith("https://" + BUCKET_NAME + ".s3.amazonaws.com/prefix/"));
       assertTrue(response.getSavedFileName().endsWith(".png"));
       assertEquals("test.png", response.getOriginalFileName());
 
@@ -94,14 +92,12 @@ class ImageS3ServiceTest {
     @Test
     @DisplayName("허용되지 않은 파일 형식")
     void uploadFileInvalidContentType() {
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "test.txt", "text/plain", "test content".getBytes()
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "test.txt", "text/plain", "test content".getBytes());
 
-      IllegalArgumentException exception = assertThrows(
-              IllegalArgumentException.class,
-              () -> imageS3Service.uploadFile(file, "prefix")
-      );
+      IllegalArgumentException exception =
+          assertThrows(
+              IllegalArgumentException.class, () -> imageS3Service.uploadFile(file, "prefix"));
 
       assertEquals("허용되지 않은 파일 타입입니다. (허용: jpg, png)", exception.getMessage());
     }
@@ -110,14 +106,12 @@ class ImageS3ServiceTest {
     @DisplayName("파일 크기 10MB 초과")
     void uploadFileTooLarge() {
       byte[] largeContent = new byte[10 * 1024 * 1024 + 1];
-      MockMultipartFile file = new MockMultipartFile(
-              "file", "large.jpg", "image/jpg", largeContent
-      );
+      MockMultipartFile file =
+          new MockMultipartFile("file", "large.jpg", "image/jpg", largeContent);
 
-      IllegalArgumentException exception = assertThrows(
-              IllegalArgumentException.class,
-              () -> imageS3Service.uploadFile(file, "prefix")
-      );
+      IllegalArgumentException exception =
+          assertThrows(
+              IllegalArgumentException.class, () -> imageS3Service.uploadFile(file, "prefix"));
 
       assertEquals("파일 크기가 10MB를 초과합니다.", exception.getMessage());
     }
@@ -131,7 +125,7 @@ class ImageS3ServiceTest {
     @DisplayName("정상 삭제")
     void deleteFileSuccess() {
       when(s3Client.deleteObject(any(DeleteObjectRequest.class)))
-              .thenReturn(DeleteObjectResponse.builder().build());
+          .thenReturn(DeleteObjectResponse.builder().build());
 
       assertDoesNotThrow(() -> imageS3Service.deleteFile("prefix", "test.jpg"));
 
