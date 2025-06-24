@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +29,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberCreat
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @SpringBootTest
@@ -152,7 +152,8 @@ class MemberCommandIntegrationTest {
   @WithMockUser
   void deleteMember_success() throws Exception {
     // given
-    Member member = Member.builder()
+    Member member =
+        Member.builder()
             .employeeIdentificationNumber("EMP001")
             .employeeName("홍길동")
             .email("hong@example.com")
@@ -162,11 +163,14 @@ class MemberCommandIntegrationTest {
     memberRepository.save(member);
 
     // when & then
-    mockMvc.perform(delete("/api/v1/members/{id}", "EMP001"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true));
+    mockMvc
+        .perform(delete("/api/v1/members/{id}", "EMP001"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
 
-    Member deletedMember = memberRepository.findById("EMP001")
+    Member deletedMember =
+        memberRepository
+            .findById("EMP001")
             .orElseThrow(() -> new IllegalStateException("멤버가 삭제되어선 안 됨 (soft delete)"));
 
     assertThat(deletedMember.getDeletedAt()).isNotNull();

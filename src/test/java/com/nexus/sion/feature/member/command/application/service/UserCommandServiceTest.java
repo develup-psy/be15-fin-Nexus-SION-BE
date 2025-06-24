@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +25,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberCreat
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
@@ -234,7 +234,6 @@ class UserCommandServiceTest {
     assertThrows(BusinessException.class, () -> memberCommandService.updateMember(EMP_ID, req));
   }
 
-
   @Test
   void deleteMember_throws_if_user_not_found() {
     // given
@@ -242,16 +241,19 @@ class UserCommandServiceTest {
     when(memberRepository.findById(empId)).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(BusinessException.class, () -> {
-      memberCommandService.deleteMember(empId);
-    });
+    assertThrows(
+        BusinessException.class,
+        () -> {
+          memberCommandService.deleteMember(empId);
+        });
   }
 
   @Test
   void deleteMember_throws_if_already_deleted() {
     // given
     String empId = "EMP002";
-    Member deletedMember = Member.builder()
+    Member deletedMember =
+        Member.builder()
             .employeeIdentificationNumber(empId)
             .deletedAt(LocalDateTime.now())
             .role(MemberRole.INSIDER)
@@ -260,9 +262,12 @@ class UserCommandServiceTest {
     when(memberRepository.findById(empId)).thenReturn(Optional.of(deletedMember));
 
     // when & then
-    BusinessException ex = assertThrows(BusinessException.class, () -> {
-      memberCommandService.deleteMember(empId);
-    });
+    BusinessException ex =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              memberCommandService.deleteMember(empId);
+            });
     assertEquals(ErrorCode.ALREADY_DELETED_USER, ex.getErrorCode());
   }
 
@@ -270,7 +275,8 @@ class UserCommandServiceTest {
   void deleteMember_throws_if_admin() {
     // given
     String empId = "ADMIN001";
-    Member admin = Member.builder()
+    Member admin =
+        Member.builder()
             .employeeIdentificationNumber(empId)
             .role(MemberRole.ADMIN)
             .deletedAt(null)
@@ -279,9 +285,12 @@ class UserCommandServiceTest {
     when(memberRepository.findById(empId)).thenReturn(Optional.of(admin));
 
     // when & then
-    BusinessException ex = assertThrows(BusinessException.class, () -> {
-      memberCommandService.deleteMember(empId);
-    });
+    BusinessException ex =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              memberCommandService.deleteMember(empId);
+            });
     assertEquals(ErrorCode.CANNOT_DELETE_ADMIN, ex.getErrorCode());
   }
 
@@ -289,7 +298,8 @@ class UserCommandServiceTest {
   void deleteMember_success() {
     // given
     String empId = "EMP003";
-    Member member = Member.builder()
+    Member member =
+        Member.builder()
             .employeeIdentificationNumber(empId)
             .role(MemberRole.INSIDER)
             .deletedAt(null)
