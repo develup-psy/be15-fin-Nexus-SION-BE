@@ -42,11 +42,12 @@ public enum ErrorCode {
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   SQUAD_DETAIL_NOT_FOUND("40002", "스쿼드 상세 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-  PROJECT_CODE_INVALID("40003", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST);
+  PROJECT_CODE_INVALID("40003", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
 
   // techstack
 
   // statistics
+  INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST);
 
   // evaluation
 
