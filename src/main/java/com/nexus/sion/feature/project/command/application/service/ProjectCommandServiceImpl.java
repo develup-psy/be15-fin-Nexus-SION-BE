@@ -25,13 +25,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
-
-    // 프로젝트 코드 중복 체크
     if (projectCommandRepository.existsByProjectCode(request.getProjectCode())) {
       throw new BusinessException(ErrorCode.PROJECT_CODE_DUPLICATED);
     }
 
-    // 프로젝트 저장
     Project project =
         Project.builder()
             .projectCode(request.getProjectCode())
@@ -50,7 +47,40 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .build();
     projectCommandRepository.save(project);
 
-    // 직무 및 기술스택 저장
+    saveJobsAndTechStacks(request);
+    return new ProjectRegisterResponse(request.getProjectCode());
+  }
+
+  @Override
+  public void updateProject(ProjectRegisterRequest request) {
+    Project project =
+        projectCommandRepository
+            .findById(request.getProjectCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    project.setName(request.getName());
+    project.setDescription(request.getDescription());
+    project.setTitle(request.getTitle());
+    project.setBudget(request.getBudget());
+    project.setStartDate(request.getStartDate());
+    project.setExpectedEndDate(request.getExpectedEndDate());
+    project.setNumberOfMembers(request.getNumberOfMembers());
+    project.setClientCode(request.getClientCode());
+    project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
+    project.setUpdatedAt(LocalDateTime.now());
+    projectCommandRepository.save(project);
+
+    var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
+    projectAndJobs.forEach(
+        job -> {
+          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
+        });
+    projectAndJobRepository.deleteByProjectCode(request.getProjectCode());
+
+    saveJobsAndTechStacks(request);
+  }
+
+  private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
     request
         .getJobs()
         .forEach(
@@ -70,7 +100,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                       tech -> {
                         JobAndTechStack jobAndTechStack =
                             JobAndTechStack.builder()
-                                .projectAndJob(projectAndJob.getId())
+                                .projectJobId(projectAndJob.getId())
                                 .techStackName(tech.getTechStackName())
                                 .priority(tech.getPriority())
                                 .createdAt(LocalDateTime.now())
@@ -79,7 +109,5 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                         jobAndTechStackRepository.save(jobAndTechStack);
                       });
             });
-
-    return new ProjectRegisterResponse(request.getProjectCode());
   }
 }
