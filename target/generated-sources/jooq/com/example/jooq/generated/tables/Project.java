@@ -72,7 +72,11 @@ public class Project extends TableImpl<ProjectRecord> {
 
   /** The column <code>sion.project.actual_end_date</code>. */
   public final TableField<ProjectRecord, LocalDate> ACTUAL_END_DATE =
-      createField(DSL.name("actual_end_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
+      createField(
+          DSL.name("actual_end_date"),
+          SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)),
+          this,
+          "");
 
   /** The column <code>sion.project.status</code>. */
   public final TableField<ProjectRecord, ProjectStatus> STATUS =

@@ -5,6 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,12 +38,19 @@ class UserCommandServiceTest {
   @InjectMocks private MemberCommandService userService;
 
   @Mock private MemberRepository memberRepository;
+  @Mock private PositionRepository positionRepository;
+  @Mock private DeveloperTechStackRepository developerTechStackRepository;
+  @Mock private DepartmentRepository departmentRepository;
+  @Mock private InitialScoreRepository initialScoreRepository;
+  @InjectMocks private MemberCommandService memberCommandService;
 
   @Mock private PasswordEncoder passwordEncoder;
 
   @Mock private ModelMapper modelMapper;
 
   private MemberCreateRequest request;
+
+  private final String EMP_ID = "EMP001";
 
   @BeforeEach
   void setUp() {
@@ -133,5 +152,85 @@ class UserCommandServiceTest {
 
     // then
     assertEquals(ErrorCode.INVALID_EMAIL_FORMAT, exception.getErrorCode());
+  }
+
+  @Test
+  void addMembers_success() {
+    // given
+    MemberAddRequest req =
+        new MemberAddRequest(
+            EMP_ID,
+            "홍길동",
+            "01012345678",
+            LocalDate.of(1995, 1, 1),
+            LocalDateTime.of(2020, 1, 1, 0, 9),
+            "hong@example.com",
+            3,
+            "백엔드",
+            "개발팀",
+            null,
+            5000L,
+            List.of("JAVA"));
+
+    InitialScore mockInitialScore = mock(InitialScore.class);
+    when(positionRepository.existsById("백엔드")).thenReturn(true);
+    when(departmentRepository.existsById("개발팀")).thenReturn(true);
+    when(memberRepository.existsByEmail(req.email())).thenReturn(false);
+    when(memberRepository.existsByEmployeeIdentificationNumber(EMP_ID)).thenReturn(false);
+    when(initialScoreRepository.findTopByYearsLessThanEqualOrderByYearsDesc(3))
+        .thenReturn(Optional.of(mockInitialScore));
+    when(passwordEncoder.encode(anyString())).thenReturn("encoded");
+
+    // when
+    memberCommandService.addMembers(List.of(req));
+
+    // then
+    verify(memberRepository).save(any(Member.class));
+    verify(developerTechStackRepository).saveAll(anyList());
+  }
+
+  @Test
+  void updateMember_success() {
+    // given
+    MemberUpdateRequest req =
+        new MemberUpdateRequest(
+            "홍길동",
+            "01012345678",
+            LocalDate.of(1990, 1, 1),
+            LocalDateTime.of(2022, 1, 1, 0, 0),
+            "hong@example.com",
+            4,
+            "백엔드",
+            "개발팀",
+            null,
+            6000L,
+            List.of("JAVA", "SPRING"));
+
+    Member member =
+        Member.builder().employeeIdentificationNumber(EMP_ID).email("hong@example.com").build();
+
+    InitialScore mockInitialScore = mock(InitialScore.class);
+    when(memberRepository.findById(EMP_ID)).thenReturn(Optional.of(member));
+    when(positionRepository.existsById("백엔드")).thenReturn(true);
+    when(departmentRepository.existsById("개발팀")).thenReturn(true);
+    when(initialScoreRepository.findTopByYearsLessThanEqualOrderByYearsDesc(anyInt()))
+        .thenReturn(Optional.of(mockInitialScore));
+    when(developerTechStackRepository.findAllByEmployeeIdentificationNumber(EMP_ID))
+        .thenReturn(List.of());
+
+    // when
+    memberCommandService.updateMember(EMP_ID, req);
+
+    // then
+    verify(developerTechStackRepository).saveAll(anyList());
+  }
+
+  @Test
+  void updateMember_throw_if_not_found() {
+    when(memberRepository.findById(EMP_ID)).thenReturn(Optional.empty());
+
+    MemberUpdateRequest req = mock(MemberUpdateRequest.class);
+
+    assertThrows(BusinessException.class, () -> memberCommandService.updateMember(EMP_ID, req));
   }
 }

@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
+import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.repository.StatisticsQueryRepository;
@@ -77,5 +78,25 @@ class StatisticsQueryServiceImplTest {
 
     assertEquals(1, result.getTotalElements());
     assertEquals("Java", result.getContent().get(0).getTechStackName());
+  }
+
+  // 기간별 인기 기술 스택 통계를 조회하는 기능을 테스트
+  @Test
+  void getPopularTechStacks_returnsPopularTopStacks() {
+    String period = "1m";
+    int top = 5;
+
+    PageResponse<PopularTechStackDto> mockPage =
+        PageResponse.fromJooq(
+            List.of(new PopularTechStackDto("React", 8, "Project A", "프론트엔드")), 1, 0, top);
+
+    when(repository.findPopularTechStacks(period, 0, top)).thenReturn(mockPage);
+
+    PageResponse<PopularTechStackDto> result = service.getPopularTechStacks(period, 0, top);
+
+    assertEquals(1, result.getTotalElements());
+    assertEquals("React", result.getContent().get(0).getTechStackName());
+    assertEquals("Project A", result.getContent().get(0).getLatestProjectName());
+    assertEquals("프론트엔드", result.getContent().get(0).getTopJobName());
   }
 }

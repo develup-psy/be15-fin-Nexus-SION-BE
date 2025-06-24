@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
+import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.service.StatisticsQueryService;
@@ -45,5 +46,19 @@ public class StatisticsQueryController {
       @RequestParam(defaultValue = "asc") String direction) {
     return ApiResponse.success(
         service.getStackAverageCareersPaged(selectedStacks, page, size, sort, direction));
+  }
+
+  @GetMapping("/stack/popular")
+  public ApiResponse<PageResponse<PopularTechStackDto>> getPopularTechStacks(
+      @RequestParam String period,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(name = "top", required = false) Integer top) {
+
+    if (top != null) {
+      return ApiResponse.success(service.getPopularTechStacksWithTop(period, top));
+    }
+
+    return ApiResponse.success(service.getPopularTechStacks(period, page, size));
   }
 }
