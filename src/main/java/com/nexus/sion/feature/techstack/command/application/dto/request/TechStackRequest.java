@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class TechStackRequest {
-    String techStackName;
+  String techStackName;
 }

@@ -1,22 +1,16 @@
 package com.nexus.sion.feature.techstack.command.application;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
-import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
-import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
+import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
+import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,12 +35,12 @@ class TechStackCommandControllerIntegrationTest {
 
   @Autowired private ObjectMapper objectMapper;
 
-    @Test
-    @DisplayName("새로운 기술 스택을 등록하면 201이 반환된다.")
-    void registerNewTechStack_returnsCreated() throws Exception {
-        // given
-        String techStackName = "test";
-        TechStackRequest request = new TechStackRequest(techStackName);
+  @Test
+  @DisplayName("새로운 기술 스택을 등록하면 201이 반환된다.")
+  void registerNewTechStack_returnsCreated() throws Exception {
+    // given
+    String techStackName = "test";
+    TechStackRequest request = new TechStackRequest(techStackName);
 
     // when & then
     mockMvc
@@ -71,10 +68,10 @@ class TechStackCommandControllerIntegrationTest {
     idField.setAccessible(true);
     idField.set(existing, existingTechStackName);
 
-        techStackRepository.save(existing);
-        int existingCount = techStackRepository.findAll().size();
+    techStackRepository.save(existing);
+    int existingCount = techStackRepository.findAll().size();
 
-        TechStackRequest request = new TechStackRequest(existingTechStackName);
+    TechStackRequest request = new TechStackRequest(existingTechStackName);
 
     // when & then
     mockMvc
@@ -84,55 +81,58 @@ class TechStackCommandControllerIntegrationTest {
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isCreated()); // 응답은 성공
 
-        // then - 여전히 하나만 존재
-        assertThat(techStackRepository.findAll().size()).isEqualTo(existingCount);
-    }
+    // then - 여전히 하나만 존재
+    assertThat(techStackRepository.findAll().size()).isEqualTo(existingCount);
+  }
 
-    @Test
-    @DisplayName("기술 스택을 삭제하면 201이 반환되고 DB에서 제거된다.")
-    void deleteExistingTechStack_returnsDeleted() throws Exception {
-        // given
-        String techStackName = "test";
-        String techStackColumn = "techStackName";
-        TechStackRequest request = new TechStackRequest(techStackName);
+  @Test
+  @DisplayName("기술 스택을 삭제하면 201이 반환되고 DB에서 제거된다.")
+  void deleteExistingTechStack_returnsDeleted() throws Exception {
+    // given
+    String techStackName = "test";
+    String techStackColumn = "techStackName";
+    TechStackRequest request = new TechStackRequest(techStackName);
 
-        Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        TechStack existing = constructor.newInstance();
+    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
+    constructor.setAccessible(true);
+    TechStack existing = constructor.newInstance();
 
-        // id 필드 설정
-        Field idField = TechStack.class.getDeclaredField(techStackColumn);
-        idField.setAccessible(true);
-        idField.set(existing, techStackName);
+    // id 필드 설정
+    Field idField = TechStack.class.getDeclaredField(techStackColumn);
+    idField.setAccessible(true);
+    idField.set(existing, techStackName);
 
-        techStackRepository.save(existing);
+    techStackRepository.save(existing);
 
+    // when & then
+    mockMvc
+        .perform(
+            delete("/api/v1/tech-stack")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk());
 
-        // when & then
-        mockMvc.perform(delete("/api/v1/tech-stack")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
+    // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
+    assertThat(techStackRepository.findById(techStackName)).isNotPresent();
+  }
 
-        // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
-        assertThat(techStackRepository.findById(techStackName)).isNotPresent();
-    }
+  @Test
+  @DisplayName("존재하지 않는 기술 스택은 에러를 반환한다.")
+  void deleteExistingTechStack_returnsError() throws Exception {
+    // given
+    String techStackName = "test";
+    TechStackRequest request = new TechStackRequest(techStackName);
 
-    @Test
-    @DisplayName("존재하지 않는 기술 스택은 에러를 반환한다.")
-    void deleteExistingTechStack_returnsError() throws Exception {
-        // given
-        String techStackName = "test";
-        TechStackRequest request = new TechStackRequest(techStackName);
-
-        // when & then
-        mockMvc.perform(delete("/api/v1/tech-stack")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.errorCode").value(ErrorCode.TECH_STACK_NOT_FOUND.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.TECH_STACK_NOT_FOUND.getMessage()))
-                .andExpect(jsonPath("$.timestamp").exists());
-    }
+    // when & then
+    mockMvc
+        .perform(
+            delete("/api/v1/tech-stack")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.TECH_STACK_NOT_FOUND.getCode()))
+        .andExpect(jsonPath("$.message").value(ErrorCode.TECH_STACK_NOT_FOUND.getMessage()))
+        .andExpect(jsonPath("$.timestamp").exists());
+  }
 }
