@@ -29,11 +29,12 @@ public enum ErrorCode {
   INVALID_PHONE_NUMBER_FORMAT(
           "20005", "휴대폰 번호는 하이픈(-) 없이 10자리 또는 11자리 숫자로 입력해주세요. 예: 01012345678", HttpStatus.BAD_REQUEST),
   INVALID_EMAIL_FORMAT(
-          "20006", "이메일 형식이 올바르지 않습니다. 예: example@example.com", HttpStatus.BAD_REQUEST),
-  INVALID_CURRENT_PASSWORD("20006", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
-  INVALID_MEMBER_STATUS("20007", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
+      "20006", "이메일 형식이 올바르지 않습니다. 예: example@example.com", HttpStatus.BAD_REQUEST),
+  INVALID_CURRENT_PASSWORD("20007", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
+  INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
 
   // project
+  PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
