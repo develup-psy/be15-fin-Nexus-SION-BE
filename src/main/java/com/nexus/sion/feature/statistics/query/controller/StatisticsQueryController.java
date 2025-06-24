@@ -50,10 +50,10 @@ public class StatisticsQueryController {
 
   @GetMapping("/stack/popular")
   public ApiResponse<PageResponse<PopularTechStackDto>> getPopularTechStacks(
-          @RequestParam String period,
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size,
-          @RequestParam(name = "top", required = false) Integer top) {
+      @RequestParam String period,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(name = "top", required = false) Integer top) {
 
     int finalSize = top != null ? top : size; // top 파라미터 우선 적용
     return ApiResponse.success(service.getPopularTechStacks(period, page, finalSize));
