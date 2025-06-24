@@ -11,8 +11,6 @@ import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 public interface StatisticsQueryService {
   List<TechStackCountDto> getStackMemberCounts(List<String> stackNames);
 
-  List<String> findAllStackNames();
-
   PageResponse<DeveloperDto> getAllDevelopers(int page, int size);
 
   PageResponse<TechStackCareerDto> getStackAverageCareersPaged(

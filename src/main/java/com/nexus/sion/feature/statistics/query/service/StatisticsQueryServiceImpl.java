@@ -25,11 +25,6 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   }
 
   @Override
-  public List<String> findAllStackNames() {
-    return repository.findAllStackNames();
-  }
-
-  @Override
   public PageResponse<DeveloperDto> getAllDevelopers(int page, int size) {
     return repository.findAllDevelopers(page, size);
   }
