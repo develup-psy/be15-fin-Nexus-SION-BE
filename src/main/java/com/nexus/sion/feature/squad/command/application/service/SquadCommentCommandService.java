@@ -19,7 +19,6 @@ public class SquadCommentCommandService {
   private final SquadCommentRepository squadCommentRepository;
 
   public void registerComment(String squadCode, SquadCommentRegisterRequest request) {
-    // ✅ content가 null이거나 공백이면 예외 발생
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
     }
@@ -33,5 +32,19 @@ public class SquadCommentCommandService {
             .build();
 
     squadCommentRepository.save(comment);
+  }
+
+  @org.springframework.transaction.annotation.Transactional
+  public void deleteComment(String squadCode, Long commentId) {
+    SquadComment comment =
+        squadCommentRepository
+            .findById(commentId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.COMMENT_NOT_FOUND));
+
+    if (!comment.getSquadCode().equals(squadCode)) {
+      throw new BusinessException(ErrorCode.INVALID_COMMENT_ACCESS);
+    }
+
+    squadCommentRepository.delete(comment);
   }
 }
