@@ -4,8 +4,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DomainRequest {
-  private final String name;
+  String name;
 }
