@@ -43,9 +43,11 @@ public enum ErrorCode {
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   SQUAD_DETAIL_NOT_FOUND("40002", "스쿼드 상세 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-  PROJECT_CODE_INVALID("40003", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
-  COMMENT_CONTENT_EMPTY("40004", "코멘트 내용(content)은 공백일 수 없습니다.", HttpStatus.BAD_REQUEST),
-  PROJECT_CODE_INVALID("40005", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
+  COMMENT_CONTENT_EMPTY("40003", "코멘트 내용(content)은 공백일 수 없습니다.", HttpStatus.BAD_REQUEST),
+  PROJECT_CODE_INVALID("40004", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
+  COMMENT_NOT_FOUND("40005", "존재하지 않는 코멘트입니다.", HttpStatus.NOT_FOUND),
+  INVALID_COMMENT_ACCESS("40006", "해당 스쿼드의 코멘트가 아닙니다.", HttpStatus.FORBIDDEN);
+
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
