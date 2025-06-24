@@ -71,6 +71,7 @@ public class Member {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
+  @Setter
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
@@ -97,7 +98,7 @@ public class Member {
     role = MemberRole.ADMIN;
   }
 
-  public void update(
+    public void update(
       String employeeName,
       String phoneNumber,
       LocalDate birthday,
