@@ -267,8 +267,8 @@ public class StatisticsQueryRepository {
                     .eq(topJobCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
             .orderBy(
                 usageCte.field("usage_count").desc(),
-                latestProjectCte.field("latest_project_name").asc().nullsLast(),
-                usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME).asc())
+                usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME).asc(),
+                latestProjectCte.field("latest_project_name").asc().nullsLast())
             .limit(sizeOrTop)
             .offset(page * sizeOrTop);
 
