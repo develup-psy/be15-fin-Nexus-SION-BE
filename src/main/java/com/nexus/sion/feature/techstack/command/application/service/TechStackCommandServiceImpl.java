@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application.service;
 
 import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
@@ -31,5 +32,8 @@ public class TechStackCommandServiceImpl implements TechStackCommandService {
         if(techStackRepository.existsById(request.getTechStackName())) {
             throw new BusinessException(ErrorCode.TECH_STACK_NOT_FOUND);
         }
+
+        // 해당 기술스택 삭제
+        techStackRepository.deleteById(request.getTechStackName());
     }
 }
