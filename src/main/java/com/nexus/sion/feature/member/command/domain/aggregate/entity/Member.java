@@ -97,9 +97,17 @@ public class Member {
     role = MemberRole.ADMIN;
   }
 
-  public void update(String name, String phone, LocalDate birth, LocalDateTime joinedAt,
-                     String email, Integer careerYears, String positionName,
-                     String departmentName, String profileImageUrl, Long salary) {
+  public void update(
+      String name,
+      String phone,
+      LocalDate birth,
+      LocalDateTime joinedAt,
+      String email,
+      Integer careerYears,
+      String positionName,
+      String departmentName,
+      String profileImageUrl,
+      Long salary) {
     this.employeeName = name;
     this.phoneNumber = phone;
     this.birthday = birth;

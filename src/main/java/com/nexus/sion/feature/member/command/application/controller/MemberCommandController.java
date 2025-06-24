@@ -2,7 +2,6 @@ package com.nexus.sion.feature.member.command.application.controller;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,8 +46,7 @@ public class MemberCommandController {
   @Operation(summary = "구성원 수정", description = "구성원 수정 기능")
   @PutMapping("/{employeeId}")
   public ResponseEntity<ApiResponse<Void>> updateMember(
-          @PathVariable String employeeId,
-          @RequestBody @Valid MemberUpdateRequest request) {
+      @PathVariable String employeeId, @RequestBody @Valid MemberUpdateRequest request) {
     userCommandService.updateMember(employeeId, request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }

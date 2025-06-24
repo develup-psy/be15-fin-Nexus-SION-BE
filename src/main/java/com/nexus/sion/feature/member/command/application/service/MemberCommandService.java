@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -17,6 +16,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
@@ -185,7 +185,9 @@ public class MemberCommandService {
   @Transactional
   public void updateMember(String employeeId, MemberUpdateRequest request) {
     // 1. 기존 멤버 조회
-    Member member = memberRepository.findById(employeeId)
+    Member member =
+        memberRepository
+            .findById(employeeId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     // 2. 이메일 형식 검증
@@ -194,8 +196,8 @@ public class MemberCommandService {
     }
 
     // 3. 이메일 중복 검증 (본인 제외)
-    if (!member.getEmail().equals(request.email()) &&
-            memberRepository.existsByEmail(request.email())) {
+    if (!member.getEmail().equals(request.email())
+        && memberRepository.existsByEmail(request.email())) {
       throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMAIL);
     }
 
@@ -210,67 +212,70 @@ public class MemberCommandService {
     }
 
     // 6. Position 검증
-    if (request.positionName() != null &&
-            !positionRepository.existsById(request.positionName())) {
+    if (request.positionName() != null && !positionRepository.existsById(request.positionName())) {
       throw new BusinessException(ErrorCode.POSITION_NOT_FOUND);
     }
 
     // 7. Department 검증
-    if (request.departmentName() != null &&
-            !departmentRepository.existsById(request.departmentName())) {
+    if (request.departmentName() != null
+        && !departmentRepository.existsById(request.departmentName())) {
       throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
     }
 
     // 3. 필드 수정
     member.update(
-            request.employeeName(),
-            request.phoneNumber(),
-            request.birthday(),
-            request.joinedAt(),
-            request.email(),
-            request.careerYears(),
-            request.positionName(),
-            request.departmentName(),
-            request.profileImageUrl(),
-            request.salary()
-    );
+        request.employeeName(),
+        request.phoneNumber(),
+        request.birthday(),
+        request.joinedAt(),
+        request.email(),
+        request.careerYears(),
+        request.positionName(),
+        request.departmentName(),
+        request.profileImageUrl(),
+        request.salary());
 
     int initialScore =
-            initialScoreRepository
-                    .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
-                    .map(InitialScore::getScore)
-                    .orElse(0);
-
+        initialScoreRepository
+            .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
+            .map(InitialScore::getScore)
+            .orElse(0);
 
     // 4. 기술스택 수정 - 기존 점수 보존
     // 기존 기술스택 조회
     List<DeveloperTechStack> existingStacks =
-            developerTechStackRepository.findAllByEmployeeIdentificationNumber(employeeId);
+        developerTechStackRepository.findAllByEmployeeIdentificationNumber(employeeId);
 
-    Set<String> existingNames = existingStacks.stream()
+    Set<String> existingNames =
+        existingStacks.stream()
             .map(DeveloperTechStack::getTechStackName)
             .collect(Collectors.toSet());
 
-    Set<String> incomingNames = request.techStackNames() != null
+    Set<String> incomingNames =
+        request.techStackNames() != null
             ? new HashSet<>(request.techStackNames())
             : Collections.emptySet();
 
-// 삭제 대상 = 기존에는 있었지만 요청에는 없음
-    List<DeveloperTechStack> toDelete = existingStacks.stream()
+    // 삭제 대상 = 기존에는 있었지만 요청에는 없음
+    List<DeveloperTechStack> toDelete =
+        existingStacks.stream()
             .filter(stack -> !incomingNames.contains(stack.getTechStackName()))
             .toList();
     developerTechStackRepository.deleteAll(toDelete);
 
-// 추가 대상 = 요청에는 있지만 기존에는 없던 스택만 insert
-    List<DeveloperTechStack> toInsert = incomingNames.stream()
+    // 추가 대상 = 요청에는 있지만 기존에는 없던 스택만 insert
+    List<DeveloperTechStack> toInsert =
+        incomingNames.stream()
             .filter(name -> !existingNames.contains(name))
-            .map(name -> DeveloperTechStack.builder()
-                    .employeeIdentificationNumber(employeeId)
-                    .techStackName(name)
-                    .totalScore(initialScore)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build())
+            .map(
+                name ->
+                    DeveloperTechStack.builder()
+                        .employeeIdentificationNumber(employeeId)
+                        .techStackName(name)
+                        .totalScore(initialScore)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build())
             .toList();
 
     developerTechStackRepository.saveAll(toInsert);
