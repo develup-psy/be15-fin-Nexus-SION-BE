@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.command.application.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -108,6 +109,18 @@ public class MemberCommandService {
       if (memberRepository.existsByEmployeeIdentificationNumber(
           request.employeeIdentificationNumber())) {
         throw new BusinessException(ErrorCode.ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER);
+      }
+
+      // 생일 값 검증
+      LocalDate birthday = request.birthday();
+      if (birthday == null) {
+        throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
+      }
+      if (birthday.isAfter(LocalDate.now())) {
+        throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
+      }
+      if (birthday.isBefore(LocalDate.of(1900, 1, 1))) {
+        throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
       }
 
       int initialScore =
