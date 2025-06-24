@@ -277,7 +277,10 @@ public class StatisticsQueryRepository {
             record ->
                 PopularTechStackDto.builder()
                     .techStackName(record.get(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .usageCount(record.get("usage_count", Integer.class))
+                    .usageCount(
+                        Optional.ofNullable(record.get("usage_count", Long.class))
+                            .map(Long::intValue) // Long → int로 안전하게 변환
+                            .orElse(0)) // null일 경우 기본값 0
                     .latestProjectName(record.get("latest_project_name", String.class))
                     .topJobName(record.get("top_job_name", String.class))
                     .build());
