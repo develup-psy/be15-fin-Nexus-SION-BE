@@ -52,4 +52,43 @@ class SquadCommentCommandServiceTest {
 
     verify(squadCommentRepository, never()).save(any());
   }
+
+  @Test
+  @DisplayName("스쿼드 코멘트를 정상적으로 삭제한다")
+  void deleteComment_success() {
+    // given
+    String squadCode = "ha_1_1_1";
+    Long commentId = 1L;
+    SquadComment comment =
+        SquadComment.builder()
+            .id(commentId)
+            .squadCode(squadCode)
+            .employeeIdentificationNumber("EMM001")
+            .content("삭제 테스트")
+            .build();
+
+    when(squadCommentRepository.findById(commentId)).thenReturn(java.util.Optional.of(comment));
+
+    // when
+    squadCommentCommandService.deleteComment(squadCode, commentId);
+
+    // then
+    verify(squadCommentRepository, times(1)).delete(comment);
+  }
+
+  @Test
+  @DisplayName("존재하지 않는 코멘트 삭제 시 예외 발생")
+  void deleteComment_fail_whenCommentNotFound() {
+    // given
+    Long commentId = 999L;
+    String squadCode = "ha_1_1_1";
+    when(squadCommentRepository.findById(commentId)).thenReturn(java.util.Optional.empty());
+
+    // when & then
+    assertThatThrownBy(() -> squadCommentCommandService.deleteComment(squadCode, commentId))
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.COMMENT_NOT_FOUND.getMessage());
+
+    verify(squadCommentRepository, never()).delete(any());
+  }
 }
