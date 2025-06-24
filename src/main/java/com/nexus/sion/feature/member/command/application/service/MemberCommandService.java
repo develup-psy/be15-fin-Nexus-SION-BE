@@ -296,6 +296,6 @@ public class MemberCommandService {
       throw new BusinessException(ErrorCode.CANNOT_DELETE_ADMIN);
     }
 
-    member.setDeletedAt(LocalDateTime.now());
+    member.markAsDeleted();
   }
 }
