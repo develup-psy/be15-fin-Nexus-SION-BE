@@ -23,4 +23,10 @@ public class SquadCommentCommandController {
     squadCommentCommandService.registerComment(squadCode, request); // 👈 squadCode 따로 전달
     return ResponseEntity.ok().build();
   }
+
+  @DeleteMapping("/{squadCode}/comments/{commentId}")
+  public ResponseEntity<Void> delete(@PathVariable String squadCode, @PathVariable Long commentId) {
+    squadCommentCommandService.deleteComment(squadCode, commentId);
+    return ResponseEntity.noContent().build();
+  }
 }
