@@ -1,5 +1,8 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ public class DomainCommandServiceImpl implements DomainCommandService {
 
   private final ModelMapper modelMapper;
   private final DomainRepository domainRepository;
+  private final TechStackRepository techStackRepository;
 
   @Override
   public boolean registerDomain(DomainRequest request) {
@@ -26,5 +30,16 @@ public class DomainCommandServiceImpl implements DomainCommandService {
     Domain domain = modelMapper.map(request, Domain.class);
     domainRepository.save(domain);
     return true;
+  }
+
+  @Override
+  public void removeTechStack(String domainName) {
+    // 기존에 해당 도메인이 없으면 에러
+    if(!domainRepository.existsById(domainName)) {
+      throw new BusinessException(ErrorCode.DOMAIN_NOT_FOUND);
+    }
+
+    // 해당 도메인 삭제
+    techStackRepository.deleteById(domainName);
   }
 }

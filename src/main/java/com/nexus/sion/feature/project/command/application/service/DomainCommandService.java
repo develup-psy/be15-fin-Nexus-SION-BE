@@ -4,4 +4,6 @@ import com.nexus.sion.feature.project.command.application.dto.request.DomainRequ
 
 public interface DomainCommandService {
   boolean registerDomain(DomainRequest request);
+
+  void removeTechStack(String domainName);
 }
