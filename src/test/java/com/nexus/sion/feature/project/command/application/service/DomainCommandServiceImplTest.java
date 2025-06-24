@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.DomainRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
@@ -30,9 +30,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_이미존재하면저장하지않음() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(true);
 
     // when
@@ -46,9 +44,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_존재하지않으면저장() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(false);
     when(modelMapper.map(request, Domain.class)).thenReturn(mock(Domain.class));
 
@@ -80,11 +76,11 @@ class DomainCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      domainCommandService.removeDomain(domainName);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              domainCommandService.removeDomain(domainName);
+            });
 
     // then
     assertEquals(ErrorCode.DOMAIN_NOT_FOUND, exception.getErrorCode());
