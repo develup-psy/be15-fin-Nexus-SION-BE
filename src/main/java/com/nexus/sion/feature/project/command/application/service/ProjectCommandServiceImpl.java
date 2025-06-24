@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
@@ -126,5 +127,22 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectAndJobRepository.deleteByProjectCode(projectCode);
 
     projectCommandRepository.delete(project);
+  }
+
+  @Override
+  public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
+    Project project =
+        projectCommandRepository
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    project.setStatus(status);
+    if (status == Project.ProjectStatus.COMPLETE) {
+      project.setActualEndDate(LocalDate.now());
+    } else {
+      project.setActualEndDate(null);
+    }
+    project.setUpdatedAt(LocalDateTime.now());
+    projectCommandRepository.save(project);
   }
 }
