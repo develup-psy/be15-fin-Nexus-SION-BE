@@ -17,9 +17,7 @@ public class DepartmentQueryRepository {
 
     public List<DepartmentResponse> findAllDepartments() {
         return dsl.select(
-                        DEPARTMENT.DEPARTMENT_NAME,
-                        DEPARTMENT.CREATE_AT,
-                        DEPARTMENT.UPDATED_AT
+                        DEPARTMENT.DEPARTMENT_NAME
                 )
                 .from(DEPARTMENT)
                 .fetchInto(DepartmentResponse.class);
