@@ -109,22 +109,22 @@ class ProjectCommandServiceImplTest {
         .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
-  
+
   @Test
   @DisplayName("프로젝트 삭제 성공")
   void deleteProject_Success() {
     // given
     String projectCode = "P123";
     Project existingProject =
-            Project.builder()
-                    .projectCode(projectCode)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
+        Project.builder()
+            .projectCode(projectCode)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
     when(projectAndJobRepository.findByProjectCode(projectCode))
-            .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
+        .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
 
     // when
     projectCommandService.deleteProject(projectCode);
@@ -144,8 +144,8 @@ class ProjectCommandServiceImplTest {
 
     // when & then
     assertThatThrownBy(() -> projectCommandService.deleteProject(projectCode))
-            .isInstanceOf(BusinessException.class)
-            .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
 
   private ProjectRegisterRequest createRequest() {

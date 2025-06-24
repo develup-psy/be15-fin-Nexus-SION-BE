@@ -1,9 +1,9 @@
 package com.nexus.sion.feature.project.command.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
@@ -90,19 +90,19 @@ class ProjectCommandServiceIntegrationTest {
 
     // 등록 먼저 수행
     mockMvc
-            .perform(
-                    post("/api/v1/projects")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated());
+        .perform(
+            post("/api/v1/projects")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated());
 
     // 삭제
     mockMvc
-            .perform(
-                    delete("/api/v1/projects/{projectCode}", request.getProjectCode())
-                            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true));
+        .perform(
+            delete("/api/v1/projects/{projectCode}", request.getProjectCode())
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
 
     // DB 검증 (삭제되었는지 확인)
     assertThat(projectCommandRepository.existsByProjectCode(request.getProjectCode())).isFalse();
