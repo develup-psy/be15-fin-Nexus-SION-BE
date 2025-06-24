@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.service.StatisticsQueryService;
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 
 @WebMvcTest(controllers = StatisticsQueryController.class)
 @Import(StatisticsQueryControllerTest.TestSecurityConfig.class)
