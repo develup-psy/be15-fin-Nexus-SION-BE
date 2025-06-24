@@ -180,29 +180,13 @@ public class StatisticsQueryRepository {
           default -> throw new BusinessException(ErrorCode.INVALID_PERIOD);
         };
 
-    // usage count CTE
-    var usageCte =
-        dsl.select(JOB_AND_TECH_STACK.TECH_STACK_NAME, DSL.count().as("usage_count"))
-            .from(JOB_AND_TECH_STACK)
-            .join(PROJECT_AND_JOB)
-            .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .join(PROJECT)
-            .on(PROJECT_AND_JOB.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
-            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
-            .and(PROJECT.START_DATE.ge(fromDate))
-            .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-            .asTable("usage");
-
-    // latest project name CTE using row_number()
-    var latestProjectSubCte =
+    // 공통 base CTE
+    var baseCte =
         dsl.select(
                 JOB_AND_TECH_STACK.TECH_STACK_NAME,
-                PROJECT.NAME.as("latest_project_name"),
-                DSL.rowNumber()
-                    .over()
-                    .partitionBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-                    .orderBy(PROJECT.START_DATE.desc())
-                    .as("rn"))
+                PROJECT_AND_JOB.JOB_NAME,
+                PROJECT.NAME.as("project_name"),
+                PROJECT.START_DATE)
             .from(JOB_AND_TECH_STACK)
             .join(PROJECT_AND_JOB)
             .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
@@ -210,6 +194,26 @@ public class StatisticsQueryRepository {
             .on(PROJECT_AND_JOB.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
             .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
             .and(PROJECT.START_DATE.ge(fromDate))
+            .asTable("base");
+
+    // usage count CTE
+    var usageCte =
+        dsl.select(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME), DSL.count().as("usage_count"))
+            .from(baseCte)
+            .groupBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
+            .asTable("usage");
+
+    // latest project name CTE
+    var latestProjectSubCte =
+        dsl.select(
+                baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                baseCte.field("project_name", String.class).as("latest_project_name"),
+                DSL.rowNumber()
+                    .over()
+                    .partitionBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
+                    .orderBy(baseCte.field(PROJECT.START_DATE).desc())
+                    .as("rn"))
+            .from(baseCte)
             .asTable("latest_project_sub");
 
     var latestProjectCte =
@@ -220,20 +224,16 @@ public class StatisticsQueryRepository {
             .where(latestProjectSubCte.field("rn", Integer.class).eq(1))
             .asTable("latest_project");
 
-    // top job CTE using first_value
+    // job rank CTE
     var jobRankCte =
         dsl.select(
-                JOB_AND_TECH_STACK.TECH_STACK_NAME,
-                PROJECT_AND_JOB.JOB_NAME,
+                baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                baseCte.field(PROJECT_AND_JOB.JOB_NAME),
                 DSL.count().as("job_count"))
-            .from(JOB_AND_TECH_STACK)
-            .join(PROJECT_AND_JOB)
-            .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .join(PROJECT)
-            .on(PROJECT_AND_JOB.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
-            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
-            .and(PROJECT.START_DATE.ge(fromDate))
-            .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME, PROJECT_AND_JOB.JOB_NAME)
+            .from(baseCte)
+            .groupBy(
+                baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                baseCte.field(PROJECT_AND_JOB.JOB_NAME))
             .asTable("job_rank");
 
     var topJobCte =
