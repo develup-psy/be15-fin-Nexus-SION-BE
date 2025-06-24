@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ class StatisticsQueryControllerTest {
 
   @MockBean private StatisticsQueryService service;
 
+  @MockBean private TechStackQueryService techStackQueryService;
+
   @Autowired private ObjectMapper objectMapper;
 
   // ✅ Security 무력화를 위한 내부 설정 클래스
@@ -51,7 +54,7 @@ class StatisticsQueryControllerTest {
   @DisplayName("기술스택 전체 목록 조회 성공")
   void getAllTechStacks_success() throws Exception {
     List<String> stacks = List.of("Java", "Spring Boot");
-    when(service.findAllStackNames()).thenReturn(stacks);
+    when(techStackQueryService.findAllStackNames()).thenReturn(stacks);
 
     mockMvc
         .perform(get("/api/v1/statistics/all-tech-stacks"))

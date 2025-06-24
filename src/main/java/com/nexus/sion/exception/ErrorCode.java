@@ -35,6 +35,8 @@ public enum ErrorCode {
   POSITION_NOT_FOUND("20010", "존재하지 않는 직책입니다.", HttpStatus.BAD_REQUEST),
   DEPARTMENT_NOT_FOUND("20011", "존재하지 않는 부서입니다.", HttpStatus.BAD_REQUEST),
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
+  ALREADY_DELETED_USER("20013", "이미 삭제된 구성원입니다.", HttpStatus.BAD_REQUEST),
+  CANNOT_DELETE_ADMIN("20014", "관리자는 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
 
   // project
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
