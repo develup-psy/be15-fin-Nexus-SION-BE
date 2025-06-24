@@ -97,6 +97,10 @@ public class Member {
     role = MemberRole.ADMIN;
   }
 
+  public void markAsDeleted() {
+    this.deletedAt = LocalDateTime.now();
+  }
+
   public void update(
       String employeeName,
       String phoneNumber,

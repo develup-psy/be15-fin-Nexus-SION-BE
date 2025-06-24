@@ -1,6 +1,8 @@
 package com.nexus.sion.feature.member.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,11 +25,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @SpringBootTest
@@ -143,5 +147,61 @@ class MemberCommandIntegrationTest {
     assertThat(updated.getDepartmentName()).isEqualTo("UX");
     assertThat(updated.getProfileImageUrl()).isEqualTo("http://image.url");
     assertThat(updated.getSalary()).isEqualTo(5000L);
+  }
+
+  @Test
+  @DisplayName("개발자 정보 삭제 - 성공")
+  @WithMockUser
+  void deleteMember_success() throws Exception {
+    // given
+    Member member =
+        Member.builder()
+            .employeeIdentificationNumber("EMP001")
+            .employeeName("홍길동")
+            .email("hong@example.com")
+            .phoneNumber("01012345678")
+            .role(MemberRole.INSIDER)
+            .build();
+    memberRepository.save(member);
+
+    // when & then
+    mockMvc
+        .perform(delete("/api/v1/members/{id}", "EMP001"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
+
+    Member deletedMember =
+        memberRepository
+            .findById("EMP001")
+            .orElseThrow(() -> new IllegalStateException("멤버가 삭제되어선 안 됨 (soft delete)"));
+
+    assertThat(deletedMember.getDeletedAt()).isNotNull();
+  }
+
+  @Test
+  @DisplayName("관리자 삭제 시 예외 발생")
+  void deleteMember_throw_if_admin_and_rollback() {
+    // given
+    Member admin =
+        Member.builder()
+            .employeeIdentificationNumber("ADMIN001")
+            .employeeName("관리자")
+            .email("admin@example.com")
+            .phoneNumber("01099999999")
+            .role(MemberRole.ADMIN)
+            .build();
+
+    memberRepository.save(admin);
+
+    // when
+    assertThrows(BusinessException.class, () -> memberCommandService.deleteMember("ADMIN001"));
+
+    // then
+    Member found =
+        memberRepository
+            .findById("ADMIN001")
+            .orElseThrow(() -> new IllegalStateException("관리자 존재해야 함"));
+
+    assertThat(found.getDeletedAt()).isNull();
   }
 }

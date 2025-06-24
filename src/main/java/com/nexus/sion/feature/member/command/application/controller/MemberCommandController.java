@@ -50,4 +50,11 @@ public class MemberCommandController {
     memberCommandService.updateMember(employeeId, request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
+
+  @Operation(summary = "구성원 삭제", description = "구성원 삭제 기능")
+  @DeleteMapping("/{employeeId}")
+  public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable String employeeId) {
+    memberCommandService.deleteMember(employeeId);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
 }

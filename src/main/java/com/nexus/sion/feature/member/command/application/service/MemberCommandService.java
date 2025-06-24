@@ -280,4 +280,22 @@ public class MemberCommandService {
 
     developerTechStackRepository.saveAll(toInsert);
   }
+
+  @Transactional
+  public void deleteMember(String employeeId) {
+    Member member =
+        memberRepository
+            .findById(employeeId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+    if (member.getDeletedAt() != null) {
+      throw new BusinessException(ErrorCode.ALREADY_DELETED_USER);
+    }
+
+    if (member.getRole() == MemberRole.ADMIN) {
+      throw new BusinessException(ErrorCode.CANNOT_DELETE_ADMIN);
+    }
+
+    member.markAsDeleted();
+  }
 }
