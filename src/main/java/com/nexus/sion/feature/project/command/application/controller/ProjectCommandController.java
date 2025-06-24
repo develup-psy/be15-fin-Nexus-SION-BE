@@ -8,6 +8,7 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +37,13 @@ public class ProjectCommandController {
   @DeleteMapping("/{projectCode}")
   public ResponseEntity<ApiResponse<Void>> deleteProject(@PathVariable String projectCode) {
     projectCommandService.deleteProject(projectCode);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @PutMapping("/{projectCode}/status/{status}")
+  public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
+      @PathVariable String projectCode, @PathVariable Project.ProjectStatus status) {
+    projectCommandService.updateProjectStatus(projectCode, status);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
