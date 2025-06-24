@@ -18,7 +18,6 @@ public class DomainCommandServiceImpl implements DomainCommandService {
 
   private final ModelMapper modelMapper;
   private final DomainRepository domainRepository;
-  private final TechStackRepository techStackRepository;
 
   @Override
   public boolean registerDomain(DomainRequest request) {
@@ -33,13 +32,13 @@ public class DomainCommandServiceImpl implements DomainCommandService {
   }
 
   @Override
-  public void removeTechStack(String domainName) {
+  public void removeDomain(String domainName) {
     // 기존에 해당 도메인이 없으면 에러
     if(!domainRepository.existsById(domainName)) {
       throw new BusinessException(ErrorCode.DOMAIN_NOT_FOUND);
     }
 
     // 해당 도메인 삭제
-    techStackRepository.deleteById(domainName);
+    domainRepository.deleteById(domainName);
   }
 }
