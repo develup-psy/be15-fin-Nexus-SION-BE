@@ -43,10 +43,6 @@ public class StatisticsQueryRepository {
         .fetchInto(TechStackCountDto.class);
   }
 
-  public List<String> findAllStackNames() {
-    return dsl.select(TECH_STACK.TECH_STACK_NAME).from(TECH_STACK).fetchInto(String.class);
-  }
-
   public PageResponse<DeveloperDto> findAllDevelopers(int page, int size) {
     int offset = page * size;
 

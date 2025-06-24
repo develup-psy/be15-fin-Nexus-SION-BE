@@ -2,6 +2,7 @@ package com.nexus.sion.feature.statistics.query.controller;
 
 import java.util.List;
 
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
@@ -19,22 +20,23 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/statistics")
 public class StatisticsQueryController {
 
-  private final StatisticsQueryService service;
+  private final StatisticsQueryService statisticsQueryService;
+  private final TechStackQueryService techStackQueryService;
 
   @PostMapping("/stack/member-count")
   public ApiResponse<List<TechStackCountDto>> getStackCount(@RequestBody List<String> stacks) {
-    return ApiResponse.success(service.getStackMemberCounts(stacks));
+    return ApiResponse.success(statisticsQueryService.getStackMemberCounts(stacks));
   }
 
   @GetMapping("/all-tech-stacks")
   public ApiResponse<List<String>> getAllTechStacks() {
-    return ApiResponse.success(service.findAllStackNames());
+    return ApiResponse.success(techStackQueryService.findAllStackNames());
   }
 
   @GetMapping("/developers")
   public ApiResponse<PageResponse<DeveloperDto>> getAllDevelopers(
       @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
-    return ApiResponse.success(service.getAllDevelopers(page, size));
+    return ApiResponse.success(statisticsQueryService.getAllDevelopers(page, size));
   }
 
   @GetMapping("/stack/average-career")
@@ -45,7 +47,7 @@ public class StatisticsQueryController {
       @RequestParam(defaultValue = "techStackName") String sort,
       @RequestParam(defaultValue = "asc") String direction) {
     return ApiResponse.success(
-        service.getStackAverageCareersPaged(selectedStacks, page, size, sort, direction));
+        statisticsQueryService.getStackAverageCareersPaged(selectedStacks, page, size, sort, direction));
   }
 
   @GetMapping("/stack/popular")
@@ -56,9 +58,9 @@ public class StatisticsQueryController {
       @RequestParam(name = "top", required = false) Integer top) {
 
     if (top != null) {
-      return ApiResponse.success(service.getPopularTechStacksWithTop(period, top));
+      return ApiResponse.success(statisticsQueryService.getPopularTechStacksWithTop(period, top));
     }
 
-    return ApiResponse.success(service.getPopularTechStacks(period, page, size));
+    return ApiResponse.success(statisticsQueryService.getPopularTechStacks(period, page, size));
   }
 }

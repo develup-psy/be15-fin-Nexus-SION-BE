@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.techstack.query.cotroller;
 
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/tech-stack")
 public class TechStackQueryController {
 
-  private final StatisticsQueryService statisticsQueryService;
+  private final TechStackQueryService techStackQueryService;
 
   @GetMapping
   public ResponseEntity<ApiResponse<TechStackListResponse>> getAllTechStacks() {
     return ResponseEntity.ok(
-        ApiResponse.success(new TechStackListResponse(statisticsQueryService.findAllStackNames())));
+        ApiResponse.success(new TechStackListResponse(techStackQueryService.findAllStackNames())));
   }
 }

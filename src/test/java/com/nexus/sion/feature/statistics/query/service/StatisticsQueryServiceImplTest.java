@@ -41,18 +41,6 @@ class StatisticsQueryServiceImplTest {
     assertEquals(5, result.get(1).getCount());
   }
 
-  // 전체 기술 스택 이름 목록을 조회하는 기능을 테스트
-  @Test
-  void findAllStackNames_returnsList() {
-    List<String> mockStacks = List.of("Java", "Spring", "Vue");
-    when(repository.findAllStackNames()).thenReturn(mockStacks);
-
-    List<String> result = service.findAllStackNames();
-
-    assertEquals(3, result.size());
-    assertTrue(result.contains("Spring"));
-  }
-
   // 전체 개발자 목록을 페이지 단위로 조회하는 기능을 테스트
   @Test
   void getAllDevelopers_returnsPageResponse() {
