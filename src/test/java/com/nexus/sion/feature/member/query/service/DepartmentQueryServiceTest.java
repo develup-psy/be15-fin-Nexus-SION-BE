@@ -20,7 +20,8 @@ class DepartmentQueryServiceTest {
 
   @InjectMocks private DepartmentQueryService departmentQueryService;
 
-  public DepartmentQueryServiceTest() {
+  @BeforeEach
+  void setUp() {
     openMocks(this);
   }
 
