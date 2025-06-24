@@ -10,6 +10,7 @@ import lombok.*;
 @Entity
 @Table(name = "project")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
