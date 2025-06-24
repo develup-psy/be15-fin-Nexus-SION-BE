@@ -24,4 +24,12 @@ public class ProjectCommandController {
     ProjectRegisterResponse response = projectCommandService.registerProject(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
   }
+
+  @PutMapping("/{projectCode}")
+  public ResponseEntity<ApiResponse<Void>> updateProject(
+      @PathVariable String projectCode, @RequestBody ProjectRegisterRequest request) {
+    request.setProjectCode(projectCode);
+    projectCommandService.updateProject(request);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
 }
