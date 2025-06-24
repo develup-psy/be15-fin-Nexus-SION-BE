@@ -96,4 +96,19 @@ public class Member {
   public void setAdminRole() {
     role = MemberRole.ADMIN;
   }
+
+  public void update(String name, String phone, LocalDate birth, LocalDateTime joinedAt,
+                     String email, Integer careerYears, String positionName,
+                     String departmentName, String profileImageUrl, Long salary) {
+    this.employeeName = name;
+    this.phoneNumber = phone;
+    this.birthday = birth;
+    this.joinedAt = joinedAt;
+    this.email = email;
+    this.careerYears = careerYears;
+    this.positionName = positionName;
+    this.departmentName = departmentName;
+    this.profileImageUrl = profileImageUrl;
+    this.salary = salary;
+  }
 }
