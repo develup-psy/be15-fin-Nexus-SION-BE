@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public enum ErrorCode {
+
   // auth
   VALIDATION_ERROR("10001", "입력 값 검증 오류입니다.", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("10002", "내부 서버 오류입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -26,8 +27,9 @@ public enum ErrorCode {
   ALREADY_REGISTERED_EMPLOYEE_IDENTIFICATION_NUMBER("20004", "이미 가입한 사번입니다.", HttpStatus.CONFLICT),
   INVALID_PASSWORD_FORMAT("20004", "최소 8자, 영문자, 숫자, 특수문자 포함해야합니다.", HttpStatus.BAD_REQUEST),
   INVALID_PHONE_NUMBER_FORMAT(
-      "20005", "휴대폰 번호는 하이픈(-) 없이 10자리 또는 11자리 숫자로 입력해주세요. 예: 01012345678", HttpStatus.BAD_REQUEST),
+          "20005", "휴대폰 번호는 하이픈(-) 없이 10자리 또는 11자리 숫자로 입력해주세요. 예: 01012345678", HttpStatus.BAD_REQUEST),
   INVALID_EMAIL_FORMAT(
+
       "20006", "이메일 형식이 올바르지 않습니다. 예: example@example.com", HttpStatus.BAD_REQUEST),
   INVALID_CURRENT_PASSWORD("20007", "비밀번호가 올바르지 않습니다.", HttpStatus.BAD_REQUEST),
   INVALID_MEMBER_STATUS("20008", "유효하지 않은 상태값 입니다.", HttpStatus.BAD_REQUEST),
@@ -39,8 +41,9 @@ public enum ErrorCode {
   // project
 
   // squad
-  SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-  PROJECT_CODE_INVALID("40002", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST);
+  PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+  SQUAD_DETAIL_NOT_FOUND("40002", "스쿼드 상세 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  PROJECT_CODE_INVALID("40003", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST);
 
   // techstack
 

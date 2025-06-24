@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -47,7 +48,10 @@ public class DeveloperTechStack extends TableImpl<DeveloperTechStackRecord> {
   /** The column <code>sion.developer_tech_stack.developer_tech_stack_id</code>. */
   public final TableField<DeveloperTechStackRecord, Long> DEVELOPER_TECH_STACK_ID =
       createField(
-          DSL.name("developer_tech_stack_id"), SQLDataType.BIGINT.nullable(false), this, "");
+          DSL.name("developer_tech_stack_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>sion.developer_tech_stack.tech_stack_total_scores</code>. */
   public final TableField<DeveloperTechStackRecord, Integer> TECH_STACK_TOTAL_SCORES =
@@ -118,6 +122,11 @@ public class DeveloperTechStack extends TableImpl<DeveloperTechStackRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<DeveloperTechStackRecord, Long> getIdentity() {
+    return (Identity<DeveloperTechStackRecord, Long>) super.getIdentity();
   }
 
   @Override

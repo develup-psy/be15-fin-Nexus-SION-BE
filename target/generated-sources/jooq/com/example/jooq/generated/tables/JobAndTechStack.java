@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -46,7 +47,11 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
 
   /** The column <code>sion.job_and_tech_stack.job_and_tech_stack_id</code>. */
   public final TableField<JobAndTechStackRecord, Long> JOB_AND_TECH_STACK_ID =
-      createField(DSL.name("job_and_tech_stack_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("job_and_tech_stack_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>sion.job_and_tech_stack.tech_stack_name</code>. */
   public final TableField<JobAndTechStackRecord, String> TECH_STACK_NAME =
@@ -115,6 +120,11 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<JobAndTechStackRecord, Long> getIdentity() {
+    return (Identity<JobAndTechStackRecord, Long>) super.getIdentity();
   }
 
   @Override

@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function10;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -46,7 +47,11 @@ public class ProjectEvaluation extends TableImpl<ProjectEvaluationRecord> {
 
   /** The column <code>sion.project_evaluation.project_evaluation_id</code>. */
   public final TableField<ProjectEvaluationRecord, Long> PROJECT_EVALUATION_ID =
-      createField(DSL.name("project_evaluation_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("project_evaluation_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
   /** The column <code>sion.project_evaluation.project_code</code>. */
   public final TableField<ProjectEvaluationRecord, String> PROJECT_CODE =
@@ -128,6 +133,11 @@ public class ProjectEvaluation extends TableImpl<ProjectEvaluationRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<ProjectEvaluationRecord, Long> getIdentity() {
+    return (Identity<ProjectEvaluationRecord, Long>) super.getIdentity();
   }
 
   @Override
