@@ -29,4 +29,11 @@ public class TechStack {
   @LastModifiedDate
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  // For testing
+  public static TechStack of(String techStackName) {
+    TechStack techStack = new TechStack();
+    techStack.techStackName = techStackName;
+    return techStack;
+  }
 }

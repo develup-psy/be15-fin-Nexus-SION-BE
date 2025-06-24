@@ -59,16 +59,7 @@ class TechStackCommandControllerIntegrationTest {
   void registerExistingTechStack_doesNotSaveAgain() throws Exception {
     // given
     String existingTechStackName = "techStackName";
-    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-    constructor.setAccessible(true);
-    TechStack existing = constructor.newInstance();
-
-    // id 필드 설정
-    Field idField = TechStack.class.getDeclaredField(existingTechStackName);
-    idField.setAccessible(true);
-    idField.set(existing, existingTechStackName);
-
-    techStackRepository.save(existing);
+    techStackRepository.save(TechStack.of(existingTechStackName));
     int existingCount = techStackRepository.findAll().size();
 
     TechStackRequest request = new TechStackRequest(existingTechStackName);
@@ -90,18 +81,7 @@ class TechStackCommandControllerIntegrationTest {
   void deleteExistingTechStack_returnsDeleted() throws Exception {
     // given
     String techStackName = "test";
-    String techStackColumn = "techStackName";
-
-    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-    constructor.setAccessible(true);
-    TechStack existing = constructor.newInstance();
-
-    // id 필드 설정
-    Field idField = TechStack.class.getDeclaredField(techStackColumn);
-    idField.setAccessible(true);
-    idField.set(existing, techStackName);
-
-    techStackRepository.save(existing);
+    techStackRepository.save(TechStack.of(techStackName));
 
     // when & then
     mockMvc

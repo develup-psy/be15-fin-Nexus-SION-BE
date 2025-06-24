@@ -5,9 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,18 +29,8 @@ class TechStackIntegrationTest {
   void 기술스택_전체조회_성공() throws Exception {
     // 테스트 데이터 저장
     String techStackName = "test";
-    String techStackColumn = "techStackName";
 
-    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-    constructor.setAccessible(true);
-    TechStack existing = constructor.newInstance();
-
-    // id 필드 설정
-    Field idField = TechStack.class.getDeclaredField(techStackColumn);
-    idField.setAccessible(true);
-    idField.set(existing, techStackName);
-
-    techStackRepository.save(existing);
+    techStackRepository.save(TechStack.of(techStackName));
     techStackRepository.flush();
 
     // when & then
