@@ -27,6 +27,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRe
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @SpringBootTest
@@ -128,5 +129,19 @@ class MemberCommandIntegrationTest {
                 .content(json))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success").value(true));
+
+    Member updated =
+        memberRepository
+            .findById(employeeId)
+            .orElseThrow(() -> new RuntimeException("수정된 멤버가 존재하지 않습니다."));
+    assertThat(updated.getEmail()).isEqualTo("hong@test.com");
+    assertThat(updated.getEmployeeName()).isEqualTo("홍길동");
+    assertThat(updated.getPhoneNumber()).isEqualTo("01012345678");
+    assertThat(updated.getBirthday()).isEqualTo(LocalDate.of(1990, 1, 1));
+    assertThat(updated.getJoinedAt()).isEqualTo(LocalDateTime.of(2022, 1, 1, 9, 0));
+    assertThat(updated.getPositionName()).isEqualTo("Backend");
+    assertThat(updated.getDepartmentName()).isEqualTo("UX");
+    assertThat(updated.getProfileImageUrl()).isEqualTo("http://image.url");
+    assertThat(updated.getSalary()).isEqualTo(5000L);
   }
 }
