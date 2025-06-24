@@ -2,7 +2,6 @@ package com.nexus.sion.feature.statistics.query.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +26,7 @@ public class StatisticsQueryController {
   public ResponseEntity<ApiResponse<List<TechStackCountDto>>> getStackCount(
       @RequestBody List<String> stacks) {
     var response = service.getStackMemberCounts(stacks);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 
   @GetMapping("/all-tech-stacks")
