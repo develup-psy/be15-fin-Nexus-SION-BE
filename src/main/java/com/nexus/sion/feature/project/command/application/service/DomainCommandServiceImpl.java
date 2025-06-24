@@ -17,7 +17,7 @@ public class DomainCommandServiceImpl implements DomainCommandService {
     @Override
     public void registerDomain(DomainRequest request) {
         // 기존에 존재하는 도메인은 저장하지 않고 종료
-        if(domainRepository.existsById(request.getDomainName())) {
+        if(domainRepository.existsById(request.getName())) {
             return;
         }
 

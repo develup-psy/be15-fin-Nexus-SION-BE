@@ -10,7 +10,7 @@ import lombok.*;
 @Table(name = "domain")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Domain {
@@ -24,4 +24,11 @@ public class Domain {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  // For testing
+  public static Domain of(String domainName) {
+    Domain domain = new Domain();
+    domain.name = domainName;
+    return domain;
+  }
 }
