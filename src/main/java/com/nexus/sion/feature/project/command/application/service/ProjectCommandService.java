@@ -7,4 +7,6 @@ public interface ProjectCommandService {
   ProjectRegisterResponse registerProject(ProjectRegisterRequest request);
 
   void updateProject(ProjectRegisterRequest request);
+
+  void deleteProject(String projectCode);
 }

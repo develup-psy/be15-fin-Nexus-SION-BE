@@ -110,4 +110,21 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                       });
             });
   }
+
+  @Override
+  public void deleteProject(String projectCode) {
+    Project project =
+        projectCommandRepository
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    var projectAndJobs = projectAndJobRepository.findByProjectCode(projectCode);
+    projectAndJobs.forEach(
+        job -> {
+          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
+        });
+    projectAndJobRepository.deleteByProjectCode(projectCode);
+
+    projectCommandRepository.delete(project);
+  }
 }
