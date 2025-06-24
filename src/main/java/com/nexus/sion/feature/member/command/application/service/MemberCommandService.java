@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,6 +118,11 @@ public class MemberCommandService {
 
       // TODO: 계산한 점수 토대로 등급 산정 로직 추가
 
+
+      // 생년월일 기반 임의 password 발급
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+      String rawPassword = request.birthday().format(formatter);
+
       // Member 저장
       Member member =
           Member.builder()
@@ -134,7 +140,7 @@ public class MemberCommandService {
               .gradeCode(GradeCode.D)
               .role(MemberRole.INSIDER)
               .status(MemberStatus.AVAILABLE)
-              .password(passwordEncoder.encode("123456"))
+              .password(passwordEncoder.encode(rawPassword))
               .createdAt(LocalDateTime.now())
               .updatedAt(LocalDateTime.now())
               .build();
