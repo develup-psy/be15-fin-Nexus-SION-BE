@@ -35,7 +35,6 @@ public enum ErrorCode {
   DEPARTMENT_NOT_FOUND("20011", "존재하지 않는 부서입니다.", HttpStatus.BAD_REQUEST),
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
 
-
   // project
 
   // squad

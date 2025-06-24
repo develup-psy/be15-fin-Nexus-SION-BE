@@ -131,7 +131,6 @@ public class MemberCommandService {
 
       // TODO: 계산한 점수 토대로 등급 산정 로직 추가
 
-
       // 생년월일 기반 임의 password 발급
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
       String rawPassword = request.birthday().format(formatter);
