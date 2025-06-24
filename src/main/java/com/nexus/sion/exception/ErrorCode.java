@@ -37,6 +37,7 @@ public enum ErrorCode {
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
 
   // project
+  PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
