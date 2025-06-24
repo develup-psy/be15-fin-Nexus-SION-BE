@@ -29,7 +29,7 @@ public class TechStackCommandServiceImpl implements TechStackCommandService {
     @Override
     public void removeTechStack(TechStackRequest request) {
         // 기존에 해당 기술스택이 없으면 에러
-        if(techStackRepository.existsById(request.getTechStackName())) {
+        if(!techStackRepository.existsById(request.getTechStackName())) {
             throw new BusinessException(ErrorCode.TECH_STACK_NOT_FOUND);
         }
 
