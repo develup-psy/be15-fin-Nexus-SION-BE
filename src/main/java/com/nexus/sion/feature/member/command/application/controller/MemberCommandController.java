@@ -24,12 +24,12 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "", description = "")
 public class MemberCommandController {
 
-  private final MemberCommandService userCommandService;
+  private final MemberCommandService memberCommandService;
 
   @Operation(summary = "회원 가입", description = "회원 가입 기능")
   @PostMapping("/signup")
   public ResponseEntity<ApiResponse<Void>> register(@RequestBody MemberCreateRequest request) {
-    userCommandService.registerUser(request);
+    memberCommandService.registerUser(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 
@@ -38,7 +38,7 @@ public class MemberCommandController {
   public ResponseEntity<ApiResponse<Void>> registerMembers(
       @RequestBody @Valid List<MemberAddRequest> requests) {
 
-    userCommandService.addMembers(requests);
+    memberCommandService.addMembers(requests);
 
     return ResponseEntity.ok(ApiResponse.success(null));
   }
@@ -47,7 +47,7 @@ public class MemberCommandController {
   @PutMapping("/{employeeId}")
   public ResponseEntity<ApiResponse<Void>> updateMember(
       @PathVariable String employeeId, @RequestBody @Valid MemberUpdateRequest request) {
-    userCommandService.updateMember(employeeId, request);
+    memberCommandService.updateMember(employeeId, request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
