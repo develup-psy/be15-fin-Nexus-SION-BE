@@ -109,6 +109,44 @@ class ProjectCommandServiceImplTest {
         .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
+  
+  @Test
+  @DisplayName("프로젝트 삭제 성공")
+  void deleteProject_Success() {
+    // given
+    String projectCode = "P123";
+    Project existingProject =
+            Project.builder()
+                    .projectCode(projectCode)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
+    when(projectAndJobRepository.findByProjectCode(projectCode))
+            .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
+
+    // when
+    projectCommandService.deleteProject(projectCode);
+
+    // then
+    verify(jobAndTechStackRepository).deleteByProjectJobId(anyLong());
+    verify(projectAndJobRepository).deleteByProjectCode(projectCode);
+    verify(projectCommandRepository).delete(existingProject);
+  }
+
+  @Test
+  @DisplayName("프로젝트 삭제 실패 - 존재하지 않는 프로젝트")
+  void deleteProject_Fail_When_ProjectNotFound() {
+    // given
+    String projectCode = "P123";
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.empty());
+
+    // when & then
+    assertThatThrownBy(() -> projectCommandService.deleteProject(projectCode))
+            .isInstanceOf(BusinessException.class)
+            .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+  }
 
   private ProjectRegisterRequest createRequest() {
     TechStackInfo techStack = new TechStackInfo();
