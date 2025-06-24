@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
@@ -9,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
-import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackCreateRequest;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.techstack.command.application.dto.request.TechStackRequest;
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 
@@ -22,11 +26,13 @@ class TechStackCommandServiceImplTest {
 
   @Mock private ModelMapper modelMapper;
 
+  String techStackName = "Java";
+
   @Test
   void registerTechStack_이미존재하면저장하지않음() {
     // given
-    TechStackCreateRequest request = new TechStackCreateRequest("Spring");
-    when(techStackRepository.existsById("Spring")).thenReturn(true);
+    TechStackRequest request = new TechStackRequest(techStackName);
+    when(techStackRepository.existsById(techStackName)).thenReturn(true);
 
     // when
     techStackCommandService.registerTechStack(request);
@@ -38,9 +44,9 @@ class TechStackCommandServiceImplTest {
   @Test
   void registerTechStack_존재하지않으면저장() {
     // given
-    TechStackCreateRequest request = new TechStackCreateRequest("React");
+    TechStackRequest request = new TechStackRequest(techStackName);
 
-    when(techStackRepository.existsById("React")).thenReturn(false);
+    when(techStackRepository.existsById(techStackName)).thenReturn(false);
     when(modelMapper.map(request, TechStack.class)).thenReturn(mock(TechStack.class));
 
     // when
@@ -48,5 +54,37 @@ class TechStackCommandServiceImplTest {
 
     // then
     verify(techStackRepository, times(1)).save(any(TechStack.class));
+  }
+
+  @Test
+  void deleteTechStack_존재하면삭제() {
+    // given
+    when(techStackRepository.existsById(techStackName)).thenReturn(true);
+    doNothing().when(techStackRepository).deleteById(techStackName);
+
+    // when
+    techStackCommandService.removeTechStack(techStackName);
+
+    // then
+    verify(techStackRepository, times(1)).deleteById(techStackName);
+  }
+
+  @Test
+  void deleteTechStack_존재하지않으면에러() {
+    // given
+    when(techStackRepository.existsById(techStackName)).thenReturn(false);
+
+    // when & then
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              techStackCommandService.removeTechStack(techStackName);
+            });
+
+    // then
+    assertEquals(ErrorCode.TECH_STACK_NOT_FOUND, exception.getErrorCode());
+
+    verify(techStackRepository, never()).deleteById(any());
   }
 }
