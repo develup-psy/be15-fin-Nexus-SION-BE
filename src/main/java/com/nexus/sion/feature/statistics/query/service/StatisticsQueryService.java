@@ -19,4 +19,6 @@ public interface StatisticsQueryService {
       List<String> stackNames, int page, int size, String sort, String direction);
 
   PageResponse<PopularTechStackDto> getPopularTechStacks(String period, int page, int size);
+
+  PageResponse<PopularTechStackDto> getPopularTechStacksWithTop(String period, int top);
 }

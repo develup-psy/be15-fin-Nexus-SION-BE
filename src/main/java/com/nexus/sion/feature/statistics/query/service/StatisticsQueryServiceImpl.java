@@ -44,4 +44,15 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   public PageResponse<PopularTechStackDto> getPopularTechStacks(String period, int page, int size) {
     return repository.findPopularTechStacks(period, page, size);
   }
+
+  @Override
+  public PageResponse<PopularTechStackDto> getPopularTechStacksWithTop(String period, int top) {
+    int page = 0;
+
+    List<PopularTechStackDto> content =
+        repository.findPopularTechStacks(period, page, top).getContent();
+    long totalElements = Math.min(top, content.size());
+
+    return PageResponse.fromJooq(content, totalElements, page, top);
+  }
 }
