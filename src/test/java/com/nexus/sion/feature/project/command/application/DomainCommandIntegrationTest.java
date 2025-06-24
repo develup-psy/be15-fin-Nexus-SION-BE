@@ -42,14 +42,14 @@ public class DomainCommandIntegrationTest {
             post("/api/v1/domains")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated());
+        .andExpect(status().isCreated()); // 201 반환되는지 확인
 
     // then - DB에 저장되었는지 확인
     assertThat(domainRepository.findById(domainName)).isPresent();
   }
 
   @Test
-  @DisplayName("이미 존재하는 도메인은 저장하지 않는다.")
+  @DisplayName("이미 존재하는 도메인은 저장하지 않고, 200이 반환된다.")
   void registerExistingTechStack_doesNotSaveAgain() throws Exception {
     // given
     String existingDomainName = "techStackName";
@@ -64,7 +64,7 @@ public class DomainCommandIntegrationTest {
             post("/api/v1/domains")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated()); // 응답은 성공
+        .andExpect(status().isOk()); // 200 반환되는지 확인
 
     // then - 여전히 하나만 존재
     assertThat(domainRepository.findAll().size()).isEqualTo(existingCount);

@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
@@ -30,9 +32,10 @@ class DomainCommandServiceImplTest {
     when(domainRepository.existsById(domainName)).thenReturn(true);
 
     // when
-    domainCommandService.registerDomain(request);
+    boolean result = domainCommandService.registerDomain(request);
 
     // then
+    assertFalse(result); // 반환값이 false인지 검증
     verify(domainRepository, never()).save(any(Domain.class));
   }
 
@@ -44,9 +47,10 @@ class DomainCommandServiceImplTest {
     when(modelMapper.map(request, Domain.class)).thenReturn(mock(Domain.class));
 
     // when
-    domainCommandService.registerDomain(request);
+    boolean result = domainCommandService.registerDomain(request);
 
     // then
+    assertTrue(result); // 반환값이 false인지 검증
     verify(domainRepository, times(1)).save(any(Domain.class));
   }
 }

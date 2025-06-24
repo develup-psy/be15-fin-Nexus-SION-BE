@@ -24,7 +24,9 @@ public class DomainCommandController {
   @PostMapping
   @Operation(summary = "도메인 등록", description = "새로운 도메인을 시스템에 등록합니다.")
   public ResponseEntity<ApiResponse<Void>> registerDomain(@RequestBody DomainRequest request) {
-    domainCommandService.registerDomain(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+    if(domainCommandService.registerDomain(request)) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+    }
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
