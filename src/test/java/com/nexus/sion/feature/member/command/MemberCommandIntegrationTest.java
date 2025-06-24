@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.nexus.sion.exception.BusinessException;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
@@ -182,7 +182,8 @@ class MemberCommandIntegrationTest {
   @DisplayName("관리자 삭제 시 예외 발생")
   void deleteMember_throw_if_admin_and_rollback() {
     // given
-    Member admin = Member.builder()
+    Member admin =
+        Member.builder()
             .employeeIdentificationNumber("ADMIN001")
             .employeeName("관리자")
             .email("admin@example.com")
@@ -193,12 +194,12 @@ class MemberCommandIntegrationTest {
     memberRepository.save(admin);
 
     // when
-    assertThrows(BusinessException.class, () ->
-            memberCommandService.deleteMember("ADMIN001")
-    );
+    assertThrows(BusinessException.class, () -> memberCommandService.deleteMember("ADMIN001"));
 
     // then
-    Member found = memberRepository.findById("ADMIN001")
+    Member found =
+        memberRepository
+            .findById("ADMIN001")
             .orElseThrow(() -> new IllegalStateException("관리자 존재해야 함"));
 
     assertThat(found.getDeletedAt()).isNull();
