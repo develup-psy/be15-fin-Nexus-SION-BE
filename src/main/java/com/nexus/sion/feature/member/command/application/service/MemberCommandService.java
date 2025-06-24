@@ -222,7 +222,7 @@ public class MemberCommandService {
       throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
     }
 
-    // 3. 필드 수정
+    // 8. 필드 수정
     member.update(
         request.employeeName(),
         request.phoneNumber(),
@@ -241,7 +241,7 @@ public class MemberCommandService {
             .map(InitialScore::getScore)
             .orElse(0);
 
-    // 4. 기술스택 수정 - 기존 점수 보존
+    // 9. 기술스택 수정 - 기존 점수 보존
     // 기존 기술스택 조회
     List<DeveloperTechStack> existingStacks =
         developerTechStackRepository.findAllByEmployeeIdentificationNumber(employeeId);
