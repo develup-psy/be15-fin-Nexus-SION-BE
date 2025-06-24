@@ -91,7 +91,6 @@ class TechStackCommandControllerIntegrationTest {
     // given
     String techStackName = "test";
     String techStackColumn = "techStackName";
-    TechStackRequest request = new TechStackRequest(techStackName);
 
     Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
     constructor.setAccessible(true);
@@ -119,7 +118,6 @@ class TechStackCommandControllerIntegrationTest {
   void deleteExistingTechStack_returnsError() throws Exception {
     // given
     String techStackName = "test";
-    TechStackRequest request = new TechStackRequest(techStackName);
 
     // when & then
     mockMvc
