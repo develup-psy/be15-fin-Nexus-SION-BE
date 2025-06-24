@@ -24,7 +24,7 @@ public class JobAndTechStack {
   private String techStackName;
 
   @Column(name = "project_and_job_id", nullable = false)
-  private Long projectAndJob;
+  private Long projectJobId;
 
   @Column(name = "priority")
   private Integer priority;
