@@ -107,9 +107,7 @@ class TechStackCommandControllerIntegrationTest {
     // when & then
     mockMvc
         .perform(
-            delete("/api/v1/tech-stack")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                delete("/api/v1/tech-stack/{techstackName}", techStackName))
         .andExpect(status().isNoContent());
 
     // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
@@ -126,9 +124,7 @@ class TechStackCommandControllerIntegrationTest {
     // when & then
     mockMvc
         .perform(
-            delete("/api/v1/tech-stack")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+            delete("/api/v1/tech-stack/{techstackName}", techStackName))
         .andExpect(status().is4xxClientError())
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.errorCode").value(ErrorCode.TECH_STACK_NOT_FOUND.getCode()))

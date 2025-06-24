@@ -59,12 +59,11 @@ class TechStackCommandServiceImplTest {
   @Test
   void deleteTechStack_존재하면삭제() {
     // given
-    TechStackRequest request = new TechStackRequest(techStackName);
     when(techStackRepository.existsById(techStackName)).thenReturn(true);
     doNothing().when(techStackRepository).deleteById(techStackName);
 
     // when
-    techStackCommandService.removeTechStack(request);
+    techStackCommandService.removeTechStack(techStackName);
 
     // then
     verify(techStackRepository, times(1)).deleteById(techStackName);
@@ -73,7 +72,6 @@ class TechStackCommandServiceImplTest {
   @Test
   void deleteTechStack_존재하지않으면에러() {
     // given
-    TechStackRequest request = new TechStackRequest(techStackName);
     when(techStackRepository.existsById(techStackName)).thenReturn(false);
 
     // when & then
@@ -81,7 +79,7 @@ class TechStackCommandServiceImplTest {
         assertThrows(
             BusinessException.class,
             () -> {
-              techStackCommandService.removeTechStack(request);
+              techStackCommandService.removeTechStack(techStackName);
             });
 
     // then

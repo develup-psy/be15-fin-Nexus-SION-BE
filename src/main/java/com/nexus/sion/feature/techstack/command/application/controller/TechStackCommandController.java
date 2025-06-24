@@ -28,10 +28,10 @@ public class TechStackCommandController {
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 
-  @DeleteMapping
+  @DeleteMapping("/{techStackName}")
   @Operation(summary = "기술 스택 삭제", description = "기술 스택을 시스템에서 삭제합니다.")
-  public ResponseEntity<ApiResponse<Void>> removeTechStack(@RequestBody TechStackRequest request) {
-    techStackCommandService.removeTechStack(request);
+  public ResponseEntity<ApiResponse<Void>> removeTechStack(@PathVariable String techStackName) {
+    techStackCommandService.removeTechStack(techStackName);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.success(null));
   }
 }

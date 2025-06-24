@@ -5,5 +5,5 @@ import com.nexus.sion.feature.techstack.command.application.dto.request.TechStac
 public interface TechStackCommandService {
   void registerTechStack(TechStackRequest request);
 
-  void removeTechStack(TechStackRequest request);
+  void removeTechStack(String techStackName);
 }
