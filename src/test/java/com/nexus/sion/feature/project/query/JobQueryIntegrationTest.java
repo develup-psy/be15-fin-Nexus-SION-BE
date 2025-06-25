@@ -42,7 +42,7 @@ public class JobQueryIntegrationTest {
   }
 
   @Test
-  void 직무_정렬_한글우선_성공() throws Exception {
+  void 직무_정렬_알파벳순_성공() throws Exception {
     // given
     jobRepository.save(Job.of("Banana"));
     jobRepository.save(Job.of("apple"));
