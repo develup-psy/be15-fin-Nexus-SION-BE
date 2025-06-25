@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
-import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
-import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
+import com.nexus.sion.feature.statistics.query.dto.*;
 import com.nexus.sion.feature.statistics.query.service.StatisticsQueryService;
 import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 
@@ -58,18 +55,25 @@ public class StatisticsQueryController {
   }
 
   @GetMapping("/stack/popular")
-  public ResponseEntity<ApiResponse<PageResponse<PopularTechStackDto>>> getPopularTechStacks(
-      @RequestParam String period,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size,
-      @RequestParam(name = "top", required = false) Integer top) {
+  public ResponseEntity<ApiResponse<PageResponse<TechStackMonthlyUsageDto>>>
+      getMonthlyPopularTechStacks(
+          @RequestParam String period,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size,
+          @RequestParam(name = "top", required = false) Integer top) {
+    PageResponse<TechStackMonthlyUsageDto> response;
 
     if (top != null) {
-      var response = statisticsQueryService.getPopularTechStacksWithTop(period, top);
-      return ResponseEntity.ok(ApiResponse.success(response));
+      // top이 지정된 경우: page=0, size=top 고정, total도 top으로 제한
+      response = statisticsQueryService.getPopularTechStacksGroupedByMonth(period, 0, top, top);
+      long totalElements = Math.min(top, response.getContent().size());
+      PageResponse<TechStackMonthlyUsageDto> trimmed =
+          PageResponse.fromJooq(response.getContent(), totalElements, 0, top);
+      return ResponseEntity.ok(ApiResponse.success(trimmed));
     }
 
-    var response = statisticsQueryService.getPopularTechStacks(period, page, size);
+    // 일반 페이징
+    response = statisticsQueryService.getPopularTechStacksGroupedByMonth(period, page, size, null);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 }

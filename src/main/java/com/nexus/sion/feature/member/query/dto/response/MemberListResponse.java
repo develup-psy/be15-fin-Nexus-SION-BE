@@ -1,6 +1,6 @@
 package com.nexus.sion.feature.member.query.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record MemberListResponse(
     String employeeId,
@@ -13,6 +13,6 @@ public record MemberListResponse(
     String department,
     String position,
     String profileImageUrl,
-    LocalDateTime joinedAt,
+    LocalDate joinedAt,
     String topTechStackName,
     Integer careerYears) {}

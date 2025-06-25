@@ -315,7 +315,7 @@ public class Keys {
       Internal.createForeignKey(
           Project.PROJECT,
           DSL.name("FK_domain_TO_project_1"),
-          new TableField[] {Project.PROJECT.NAME},
+          new TableField[] {Project.PROJECT.DOMAIN_NAME},
           Keys.KEY_DOMAIN_PRIMARY,
           new TableField[] {Domain.DOMAIN.NAME},
           true);

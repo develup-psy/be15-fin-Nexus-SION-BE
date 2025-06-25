@@ -29,7 +29,7 @@ public class Project implements Serializable {
   private LocalDateTime deletedAt;
   private String clientCode;
   private String requestSpecificationUrl;
-  private String name;
+  private String domainName;
 
   public Project() {}
 
@@ -48,7 +48,7 @@ public class Project implements Serializable {
     this.deletedAt = value.deletedAt;
     this.clientCode = value.clientCode;
     this.requestSpecificationUrl = value.requestSpecificationUrl;
-    this.name = value.name;
+    this.domainName = value.domainName;
   }
 
   public Project(
@@ -66,7 +66,7 @@ public class Project implements Serializable {
       LocalDateTime deletedAt,
       String clientCode,
       String requestSpecificationUrl,
-      String name) {
+      String domainName) {
     this.projectCode = projectCode;
     this.description = description;
     this.title = title;
@@ -81,7 +81,7 @@ public class Project implements Serializable {
     this.deletedAt = deletedAt;
     this.clientCode = clientCode;
     this.requestSpecificationUrl = requestSpecificationUrl;
-    this.name = name;
+    this.domainName = domainName;
   }
 
   /** Getter for <code>sion.project.project_code</code>. */
@@ -224,14 +224,14 @@ public class Project implements Serializable {
     this.requestSpecificationUrl = requestSpecificationUrl;
   }
 
-  /** Getter for <code>sion.project.name</code>. */
-  public String getName() {
-    return this.name;
+  /** Getter for <code>sion.project.domain_name</code>. */
+  public String getDomainName() {
+    return this.domainName;
   }
 
-  /** Setter for <code>sion.project.name</code>. */
-  public void setName(String name) {
-    this.name = name;
+  /** Setter for <code>sion.project.domain_name</code>. */
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
   }
 
   @Override
@@ -282,9 +282,9 @@ public class Project implements Serializable {
     if (this.requestSpecificationUrl == null) {
       if (other.requestSpecificationUrl != null) return false;
     } else if (!this.requestSpecificationUrl.equals(other.requestSpecificationUrl)) return false;
-    if (this.name == null) {
-      if (other.name != null) return false;
-    } else if (!this.name.equals(other.name)) return false;
+    if (this.domainName == null) {
+      if (other.domainName != null) return false;
+    } else if (!this.domainName.equals(other.domainName)) return false;
     return true;
   }
 
@@ -312,7 +312,7 @@ public class Project implements Serializable {
             + ((this.requestSpecificationUrl == null)
                 ? 0
                 : this.requestSpecificationUrl.hashCode());
-    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+    result = prime * result + ((this.domainName == null) ? 0 : this.domainName.hashCode());
     return result;
   }
 
@@ -334,7 +334,7 @@ public class Project implements Serializable {
     sb.append(", ").append(deletedAt);
     sb.append(", ").append(clientCode);
     sb.append(", ").append(requestSpecificationUrl);
-    sb.append(", ").append(name);
+    sb.append(", ").append(domainName);
 
     sb.append(")");
     return sb.toString();

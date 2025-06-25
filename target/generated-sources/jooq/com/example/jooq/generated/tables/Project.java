@@ -137,9 +137,9 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.name</code>. */
-  public final TableField<ProjectRecord, String> NAME =
-      createField(DSL.name("name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+  /** The column <code>sion.project.domain_name</code>. */
+  public final TableField<ProjectRecord, String> DOMAIN_NAME =
+      createField(DSL.name("domain_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   private Project(Name alias, Table<ProjectRecord> aliased) {
     this(alias, aliased, null);

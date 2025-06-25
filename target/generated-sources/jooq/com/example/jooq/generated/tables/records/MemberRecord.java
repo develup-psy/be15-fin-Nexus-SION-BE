@@ -29,7 +29,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
         String,
         String,
         LocalDate,
-        LocalDateTime,
+        LocalDate,
         String,
         Integer,
         Long,
@@ -123,13 +123,13 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
   }
 
   /** Setter for <code>sion.member.joined_at</code>. */
-  public void setJoinedAt(LocalDateTime value) {
+  public void setJoinedAt(LocalDate value) {
     set(8, value);
   }
 
   /** Getter for <code>sion.member.joined_at</code>. */
-  public LocalDateTime getJoinedAt() {
-    return (LocalDateTime) get(8);
+  public LocalDate getJoinedAt() {
+    return (LocalDate) get(8);
   }
 
   /** Setter for <code>sion.member.email</code>. */
@@ -245,7 +245,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
           String,
           String,
           LocalDate,
-          LocalDateTime,
+          LocalDate,
           String,
           Integer,
           Long,
@@ -269,7 +269,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
           String,
           String,
           LocalDate,
-          LocalDateTime,
+          LocalDate,
           String,
           Integer,
           Long,
@@ -324,7 +324,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
   }
 
   @Override
-  public Field<LocalDateTime> field9() {
+  public Field<LocalDate> field9() {
     return Member.MEMBER.JOINED_AT;
   }
 
@@ -414,7 +414,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
   }
 
   @Override
-  public LocalDateTime component9() {
+  public LocalDate component9() {
     return getJoinedAt();
   }
 
@@ -504,7 +504,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
   }
 
   @Override
-  public LocalDateTime value9() {
+  public LocalDate value9() {
     return getJoinedAt();
   }
 
@@ -602,7 +602,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
   }
 
   @Override
-  public MemberRecord value9(LocalDateTime value) {
+  public MemberRecord value9(LocalDate value) {
     setJoinedAt(value);
     return this;
   }
@@ -671,7 +671,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
       String value6,
       String value7,
       LocalDate value8,
-      LocalDateTime value9,
+      LocalDate value9,
       String value10,
       Integer value11,
       Long value12,
@@ -721,7 +721,7 @@ public class MemberRecord extends UpdatableRecordImpl<MemberRecord>
       String positionName,
       String departmentName,
       LocalDate birthday,
-      LocalDateTime joinedAt,
+      LocalDate joinedAt,
       String email,
       Integer careerYears,
       Long salary,

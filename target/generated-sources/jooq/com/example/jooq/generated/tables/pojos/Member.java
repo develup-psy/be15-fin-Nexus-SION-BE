@@ -25,7 +25,7 @@ public class Member implements Serializable {
   private String positionName;
   private String departmentName;
   private LocalDate birthday;
-  private LocalDateTime joinedAt;
+  private LocalDate joinedAt;
   private String email;
   private Integer careerYears;
   private Long salary;
@@ -68,7 +68,7 @@ public class Member implements Serializable {
       String positionName,
       String departmentName,
       LocalDate birthday,
-      LocalDateTime joinedAt,
+      LocalDate joinedAt,
       String email,
       Integer careerYears,
       Long salary,
@@ -179,12 +179,12 @@ public class Member implements Serializable {
   }
 
   /** Getter for <code>sion.member.joined_at</code>. */
-  public LocalDateTime getJoinedAt() {
+  public LocalDate getJoinedAt() {
     return this.joinedAt;
   }
 
   /** Setter for <code>sion.member.joined_at</code>. */
-  public void setJoinedAt(LocalDateTime joinedAt) {
+  public void setJoinedAt(LocalDate joinedAt) {
     this.joinedAt = joinedAt;
   }
 
