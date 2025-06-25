@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
@@ -32,5 +29,12 @@ public class JobCommandController {
       return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
     }
     return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @DeleteMapping("/{jobName}")
+  @Operation(summary = "직무 삭제", description = "직무를 시스템에서 삭제합니다.")
+  public ResponseEntity<ApiResponse<Void>> removeJob(@PathVariable String jobName) {
+    jobCommandService.removeDomain(jobName);
+    return ResponseEntity.noContent().build();
   }
 }
