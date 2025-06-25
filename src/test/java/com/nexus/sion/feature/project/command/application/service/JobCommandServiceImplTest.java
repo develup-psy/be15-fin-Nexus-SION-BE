@@ -70,7 +70,7 @@ class JobCommandServiceImplTest {
   }
 
   @Test
-  void deleteDomain_존재하지않으면에러() {
+  void deleteJob_존재하지않으면에러() {
     // given
     when(jobRepository.existsById(jobName)).thenReturn(false);
 
