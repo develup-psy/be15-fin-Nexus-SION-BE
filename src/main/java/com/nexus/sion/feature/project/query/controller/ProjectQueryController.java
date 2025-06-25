@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectQueryController {
 
-    private final ProjectQueryService projectQueryService;
+  private final ProjectQueryService projectQueryService;
 
-    @PostMapping("/list")
-    public PageResponse<ProjectListResponse> searchProjects(@RequestBody ProjectListRequest request) {
-        return projectQueryService.findProjects(request);
-    }
+  @PostMapping("/list")
+  public PageResponse<ProjectListResponse> searchProjects(@RequestBody ProjectListRequest request) {
+    return projectQueryService.findProjects(request);
+  }
 }

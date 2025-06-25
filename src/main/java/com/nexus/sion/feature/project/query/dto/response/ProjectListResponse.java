@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ProjectListResponse {
-    private String projectCode;
-    private String title;
-    private String description;
-    private String period;
-    private String status;
-    private String domainName;
-    private Integer numberOfMembers;
+  private String projectCode;
+  private String title;
+  private String description;
+  private String period;
+  private String status;
+  private String domainName;
+  private Integer numberOfMembers;
 }

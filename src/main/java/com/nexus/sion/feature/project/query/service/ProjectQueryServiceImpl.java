@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectQueryServiceImpl implements ProjectQueryService {
 
-    private final ProjectQueryRepository projectQueryRepository;
+  private final ProjectQueryRepository projectQueryRepository;
 
-    @Override
-    public PageResponse<ProjectListResponse> findProjects(ProjectListRequest request) {
-        return projectQueryRepository.findProjects(request);
-    }
+  @Override
+  public PageResponse<ProjectListResponse> findProjects(ProjectListRequest request) {
+    return projectQueryRepository.findProjects(request);
+  }
 }
