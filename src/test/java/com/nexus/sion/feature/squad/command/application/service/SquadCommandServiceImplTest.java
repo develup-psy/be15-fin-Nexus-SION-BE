@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,7 +85,7 @@ class SquadCommandServiceImplTest {
 
     // when & then
     assertThatThrownBy(() -> squadCommandService.registerManualSquad(request))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
 
     verify(projectRepository).findByProjectCode("invalid_code");
