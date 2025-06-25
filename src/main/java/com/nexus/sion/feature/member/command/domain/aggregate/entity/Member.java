@@ -101,6 +101,10 @@ public class Member {
     this.deletedAt = LocalDateTime.now();
   }
 
+  public void updateStatus(MemberStatus newStatus) {
+    this.status = newStatus;
+  }
+
   public void update(
       String employeeName,
       String phoneNumber,

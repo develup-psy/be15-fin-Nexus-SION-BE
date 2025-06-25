@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberStatusUpdateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 
@@ -55,6 +56,13 @@ public class MemberCommandController {
   @DeleteMapping("/{employeeId}")
   public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable String employeeId) {
     memberCommandService.deleteMember(employeeId);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @PatchMapping("/{employeeId}/status")
+  public ResponseEntity<ApiResponse<Void>> updateMemberStatus(
+      @PathVariable String employeeId, @RequestBody MemberStatusUpdateRequest request) {
+    memberCommandService.updateMemberStatus(employeeId, request.status());
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
