@@ -28,9 +28,9 @@ public class Job {
   // For testing
   public static Job of(String jobName) {
     return Job.builder()
-            .name(jobName)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .build();
+        .name(jobName)
+        .createdAt(LocalDateTime.now())
+        .updatedAt(LocalDateTime.now())
+        .build();
   }
 }
