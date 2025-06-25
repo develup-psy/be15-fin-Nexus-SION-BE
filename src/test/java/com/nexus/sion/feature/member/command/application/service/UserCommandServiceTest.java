@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +29,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdat
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
@@ -332,5 +332,4 @@ class UserCommandServiceTest {
     // then
     then(member).should().updateStatus(MemberStatus.UNAVAILABLE);
   }
-
 }

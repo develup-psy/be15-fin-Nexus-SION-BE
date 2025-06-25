@@ -301,7 +301,9 @@ public class MemberCommandService {
 
   @Transactional
   public void updateMemberStatus(String employeeId, MemberStatus status) {
-    Member member = memberRepository.findById(employeeId)
+    Member member =
+        memberRepository
+            .findById(employeeId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     member.updateStatus(status);

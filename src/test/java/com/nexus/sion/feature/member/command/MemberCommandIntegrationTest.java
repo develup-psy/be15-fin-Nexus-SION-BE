@@ -11,8 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.application.dto.request.MemberStatusUpdateRequest;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -29,10 +27,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
+import com.nexus.sion.feature.member.command.application.dto.request.MemberStatusUpdateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.application.service.MemberCommandService;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import com.nexus.sion.feature.member.command.repository.MemberRepository;
 
 @SpringBootTest
@@ -211,23 +211,25 @@ class MemberCommandIntegrationTest {
   void updateMemberStatus_success() throws Exception {
     // given
     Member testMember =
-            Member.builder()
-                    .employeeIdentificationNumber("TEST001")
-                    .employeeName("테스트 유저")
-                    .email("admin@example.com")
-                    .phoneNumber("01099999999")
-                    .role(MemberRole.INSIDER)
-                    .build();
+        Member.builder()
+            .employeeIdentificationNumber("TEST001")
+            .employeeName("테스트 유저")
+            .email("admin@example.com")
+            .phoneNumber("01099999999")
+            .role(MemberRole.INSIDER)
+            .build();
 
     memberRepository.save(testMember);
     MemberStatusUpdateRequest request = new MemberStatusUpdateRequest(MemberStatus.UNAVAILABLE);
     String json = objectMapper.writeValueAsString(request);
 
     // when & then
-    mockMvc.perform(patch("/api/v1/members/{employeeId}/status", "TEST001")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(json))
-            .andExpect(status().isOk());
+    mockMvc
+        .perform(
+            patch("/api/v1/members/{employeeId}/status", "TEST001")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+        .andExpect(status().isOk());
 
     // 상태가 실제로 변경되었는지 확인
     Member updated = memberRepository.findById("TEST001").orElseThrow();
