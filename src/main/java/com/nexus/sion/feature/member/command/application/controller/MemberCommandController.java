@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.command.application.controller;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.command.application.dto.request.MemberStatusUpdateRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,15 @@ public class MemberCommandController {
   @DeleteMapping("/{employeeId}")
   public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable String employeeId) {
     memberCommandService.deleteMember(employeeId);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @PatchMapping("/{employeeId}/status")
+  public ResponseEntity<ApiResponse<Void>> updateMemberStatus(
+          @PathVariable String employeeId,
+          @RequestBody MemberStatusUpdateRequest request
+  ) {
+    memberCommandService.updateMemberStatus(employeeId, request.status());
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
