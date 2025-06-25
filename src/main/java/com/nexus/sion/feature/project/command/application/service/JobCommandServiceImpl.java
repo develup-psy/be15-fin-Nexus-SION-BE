@@ -2,6 +2,8 @@ package com.nexus.sion.feature.project.command.application.service;
 
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
+import com.nexus.sion.feature.project.command.domain.aggregate.Job;
+import com.nexus.sion.feature.project.command.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,8 @@ public class JobCommandServiceImpl implements JobCommandService{
             return false;
         }
 
-        Domain domain = modelMapper.map(request, Domain.class);
-        jobRepository.save(domain);
+        Job job = modelMapper.map(request, Job.class);
+        jobRepository.save(job);
         return true;
     }
 }
