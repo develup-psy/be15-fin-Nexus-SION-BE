@@ -1,7 +1,5 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -28,7 +26,6 @@ public class SquadCommentCommandService {
             .squadCode(squadCode)
             .employeeIdentificationNumber(request.getEmployeeIdentificationNumber())
             .content(request.getContent())
-            .createdAt(LocalDateTime.now())
             .build();
 
     squadCommentRepository.save(comment);

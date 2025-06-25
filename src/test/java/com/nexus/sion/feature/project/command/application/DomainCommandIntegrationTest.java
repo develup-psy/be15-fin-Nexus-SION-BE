@@ -57,7 +57,7 @@ public class DomainCommandIntegrationTest {
     // given
     String existingDomainName = "domainName";
     domainRepository.save(Domain.of(existingDomainName));
-    int existingCount = domainRepository.findAll().size();
+    long existingCount = domainRepository.count();
 
     DomainRequest request = DomainRequest.builder().name(existingDomainName).build();
 

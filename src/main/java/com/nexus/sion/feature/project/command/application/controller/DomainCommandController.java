@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.project.command.application.controller;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,8 @@ public class DomainCommandController {
 
   @PostMapping
   @Operation(summary = "도메인 등록", description = "새로운 도메인을 시스템에 등록합니다.")
-  public ResponseEntity<ApiResponse<Void>> registerDomain(@RequestBody DomainRequest request) {
+  public ResponseEntity<ApiResponse<Void>> registerDomain(
+      @RequestBody @Valid DomainRequest request) {
     if (domainCommandService.registerDomain(request)) {
       return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
     }

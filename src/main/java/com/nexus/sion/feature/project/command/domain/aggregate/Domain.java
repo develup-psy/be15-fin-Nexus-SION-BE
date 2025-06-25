@@ -1,11 +1,10 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -16,26 +15,16 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Domain {
+@EntityListeners(AuditingEntityListener.class)
+public class Domain extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @Column(name = "name", length = 30)
   private String name;
 
-  @CreatedDate
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @LastModifiedDate
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
-
   // For testing
   public static Domain of(String domainName) {
-    return Domain.builder()
-        .name(domainName)
-        .createdAt(LocalDateTime.now())
-        .updatedAt(LocalDateTime.now())
-        .build();
+    return Domain.builder().name(domainName).build();
   }
 }

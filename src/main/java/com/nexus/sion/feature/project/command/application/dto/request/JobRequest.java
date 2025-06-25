@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DomainRequest {
+public class JobRequest {
   @NotBlank String name;
 }

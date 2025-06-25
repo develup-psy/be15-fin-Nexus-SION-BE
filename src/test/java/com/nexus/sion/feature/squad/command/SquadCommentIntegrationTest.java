@@ -4,8 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +69,6 @@ class SquadCommentCommandIntegrationTest {
             .squadCode("ha_1_1_1")
             .employeeIdentificationNumber("EMP001")
             .content("삭제 테스트 코멘트입니다.")
-            .createdAt(LocalDateTime.now())
             .build();
     squadCommentRepository.saveAndFlush(comment);
 
@@ -93,7 +90,6 @@ class SquadCommentCommandIntegrationTest {
             .squadCode("ha_1_1_1")
             .employeeIdentificationNumber("EMP001")
             .content("스쿼드 불일치 테스트")
-            .createdAt(LocalDateTime.now())
             .build();
     squadCommentRepository.saveAndFlush(comment);
 

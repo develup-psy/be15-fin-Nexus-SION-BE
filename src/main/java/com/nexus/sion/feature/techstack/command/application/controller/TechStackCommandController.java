@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application.controller;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class TechStackCommandController {
   @PostMapping
   @Operation(summary = "기술 스택 등록", description = "새로운 기술 스택을 시스템에 등록합니다.")
   public ResponseEntity<ApiResponse<Void>> registerTechStack(
-      @RequestBody TechStackRequest request) {
+      @RequestBody @Valid TechStackRequest request) {
     techStackCommandService.registerTechStack(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
