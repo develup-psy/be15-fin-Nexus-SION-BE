@@ -6,6 +6,7 @@ import com.nexus.sion.feature.project.command.application.dto.request.ClientComp
 import com.nexus.sion.feature.project.command.application.service.ClientCompanyCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ClientCompanyCommandController {
 
     @Operation(summary = "고객사 등록", description = "고객사 등록 기능")
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> register(@RequestBody ClientCompanyCreateRequest request) {
+    public ResponseEntity<ApiResponse<Void>> register(@RequestBody @Valid ClientCompanyCreateRequest request) {
         clientCompanyCommandService.registerClientCompany(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
     }
