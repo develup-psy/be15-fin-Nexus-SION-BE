@@ -98,7 +98,8 @@ class SquadCommentCommandServiceTest {
     // given
     String requestSquadCode = "ha_1_1_1";
     Long commentId = 1L;
-    SquadComment comment = SquadComment.builder()
+    SquadComment comment =
+        SquadComment.builder()
             .id(commentId)
             .squadCode("another_squad_code")
             .employeeIdentificationNumber("EMM001")
@@ -109,8 +110,8 @@ class SquadCommentCommandServiceTest {
 
     // when & then
     assertThatThrownBy(() -> squadCommentCommandService.deleteComment(requestSquadCode, commentId))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.INVALID_COMMENT_ACCESS.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.INVALID_COMMENT_ACCESS.getMessage());
 
     verify(squadCommentRepository, never()).delete(any(SquadComment.class));
   }
