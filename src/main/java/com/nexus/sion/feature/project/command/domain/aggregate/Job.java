@@ -24,4 +24,13 @@ public class Job {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  // For testing
+  public static Job of(String jobName) {
+    return Job.builder()
+            .name(jobName)
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .build();
+  }
 }
