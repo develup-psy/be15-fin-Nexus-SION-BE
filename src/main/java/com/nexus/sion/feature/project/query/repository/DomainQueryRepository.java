@@ -15,6 +15,10 @@ public class DomainQueryRepository {
   private final DSLContext dsl;
 
   public List<String> findAllDomains() {
-    return dsl.select(DOMAIN.NAME).from(DOMAIN).fetchInto(String.class);
+    return dsl
+            .select(DOMAIN.NAME)
+            .from(DOMAIN)
+            .orderBy(DOMAIN.NAME.asc())
+            .fetchInto(String.class);
   }
 }
