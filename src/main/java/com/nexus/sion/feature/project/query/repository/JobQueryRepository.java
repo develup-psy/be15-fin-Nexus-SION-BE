@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.project.query.repository;
 
 import static com.example.jooq.generated.tables.Job.JOB;
+import static com.nexus.sion.common.constants.CollationConstants.UTF8MB4_UNICODE_520_CI;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class JobQueryRepository {
     return dsl.select(JOB.NAME)
         .from(JOB)
         // ㄱ-ㅎ, a-z 순서로 출력
-        .orderBy(JOB.NAME.collate("utf8mb4_unicode_520_ci").asc())
+        .orderBy(JOB.NAME.collate(UTF8MB4_UNICODE_520_CI).asc())
         .fetchInto(String.class);
   }
 }

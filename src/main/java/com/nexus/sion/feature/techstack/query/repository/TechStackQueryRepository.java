@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.techstack.query.repository;
 
 import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
+import static com.nexus.sion.common.constants.CollationConstants.UTF8MB4_UNICODE_520_CI;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class TechStackQueryRepository {
   public List<String> findAllStackNames() {
     return dsl.select(TECH_STACK.TECH_STACK_NAME)
         .from(TECH_STACK)
-        .orderBy(TECH_STACK.TECH_STACK_NAME.collate("utf8mb4_unicode_520_ci").asc())
+        .orderBy(TECH_STACK.TECH_STACK_NAME.collate(UTF8MB4_UNICODE_520_CI).asc())
         .fetchInto(String.class);
   }
 }
