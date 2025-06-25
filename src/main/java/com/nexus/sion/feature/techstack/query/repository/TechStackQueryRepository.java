@@ -19,7 +19,7 @@ public class TechStackQueryRepository {
     return dsl
             .select(TECH_STACK.TECH_STACK_NAME)
             .from(TECH_STACK)
-            .orderBy(TECH_STACK.TECH_STACK_NAME.asc())
+            .orderBy(TECH_STACK.TECH_STACK_NAME.collate("utf8mb4_unicode_520_ci").asc())
             .fetchInto(String.class);
   }
 }

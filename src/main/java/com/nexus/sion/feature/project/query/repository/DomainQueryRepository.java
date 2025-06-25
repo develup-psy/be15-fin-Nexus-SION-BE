@@ -18,7 +18,7 @@ public class DomainQueryRepository {
     return dsl
             .select(DOMAIN.NAME)
             .from(DOMAIN)
-            .orderBy(DOMAIN.NAME.asc())
+            .orderBy(DOMAIN.NAME.collate("utf8mb4_unicode_520_ci").asc())
             .fetchInto(String.class);
   }
 }

@@ -17,7 +17,8 @@ public class JobQueryRepository {
         return dsl
                 .select(JOB.NAME)
                 .from(JOB)
-                .orderBy(JOB.NAME.asc())
+                // ㄱ-ㅎ, a-z 순서로 출력
+                .orderBy(JOB.NAME.collate("utf8mb4_unicode_520_ci").asc())
                 .fetchInto(String.class);
     }
 }
