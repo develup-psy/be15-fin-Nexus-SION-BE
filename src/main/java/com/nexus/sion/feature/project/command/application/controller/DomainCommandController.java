@@ -2,10 +2,7 @@ package com.nexus.sion.feature.project.command.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.DomainRequest;
@@ -28,5 +25,12 @@ public class DomainCommandController {
       return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
     }
     return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @DeleteMapping("/{domainName}")
+  @Operation(summary = "도메인 삭제", description = "도메인을 시스템에서 삭제합니다.")
+  public ResponseEntity<ApiResponse<Void>> removeDomain(@PathVariable String domainName) {
+    domainCommandService.removeDomain(domainName);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.success(null));
   }
 }
