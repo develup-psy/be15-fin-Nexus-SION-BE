@@ -63,6 +63,8 @@ public class MemberQueryRepository {
             MEMBER.ROLE,
             MEMBER.GRADE_CODE,
             MEMBER.STATUS,
+            MEMBER.DEPARTMENT_NAME,
+            MEMBER.POSITION_NAME,
             MEMBER.PROFILE_IMAGE_URL,
             MEMBER.JOINED_AT,
             topTechStackName,
@@ -86,7 +88,9 @@ public class MemberQueryRepository {
                         ? record.get(MEMBER.GRADE_CODE).name()
                         : null,
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
-                    record.get(MEMBER.PROFILE_IMAGE_URL),
+                    record.get(MEMBER.DEPARTMENT_NAME),
+                        record.get(MEMBER.POSITION_NAME),
+                        record.get(MEMBER.PROFILE_IMAGE_URL),
                     record.get(MEMBER.JOINED_AT),
                     record.get(topTechStackName),
                     record.get(MEMBER.CAREER_YEARS)));
@@ -123,6 +127,8 @@ public class MemberQueryRepository {
             MEMBER.ROLE,
             MEMBER.GRADE_CODE,
             MEMBER.STATUS,
+            MEMBER.DEPARTMENT_NAME,
+            MEMBER.POSITION_NAME,
             MEMBER.PROFILE_IMAGE_URL,
             MEMBER.JOINED_AT,
             topTechStackName,
@@ -154,7 +160,11 @@ public class MemberQueryRepository {
                         ? record.get(MEMBER.GRADE_CODE).name()
                         : null,
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
-                    record.get(MEMBER.PROFILE_IMAGE_URL),
+                        record.get(MEMBER.DEPARTMENT_NAME),
+                        record.get(MEMBER.POSITION_NAME),
+                        record.get(MEMBER.PROFILE_IMAGE_URL),
+
+
                     record.get(MEMBER.JOINED_AT),
                     record.get(topTechStackName),
                     record.get(MEMBER.CAREER_YEARS)));
