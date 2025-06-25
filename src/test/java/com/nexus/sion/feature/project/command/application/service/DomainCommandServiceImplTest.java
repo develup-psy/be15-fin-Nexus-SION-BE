@@ -57,7 +57,7 @@ class DomainCommandServiceImplTest {
   }
 
   @Test
-  void deleteTechStack_존재하면삭제() {
+  void deleteDomain_존재하면삭제() {
     // given
     when(domainRepository.existsById(domainName)).thenReturn(true);
     doNothing().when(domainRepository).deleteById(domainName);
@@ -70,7 +70,7 @@ class DomainCommandServiceImplTest {
   }
 
   @Test
-  void deleteTechStack_존재하지않으면에러() {
+  void deleteDomain_존재하지않으면에러() {
     // given
     when(domainRepository.existsById(domainName)).thenReturn(false);
 

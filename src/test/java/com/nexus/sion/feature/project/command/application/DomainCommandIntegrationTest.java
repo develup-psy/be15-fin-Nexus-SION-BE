@@ -74,7 +74,7 @@ public class DomainCommandIntegrationTest {
   }
 
   @Test
-  @DisplayName("기술 스택을 삭제하면 201이 반환되고 DB에서 제거된다.")
+  @DisplayName("도메인을 삭제하면 204가 반환되고 DB에서 제거된다.")
   void deleteExistingDomain_returnsDeleted() throws Exception {
     // given
     String domainName = "test";
