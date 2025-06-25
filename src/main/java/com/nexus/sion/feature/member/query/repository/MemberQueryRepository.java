@@ -89,8 +89,8 @@ public class MemberQueryRepository {
                         : null,
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
                     record.get(MEMBER.DEPARTMENT_NAME),
-                        record.get(MEMBER.POSITION_NAME),
-                        record.get(MEMBER.PROFILE_IMAGE_URL),
+                    record.get(MEMBER.POSITION_NAME),
+                    record.get(MEMBER.PROFILE_IMAGE_URL),
                     record.get(MEMBER.JOINED_AT),
                     record.get(topTechStackName),
                     record.get(MEMBER.CAREER_YEARS)));
@@ -160,11 +160,9 @@ public class MemberQueryRepository {
                         ? record.get(MEMBER.GRADE_CODE).name()
                         : null,
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
-                        record.get(MEMBER.DEPARTMENT_NAME),
-                        record.get(MEMBER.POSITION_NAME),
-                        record.get(MEMBER.PROFILE_IMAGE_URL),
-
-
+                    record.get(MEMBER.DEPARTMENT_NAME),
+                    record.get(MEMBER.POSITION_NAME),
+                    record.get(MEMBER.PROFILE_IMAGE_URL),
                     record.get(MEMBER.JOINED_AT),
                     record.get(topTechStackName),
                     record.get(MEMBER.CAREER_YEARS)));

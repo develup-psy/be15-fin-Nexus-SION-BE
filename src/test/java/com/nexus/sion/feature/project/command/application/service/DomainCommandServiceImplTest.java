@@ -28,9 +28,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_이미존재하면저장하지않음() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(true);
 
     // when
@@ -44,9 +42,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_존재하지않으면저장() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(false);
     when(modelMapper.map(request, Domain.class)).thenReturn(mock(Domain.class));
 

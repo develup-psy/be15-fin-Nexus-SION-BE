@@ -23,57 +23,50 @@ import com.nexus.sion.feature.project.command.repository.DomainRepository;
 @Transactional
 public class DomainCommandIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Autowired
-    private DomainRepository domainRepository;
+  @Autowired private DomainRepository domainRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-    @Test
-    @DisplayName("새로운 도메인을 등록하면 201이 반환된다.")
-    void registerNewDomain_returnsCreated() throws Exception {
-        // given
-        String domainName = "test";
-        DomainRequest request = DomainRequest.builder()
-                .name(domainName)
-                .build();
+  @Test
+  @DisplayName("새로운 도메인을 등록하면 201이 반환된다.")
+  void registerNewDomain_returnsCreated() throws Exception {
+    // given
+    String domainName = "test";
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
 
-        // when & then
-        mockMvc
-                .perform(
-                        post("/api/v1/domains")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated()); // 201 반환되는지 확인
+    // when & then
+    mockMvc
+        .perform(
+            post("/api/v1/domains")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated()); // 201 반환되는지 확인
 
-        // then - DB에 저장되었는지 확인
-        assertThat(domainRepository.findById(domainName)).isPresent();
-    }
+    // then - DB에 저장되었는지 확인
+    assertThat(domainRepository.findById(domainName)).isPresent();
+  }
 
-    @Test
-    @DisplayName("이미 존재하는 도메인은 저장하지 않고, 200이 반환된다.")
-    void registerExistingTechStack_doesNotSaveAgain() throws Exception {
-        // given
-        String existingDomainName = "techStackName";
-        domainRepository.save(Domain.of(existingDomainName));
-        int existingCount = domainRepository.findAll().size();
+  @Test
+  @DisplayName("이미 존재하는 도메인은 저장하지 않고, 200이 반환된다.")
+  void registerExistingTechStack_doesNotSaveAgain() throws Exception {
+    // given
+    String existingDomainName = "techStackName";
+    domainRepository.save(Domain.of(existingDomainName));
+    int existingCount = domainRepository.findAll().size();
 
-        DomainRequest request = DomainRequest.builder()
-                .name(existingDomainName)
-                .build();
+    DomainRequest request = DomainRequest.builder().name(existingDomainName).build();
 
-        // when & then
-        mockMvc
-                .perform(
-                        post("/api/v1/domains")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk()); // 200 반환되는지 확인
+    // when & then
+    mockMvc
+        .perform(
+            post("/api/v1/domains")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk()); // 200 반환되는지 확인
 
-        // then - 여전히 하나만 존재
-        assertThat(domainRepository.findAll().size()).isEqualTo(existingCount);
-    }
+    // then - 여전히 하나만 존재
+    assertThat(domainRepository.findAll().size()).isEqualTo(existingCount);
+  }
 }

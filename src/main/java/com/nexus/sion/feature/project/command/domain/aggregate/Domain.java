@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
-import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import lombok.*;
 
 @Entity
 @Table(name = "domain")
@@ -32,9 +33,9 @@ public class Domain {
   // For testing
   public static Domain of(String domainName) {
     return Domain.builder()
-            .name(domainName)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .build();
+        .name(domainName)
+        .createdAt(LocalDateTime.now())
+        .updatedAt(LocalDateTime.now())
+        .build();
   }
 }
