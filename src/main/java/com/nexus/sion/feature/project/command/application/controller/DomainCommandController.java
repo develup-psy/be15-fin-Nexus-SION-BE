@@ -34,6 +34,6 @@ public class DomainCommandController {
   @Operation(summary = "도메인 삭제", description = "도메인을 시스템에서 삭제합니다.")
   public ResponseEntity<ApiResponse<Void>> removeDomain(@PathVariable String domainName) {
     domainCommandService.removeDomain(domainName);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.success(null));
+    return ResponseEntity.noContent().build();
   }
 }
