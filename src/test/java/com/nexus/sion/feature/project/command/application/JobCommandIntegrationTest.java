@@ -1,9 +1,13 @@
 package com.nexus.sion.feature.project.command.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +72,37 @@ public class JobCommandIntegrationTest {
 
     // then - 여전히 하나만 존재
     assertThat(jobRepository.findAll().size()).isEqualTo(existingCount);
+  }
+
+  @Test
+  @DisplayName("직무를 삭제하면 204가 반환되고 DB에서 제거된다.")
+  void deleteExistingJob_returnsDeleted() throws Exception {
+    // given
+    String jobName = "test";
+    jobRepository.save(Job.of(jobName));
+
+    // when & then
+    mockMvc
+            .perform(delete("/api/v1/jobs/{jobName}", jobName))
+            .andExpect(status().isNoContent());
+
+    // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
+    assertThat(jobRepository.findById(jobName)).isNotPresent();
+  }
+
+  @Test
+  @DisplayName("존재하지 않는 도메인은 에러를 반환한다.")
+  void deleteExistingDomain_returnsError() throws Exception {
+    // given
+    String jobName = "test";
+
+    // when & then
+    mockMvc
+            .perform(delete("/api/v1/jobs/{jobName}", jobName))
+            .andExpect(status().is4xxClientError())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.errorCode").value(ErrorCode.JOB_NOT_FOUND.getCode()))
+            .andExpect(jsonPath("$.message").value(ErrorCode.JOB_NOT_FOUND.getMessage()))
+            .andExpect(jsonPath("$.timestamp").exists());
   }
 }
