@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,16 @@ public class JobCommandServiceImpl implements JobCommandService {
     Job job = modelMapper.map(request, Job.class);
     jobRepository.save(job);
     return true;
+  }
+
+  @Override
+  public void removeJob(String jobName) {
+    // 기존에 해당 직무가 없으면 에러
+    if (!jobRepository.existsById(jobName)) {
+      throw new BusinessException(ErrorCode.JOB_NOT_FOUND);
+    }
+
+    // 해당 도메인 삭제
+    jobRepository.deleteById(jobName);
   }
 }

@@ -34,7 +34,7 @@ public class JobCommandController {
   @DeleteMapping("/{jobName}")
   @Operation(summary = "직무 삭제", description = "직무를 시스템에서 삭제합니다.")
   public ResponseEntity<ApiResponse<Void>> removeJob(@PathVariable String jobName) {
-    jobCommandService.removeDomain(jobName);
+    jobCommandService.removeJob(jobName);
     return ResponseEntity.noContent().build();
   }
 }
