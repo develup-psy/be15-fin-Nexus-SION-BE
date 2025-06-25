@@ -1,19 +1,21 @@
 package com.nexus.sion.feature.project.query.service;
 
-import com.nexus.sion.feature.project.query.repository.JobQueryRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.nexus.sion.feature.project.query.repository.JobQueryRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class JobQueryServiceImpl implements JobQueryService {
 
-    private final JobQueryRepository jobQueryRepository;
+  private final JobQueryRepository jobQueryRepository;
 
-    @Override
-    public List<String> findAllJobs() {
-        return jobQueryRepository.findAllJobs();
-    }
+  @Override
+  public List<String> findAllJobs() {
+    return jobQueryRepository.findAllJobs();
+  }
 }
