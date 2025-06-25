@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class JobCommandController {
 
   @PostMapping
   @Operation(summary = "직무 등록", description = "새로운 직무를 시스템에 등록합니다.")
-  public ResponseEntity<ApiResponse<Void>> registerJob(@RequestBody JobRequest request) {
+  public ResponseEntity<ApiResponse<Void>> registerJob(@RequestBody @Valid JobRequest request) {
     if (jobCommandService.registerJob(request)) {
       return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
     }
