@@ -1,11 +1,7 @@
 package com.nexus.sion.feature.techstack.command.domain.aggregate;
 
-import java.time.LocalDateTime;
-
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,18 +13,11 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class TechStack {
+public class TechStack extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
   @Id
   @Column(name = "tech_stack_name")
   private String techStackName;
-
-  @CreatedDate
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @LastModifiedDate
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
 
   // For testing
   public static TechStack of(String techStackName) {

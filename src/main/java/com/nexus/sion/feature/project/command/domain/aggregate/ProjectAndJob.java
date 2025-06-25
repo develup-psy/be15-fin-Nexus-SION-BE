@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import java.time.LocalDateTime;
-
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -12,7 +11,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class ProjectAndJob {
+public class ProjectAndJob  extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +21,6 @@ public class ProjectAndJob {
 
   @Column(name = "required_number", nullable = false)
   private int requiredNumber;
-
-  @Column(name = "created_at")
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
 
   @Column(name = "project_code", nullable = false, length = 30)
   private String projectCode;

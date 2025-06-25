@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "project_fp_summary")
@@ -35,6 +36,7 @@ public class ProjectFpSummary {
   @Column(name = "estimated_cost")
   private BigDecimal estimatedCost;
 
+  @CreatedDate
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
