@@ -257,16 +257,16 @@ public class ProjectDao
   }
 
   /**
-   * Fetch records that have <code>name BETWEEN lowerInclusive AND
+   * Fetch records that have <code>domain_name BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.Project> fetchRangeOfName(
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchRangeOfDomainName(
       String lowerInclusive, String upperInclusive) {
-    return fetchRange(Project.PROJECT.NAME, lowerInclusive, upperInclusive);
+    return fetchRange(Project.PROJECT.DOMAIN_NAME, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>name IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Project> fetchByName(String... values) {
-    return fetch(Project.PROJECT.NAME, values);
+  /** Fetch records that have <code>domain_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchByDomainName(String... values) {
+    return fetch(Project.PROJECT.DOMAIN_NAME, values);
   }
 }

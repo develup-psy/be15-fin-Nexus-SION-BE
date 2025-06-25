@@ -101,11 +101,10 @@ public class Member extends TableImpl<MemberRecord> {
           "");
 
   /** The column <code>sion.member.joined_at</code>. */
-  public final TableField<MemberRecord, LocalDateTime> JOINED_AT =
+  public final TableField<MemberRecord, LocalDate> JOINED_AT =
       createField(
           DSL.name("joined_at"),
-          SQLDataType.LOCALDATETIME(0)
-              .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATETIME)),
+          SQLDataType.LOCALDATE.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.LOCALDATE)),
           this,
           "");
 
@@ -303,7 +302,7 @@ public class Member extends TableImpl<MemberRecord> {
           String,
           String,
           LocalDate,
-          LocalDateTime,
+          LocalDate,
           String,
           Integer,
           Long,
@@ -328,7 +327,7 @@ public class Member extends TableImpl<MemberRecord> {
               ? super String,
               ? super String,
               ? super LocalDate,
-              ? super LocalDateTime,
+              ? super LocalDate,
               ? super String,
               ? super Integer,
               ? super Long,
@@ -355,7 +354,7 @@ public class Member extends TableImpl<MemberRecord> {
               ? super String,
               ? super String,
               ? super LocalDate,
-              ? super LocalDateTime,
+              ? super LocalDate,
               ? super String,
               ? super Integer,
               ? super Long,
