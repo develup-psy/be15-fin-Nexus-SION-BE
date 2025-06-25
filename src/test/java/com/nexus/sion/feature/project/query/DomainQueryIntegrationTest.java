@@ -26,7 +26,7 @@ public class DomainQueryIntegrationTest {
   @Autowired private DomainRepository domainRepository;
 
   @Test
-  void 기술스택_전체조회_성공() throws Exception {
+  void 도메인_전체조회_성공() throws Exception {
     // 테스트 데이터 저장
     String domainName = "test";
 
