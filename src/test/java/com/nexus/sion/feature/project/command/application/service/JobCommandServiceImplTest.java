@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,5 +54,38 @@ class JobCommandServiceImplTest {
     // then
     assertTrue(result); // 반환값이 false인지 검증
     verify(jobRepository, times(1)).save(any(Job.class));
+  }
+
+
+  @Test
+  void deleteJob_존재하면삭제() {
+    // given
+    when(jobRepository.existsById(jobName)).thenReturn(true);
+    doNothing().when(jobRepository).deleteById(jobName);
+
+    // when
+    jobCommandService.removeJob(jobName);
+
+    // then
+    verify(jobRepository, times(1)).deleteById(jobName);
+  }
+
+  @Test
+  void deleteDomain_존재하지않으면에러() {
+    // given
+    when(jobRepository.existsById(jobName)).thenReturn(false);
+
+    // when & then
+    BusinessException exception =
+            assertThrows(
+                    BusinessException.class,
+                    () -> {
+                      jobCommandService.removeJob(jobName);
+                    });
+
+    // then
+    assertEquals(ErrorCode.JOB_NOT_FOUND, exception.getErrorCode());
+
+    verify(jobRepository, never()).deleteById(any());
   }
 }
