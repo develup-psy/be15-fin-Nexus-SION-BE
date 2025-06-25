@@ -41,4 +41,5 @@ public class MemberQueryController {
     MemberDetailResponse response = memberQueryService.getMemberDetail(employeeId);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
+
 }

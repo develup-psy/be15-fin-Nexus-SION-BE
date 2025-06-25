@@ -56,3 +56,15 @@ cloud:
       static: ap-northeast-2
     s3:
       bucket: ${AWS_BUCKET}
+
+logging:
+  level:
+    root: INFO
+    com.nexus.sion: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["health", "metrics", "prometheus"]
+
