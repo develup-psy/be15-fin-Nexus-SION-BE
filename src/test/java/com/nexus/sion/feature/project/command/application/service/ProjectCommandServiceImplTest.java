@@ -79,8 +79,6 @@ class ProjectCommandServiceImplTest {
     Project existingProject =
         Project.builder()
             .projectCode(request.getProjectCode())
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
     when(projectCommandRepository.findById(request.getProjectCode()))
@@ -118,8 +116,6 @@ class ProjectCommandServiceImplTest {
     Project existingProject =
         Project.builder()
             .projectCode(projectCode)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
