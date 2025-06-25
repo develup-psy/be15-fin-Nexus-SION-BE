@@ -19,8 +19,8 @@ public class DomainQueryController {
     @GetMapping
     public ResponseEntity<ApiResponse<DomainListResponse>> getAllDomains() {
         return ResponseEntity.ok(
-                ApiResponse.success(new DomainListResponse(domainQueryService.findAllDomains())));
-        )
+                ApiResponse.success(new DomainListResponse(domainQueryService.findAllDomains()))
+        );
 
     }
 }
