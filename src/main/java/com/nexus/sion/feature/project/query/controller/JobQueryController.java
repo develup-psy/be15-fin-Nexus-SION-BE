@@ -19,7 +19,7 @@ public class JobQueryController {
   private final JobQueryService jobQueryService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<JobListResponse>> getAllDomains() {
+  public ResponseEntity<ApiResponse<JobListResponse>> getAllJobs() {
     return ResponseEntity.ok(
         ApiResponse.success(new JobListResponse(jobQueryService.findAllJobs())));
   }
