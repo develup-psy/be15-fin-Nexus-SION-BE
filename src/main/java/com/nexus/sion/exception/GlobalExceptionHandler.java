@@ -38,9 +38,9 @@ public class GlobalExceptionHandler {
   /* 예상치 못한 예외 처리 핸들러 */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
-    String[] errorSplit = e.getClass().toString().split("\\.");
+    String errorClass = e.getClass().getSimpleName();;
     ApiResponse<Void> response =
-        ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
+        ApiResponse.failure(errorClass, e.getMessage());
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
