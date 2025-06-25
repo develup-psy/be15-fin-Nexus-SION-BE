@@ -7,7 +7,9 @@ import static com.example.jooq.generated.tables.Project.PROJECT;
 import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -19,10 +21,7 @@ import com.example.jooq.generated.enums.ProjectStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
-import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
+import com.nexus.sion.feature.statistics.query.dto.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -162,8 +161,8 @@ public class StatisticsQueryRepository {
     return PageResponse.fromJooq(content, total, page, size);
   }
 
-  public PageResponse<PopularTechStackDto> findPopularTechStacks(
-      String period, int page, int sizeOrTop) {
+  public PageResponse<TechStackMonthlyUsageDto> findMonthlyPopularTechStacks(
+      String period, int page, int size, Integer top) {
 
     LocalDate now = LocalDate.now();
     LocalDate fromDate =
@@ -175,12 +174,20 @@ public class StatisticsQueryRepository {
           default -> throw new BusinessException(ErrorCode.INVALID_PERIOD);
         };
 
-    // 공통 base CTE
+    boolean isDaily = period.equalsIgnoreCase("1m");
+    boolean isHalfYear = period.equalsIgnoreCase("5y");
+    String datePattern = isDaily ? "%Y-%m-%d" : "%Y-%m";
+
+    Field<String> timeKeyField =
+        DSL.field(
+            "DATE_FORMAT({0}, {1})", String.class, PROJECT.START_DATE, DSL.inline(datePattern));
+
+    // base CTE
     var baseCte =
         dsl.select(
                 JOB_AND_TECH_STACK.TECH_STACK_NAME,
                 PROJECT_AND_JOB.JOB_NAME,
-                PROJECT.NAME.as("project_name"),
+                PROJECT.TITLE.as("project_name"),
                 PROJECT.START_DATE)
             .from(JOB_AND_TECH_STACK)
             .join(PROJECT_AND_JOB)
@@ -191,96 +198,136 @@ public class StatisticsQueryRepository {
             .and(PROJECT.START_DATE.ge(fromDate))
             .asTable("base");
 
-    // usage count CTE
-    var usageCte =
-        dsl.select(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME), DSL.count().as("usage_count"))
-            .from(baseCte)
-            .groupBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-            .asTable("usage");
-
-    // latest project name CTE
-    var latestProjectSubCte =
+    // 실제 사용량 조회
+    var usage =
         dsl.select(
                 baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                baseCte.field("project_name", String.class).as("latest_project_name"),
-                DSL.rowNumber()
-                    .over()
-                    .partitionBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .orderBy(baseCte.field(PROJECT.START_DATE).desc())
-                    .as("rn"))
-            .from(baseCte)
-            .asTable("latest_project_sub");
-
-    var latestProjectCte =
-        dsl.select(
-                latestProjectSubCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                latestProjectSubCte.field("latest_project_name", String.class))
-            .from(latestProjectSubCte)
-            .where(latestProjectSubCte.field("rn", Integer.class).eq(1))
-            .asTable("latest_project");
-
-    // job rank CTE
-    var jobRankCte =
-        dsl.select(
-                baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                baseCte.field(PROJECT_AND_JOB.JOB_NAME),
-                DSL.count().as("job_count"))
+                DSL.field(
+                        "DATE_FORMAT({0}, {1})",
+                        String.class, baseCte.field(PROJECT.START_DATE), DSL.inline(datePattern))
+                    .as("time"),
+                DSL.count().as("usage_count"))
             .from(baseCte)
             .groupBy(
                 baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                baseCte.field(PROJECT_AND_JOB.JOB_NAME))
-            .asTable("job_rank");
+                DSL.field(
+                    "DATE_FORMAT({0}, {1})",
+                    String.class, baseCte.field(PROJECT.START_DATE), DSL.inline(datePattern)))
+            .fetch();
 
-    var topJobCte =
-        dsl.selectDistinct(
-                jobRankCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                DSL.firstValue(jobRankCte.field(PROJECT_AND_JOB.JOB_NAME))
-                    .over()
-                    .partitionBy(jobRankCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .orderBy(jobRankCte.field("job_count").desc())
-                    .as("top_job_name"))
-            .from(jobRankCte)
-            .asTable("top_job");
+    // total usage
+    Map<String, Integer> totalUsageMap =
+        usage.stream()
+            .collect(
+                Collectors.groupingBy(
+                    r -> r.get(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                    Collectors.summingInt(r -> r.get("usage_count", Integer.class))));
 
-    // 최종 결과 쿼리
-    var resultQuery =
-        dsl.select(
-                usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                usageCte.field("usage_count", Long.class),
-                latestProjectCte.field("latest_project_name", String.class),
-                topJobCte.field("top_job_name", String.class))
-            .from(usageCte)
-            .leftJoin(latestProjectCte)
-            .on(
-                usageCte
-                    .field(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-                    .eq(latestProjectCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
-            .leftJoin(topJobCte)
-            .on(
-                usageCte
-                    .field(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-                    .eq(topJobCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME)))
-            .orderBy(
-                usageCte.field("usage_count").desc(),
-                usageCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME).asc(),
-                latestProjectCte.field("latest_project_name").asc().nullsLast())
-            .limit(sizeOrTop)
-            .offset(page * sizeOrTop);
+    // time key 목록 생성
+    List<String> allTimeKeys = new ArrayList<>();
+    if (!isDaily) {
+      if (isHalfYear) {
+        LocalDate cursor = fromDate.withDayOfMonth(1);
+        while (!cursor.isAfter(now)) {
+          allTimeKeys.add(cursor.format(DateTimeFormatter.ofPattern("yyyy-MM")));
+          cursor = cursor.plusMonths(6);
+        }
+      } else {
+        LocalDate cursor = fromDate.withDayOfMonth(1);
+        while (!cursor.isAfter(now)) {
+          allTimeKeys.add(cursor.format(DateTimeFormatter.ofPattern("yyyy-MM")));
+          cursor = cursor.plusMonths(1);
+        }
+      }
+    }
 
-    List<PopularTechStackDto> result =
-        resultQuery.fetch(
-            record ->
-                PopularTechStackDto.builder()
-                    .techStackName(record.get(JOB_AND_TECH_STACK.TECH_STACK_NAME))
-                    .usageCount(
-                        Optional.ofNullable(record.get("usage_count", Long.class))
-                            .map(Long::intValue) // Long → int로 안전하게 변환
-                            .orElse(0)) // null일 경우 기본값 0
-                    .latestProjectName(record.get("latest_project_name", String.class))
-                    .topJobName(record.get("top_job_name", String.class))
-                    .build());
+    // monthlyUsageMap
+    Map<String, Map<String, Integer>> monthlyUsageMap = new LinkedHashMap<>();
+    for (var record : usage) {
+      String name = record.get(JOB_AND_TECH_STACK.TECH_STACK_NAME);
+      String time = record.get("time", String.class);
+      int count = record.get("usage_count", Integer.class);
+      monthlyUsageMap.computeIfAbsent(name, k -> new TreeMap<>()).put(time, count);
+    }
 
-    int totalCount = dsl.fetchCount(usageCte);
-    return PageResponse.fromJooq(result, totalCount, page, sizeOrTop);
+    // 누락된 key 보완
+    if (!isDaily) {
+      for (String name : monthlyUsageMap.keySet()) {
+        Map<String, Integer> timeMap = monthlyUsageMap.get(name);
+        for (String key : allTimeKeys) {
+          timeMap.putIfAbsent(key, 0);
+        }
+      }
+    }
+
+    // latest project
+    var latestProjects =
+        dsl.selectFrom(
+                dsl.select(
+                        baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                        baseCte.field("project_name", String.class),
+                        DSL.rowNumber()
+                            .over()
+                            .partitionBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
+                            .orderBy(baseCte.field(PROJECT.START_DATE).desc())
+                            .as("rn"))
+                    .from(baseCte)
+                    .asTable("latest_project"))
+            .where(DSL.field("rn", Integer.class).eq(1))
+            .fetchMap(JOB_AND_TECH_STACK.TECH_STACK_NAME, DSL.field("project_name", String.class));
+
+    // top job
+    var topJobs =
+        dsl.selectFrom(
+                dsl.select(
+                        baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                        baseCte.field(PROJECT_AND_JOB.JOB_NAME),
+                        DSL.count().as("job_count"),
+                        DSL.rowNumber()
+                            .over()
+                            .partitionBy(baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME))
+                            .orderBy(DSL.count().desc())
+                            .as("rn"))
+                    .from(baseCte)
+                    .groupBy(
+                        baseCte.field(JOB_AND_TECH_STACK.TECH_STACK_NAME),
+                        baseCte.field(PROJECT_AND_JOB.JOB_NAME))
+                    .asTable("top_job"))
+            .where(DSL.field("rn", Integer.class).eq(1))
+            .fetchMap(JOB_AND_TECH_STACK.TECH_STACK_NAME, PROJECT_AND_JOB.JOB_NAME);
+
+    // 정렬 및 페이징
+    List<String> sortedNames =
+        totalUsageMap.entrySet().stream()
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+            .map(Map.Entry::getKey)
+            .toList();
+
+    if (top != null) {
+      sortedNames = sortedNames.stream().limit(top).toList();
+    }
+
+    int total = sortedNames.size();
+    int fromIndex = page * size;
+    int toIndex = Math.min(fromIndex + size, total);
+
+    if (fromIndex >= toIndex) {
+      return PageResponse.fromJooq(List.of(), total, page, size);
+    }
+
+    List<TechStackMonthlyUsageDto> content =
+        sortedNames.subList(fromIndex, toIndex).stream()
+            .map(
+                name ->
+                    TechStackMonthlyUsageDto.builder()
+                        .techStackName(name)
+                        .monthlyUsage(monthlyUsageMap.getOrDefault(name, new TreeMap<>()))
+                        .totalUsageCount(totalUsageMap.getOrDefault(name, 0))
+                        .latestProjectName(latestProjects.get(name))
+                        .topJobName(topJobs.get(name))
+                        .build())
+            .toList();
+
+    return PageResponse.fromJooq(content, total, page, size);
   }
 }

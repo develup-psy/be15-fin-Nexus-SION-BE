@@ -5,10 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
-import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
-import com.nexus.sion.feature.statistics.query.dto.PopularTechStackDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
+import com.nexus.sion.feature.statistics.query.dto.*;
 import com.nexus.sion.feature.statistics.query.repository.StatisticsQueryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -36,18 +33,8 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   }
 
   @Override
-  public PageResponse<PopularTechStackDto> getPopularTechStacks(String period, int page, int size) {
-    return repository.findPopularTechStacks(period, page, size);
-  }
-
-  @Override
-  public PageResponse<PopularTechStackDto> getPopularTechStacksWithTop(String period, int top) {
-    int page = 0;
-
-    List<PopularTechStackDto> content =
-        repository.findPopularTechStacks(period, page, top).getContent();
-    long totalElements = Math.min(top, content.size());
-
-    return PageResponse.fromJooq(content, totalElements, page, top);
+  public PageResponse<TechStackMonthlyUsageDto> getPopularTechStacksGroupedByMonth(
+      String period, int page, int size, Integer top) {
+    return repository.findMonthlyPopularTechStacks(period, page, size, top);
   }
 }
