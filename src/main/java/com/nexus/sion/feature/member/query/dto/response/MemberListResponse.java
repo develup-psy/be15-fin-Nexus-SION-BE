@@ -10,6 +10,8 @@ public record MemberListResponse(
     String role,
     String grade_code,
     String status,
+    String department,
+    String position,
     String profileImageUrl,
     LocalDateTime joinedAt,
     String topTechStackName,
