@@ -2,8 +2,7 @@ package com.nexus.sion.feature.member.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.nexus.sion.feature.member.command.application.dto.request.MemberStatusUpdateRequest;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -203,5 +204,33 @@ class MemberCommandIntegrationTest {
             .orElseThrow(() -> new IllegalStateException("관리자 존재해야 함"));
 
     assertThat(found.getDeletedAt()).isNull();
+  }
+
+  @Test
+  @DisplayName("개발자 상태 변경 - 성공")
+  void updateMemberStatus_success() throws Exception {
+    // given
+    Member testMember =
+            Member.builder()
+                    .employeeIdentificationNumber("TEST001")
+                    .employeeName("테스트 유저")
+                    .email("admin@example.com")
+                    .phoneNumber("01099999999")
+                    .role(MemberRole.INSIDER)
+                    .build();
+
+    memberRepository.save(testMember);
+    MemberStatusUpdateRequest request = new MemberStatusUpdateRequest(MemberStatus.UNAVAILABLE);
+    String json = objectMapper.writeValueAsString(request);
+
+    // when & then
+    mockMvc.perform(patch("/api/v1/members/{employeeId}/status", "TEST001")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json))
+            .andExpect(status().isOk());
+
+    // 상태가 실제로 변경되었는지 확인
+    Member updated = memberRepository.findById("TEST001").orElseThrow();
+    assertThat(updated.getStatus()).isEqualTo(MemberStatus.UNAVAILABLE);
   }
 }
