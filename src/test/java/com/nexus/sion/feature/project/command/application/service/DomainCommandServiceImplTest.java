@@ -1,7 +1,7 @@
 package com.nexus.sion.feature.project.command.application.service;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.DomainRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
@@ -28,9 +30,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_이미존재하면저장하지않음() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(true);
 
     // when
@@ -44,9 +44,7 @@ class DomainCommandServiceImplTest {
   @Test
   void registerDomain_존재하지않으면저장() {
     // given
-    DomainRequest request = DomainRequest.builder()
-            .name(domainName)
-            .build();
+    DomainRequest request = DomainRequest.builder().name(domainName).build();
     when(domainRepository.existsById(domainName)).thenReturn(false);
     when(modelMapper.map(request, Domain.class)).thenReturn(mock(Domain.class));
 
@@ -56,5 +54,37 @@ class DomainCommandServiceImplTest {
     // then
     assertTrue(result); // 반환값이 false인지 검증
     verify(domainRepository, times(1)).save(any(Domain.class));
+  }
+
+  @Test
+  void deleteDomain_존재하면삭제() {
+    // given
+    when(domainRepository.existsById(domainName)).thenReturn(true);
+    doNothing().when(domainRepository).deleteById(domainName);
+
+    // when
+    domainCommandService.removeDomain(domainName);
+
+    // then
+    verify(domainRepository, times(1)).deleteById(domainName);
+  }
+
+  @Test
+  void deleteDomain_존재하지않으면에러() {
+    // given
+    when(domainRepository.existsById(domainName)).thenReturn(false);
+
+    // when & then
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              domainCommandService.removeDomain(domainName);
+            });
+
+    // then
+    assertEquals(ErrorCode.DOMAIN_NOT_FOUND, exception.getErrorCode());
+
+    verify(domainRepository, never()).deleteById(any());
   }
 }
