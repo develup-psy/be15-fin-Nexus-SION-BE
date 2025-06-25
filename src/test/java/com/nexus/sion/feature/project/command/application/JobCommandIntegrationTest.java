@@ -88,8 +88,8 @@ public class JobCommandIntegrationTest {
   }
 
   @Test
-  @DisplayName("존재하지 않는 도메인은 에러를 반환한다.")
-  void deleteExistingDomain_returnsError() throws Exception {
+  @DisplayName("존재하지 않는 직무는 에러를 반환한다.")
+  void deleteNonExistingJob_returnsError() throws Exception {
     // given
     String jobName = "test";
 
