@@ -28,7 +28,6 @@ public class SquadCommentCommandService {
             .squadCode(squadCode)
             .employeeIdentificationNumber(request.getEmployeeIdentificationNumber())
             .content(request.getContent())
-            .createdAt(LocalDateTime.now())
             .build();
 
     squadCommentRepository.save(comment);
