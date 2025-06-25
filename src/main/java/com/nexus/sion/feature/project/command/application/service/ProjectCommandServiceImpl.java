@@ -1,6 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     Project project =
         Project.builder()
             .projectCode(request.getProjectCode())
-            .name(request.getName())
+            .domainName(request.getDomainName())
             .description(request.getDescription())
             .title(request.getTitle())
             .budget(request.getBudget())
@@ -42,8 +42,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .numberOfMembers(request.getNumberOfMembers())
             .clientCode(request.getClientCode())
             .requestSpecificationUrl(request.getRequestSpecificationUrl())
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
     projectCommandRepository.save(project);
 
@@ -58,7 +56,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .findById(request.getProjectCode())
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    project.setName(request.getName());
+    project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
     project.setTitle(request.getTitle());
     project.setBudget(request.getBudget());
@@ -67,7 +65,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setNumberOfMembers(request.getNumberOfMembers());
     project.setClientCode(request.getClientCode());
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
-    project.setUpdatedAt(LocalDateTime.now());
     projectCommandRepository.save(project);
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
@@ -90,8 +87,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                       .projectCode(request.getProjectCode())
                       .jobName(job.getJobName())
                       .requiredNumber(job.getRequiredNumber())
-                      .createdAt(LocalDateTime.now())
-                      .updatedAt(LocalDateTime.now())
                       .build();
               projectAndJobRepository.save(projectAndJob);
 
@@ -103,8 +98,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
                                 .projectJobId(projectAndJob.getId())
                                 .techStackName(tech.getTechStackName())
                                 .priority(tech.getPriority())
-                                .createdAt(LocalDateTime.now())
-                                .updatedAt(LocalDateTime.now())
                                 .build();
                         jobAndTechStackRepository.save(jobAndTechStack);
                       });
@@ -126,5 +119,21 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectAndJobRepository.deleteByProjectCode(projectCode);
 
     projectCommandRepository.delete(project);
+  }
+
+  @Override
+  public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
+    Project project =
+        projectCommandRepository
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    project.setStatus(status);
+    if (status == Project.ProjectStatus.COMPLETE) {
+      project.setActualEndDate(LocalDate.now());
+    } else {
+      project.setActualEndDate(null);
+    }
+    projectCommandRepository.save(project);
   }
 }

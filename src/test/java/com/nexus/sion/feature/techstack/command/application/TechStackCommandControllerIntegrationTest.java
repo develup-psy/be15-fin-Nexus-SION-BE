@@ -6,9 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,17 +56,8 @@ class TechStackCommandControllerIntegrationTest {
   void registerExistingTechStack_doesNotSaveAgain() throws Exception {
     // given
     String existingTechStackName = "techStackName";
-    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-    constructor.setAccessible(true);
-    TechStack existing = constructor.newInstance();
-
-    // id 필드 설정
-    Field idField = TechStack.class.getDeclaredField(existingTechStackName);
-    idField.setAccessible(true);
-    idField.set(existing, existingTechStackName);
-
-    techStackRepository.save(existing);
-    int existingCount = techStackRepository.findAll().size();
+    techStackRepository.save(TechStack.of(existingTechStackName));
+    long existingCount = techStackRepository.count();
 
     TechStackRequest request = new TechStackRequest(existingTechStackName);
 
@@ -86,23 +74,11 @@ class TechStackCommandControllerIntegrationTest {
   }
 
   @Test
-  @DisplayName("기술 스택을 삭제하면 201이 반환되고 DB에서 제거된다.")
+  @DisplayName("기술 스택을 삭제하면 204가 반환되고 DB에서 제거된다.")
   void deleteExistingTechStack_returnsDeleted() throws Exception {
     // given
     String techStackName = "test";
-    String techStackColumn = "techStackName";
-    TechStackRequest request = new TechStackRequest(techStackName);
-
-    Constructor<TechStack> constructor = TechStack.class.getDeclaredConstructor();
-    constructor.setAccessible(true);
-    TechStack existing = constructor.newInstance();
-
-    // id 필드 설정
-    Field idField = TechStack.class.getDeclaredField(techStackColumn);
-    idField.setAccessible(true);
-    idField.set(existing, techStackName);
-
-    techStackRepository.save(existing);
+    techStackRepository.save(TechStack.of(techStackName));
 
     // when & then
     mockMvc
@@ -118,7 +94,6 @@ class TechStackCommandControllerIntegrationTest {
   void deleteExistingTechStack_returnsError() throws Exception {
     // given
     String techStackName = "test";
-    TechStackRequest request = new TechStackRequest(techStackName);
 
     // when & then
     mockMvc

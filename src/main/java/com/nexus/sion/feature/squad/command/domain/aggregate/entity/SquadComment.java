@@ -1,8 +1,8 @@
 package com.nexus.sion.feature.squad.command.domain.aggregate.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -12,7 +12,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class SquadComment {
+public class SquadComment extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +28,4 @@ public class SquadComment {
 
   @Column(name = "content", columnDefinition = "TEXT", nullable = false)
   private String content;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
 }

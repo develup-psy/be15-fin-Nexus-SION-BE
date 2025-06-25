@@ -46,7 +46,7 @@ public class Member {
   private LocalDate birthday;
 
   @Column(name = "joined_at")
-  private LocalDateTime joinedAt;
+  private LocalDate joinedAt;
 
   @Column(nullable = false, length = 30)
   private String email;
@@ -95,5 +95,36 @@ public class Member {
 
   public void setAdminRole() {
     role = MemberRole.ADMIN;
+  }
+
+  public void markAsDeleted() {
+    this.deletedAt = LocalDateTime.now();
+  }
+
+  public void updateStatus(MemberStatus newStatus) {
+    this.status = newStatus;
+  }
+
+  public void update(
+      String employeeName,
+      String phoneNumber,
+      LocalDate birthday,
+      LocalDate joinedAt,
+      String email,
+      Integer careerYears,
+      String positionName,
+      String departmentName,
+      String profileImageUrl,
+      Long salary) {
+    this.employeeName = employeeName;
+    this.phoneNumber = phoneNumber;
+    this.birthday = birthday;
+    this.joinedAt = joinedAt;
+    this.email = email;
+    this.careerYears = careerYears;
+    this.positionName = positionName;
+    this.departmentName = departmentName;
+    this.profileImageUrl = profileImageUrl;
+    this.salary = salary;
   }
 }

@@ -71,7 +71,7 @@ class ProjectCommandServiceIntegrationTest {
         .andExpect(status().isCreated());
 
     // 수정
-    request.setName("Updated Name");
+    request.setTitle("Updated Title");
     request.setDescription("Updated Description");
 
     mockMvc
@@ -108,6 +108,29 @@ class ProjectCommandServiceIntegrationTest {
     assertThat(projectCommandRepository.existsByProjectCode(request.getProjectCode())).isFalse();
   }
 
+  @Test
+  @DisplayName("프로젝트 상태 변경 성공")
+  void updateProjectStatus_success() throws Exception {
+    // 등록 먼저 수행
+    ProjectRegisterRequest request = createRequest();
+    mockMvc
+        .perform(
+            post("/api/v1/projects")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated());
+
+    // 상태 변경
+    mockMvc
+        .perform(
+            put(
+                "/api/v1/projects/{projectCode}/status/{status}",
+                request.getProjectCode(),
+                "COMPLETE"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
+  }
+
   private ProjectRegisterRequest createRequest() {
     TechStackInfo techStack = new TechStackInfo();
     techStack.setTechStackName("Java");
@@ -120,7 +143,7 @@ class ProjectCommandServiceIntegrationTest {
 
     ProjectRegisterRequest request = new ProjectRegisterRequest();
     request.setProjectCode("P123");
-    request.setName("testdomain");
+    request.setDomainName("testdomain");
     request.setDescription("설명");
     request.setTitle("제목");
     request.setBudget(1000000L);

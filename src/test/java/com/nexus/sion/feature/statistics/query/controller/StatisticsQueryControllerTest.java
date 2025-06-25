@@ -26,6 +26,7 @@ import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
 import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
 import com.nexus.sion.feature.statistics.query.service.StatisticsQueryService;
+import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 
 @WebMvcTest(controllers = StatisticsQueryController.class)
 @Import(StatisticsQueryControllerTest.TestSecurityConfig.class)
@@ -34,6 +35,8 @@ class StatisticsQueryControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private StatisticsQueryService service;
+
+  @MockBean private TechStackQueryService techStackQueryService;
 
   @Autowired private ObjectMapper objectMapper;
 
@@ -51,7 +54,7 @@ class StatisticsQueryControllerTest {
   @DisplayName("기술스택 전체 목록 조회 성공")
   void getAllTechStacks_success() throws Exception {
     List<String> stacks = List.of("Java", "Spring Boot");
-    when(service.findAllStackNames()).thenReturn(stacks);
+    when(techStackQueryService.findAllStackNames()).thenReturn(stacks);
 
     mockMvc
         .perform(get("/api/v1/statistics/all-tech-stacks"))

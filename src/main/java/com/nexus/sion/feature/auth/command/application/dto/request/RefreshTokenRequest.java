@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.auth.command.application.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 
 @Getter
@@ -7,5 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 public class RefreshTokenRequest {
-  private String refreshToken;
+  @NotBlank private String refreshToken;
 }

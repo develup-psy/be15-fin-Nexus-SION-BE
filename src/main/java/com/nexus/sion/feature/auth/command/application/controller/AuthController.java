@@ -3,6 +3,8 @@ package com.nexus.sion.feature.auth.command.application.controller;
 import static com.nexus.sion.common.utils.CookieUtils.createDeleteRefreshTokenCookie;
 import static com.nexus.sion.common.utils.CookieUtils.createRefreshTokenCookie;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -42,20 +44,20 @@ public class AuthController {
 
   @PostMapping("/login")
   public ResponseEntity<ApiResponse<AccessTokenResponse>> login(
-      @RequestBody LoginRequest loginRequest) {
+      @RequestBody @Valid LoginRequest loginRequest) {
     TokenResponse tokenResponse = authService.login(loginRequest);
     return buildTokenResponse(tokenResponse);
   }
 
   @PostMapping("/refresh")
   public ResponseEntity<ApiResponse<AccessTokenResponse>> refreshToken(
-      @RequestBody RefreshTokenRequest request) {
+      @RequestBody @Valid RefreshTokenRequest request) {
     TokenResponse response = authService.refreshToken(request.getRefreshToken());
     return buildTokenResponse(response);
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<ApiResponse<Void>> logout(@RequestBody RefreshTokenRequest request) {
+  public ResponseEntity<ApiResponse<Void>> logout(@RequestBody @Valid RefreshTokenRequest request) {
     authService.logout(request.getRefreshToken());
 
     ResponseCookie deleteCookie = createDeleteRefreshTokenCookie(); // 만료용 쿠키 생성
