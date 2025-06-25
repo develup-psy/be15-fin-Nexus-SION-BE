@@ -54,7 +54,7 @@ public class JobCommandIntegrationTest {
     // given
     String existingJobName = "jobName";
     jobRepository.save(Job.of(existingJobName));
-    int existingCount = jobRepository.findAll().size();
+    long existingCount = jobRepository.count();
 
     JobRequest request = JobRequest.builder().name(existingJobName).build();
 

@@ -57,7 +57,7 @@ class TechStackCommandControllerIntegrationTest {
     // given
     String existingTechStackName = "techStackName";
     techStackRepository.save(TechStack.of(existingTechStackName));
-    int existingCount = techStackRepository.findAll().size();
+    long existingCount = techStackRepository.count();
 
     TechStackRequest request = new TechStackRequest(existingTechStackName);
 
