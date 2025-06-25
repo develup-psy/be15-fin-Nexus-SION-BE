@@ -2,9 +2,9 @@ package com.nexus.sion.feature.squad.command.domain.aggregate.entity;
 
 import java.math.BigDecimal;
 
-import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
 
 import lombok.*;
@@ -15,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Squad  extends BaseTimeEntity {
+public class Squad extends BaseTimeEntity {
   // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id

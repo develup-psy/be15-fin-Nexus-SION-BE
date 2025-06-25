@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,10 +75,7 @@ class ProjectCommandServiceImplTest {
     // given
     ProjectRegisterRequest request = createRequest();
 
-    Project existingProject =
-        Project.builder()
-            .projectCode(request.getProjectCode())
-            .build();
+    Project existingProject = Project.builder().projectCode(request.getProjectCode()).build();
 
     when(projectCommandRepository.findById(request.getProjectCode()))
         .thenReturn(Optional.of(existingProject));
@@ -113,10 +109,7 @@ class ProjectCommandServiceImplTest {
   void deleteProject_Success() {
     // given
     String projectCode = "P123";
-    Project existingProject =
-        Project.builder()
-            .projectCode(projectCode)
-            .build();
+    Project existingProject = Project.builder().projectCode(projectCode).build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
     when(projectAndJobRepository.findByProjectCode(projectCode))

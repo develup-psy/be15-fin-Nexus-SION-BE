@@ -3,8 +3,9 @@ package com.nexus.sion.feature.project.command.domain.aggregate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -15,7 +16,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class Project  extends BaseTimeEntity {
+public class Project extends BaseTimeEntity {
   // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id

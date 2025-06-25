@@ -1,7 +1,5 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;

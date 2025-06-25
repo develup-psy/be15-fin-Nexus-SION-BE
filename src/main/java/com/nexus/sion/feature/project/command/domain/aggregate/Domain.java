@@ -1,10 +1,12 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 
-import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
+
+import lombok.*;
 
 @Entity
 @Table(name = "domain")
@@ -23,8 +25,6 @@ public class Domain extends BaseTimeEntity {
 
   // For testing
   public static Domain of(String domainName) {
-    return Domain.builder()
-        .name(domainName)
-        .build();
+    return Domain.builder().name(domainName).build();
   }
 }

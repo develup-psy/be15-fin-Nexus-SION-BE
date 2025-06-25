@@ -1,7 +1,8 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -12,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JobAndTechStack  extends BaseTimeEntity {
+public class JobAndTechStack extends BaseTimeEntity {
   // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id

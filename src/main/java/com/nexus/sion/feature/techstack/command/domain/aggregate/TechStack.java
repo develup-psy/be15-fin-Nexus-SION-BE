@@ -1,7 +1,8 @@
 package com.nexus.sion.feature.techstack.command.domain.aggregate;
 
-import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;

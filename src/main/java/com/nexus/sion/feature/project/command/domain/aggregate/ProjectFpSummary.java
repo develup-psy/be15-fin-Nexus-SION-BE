@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
-import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+
+import lombok.*;
 
 @Entity
 @Table(name = "project_fp_summary")
