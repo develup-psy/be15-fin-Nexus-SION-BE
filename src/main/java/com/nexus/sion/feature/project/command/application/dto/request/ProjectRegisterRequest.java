@@ -11,7 +11,7 @@ import lombok.Setter;
 public class ProjectRegisterRequest {
 
   private String projectCode;
-  private String name;
+  private String domainName;
   private String description;
   private String title;
   private Long budget;

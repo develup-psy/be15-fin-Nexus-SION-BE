@@ -23,8 +23,8 @@ public class Project extends BaseTimeEntity {
   @Column(name = "project_code", length = 30)
   private String projectCode;
 
-  @Column(name = "name", nullable = false, length = 30)
-  private String name;
+  @Column(name = "domain_name", nullable = false, length = 30)
+  private String domainName;
 
   @Column(name = "description", nullable = false)
   private String description;
