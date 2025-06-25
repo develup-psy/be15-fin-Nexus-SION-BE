@@ -76,19 +76,37 @@ class StatisticsQueryIntergrationTest {
   }
 
   @Test
-  @DisplayName("GET /stack/popular - top 파라미터로 인기 기술스택 조회")
-  void getPopularTechStacks_withTopParam() throws Exception {
+  @DisplayName("GET /stack/popular - 일반 페이징 조회")
+  void getMonthlyPopularTechStacks_withoutTopParam() throws Exception {
     mockMvc
         .perform(
             get("/api/v1/statistics/stack/popular")
-                .param("period", "1m")
-                .param("top", "5")) // top 우선 적용
+                .param("period", "6m")
+                .param("page", "0")
+                .param("size", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.data.content").isArray())
-        .andExpect(jsonPath("$.data.content", hasSize(lessThanOrEqualTo(5))))
+        .andExpect(jsonPath("$.data.pageSize").value(10))
+        .andExpect(jsonPath("$.data.currentPage").value(0)); // PageResponse는 1부터 시작하도록 보정했을 경우
+  }
+
+  @Test
+  @DisplayName("GET /stack/popular - top 파라미터 지정 시 상위 인기 기술스택 제한 조회")
+  void getMonthlyPopularTechStacks_withTopParam() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/statistics/stack/popular")
+                .param("period", "6m")
+                .param("top", "3")) // top이 지정되면 page=0, size=top 고정
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data.content").isArray())
+        .andExpect(jsonPath("$.data.pageSize").value(3))
+        .andExpect(jsonPath("$.data.content", hasSize(lessThanOrEqualTo(3))))
         .andExpect(jsonPath("$.data.content[0].techStackName").exists())
-        .andExpect(jsonPath("$.data.content[0].usageCount").exists())
+        .andExpect(jsonPath("$.data.content[0].monthlyUsage").isMap())
+        .andExpect(jsonPath("$.data.content[0].totalUsageCount").isNumber())
         .andExpect(jsonPath("$.data.content[0].latestProjectName").exists())
         .andExpect(jsonPath("$.data.content[0].topJobName").exists());
   }
