@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Job;
 import com.nexus.sion.feature.project.command.repository.JobRepository;
@@ -82,9 +81,7 @@ public class JobCommandIntegrationTest {
     jobRepository.save(Job.of(jobName));
 
     // when & then
-    mockMvc
-            .perform(delete("/api/v1/jobs/{jobName}", jobName))
-            .andExpect(status().isNoContent());
+    mockMvc.perform(delete("/api/v1/jobs/{jobName}", jobName)).andExpect(status().isNoContent());
 
     // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
     assertThat(jobRepository.findById(jobName)).isNotPresent();
@@ -98,11 +95,11 @@ public class JobCommandIntegrationTest {
 
     // when & then
     mockMvc
-            .perform(delete("/api/v1/jobs/{jobName}", jobName))
-            .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.errorCode").value(ErrorCode.JOB_NOT_FOUND.getCode()))
-            .andExpect(jsonPath("$.message").value(ErrorCode.JOB_NOT_FOUND.getMessage()))
-            .andExpect(jsonPath("$.timestamp").exists());
+        .perform(delete("/api/v1/jobs/{jobName}", jobName))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.JOB_NOT_FOUND.getCode()))
+        .andExpect(jsonPath("$.message").value(ErrorCode.JOB_NOT_FOUND.getMessage()))
+        .andExpect(jsonPath("$.timestamp").exists());
   }
 }

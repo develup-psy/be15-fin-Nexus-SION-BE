@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Job;
 import com.nexus.sion.feature.project.command.repository.JobRepository;
@@ -56,7 +56,6 @@ class JobCommandServiceImplTest {
     verify(jobRepository, times(1)).save(any(Job.class));
   }
 
-
   @Test
   void deleteJob_존재하면삭제() {
     // given
@@ -77,11 +76,11 @@ class JobCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      jobCommandService.removeJob(jobName);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              jobCommandService.removeJob(jobName);
+            });
 
     // then
     assertEquals(ErrorCode.JOB_NOT_FOUND, exception.getErrorCode());
