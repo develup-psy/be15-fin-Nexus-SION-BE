@@ -1,14 +1,13 @@
 package com.nexus.sion.feature.member.command.application.dto.request;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record MemberUpdateRequest(
     String employeeName,
     String phoneNumber,
     LocalDate birthday,
-    LocalDateTime joinedAt,
+    LocalDate joinedAt,
     String email,
     Integer careerYears,
     String positionName,
