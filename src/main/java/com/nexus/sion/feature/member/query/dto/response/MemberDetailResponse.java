@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.member.query.dto.response;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public record MemberDetailResponse(
     String employeeId,
@@ -11,7 +10,7 @@ public record MemberDetailResponse(
     String position,
     String department,
     LocalDate birthday,
-    LocalDateTime joinedAt,
+    LocalDate joinedAt,
     String email,
     Integer careerYears,
     Long salary,
