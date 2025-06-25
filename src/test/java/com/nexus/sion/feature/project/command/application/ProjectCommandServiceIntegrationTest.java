@@ -71,7 +71,7 @@ class ProjectCommandServiceIntegrationTest {
         .andExpect(status().isCreated());
 
     // 수정
-    request.setName("Updated Name");
+    request.setTitle("Updated Title");
     request.setDescription("Updated Description");
 
     mockMvc
@@ -143,7 +143,7 @@ class ProjectCommandServiceIntegrationTest {
 
     ProjectRegisterRequest request = new ProjectRegisterRequest();
     request.setProjectCode("P123");
-    request.setName("testdomain");
+    request.setDomainName("testdomain");
     request.setDescription("설명");
     request.setTitle("제목");
     request.setBudget(1000000L);
