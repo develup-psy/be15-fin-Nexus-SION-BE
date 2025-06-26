@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +92,10 @@ class SquadQueryServiceImplTest {
     SquadDetailResponse.SummaryInfo summary =
         new SquadDetailResponse.SummaryInfo(Map.of("백엔드", 1L), Map.of("A", 1L));
 
+    SquadDetailResponse.CommentResponse comment =
+        new SquadDetailResponse.CommentResponse(
+            1L, "EMP001", "홍길동", LocalDateTime.of(2025, 6, 24, 12, 0));
+
     SquadDetailResponse mockResponse =
         new SquadDetailResponse(
             squadCode,
@@ -102,7 +107,8 @@ class SquadQueryServiceImplTest {
             List.of("Java", "Spring"),
             List.of(member),
             List.of(cost),
-            "직접 구성됨");
+            "직접 구성됨",
+            List.of(comment));
 
     when(squadQueryRepository.findSquadDetailByCode(squadCode)).thenReturn(mockResponse);
 

@@ -170,6 +170,24 @@ public class SquadQueryRepository {
             .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
             .fetchInto(String.class);
 
+    List<SquadDetailResponse.CommentResponse> comments =
+        dsl.select(
+                SQUAD_COMMENT.COMMENT_ID,
+                SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER,
+                SQUAD_COMMENT.CONTENT,
+                SQUAD_COMMENT.CREATED_AT)
+            .from(SQUAD_COMMENT)
+            .where(SQUAD_COMMENT.SQUAD_CODE.eq(squadCode))
+            .orderBy(SQUAD_COMMENT.CREATED_AT.asc())
+            .fetch()
+            .map(
+                r ->
+                    new SquadDetailResponse.CommentResponse(
+                        r.get(SQUAD_COMMENT.COMMENT_ID),
+                        r.get(SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER),
+                        r.get(SQUAD_COMMENT.CONTENT),
+                        r.get(SQUAD_COMMENT.CREATED_AT)));
+
     Map<String, Long> jobCounts =
         records.stream()
             .collect(
@@ -194,6 +212,7 @@ public class SquadQueryRepository {
         techStacks,
         members,
         costDetails,
-        squadRecord.get(SQUAD.RECOMMENDATION_REASON));
+        squadRecord.get(SQUAD.RECOMMENDATION_REASON),
+        comments);
   }
 }

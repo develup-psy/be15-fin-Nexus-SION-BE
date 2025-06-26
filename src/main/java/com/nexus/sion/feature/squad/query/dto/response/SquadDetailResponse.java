@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.query.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class SquadDetailResponse {
   private List<MemberInfo> members; // 구성원 정보
   private List<CostBreakdown> costDetails;
   private String recommendationReason;
+  private List<CommentResponse> comments;
 
   @Getter
   @AllArgsConstructor
@@ -43,5 +45,14 @@ public class SquadDetailResponse {
   public static class SummaryInfo {
     private Map<String, Long> jobCounts;
     private Map<String, Long> gradeCounts;
+  }
+
+  @Getter
+  @AllArgsConstructor
+  public static class CommentResponse {
+    private Long id;
+    private String employeeIdentificationNumber;
+    private String content;
+    private LocalDateTime createdAt;
   }
 }

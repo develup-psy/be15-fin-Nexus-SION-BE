@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.query;
 
+import static com.example.jooq.generated.Tables.SQUAD_COMMENT;
 import static com.example.jooq.generated.tables.Squad.SQUAD;
 import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
 import static org.hamcrest.Matchers.*;
@@ -42,6 +43,7 @@ class SquadQueryIntegrationTest {
 
     // 자식 테이블 먼저 삭제
     dsl.deleteFrom(SQUAD_EMPLOYEE).where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(testSquadCode)).execute();
+    dsl.deleteFrom(SQUAD_COMMENT).where(SQUAD_COMMENT.SQUAD_CODE.eq(testSquadCode)).execute();
     dsl.deleteFrom(SQUAD).where(SQUAD.SQUAD_CODE.eq(testSquadCode)).execute();
 
     // 스쿼드 더미 데이터 삽입
