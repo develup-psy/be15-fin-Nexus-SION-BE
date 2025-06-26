@@ -67,7 +67,10 @@ class TechStackCommandControllerIntegrationTest {
             post("/api/v1/tech-stack")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated()); // 응답은 성공
+            .andExpect(status().isConflict()) // <-- 409 기대
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.errorCode").value("50002"))
+            .andExpect(jsonPath("$.message").value("이미 존재하는 기술스택입니다."));
 
     // then - 여전히 하나만 존재
     assertThat(techStackRepository.findAll().size()).isEqualTo(existingCount);
