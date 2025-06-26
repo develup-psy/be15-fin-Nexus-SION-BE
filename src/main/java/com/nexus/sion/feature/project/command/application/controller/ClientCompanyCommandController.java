@@ -29,9 +29,7 @@ public class ClientCompanyCommandController {
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> register(
       @RequestBody @Valid ClientCompanyCreateRequest request) {
-    if (clientCompanyCommandService.registerClientCompany(request)) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
-    }
-    return ResponseEntity.ok(ApiResponse.success(null));
+    clientCompanyCommandService.registerClientCompany(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 }

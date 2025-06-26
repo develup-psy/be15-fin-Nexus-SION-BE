@@ -25,10 +25,10 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
 
   @Transactional
   @Override
-  public boolean registerClientCompany(ClientCompanyCreateRequest request) {
+  public void registerClientCompany(ClientCompanyCreateRequest request) {
     // 기존에 존재하는 고객사는 저장하지 않고 종료(TODO : 프론트에서 처리 필요)
     if (clientCompanyRepository.existsByCompanyName(request.getCompanyName())) {
-      return false;
+      throw new BusinessException(ErrorCode.CLIENT_COMPANY_ALREADY_EXIST);
     }
 
     // 이메일이 있다면 유효성 검사
@@ -49,8 +49,6 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
     clientCompany.setClientCode(clientCode);
 
     clientCompanyRepository.save(clientCompany);
-
-    return true;
   }
 
   private String generateClientCode(String companyName) {
