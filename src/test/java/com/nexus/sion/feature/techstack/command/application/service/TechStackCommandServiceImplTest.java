@@ -35,9 +35,15 @@ class TechStackCommandServiceImplTest {
     when(techStackRepository.existsById(techStackName)).thenReturn(true);
 
     // when
-    techStackCommandService.registerTechStack(request);
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              techStackCommandService.registerTechStack(request);
+            });
 
     // then
+    assertEquals(ErrorCode.TECH_STACK_ALREADY_EXIST, exception.getErrorCode());
     verify(techStackRepository, never()).save(any(TechStack.class));
   }
 

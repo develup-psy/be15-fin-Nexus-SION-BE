@@ -25,10 +25,8 @@ public class JobCommandController {
   @PostMapping
   @Operation(summary = "직무 등록", description = "새로운 직무를 시스템에 등록합니다.")
   public ResponseEntity<ApiResponse<Void>> registerJob(@RequestBody @Valid JobRequest request) {
-    if (jobCommandService.registerJob(request)) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
-    }
-    return ResponseEntity.ok(ApiResponse.success(null));
+    jobCommandService.registerJob(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 
   @DeleteMapping("/{jobName}")

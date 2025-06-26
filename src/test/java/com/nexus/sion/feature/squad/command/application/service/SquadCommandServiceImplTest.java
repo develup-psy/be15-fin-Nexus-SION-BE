@@ -1,17 +1,18 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
@@ -66,12 +67,12 @@ class SquadCommandServiceImplTest {
     // then
     verify(projectRepository).findByProjectCode("ha_1_1");
     verify(squadCommandRepository).save(any(Squad.class));
-ArgumentCaptor<List<SquadEmployee>> listCaptor = ArgumentCaptor.forClass(List.class);
-verify(squadEmployeeCommandRepository).saveAll(listCaptor.capture());
+    ArgumentCaptor<List<SquadEmployee>> listCaptor = ArgumentCaptor.forClass(List.class);
+    verify(squadEmployeeCommandRepository).saveAll(listCaptor.capture());
 
-List<SquadEmployee> capturedList = listCaptor.getValue();
-assertThat(capturedList).hasSize(1);
-assertThat(capturedList.get(0).getEmployeeIdentificationNumber()).isEqualTo("EMP001");
+    List<SquadEmployee> capturedList = listCaptor.getValue();
+    assertThat(capturedList).hasSize(1);
+    assertThat(capturedList.get(0).getEmployeeIdentificationNumber()).isEqualTo("EMP001");
   }
 
   @Test

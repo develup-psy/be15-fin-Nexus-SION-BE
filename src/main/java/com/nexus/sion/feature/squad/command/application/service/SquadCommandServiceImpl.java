@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -66,14 +65,17 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     squadCommandRepository.save(squad);
 
     // 6. 스쿼드 구성원 저장
-    List<SquadEmployee> squadEmployees = request.getMembers().stream()
-            .map(member -> SquadEmployee.builder()
-                    .squadCode(squad.getSquadCode())
-                    .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
-                    .projectAndJobId(member.getProjectAndJobId())
-                    .isLeader(false)
-                    .assignedDate(LocalDate.now())
-                    .build())
+    List<SquadEmployee> squadEmployees =
+        request.getMembers().stream()
+            .map(
+                member ->
+                    SquadEmployee.builder()
+                        .squadCode(squad.getSquadCode())
+                        .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                        .projectAndJobId(member.getProjectAndJobId())
+                        .isLeader(false)
+                        .assignedDate(LocalDate.now())
+                        .build())
             .toList();
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
