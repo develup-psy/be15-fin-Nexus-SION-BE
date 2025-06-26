@@ -45,6 +45,7 @@ public enum ErrorCode {
   JOB_NOT_FOUND("30004", "해당 직무가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   INVALID_CLIENT_CODE_FORMAT("30005", "유효하지 않은 고객사 코드입니다.", HttpStatus.NOT_FOUND),
   CLIENT_COMPANY_ALREADY_EXIST("30006", "이미 존재하는 고객사 코드입니다.", HttpStatus.CONFLICT),
+  DOMAIN_ALREADY_EXIST("30007", "이미 존재하는 도메인입니다.", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
