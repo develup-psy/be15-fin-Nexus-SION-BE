@@ -42,6 +42,7 @@ public enum ErrorCode {
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
   PROJECT_NOT_FOUND("30002", "해당 프로젝트가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   DOMAIN_NOT_FOUND("30003", "해당 도메인이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+  INVALID_CLIENT_CODE_FORMAT("30004", "유효하지 않은 고객사 코드입니다.", HttpStatus.NOT_FOUND),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
