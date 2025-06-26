@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ClientCompanyRepository extends JpaRepository<ClientCompany, String> {
         Optional<ClientCompany> findTopByClientCodeStartingWithOrderByClientCodeDesc(String codePrefix);
+
+        boolean existsByCompanyName(String companyName);
 }

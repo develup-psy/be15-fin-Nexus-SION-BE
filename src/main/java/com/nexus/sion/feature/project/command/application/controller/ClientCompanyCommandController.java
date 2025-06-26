@@ -26,7 +26,9 @@ public class ClientCompanyCommandController {
     @Operation(summary = "고객사 등록", description = "고객사 등록 기능")
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> register(@RequestBody @Valid ClientCompanyCreateRequest request) {
-        clientCompanyCommandService.registerClientCompany(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+        if(clientCompanyCommandService.registerClientCompany(request)){
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+        }
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }
