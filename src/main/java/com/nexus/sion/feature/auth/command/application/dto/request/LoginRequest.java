@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.auth.command.application.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 
 @Getter
@@ -7,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-  private String employeeIdentificationNumber;
-  private String password;
+  @NotBlank private String employeeIdentificationNumber;
+  @NotBlank private String password;
 }

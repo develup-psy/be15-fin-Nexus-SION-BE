@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nexus.sion.common.dto.PageResponse;
-import com.nexus.sion.feature.statistics.query.dto.DeveloperDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCareerDto;
-import com.nexus.sion.feature.statistics.query.dto.TechStackCountDto;
+import com.nexus.sion.feature.statistics.query.dto.*;
 import com.nexus.sion.feature.statistics.query.repository.StatisticsQueryRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,18 +37,6 @@ class StatisticsQueryServiceImplTest {
     assertEquals(2, result.size());
     assertEquals("Java", result.get(0).getTechStackName());
     assertEquals(5, result.get(1).getCount());
-  }
-
-  // 전체 기술 스택 이름 목록을 조회하는 기능을 테스트
-  @Test
-  void findAllStackNames_returnsList() {
-    List<String> mockStacks = List.of("Java", "Spring", "Vue");
-    when(repository.findAllStackNames()).thenReturn(mockStacks);
-
-    List<String> result = service.findAllStackNames();
-
-    assertEquals(3, result.size());
-    assertTrue(result.contains("Spring"));
   }
 
   // 전체 개발자 목록을 페이지 단위로 조회하는 기능을 테스트
@@ -77,5 +64,45 @@ class StatisticsQueryServiceImplTest {
 
     assertEquals(1, result.getTotalElements());
     assertEquals("Java", result.getContent().get(0).getTechStackName());
+  }
+
+  // 기간별 인기 기술 스택 통계를 조회하는 기능을 테스트
+  @Test
+  void getPopularTechStacksGroupedByMonth_returnsMonthlyUsageStats() {
+    String period = "6m";
+    int page = 0;
+    int size = 10;
+    int top = 5;
+
+    TechStackMonthlyUsageDto dto1 =
+        TechStackMonthlyUsageDto.builder()
+            .techStackName("Spring Boot")
+            .monthlyUsage(Map.of("2025-01", 12, "2025-02", 8))
+            .totalUsageCount(20)
+            .latestProjectName("프로젝트A")
+            .topJobName("백엔드")
+            .build();
+
+    TechStackMonthlyUsageDto dto2 =
+        TechStackMonthlyUsageDto.builder()
+            .techStackName("React")
+            .monthlyUsage(Map.of("2025-01", 5, "2025-02", 9))
+            .totalUsageCount(14)
+            .latestProjectName("프로젝트B")
+            .topJobName("프론트엔드")
+            .build();
+
+    PageResponse<TechStackMonthlyUsageDto> mockPage =
+        PageResponse.fromJooq(List.of(dto1, dto2), 2, page, size);
+
+    when(repository.findMonthlyPopularTechStacks(period, page, size, top)).thenReturn(mockPage);
+
+    PageResponse<TechStackMonthlyUsageDto> result =
+        service.getPopularTechStacksGroupedByMonth(period, page, size, top);
+
+    assertEquals(2, result.getTotalElements());
+    assertEquals("Spring Boot", result.getContent().get(0).getTechStackName());
+    assertEquals(20, result.getContent().get(0).getTotalUsageCount());
+    assertEquals(9, result.getContent().get(1).getMonthlyUsage().get("2025-02"));
   }
 }

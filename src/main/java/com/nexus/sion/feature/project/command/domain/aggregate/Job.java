@@ -1,8 +1,10 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -13,15 +15,16 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Job {
+@EntityListeners(AuditingEntityListener.class)
+public class Job extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @Column(name = "name", length = 30)
   private String name;
 
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  // For testing
+  public static Job of(String jobName) {
+    return Job.builder().name(jobName).build();
+  }
 }

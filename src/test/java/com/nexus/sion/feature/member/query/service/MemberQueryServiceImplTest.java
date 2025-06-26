@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +59,8 @@ class MemberQueryServiceImplTest {
                 MemberRole.INSIDER.name(),
                 "A",
                 MemberStatus.AVAILABLE.name(),
+                "department1",
+                "position1",
                 "profile.jpg",
                 null,
                 "Java",
@@ -114,6 +115,8 @@ class MemberQueryServiceImplTest {
                 "INSIDER",
                 "A",
                 "AVAILABLE",
+                "department1",
+                "position1",
                 null,
                 null,
                 "Java",
@@ -147,7 +150,7 @@ class MemberQueryServiceImplTest {
             "백엔드 개발자",
             "플랫폼팀",
             LocalDate.of(1998, 4, 15),
-            LocalDateTime.of(2022, 1, 1, 0, 0),
+            LocalDate.of(2022, 1, 1),
             "hong@example.com",
             3,
             55000000L,

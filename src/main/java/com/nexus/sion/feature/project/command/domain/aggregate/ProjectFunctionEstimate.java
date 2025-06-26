@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import lombok.*;
 
 @Entity
@@ -43,6 +45,7 @@ public class ProjectFunctionEstimate {
   @Column(name = "related_fields_count")
   private Integer relatedFieldsCount;
 
+  @CreatedDate
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 

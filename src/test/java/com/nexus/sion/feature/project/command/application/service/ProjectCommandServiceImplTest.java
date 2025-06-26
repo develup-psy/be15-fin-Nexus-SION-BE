@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,12 +75,7 @@ class ProjectCommandServiceImplTest {
     // given
     ProjectRegisterRequest request = createRequest();
 
-    Project existingProject =
-        Project.builder()
-            .projectCode(request.getProjectCode())
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .build();
+    Project existingProject = Project.builder().projectCode(request.getProjectCode()).build();
 
     when(projectCommandRepository.findById(request.getProjectCode()))
         .thenReturn(Optional.of(existingProject));
@@ -115,12 +109,7 @@ class ProjectCommandServiceImplTest {
   void deleteProject_Success() {
     // given
     String projectCode = "P123";
-    Project existingProject =
-        Project.builder()
-            .projectCode(projectCode)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .build();
+    Project existingProject = Project.builder().projectCode(projectCode).build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
     when(projectAndJobRepository.findByProjectCode(projectCode))
@@ -148,6 +137,41 @@ class ProjectCommandServiceImplTest {
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
 
+  @Test
+  @DisplayName("프로젝트 상태 변경 성공")
+  void updateProjectStatus_Success() {
+    // given
+    String projectCode = "P123";
+    Project project =
+        Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
+
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(project));
+
+    // when
+    projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
+
+    // then
+    assertThat(project.getStatus()).isEqualTo(Project.ProjectStatus.COMPLETE);
+    assertThat(project.getActualEndDate()).isNotNull();
+    verify(projectCommandRepository).save(project);
+  }
+
+  @Test
+  @DisplayName("프로젝트 상태 변경 실패 - 존재하지 않는 프로젝트")
+  void updateProjectStatus_Fail_NotFound() {
+    // given
+    String projectCode = "NOT_EXIST";
+    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.empty());
+
+    // when & then
+    assertThatThrownBy(
+            () ->
+                projectCommandService.updateProjectStatus(
+                    projectCode, Project.ProjectStatus.IN_PROGRESS))
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+  }
+
   private ProjectRegisterRequest createRequest() {
     TechStackInfo techStack = new TechStackInfo();
     techStack.setTechStackName("Java");
@@ -160,7 +184,7 @@ class ProjectCommandServiceImplTest {
 
     ProjectRegisterRequest request = new ProjectRegisterRequest();
     request.setProjectCode("P123");
-    request.setName("Project A");
+    request.setDomainName("Project A");
     request.setDescription("Project Description");
     request.setTitle("Project Title");
     request.setBudget(1000000L);

@@ -180,13 +180,12 @@ public class MemberDao
    * upperInclusive</code>
    */
   public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfJoinedAt(
-      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+      LocalDate lowerInclusive, LocalDate upperInclusive) {
     return fetchRange(Member.MEMBER.JOINED_AT, lowerInclusive, upperInclusive);
   }
 
   /** Fetch records that have <code>joined_at IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Member> fetchByJoinedAt(
-      LocalDateTime... values) {
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchByJoinedAt(LocalDate... values) {
     return fetch(Member.MEMBER.JOINED_AT, values);
   }
 

@@ -1,10 +1,10 @@
 package com.nexus.sion.feature.squad.command.domain.aggregate.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
 
 import lombok.*;
@@ -15,7 +15,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Squad {
+public class Squad extends BaseTimeEntity {
+  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @Column(name = "squad_code", length = 30)
@@ -32,12 +33,6 @@ public class Squad {
 
   @Column(name = "is_active", nullable = false)
   private boolean isActive;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
 
   @Column(name = "estimated_duration", precision = 5, scale = 2)
   private BigDecimal estimatedDuration;

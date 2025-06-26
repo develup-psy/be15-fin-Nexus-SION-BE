@@ -177,13 +177,13 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
     return (String) get(13);
   }
 
-  /** Setter for <code>sion.project.name</code>. */
-  public void setName(String value) {
+  /** Setter for <code>sion.project.domain_name</code>. */
+  public void setDomainName(String value) {
     set(14, value);
   }
 
-  /** Getter for <code>sion.project.name</code>. */
-  public String getName() {
+  /** Getter for <code>sion.project.domain_name</code>. */
+  public String getDomainName() {
     return (String) get(14);
   }
 
@@ -314,7 +314,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
 
   @Override
   public Field<String> field15() {
-    return Project.PROJECT.NAME;
+    return Project.PROJECT.DOMAIN_NAME;
   }
 
   @Override
@@ -389,7 +389,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
 
   @Override
   public String component15() {
-    return getName();
+    return getDomainName();
   }
 
   @Override
@@ -464,7 +464,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
 
   @Override
   public String value15() {
-    return getName();
+    return getDomainName();
   }
 
   @Override
@@ -553,7 +553,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
 
   @Override
   public ProjectRecord value15(String value) {
-    setName(value);
+    setDomainName(value);
     return this;
   }
 
@@ -617,7 +617,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
       LocalDateTime deletedAt,
       String clientCode,
       String requestSpecificationUrl,
-      String name) {
+      String domainName) {
     super(Project.PROJECT);
 
     setProjectCode(projectCode);
@@ -634,7 +634,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
     setDeletedAt(deletedAt);
     setClientCode(clientCode);
     setRequestSpecificationUrl(requestSpecificationUrl);
-    setName(name);
+    setDomainName(domainName);
     resetChangedOnNotNull();
   }
 
@@ -657,7 +657,7 @@ public class ProjectRecord extends UpdatableRecordImpl<ProjectRecord>
       setDeletedAt(value.getDeletedAt());
       setClientCode(value.getClientCode());
       setRequestSpecificationUrl(value.getRequestSpecificationUrl());
-      setName(value.getName());
+      setDomainName(value.getDomainName());
       resetChangedOnNotNull();
     }
   }
