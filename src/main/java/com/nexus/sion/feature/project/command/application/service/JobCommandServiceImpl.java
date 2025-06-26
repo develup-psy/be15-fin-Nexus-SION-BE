@@ -19,15 +19,14 @@ public class JobCommandServiceImpl implements JobCommandService {
   private final JobRepository jobRepository;
 
   @Override
-  public boolean registerJob(JobRequest request) {
-    // 기존에 존재하는 도메인은 저장하지 않고 종료
+  public void registerJob(JobRequest request) {
+    // 기존에 존재하는 직무 예외처리
     if (jobRepository.existsById(request.getName())) {
-      return false;
+      throw new BusinessException(ErrorCode.JOB_ALREADY_EXIST);
     }
 
     Job job = modelMapper.map(request, Job.class);
     jobRepository.save(job);
-    return true;
   }
 
   @Override

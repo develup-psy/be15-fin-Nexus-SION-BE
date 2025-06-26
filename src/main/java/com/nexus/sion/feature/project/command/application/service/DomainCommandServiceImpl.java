@@ -19,15 +19,14 @@ public class DomainCommandServiceImpl implements DomainCommandService {
   private final DomainRepository domainRepository;
 
   @Override
-  public boolean registerDomain(DomainRequest request) {
-    // 기존에 존재하는 도메인은 저장하지 않고 종료
+  public void registerDomain(DomainRequest request) {
+    // 기존에 존재하는 도메인은 에러
     if (domainRepository.existsById(request.getName())) {
-      return false;
+      throw new BusinessException(ErrorCode.DOMAIN_ALREADY_EXIST);
     }
 
     Domain domain = modelMapper.map(request, Domain.class);
     domainRepository.save(domain);
-    return true;
   }
 
   @Override

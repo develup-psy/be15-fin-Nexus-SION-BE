@@ -43,6 +43,10 @@ public enum ErrorCode {
   PROJECT_NOT_FOUND("30002", "해당 프로젝트가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   DOMAIN_NOT_FOUND("30003", "해당 도메인이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   JOB_NOT_FOUND("30004", "해당 직무가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+  INVALID_CLIENT_CODE_FORMAT("30005", "유효하지 않은 고객사 코드입니다.", HttpStatus.NOT_FOUND),
+  CLIENT_COMPANY_ALREADY_EXIST("30006", "이미 존재하는 고객사 코드입니다.", HttpStatus.CONFLICT),
+  DOMAIN_ALREADY_EXIST("30007", "이미 존재하는 도메인입니다.", HttpStatus.CONFLICT),
+  JOB_ALREADY_EXIST("30008", "이미 존재하는 직무입니다.", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
@@ -51,11 +55,14 @@ public enum ErrorCode {
   PROJECT_CODE_INVALID("40004", "유효하지 않은 프로젝트 코드입니다.", HttpStatus.BAD_REQUEST),
   COMMENT_NOT_FOUND("40005", "존재하지 않는 코멘트입니다.", HttpStatus.NOT_FOUND),
   INVALID_COMMENT_ACCESS("40006", "해당 스쿼드의 코멘트가 아닙니다.", HttpStatus.FORBIDDEN),
-  INVALID_SQUAD_PROJECT_CODE_FORMAT("40007", "프로젝트 코드 형식이 올바르지 않습니다. 예: ha_1_1", HttpStatus.BAD_REQUEST),
+  INVALID_SQUAD_PROJECT_CODE_FORMAT(
+      "40007", "프로젝트 코드 형식이 올바르지 않습니다. 예: ha_1_1", HttpStatus.BAD_REQUEST),
   SQUAD_ASSIGNMENT_FAILED("40008", "스쿼드 구성 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+  SQUAD_NOT_FOUND("40009", "해당 스쿼드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+  TECH_STACK_ALREADY_EXIST("50002", "이미 존재하는 기술스택입니다.", HttpStatus.CONFLICT),
 
   // statistics
   INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST);

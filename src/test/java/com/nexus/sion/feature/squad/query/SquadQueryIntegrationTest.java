@@ -38,8 +38,8 @@ class SquadQueryIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testSquadCode = "ha_1_1_1";
-    String projectCode = "ha_1_1";
+    testSquadCode = "kt_1_1_1";
+    String projectCode = "kt_1_1";
 
     // 자식 테이블 먼저 삭제
     dsl.deleteFrom(SQUAD_EMPLOYEE).where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(testSquadCode)).execute();
@@ -55,8 +55,8 @@ class SquadQueryIntegrationTest {
         .set(SQUAD.IS_ACTIVE, (byte) 1)
         .set(SQUAD.CREATED_AT, LocalDateTime.now())
         .set(SQUAD.UPDATED_AT, LocalDateTime.now())
-        .set(SQUAD.ESTIMATED_DURATION, new BigDecimal("3.0"))
-        .set(SQUAD.ESTIMATED_COST, new BigDecimal("3000000.00"))
+        .set(SQUAD.ESTIMATED_DURATION, BigDecimal.valueOf(3L)) // 예: 3개월
+        .set(SQUAD.ESTIMATED_COST, BigDecimal.valueOf(3000000L)) // 예: 300만원
         .set(SQUAD.ORIGIN_TYPE, SquadOriginType.AI)
         .set(SQUAD.RECOMMENDATION_REASON, "직접 구성됨")
         .execute();
@@ -73,8 +73,8 @@ class SquadQueryIntegrationTest {
         .andExpect(jsonPath("$.squadCode").value(testSquadCode))
         .andExpect(jsonPath("$.squadName").value("백엔드 스쿼드"))
         .andExpect(jsonPath("$.aiRecommended").value(true))
-        .andExpect(jsonPath("$.estimatedPeriod").exists())
-        .andExpect(jsonPath("$.estimatedCost").exists())
+                .andExpect(jsonPath("$.estimatedPeriod").exists())
+                .andExpect(jsonPath("$.estimatedCost").exists())
         .andExpect(jsonPath("$.members").isArray())
         .andExpect(jsonPath("$.techStacks").isArray())
         .andExpect(jsonPath("$.costDetails").isArray())
@@ -86,12 +86,11 @@ class SquadQueryIntegrationTest {
   @DisplayName("프로젝트 코드로 스쿼드 목록을 조회한다")
   @WithMockUser(username = "testuser")
   void getSquadsByProjectCode_success() throws Exception {
-    String projectCode = "ha_1_1";
+    String projectCode = "kt_1_1";
 
     mockMvc
         .perform(get("/api/v1/squads/project/{projectCode}", projectCode))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", not(empty())))
         .andExpect(jsonPath("$[0].squadCode", not(emptyOrNullString())))
         .andExpect(jsonPath("$[0].squadName", not(emptyOrNullString())));
   }
