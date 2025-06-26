@@ -28,31 +28,35 @@ class JobCommandServiceImplTest {
   String jobName = "백엔드";
 
   @Test
-  void registerDomain_이미존재하면저장하지않음() {
+  void registerJob_이미존재하면저장하지않음() {
     // given
     JobRequest request = JobRequest.builder().name(jobName).build();
     when(jobRepository.existsById(jobName)).thenReturn(true);
 
     // when
-    boolean result = jobCommandService.registerJob(request);
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              jobCommandService.registerJob(request);
+            });
 
     // then
-    assertFalse(result); // 반환값이 false인지 검증
+    assertEquals(ErrorCode.JOB_ALREADY_EXIST, exception.getErrorCode());
     verify(jobRepository, never()).save(any(Job.class));
   }
 
   @Test
-  void registerDomain_존재하지않으면저장() {
+  void registerJob_존재하지않으면저장() {
     // given
     JobRequest request = JobRequest.builder().name(jobName).build();
     when(jobRepository.existsById(jobName)).thenReturn(false);
     when(modelMapper.map(request, Job.class)).thenReturn(mock(Job.class));
 
     // when
-    boolean result = jobCommandService.registerJob(request);
+    jobCommandService.registerJob(request);
 
     // then
-    assertTrue(result); // 반환값이 false인지 검증
     verify(jobRepository, times(1)).save(any(Job.class));
   }
 

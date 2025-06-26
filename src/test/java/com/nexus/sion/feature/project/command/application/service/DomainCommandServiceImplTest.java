@@ -34,10 +34,15 @@ class DomainCommandServiceImplTest {
     when(domainRepository.existsById(domainName)).thenReturn(true);
 
     // when
-    boolean result = domainCommandService.registerDomain(request);
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              domainCommandService.registerDomain(request);
+            });
 
     // then
-    assertFalse(result); // 반환값이 false인지 검증
+    assertEquals(ErrorCode.DOMAIN_ALREADY_EXIST, exception.getErrorCode());
     verify(domainRepository, never()).save(any(Domain.class));
   }
 
@@ -49,10 +54,9 @@ class DomainCommandServiceImplTest {
     when(modelMapper.map(request, Domain.class)).thenReturn(mock(Domain.class));
 
     // when
-    boolean result = domainCommandService.registerDomain(request);
+    domainCommandService.registerDomain(request);
 
     // then
-    assertTrue(result); // 반환값이 false인지 검증
     verify(domainRepository, times(1)).save(any(Domain.class));
   }
 

@@ -1,8 +1,9 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 
 import lombok.*;
 
@@ -13,20 +14,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientCompany {
+public class ClientCompany extends BaseTimeEntity {
 
   @Id
   @Column(name = "client_code", length = 30)
   private String clientCode;
 
-  @Column(name = "company_name", length = 100, nullable = false)
+  @Column(name = "company_name", length = 100, nullable = false, unique = true)
   private String companyName;
-
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
 
   @Column(name = "contact_person", length = 100)
   private String contactPerson;
@@ -39,4 +34,19 @@ public class ClientCompany {
 
   @Column(name = "domain_name", length = 30, nullable = false)
   private String domainName;
+
+  // for testing
+  public static ClientCompany of(ClientCompanyCreateRequest request, int serialNumber) {
+    String prefix = request.getCompanyName().substring(0, 2).toLowerCase();
+    String clientCode = String.format("%s_%03d", prefix, serialNumber);
+
+    return ClientCompany.builder()
+        .clientCode(clientCode)
+        .companyName(request.getCompanyName())
+        .contactPerson(request.getContactPerson())
+        .email(request.getEmail())
+        .contactNumber(request.getContactNumber())
+        .domainName(request.getDomainName())
+        .build();
+  }
 }
