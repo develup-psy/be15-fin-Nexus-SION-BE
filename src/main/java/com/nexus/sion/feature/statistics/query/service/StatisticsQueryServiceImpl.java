@@ -37,4 +37,9 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
       String period, int page, int size, Integer top) {
     return repository.findMonthlyPopularTechStacks(period, page, size, top);
   }
+
+  @Override
+  public List<JobParticipationStatsDto> getJobParticipationStats() {
+    return repository.getJobParticipationStats();
+  }
 }

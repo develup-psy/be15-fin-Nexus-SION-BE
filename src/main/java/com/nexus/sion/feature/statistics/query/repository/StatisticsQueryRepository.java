@@ -5,6 +5,7 @@ import static com.example.jooq.generated.tables.JobAndTechStack.JOB_AND_TECH_STA
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
 import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
+import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -329,5 +330,70 @@ public class StatisticsQueryRepository {
             .toList();
 
     return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  public List<JobParticipationStatsDto> getJobParticipationStats() {
+    var se = SQUAD_EMPLOYEE;
+    var pj = PROJECT_AND_JOB;
+    var jt = JOB_AND_TECH_STACK;
+    var pr = PROJECT;
+
+    // 1. 직무별 유니크 인원 수
+    var memberCount =
+        dsl.select(
+                pj.JOB_NAME,
+                DSL.countDistinct(se.EMPLOYEE_IDENTIFICATION_NUMBER).as("member_count"))
+            .from(se)
+            .join(pj)
+            .on(se.PROJECT_AND_JOB_ID.eq(pj.PROJECT_AND_JOB_ID))
+            .join(pr)
+            .on(pj.PROJECT_CODE.eq(pr.PROJECT_CODE))
+            .where(pr.STATUS.in(DSL.val("IN_PROGRESS"), DSL.val("COMPLETE")))
+            .groupBy(pj.JOB_NAME)
+            .asTable("member_count");
+
+    // 2. 직무별 기술 스택 사용 횟수
+    var techCount =
+        dsl.select(pj.JOB_NAME, jt.TECH_STACK_NAME, DSL.count().as("usage_count"))
+            .from(pj)
+            .join(jt)
+            .on(jt.PROJECT_AND_JOB_ID.eq(pj.PROJECT_AND_JOB_ID))
+            .join(pr)
+            .on(pj.PROJECT_CODE.eq(pr.PROJECT_CODE))
+            .where(pr.STATUS.in(DSL.val("IN_PROGRESS"), DSL.val("COMPLETE")))
+            .groupBy(pj.JOB_NAME, jt.TECH_STACK_NAME)
+            .asTable("tech_count");
+
+    // 3. 기술 스택 랭킹 매기기
+    var rankedTech =
+        dsl.select(
+                techCount.field(pj.JOB_NAME),
+                techCount.field(jt.TECH_STACK_NAME),
+                techCount.field("usage_count"),
+                DSL.rowNumber()
+                    .over()
+                    .partitionBy(techCount.field(pj.JOB_NAME))
+                    .orderBy(techCount.field("usage_count").desc())
+                    .as("rank"))
+            .from(techCount)
+            .asTable("ranked_tech");
+
+    // 4. 필드 추출 (타입 명시)
+    Field<String> jobNameField = memberCount.field(pj.JOB_NAME);
+    Field<Integer> memberCountField = memberCount.field("member_count", Integer.class);
+    Field<String> techStackNameField = rankedTech.field(jt.TECH_STACK_NAME);
+    Field<Integer> rankField = rankedTech.field("rank", Integer.class);
+
+    // 5. 최종 결과 조합
+    return dsl.select(
+            jobNameField.as("job_name"),
+            memberCountField,
+            DSL.max(DSL.when(rankField.eq(1), techStackNameField)).as("top1"),
+            DSL.max(DSL.when(rankField.eq(2), techStackNameField)).as("top2"))
+        .from(memberCount)
+        .leftJoin(rankedTech)
+        .on(rankedTech.field(pj.JOB_NAME).eq(jobNameField))
+        .groupBy(jobNameField)
+        .fetchInto(JobParticipationStatsDto.class);
   }
 }
