@@ -59,6 +59,7 @@ public enum ErrorCode {
   INVALID_SQUAD_PROJECT_CODE_FORMAT(
       "40007", "프로젝트 코드 형식이 올바르지 않습니다. 예: ha_1_1", HttpStatus.BAD_REQUEST),
   SQUAD_ASSIGNMENT_FAILED("40008", "스쿼드 구성 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+  SQUAD_NOT_FOUND("40009", "해당 스쿼드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),

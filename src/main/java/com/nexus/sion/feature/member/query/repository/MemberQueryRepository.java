@@ -11,7 +11,6 @@ import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.MemberRole;
-import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
@@ -31,9 +30,21 @@ public class MemberQueryRepository {
   }
 
   public List<MemberListResponse> findAllMembers(
-      MemberListRequest request, Condition condition, SortField<?> sortField) {
+      MemberListRequest request, Condition baseCondition, SortField<?> sortField) {
+
     int page = request.getPage();
     int size = request.getSize();
+    String keyword = request.getKeyword();
+
+    Condition condition = baseCondition;
+    if (keyword != null && !keyword.isBlank()) {
+      condition =
+          condition.and(
+              MEMBER
+                  .EMPLOYEE_IDENTIFICATION_NUMBER
+                  .containsIgnoreCase(keyword)
+                  .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword)));
+    }
 
     // 기술스택 점수 높은 1순위 ROW 서브쿼리
     Table<?> topTechStack =
@@ -138,8 +149,8 @@ public class MemberQueryRepository {
         .on(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(topTechStackEmpId).and(rowNumberField.eq(1)))
         .where(
             MEMBER
-                .STATUS
-                .eq(MemberStatus.valueOf("AVAILABLE"))
+                .DELETED_AT
+                .isNull()
                 .and(
                     MEMBER
                         .EMPLOYEE_IDENTIFICATION_NUMBER
