@@ -2,6 +2,7 @@ package com.nexus.sion.feature.project.command.domain.aggregate;
 
 import java.time.LocalDateTime;
 
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -39,4 +40,16 @@ public class ClientCompany {
 
   @Column(name = "domain_name", length = 30, nullable = false)
   private String domainName;
+
+  // for testing
+  public static ClientCompany of(ClientCompanyCreateRequest request, int serialNumber) {
+    return ClientCompany.builder()
+            .clientCode(request.getCompanyName().substring(0,2) + serialNumber)
+            .companyName(request.getCompanyName())
+            .contactPerson(request.getContactPerson())
+            .email(request.getEmail())
+            .contactNumber(request.getContactNumber())
+            .domainName(request.getDomainName())
+            .build();
+  }
 }
