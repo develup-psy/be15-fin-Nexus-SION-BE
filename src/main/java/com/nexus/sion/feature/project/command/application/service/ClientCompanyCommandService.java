@@ -1,8 +1,9 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import jakarta.validation.Valid;
+
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
-import jakarta.validation.Valid;
 
 public interface ClientCompanyCommandService {
   void registerClientCompany(ClientCompanyCreateRequest request);

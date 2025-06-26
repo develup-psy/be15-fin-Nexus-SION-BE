@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.project.command.application.controller;
 
-import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import com.nexus.sion.feature.project.command.application.service.ClientCompanyCommandService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +34,7 @@ public class ClientCompanyCommandController {
   @Operation(summary = "고객사 수정", description = "고객사 수정 기능")
   @PatchMapping("/{clientCode}")
   public ResponseEntity<ApiResponse<Void>> update(
-          @RequestBody @Valid ClientCompanyUpdateRequest request, @PathVariable String clientCode) {
+      @RequestBody @Valid ClientCompanyUpdateRequest request, @PathVariable String clientCode) {
     clientCompanyCommandService.updateClientCompany(request, clientCode);
     return ResponseEntity.ok(ApiResponse.success(null));
   }

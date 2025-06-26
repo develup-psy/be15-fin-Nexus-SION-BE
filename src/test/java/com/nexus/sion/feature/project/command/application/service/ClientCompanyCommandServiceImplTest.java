@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
-import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
 import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 
@@ -154,23 +154,23 @@ class ClientCompanyCommandServiceImplTest {
   // 고객사 정보 업데이트 테스트 코드
   ClientCompany getExistingClientCompany(String clientCode) {
     return ClientCompany.builder()
-            .clientCode(clientCode)
-            .companyName("Old")
-            .domainName("old.com")
-            .contactPerson("Old Person")
-            .email("old@email.com")
-            .contactNumber("010-0000-0000")
-            .build();
+        .clientCode(clientCode)
+        .companyName("Old")
+        .domainName("old.com")
+        .contactPerson("Old Person")
+        .email("old@email.com")
+        .contactNumber("010-0000-0000")
+        .build();
   }
 
   ClientCompanyUpdateRequest getUpdateRequest() {
     return ClientCompanyUpdateRequest.builder()
-            .companyName("New Company")
-            .domainName("new.com")
-            .contactPerson("New Person")
-            .email("new@email.com")
-            .contactNumber("010-1234-5678")
-            .build();
+        .companyName("New Company")
+        .domainName("new.com")
+        .contactPerson("New Person")
+        .email("new@email.com")
+        .contactNumber("010-1234-5678")
+        .build();
   }
 
   @Test
@@ -201,16 +201,15 @@ class ClientCompanyCommandServiceImplTest {
   void updateClientCompany_clientNotFound() {
     // given
     String clientCode = "not_exist_code";
-    ClientCompanyUpdateRequest request = ClientCompanyUpdateRequest.builder()
-            .companyName("New Name")
-            .build();
+    ClientCompanyUpdateRequest request =
+        ClientCompanyUpdateRequest.builder().companyName("New Name").build();
 
     when(clientCompanyRepository.findById(clientCode)).thenReturn(Optional.empty());
 
     // when & then
     assertThatThrownBy(() -> service.updateClientCompany(request, clientCode))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage());
 
     verify(clientCompanyRepository).findById(clientCode);
   }
@@ -238,7 +237,8 @@ class ClientCompanyCommandServiceImplTest {
   void update_partialFieldsChanged_ignoreNulls() {
     // given
     ClientCompany clientCompany = getExistingClientCompany("co_002");
-    ClientCompanyUpdateRequest request = ClientCompanyUpdateRequest.builder()
+    ClientCompanyUpdateRequest request =
+        ClientCompanyUpdateRequest.builder()
             .companyName(null)
             .domainName("updated.com")
             .contactPerson(null)

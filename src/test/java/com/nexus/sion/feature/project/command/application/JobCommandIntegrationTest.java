@@ -67,10 +67,10 @@ public class JobCommandIntegrationTest {
             post("/api/v1/jobs")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isConflict()) // <-- 409 기대
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.errorCode").value("30008"))
-            .andExpect(jsonPath("$.message").value("이미 존재하는 직무입니다."));
+        .andExpect(status().isConflict()) // <-- 409 기대
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.errorCode").value("30008"))
+        .andExpect(jsonPath("$.message").value("이미 존재하는 직무입니다."));
 
     // then - 여전히 하나만 존재
     assertThat(jobRepository.findAll().size()).isEqualTo(existingCount);
