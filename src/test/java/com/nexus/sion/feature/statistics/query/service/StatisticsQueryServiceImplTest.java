@@ -105,4 +105,31 @@ class StatisticsQueryServiceImplTest {
     assertEquals(20, result.getContent().get(0).getTotalUsageCount());
     assertEquals(9, result.getContent().get(1).getMonthlyUsage().get("2025-02"));
   }
+
+  @Test
+  void getJobParticipationStats_returnsStatsList() {
+    List<JobParticipationStatsDto> mockResult =
+        List.of(
+            JobParticipationStatsDto.builder()
+                .jobName("백엔드")
+                .memberCount(10)
+                .topTechStack1("Spring")
+                .topTechStack2("JPA")
+                .build(),
+            JobParticipationStatsDto.builder()
+                .jobName("프론트엔드")
+                .memberCount(8)
+                .topTechStack1("Vue")
+                .topTechStack2("TypeScript")
+                .build());
+
+    when(repository.getJobParticipationStats()).thenReturn(mockResult);
+
+    List<JobParticipationStatsDto> result = service.getJobParticipationStats();
+
+    assertEquals(2, result.size());
+    assertEquals("백엔드", result.get(0).getJobName());
+    assertEquals(8, result.get(1).getMemberCount());
+    assertEquals("Vue", result.get(1).getTopTechStack1());
+  }
 }
