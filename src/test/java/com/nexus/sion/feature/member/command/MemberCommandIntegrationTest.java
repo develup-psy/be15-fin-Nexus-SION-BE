@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -87,7 +86,7 @@ class MemberCommandIntegrationTest {
             "홍길동",
             "01012345678",
             LocalDate.of(1990, 1, 1),
-            LocalDateTime.of(2022, 1, 1, 9, 0),
+            LocalDate.of(2022, 1, 1),
             "hong999@example.com",
             3,
             "Backend",
@@ -115,7 +114,7 @@ class MemberCommandIntegrationTest {
             "홍길동",
             "01012345678",
             LocalDate.of(1990, 1, 1),
-            LocalDateTime.of(2022, 1, 1, 9, 0),
+            LocalDate.of(2022, 1, 1),
             "hong@test.com",
             3,
             "Backend",
@@ -143,7 +142,7 @@ class MemberCommandIntegrationTest {
     assertThat(updated.getEmployeeName()).isEqualTo("홍길동");
     assertThat(updated.getPhoneNumber()).isEqualTo("01012345678");
     assertThat(updated.getBirthday()).isEqualTo(LocalDate.of(1990, 1, 1));
-    assertThat(updated.getJoinedAt()).isEqualTo(LocalDateTime.of(2022, 1, 1, 9, 0));
+    assertThat(updated.getJoinedAt()).isEqualTo(LocalDate.of(2022, 1, 1));
     assertThat(updated.getPositionName()).isEqualTo("Backend");
     assertThat(updated.getDepartmentName()).isEqualTo("UX");
     assertThat(updated.getProfileImageUrl()).isEqualTo("http://image.url");

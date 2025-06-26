@@ -90,7 +90,7 @@ public class DomainCommandIntegrationTest {
   }
 
   @Test
-  @DisplayName("존재하지 않는 기술 스택은 에러를 반환한다.")
+  @DisplayName("존재하지 않는 도메인은 에러를 반환한다.")
   void deleteExistingDomain_returnsError() throws Exception {
     // given
     String domainName = "test";

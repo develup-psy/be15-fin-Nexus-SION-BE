@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.member.command.application.dto.request;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
@@ -13,7 +12,7 @@ public record MemberAddRequest(
     @NotBlank String employeeName,
     @NotBlank String phoneNumber,
     @NotNull LocalDate birthday,
-    @NotNull LocalDateTime joinedAt,
+    @NotNull LocalDate joinedAt,
     @NotBlank @Email String email,
     @NotNull Integer careerYears,
 

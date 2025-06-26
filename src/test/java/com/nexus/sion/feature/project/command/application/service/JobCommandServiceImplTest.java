@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Job;
 import com.nexus.sion.feature.project.command.repository.JobRepository;
@@ -52,5 +54,37 @@ class JobCommandServiceImplTest {
     // then
     assertTrue(result); // 반환값이 false인지 검증
     verify(jobRepository, times(1)).save(any(Job.class));
+  }
+
+  @Test
+  void deleteJob_존재하면삭제() {
+    // given
+    when(jobRepository.existsById(jobName)).thenReturn(true);
+    doNothing().when(jobRepository).deleteById(jobName);
+
+    // when
+    jobCommandService.removeJob(jobName);
+
+    // then
+    verify(jobRepository, times(1)).deleteById(jobName);
+  }
+
+  @Test
+  void deleteJob_존재하지않으면에러() {
+    // given
+    when(jobRepository.existsById(jobName)).thenReturn(false);
+
+    // when & then
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              jobCommandService.removeJob(jobName);
+            });
+
+    // then
+    assertEquals(ErrorCode.JOB_NOT_FOUND, exception.getErrorCode());
+
+    verify(jobRepository, never()).deleteById(any());
   }
 }

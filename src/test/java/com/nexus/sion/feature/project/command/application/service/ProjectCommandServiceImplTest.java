@@ -184,7 +184,7 @@ class ProjectCommandServiceImplTest {
 
     ProjectRegisterRequest request = new ProjectRegisterRequest();
     request.setProjectCode("P123");
-    request.setName("Project A");
+    request.setDomainName("Project A");
     request.setDescription("Project Description");
     request.setTitle("Project Title");
     request.setBudget(1000000L);

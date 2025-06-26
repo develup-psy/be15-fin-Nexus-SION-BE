@@ -46,7 +46,7 @@ public class Member {
   private LocalDate birthday;
 
   @Column(name = "joined_at")
-  private LocalDateTime joinedAt;
+  private LocalDate joinedAt;
 
   @Column(nullable = false, length = 30)
   private String email;
@@ -109,7 +109,7 @@ public class Member {
       String employeeName,
       String phoneNumber,
       LocalDate birthday,
-      LocalDateTime joinedAt,
+      LocalDate joinedAt,
       String email,
       Integer careerYears,
       String positionName,

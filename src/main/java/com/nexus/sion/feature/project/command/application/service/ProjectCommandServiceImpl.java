@@ -32,7 +32,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     Project project =
         Project.builder()
             .projectCode(request.getProjectCode())
-            .name(request.getName())
+            .domainName(request.getDomainName())
             .description(request.getDescription())
             .title(request.getTitle())
             .budget(request.getBudget())
@@ -56,7 +56,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .findById(request.getProjectCode())
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    project.setName(request.getName());
+    project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
     project.setTitle(request.getTitle());
     project.setBudget(request.getBudget());
