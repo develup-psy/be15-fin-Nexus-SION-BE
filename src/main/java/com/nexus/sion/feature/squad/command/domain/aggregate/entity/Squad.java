@@ -48,7 +48,11 @@ public class Squad extends BaseTimeEntity {
   private String recommendationReason;
 
   public void updateInfo(String title, String description) {
-    this.title = title;
-    this.description = description;
+    if (title != null) {
+      this.title = title;
+    }
+    if (description != null) {
+      this.description = description;
+    }
   }
 }
