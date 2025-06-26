@@ -37,8 +37,11 @@ public class ClientCompany extends BaseTimeEntity {
 
   // for testing
   public static ClientCompany of(ClientCompanyCreateRequest request, int serialNumber) {
+    String prefix = request.getCompanyName().substring(0, 2).toLowerCase();
+    String clientCode = String.format("%s_%03d", prefix, serialNumber);
+
     return ClientCompany.builder()
-        .clientCode(request.getCompanyName().substring(0, 2) + serialNumber)
+        .clientCode(clientCode)
         .companyName(request.getCompanyName())
         .contactPerson(request.getContactPerson())
         .email(request.getEmail())
