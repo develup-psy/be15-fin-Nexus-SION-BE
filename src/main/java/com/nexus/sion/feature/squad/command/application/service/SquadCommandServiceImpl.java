@@ -11,6 +11,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
@@ -78,6 +79,36 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                         .build())
             .toList();
 
+    squadEmployeeCommandRepository.saveAll(squadEmployees);
+  }
+
+  @Transactional
+  public void updateManualSquad(SquadUpdateRequest request) {
+    // 1. 기존 스쿼드 조회
+    Squad squad =
+        squadCommandRepository
+            .findBySquadCode(request.getSquadCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+
+    // 2. 스쿼드 기본 정보 수정
+    squad.updateInfo(request.getTitle(), request.getDescription());
+
+    // 3. 기존 스쿼드 구성원 삭제
+    squadEmployeeCommandRepository.deleteBySquadCode(squad.getSquadCode());
+
+    // 4. 새로운 스쿼드 구성원 등록
+    List<SquadEmployee> squadEmployees =
+        request.getMembers().stream()
+            .map(
+                member ->
+                    SquadEmployee.builder()
+                        .squadCode(squad.getSquadCode())
+                        .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                        .projectAndJobId(member.getProjectAndJobId())
+                        .isLeader(false)
+                        .assignedDate(LocalDate.now())
+                        .build())
+            .toList();
     squadEmployeeCommandRepository.saveAll(squadEmployees);
   }
 }
