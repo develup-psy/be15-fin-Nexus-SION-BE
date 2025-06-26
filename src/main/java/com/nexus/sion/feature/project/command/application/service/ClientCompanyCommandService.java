@@ -9,4 +9,6 @@ public interface ClientCompanyCommandService {
   void registerClientCompany(ClientCompanyCreateRequest request);
 
   void updateClientCompany(@Valid ClientCompanyUpdateRequest request, String clientCode);
+
+  void deleteClientCompany(String clientCode);
 }
