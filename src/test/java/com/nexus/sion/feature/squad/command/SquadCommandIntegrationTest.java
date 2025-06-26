@@ -1,10 +1,12 @@
 package com.nexus.sion.feature.squad.command;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
 
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +81,63 @@ class SquadCommandIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
+  }
+
+  @WithMockUser
+  @Test
+  @DisplayName("스쿼드 수정 성공")
+  void updateSquad_success() throws Exception {
+    // given (먼저 등록된 스쿼드가 DB에 있어야 합니다)
+    SquadUpdateRequest request =
+            SquadUpdateRequest.builder()
+                    .squadCode("ha_1_1_1") // DB에 존재하는 스쿼드 코드로 바꿔야 함
+                    .projectCode("ha_1_1")
+                    .title("수정된 스쿼드 제목")
+                    .description("수정된 설명입니다.")
+                    .members(
+                            List.of(
+                                    SquadUpdateRequest.Member.builder()
+                                            .employeeIdentificationNumber("EMP001")
+                                            .projectAndJobId(101L)
+                                            .build(),
+                                    SquadUpdateRequest.Member.builder()
+                                            .employeeIdentificationNumber("EMP003")
+                                            .projectAndJobId(103L)
+                                            .build()))
+                    .build();
+
+    // when & then
+    mockMvc
+            .perform(
+                    put("/api/v1/squads/manual")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk());
+  }
+
+  @WithMockUser
+  @Test
+  @DisplayName("스쿼드 수정 실패 - 존재하지 않는 스쿼드 코드")
+  void updateSquad_fail_whenSquadNotFound() throws Exception {
+    SquadUpdateRequest request =
+            SquadUpdateRequest.builder()
+                    .squadCode("not_exist_code")
+                    .projectCode("ha_1_1")
+                    .title("제목")
+                    .description("설명")
+                    .members(
+                            List.of(
+                                    SquadUpdateRequest.Member.builder()
+                                            .employeeIdentificationNumber("EMP001")
+                                            .projectAndJobId(101L)
+                                            .build()))
+                    .build();
+
+    mockMvc
+            .perform(
+                    put("/api/v1/squads/manual")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isNotFound());
   }
 }
