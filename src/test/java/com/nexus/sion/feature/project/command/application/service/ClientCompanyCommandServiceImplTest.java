@@ -256,4 +256,39 @@ class ClientCompanyCommandServiceImplTest {
     assertThat(clientCompany.getEmail()).isEqualTo("updated@email.com");
     assertThat(clientCompany.getContactNumber()).isEqualTo("010-0000-0000"); // null 무시됨
   }
+
+
+  @Test
+  void deleteClientCompany_존재하면삭제() {
+    // given
+    String clientCode = "고객사코드";
+    when(clientCompanyRepository.existsById(clientCode)).thenReturn(true);
+    doNothing().when(clientCompanyRepository).deleteById(clientCode);
+
+    // when
+    service.deleteClientCompany(clientCode);
+
+    // then
+    verify(clientCompanyRepository, times(1)).deleteById(clientCode);
+  }
+
+  @Test
+  void deleteDomain_존재하지않으면에러() {
+    // given
+    String clientCode = "고객사코드";
+    when(clientCompanyRepository.existsById(clientCode)).thenReturn(false);
+
+    // when & then
+    BusinessException exception =
+            assertThrows(
+                    BusinessException.class,
+                    () -> {
+                      service.deleteClientCompany(clientCode);
+                    });
+
+    // then
+    assertEquals(ErrorCode.CLIENT_COMPANY_NOT_FOUND, exception.getErrorCode());
+
+    verify(clientCompanyRepository, never()).deleteById(any());
+  }
 }
