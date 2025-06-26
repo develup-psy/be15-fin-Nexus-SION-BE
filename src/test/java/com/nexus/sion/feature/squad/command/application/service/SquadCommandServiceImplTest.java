@@ -66,7 +66,7 @@ class SquadCommandServiceImplTest {
     // then
     verify(projectRepository).findByProjectCode("ha_1_1");
     verify(squadCommandRepository).save(any(Squad.class));
-    verify(squadEmployeeCommandRepository).save(any(SquadEmployee.class));
+    verify(squadEmployeeCommandRepository).saveAll(anyList());
   }
 
   @Test
