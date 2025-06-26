@@ -60,6 +60,7 @@ public enum ErrorCode {
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+  TECH_STACK_ALREADY_EXIST("50002", "이미 존재하는 기술스택입니다.", HttpStatus.CONFLICT),
 
   // statistics
   INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST);
