@@ -46,4 +46,9 @@ public class Squad extends BaseTimeEntity {
 
   @Column(name = "recommendation_reason", columnDefinition = "TEXT")
   private String recommendationReason;
+
+  public void updateInfo(String title, String description) {
+    this.title = title;
+    this.description = description;
+  }
 }
