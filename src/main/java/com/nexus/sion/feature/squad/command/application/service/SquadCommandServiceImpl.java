@@ -12,7 +12,6 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
-import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest.Member;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
@@ -62,8 +61,6 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .description(request.getDescription())
             .isActive(false)
             .originType(OriginType.MANUAL)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
     squadCommandRepository.save(squad);
@@ -76,8 +73,6 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                     .projectAndJobId(member.getProjectAndJobId())
                     .isLeader(false)
                     .assignedDate(LocalDate.now())
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
                     .build())
             .toList();
 
