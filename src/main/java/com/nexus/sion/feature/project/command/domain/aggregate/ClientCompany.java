@@ -20,7 +20,7 @@ public class ClientCompany extends BaseTimeEntity {
   @Column(name = "client_code", length = 30)
   private String clientCode;
 
-  @Column(name = "company_name", length = 100, nullable = false)
+  @Column(name = "company_name", length = 100, nullable = false, unique = true)
   private String companyName;
 
   @Column(name = "contact_person", length = 100)
