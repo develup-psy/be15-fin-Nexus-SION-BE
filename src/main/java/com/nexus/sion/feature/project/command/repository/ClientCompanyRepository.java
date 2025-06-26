@@ -1,14 +1,15 @@
 package com.nexus.sion.feature.project.command.repository;
 
-import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
 
 @Repository
 public interface ClientCompanyRepository extends JpaRepository<ClientCompany, String> {
-        Optional<ClientCompany> findTopByClientCodeStartingWithOrderByClientCodeDesc(String codePrefix);
+  Optional<ClientCompany> findTopByClientCodeStartingWithOrderByClientCodeDesc(String codePrefix);
 
-        boolean existsByCompanyName(String companyName);
+  boolean existsByCompanyName(String companyName);
 }
