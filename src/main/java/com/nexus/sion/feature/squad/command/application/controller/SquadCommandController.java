@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,12 @@ public class SquadCommandController {
   public ResponseEntity<Void> registerManualSquad(
       @RequestBody @Valid SquadRegisterRequest request) {
     squadCommandService.registerManualSquad(request);
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping("/manual")
+  public ResponseEntity<Void> updateManualSquad(@RequestBody @Valid SquadUpdateRequest request) {
+    squadCommandService.updateManualSquad(request);
     return ResponseEntity.ok().build();
   }
 }
