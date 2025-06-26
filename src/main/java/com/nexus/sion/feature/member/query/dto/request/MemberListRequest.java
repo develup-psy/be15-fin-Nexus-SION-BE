@@ -15,4 +15,6 @@ public class MemberListRequest {
   private String nameInitial;
   private String sortBy;
   private String sortDir;
+
+  private String keyword;
 }
