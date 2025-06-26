@@ -36,11 +36,11 @@ class TechStackCommandServiceImplTest {
 
     // when
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      techStackCommandService.registerTechStack(request);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              techStackCommandService.registerTechStack(request);
+            });
 
     // then
     assertEquals(ErrorCode.TECH_STACK_ALREADY_EXIST, exception.getErrorCode());

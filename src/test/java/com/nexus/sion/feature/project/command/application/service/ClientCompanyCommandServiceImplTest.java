@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
-import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -58,24 +57,20 @@ class ClientCompanyCommandServiceImplTest {
     // given
     String companyName = "회사이름";
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder()
-                    .companyName(companyName)
-                    .domainName("도메인이름")
-                    .build();
+        ClientCompanyCreateRequest.builder().companyName(companyName).domainName("도메인이름").build();
     when(clientCompanyRepository.existsByCompanyName(companyName)).thenReturn(true);
 
     // when
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      service.registerClientCompany(request);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              service.registerClientCompany(request);
+            });
 
     // then
     assertEquals(ErrorCode.CLIENT_COMPANY_ALREADY_EXIST, exception.getErrorCode());
     verify(clientCompanyRepository, never()).save(any(ClientCompany.class));
-
   }
 
   @Test

@@ -35,11 +35,11 @@ class DomainCommandServiceImplTest {
 
     // when
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      domainCommandService.registerDomain(request);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              domainCommandService.registerDomain(request);
+            });
 
     // then
     assertEquals(ErrorCode.DOMAIN_ALREADY_EXIST, exception.getErrorCode());

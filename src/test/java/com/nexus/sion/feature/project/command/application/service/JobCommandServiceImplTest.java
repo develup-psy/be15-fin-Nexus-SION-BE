@@ -35,11 +35,11 @@ class JobCommandServiceImplTest {
 
     // when
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      jobCommandService.registerJob(request);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              jobCommandService.registerJob(request);
+            });
 
     // then
     assertEquals(ErrorCode.JOB_ALREADY_EXIST, exception.getErrorCode());
