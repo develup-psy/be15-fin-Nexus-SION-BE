@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +77,31 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                     .build())
             .toList();
 
+    squadEmployeeCommandRepository.saveAll(squadEmployees);
+  }
+
+  @Transactional
+  public void updateManualSquad(SquadUpdateRequest request) {
+    // 1. 기존 스쿼드 조회
+    Squad squad = squadCommandRepository.findBySquadCode(request.getSquadCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+
+    // 2. 스쿼드 기본 정보 수정
+    squad.updateInfo(request.getTitle(), request.getDescription());
+
+    // 3. 기존 스쿼드 구성원 삭제
+    squadEmployeeCommandRepository.deleteBySquadCode(squad.getSquadCode());
+
+    // 4. 새로운 스쿼드 구성원 등록
+    List<SquadEmployee> squadEmployees = request.getMembers().stream()
+            .map(member -> SquadEmployee.builder()
+                    .squadCode(squad.getSquadCode())
+                    .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                    .projectAndJobId(member.getProjectAndJobId())
+                    .isLeader(false)
+                    .assignedDate(LocalDate.now())
+                    .build())
+            .toList();
     squadEmployeeCommandRepository.saveAll(squadEmployees);
   }
 }
