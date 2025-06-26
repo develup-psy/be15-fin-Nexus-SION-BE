@@ -66,7 +66,12 @@ class SquadCommandServiceImplTest {
     // then
     verify(projectRepository).findByProjectCode("ha_1_1");
     verify(squadCommandRepository).save(any(Squad.class));
-    verify(squadEmployeeCommandRepository).saveAll(anyList());
+ArgumentCaptor<List<SquadEmployee>> listCaptor = ArgumentCaptor.forClass(List.class);
+verify(squadEmployeeCommandRepository).saveAll(listCaptor.capture());
+
+List<SquadEmployee> capturedList = listCaptor.getValue();
+assertThat(capturedList).hasSize(1);
+assertThat(capturedList.get(0).getEmployeeIdentificationNumber()).isEqualTo("EMP001");
   }
 
   @Test
