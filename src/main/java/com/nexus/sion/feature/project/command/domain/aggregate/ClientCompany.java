@@ -2,6 +2,7 @@ package com.nexus.sion.feature.project.command.domain.aggregate;
 
 import java.time.LocalDateTime;
 
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 import jakarta.persistence.*;
 
@@ -14,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientCompany {
+public class ClientCompany extends BaseTimeEntity {
 
   @Id
   @Column(name = "client_code", length = 30)
@@ -22,12 +23,6 @@ public class ClientCompany {
 
   @Column(name = "company_name", length = 100, nullable = false)
   private String companyName;
-
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
 
   @Column(name = "contact_person", length = 100)
   private String contactPerson;
