@@ -20,7 +20,6 @@ public class SquadUpdateRequest {
   @NotBlank(message = "프로젝트 코드는 필수입니다.")
   private String projectCode; // 프로젝트 코드
 
-  @NotBlank(message = "스쿼드 제목은 필수입니다.")
   private String title; // 스쿼드 이름
 
   private String description; // 스쿼드 설명
