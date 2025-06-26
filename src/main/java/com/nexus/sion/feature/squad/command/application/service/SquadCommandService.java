@@ -5,6 +5,6 @@ import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateR
 
 public interface SquadCommandService {
   void registerManualSquad(SquadRegisterRequest request);
-  void updateManualSquad(SquadUpdateRequest request);
 
+  void updateManualSquad(SquadUpdateRequest request);
 }

@@ -1,12 +1,12 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
-import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import com.nexus.sion.feature.squad.command.application.service.SquadCommandService;
 
 import lombok.RequiredArgsConstructor;
