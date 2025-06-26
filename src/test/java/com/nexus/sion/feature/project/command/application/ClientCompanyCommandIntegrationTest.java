@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.nexus.sion.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
@@ -173,7 +173,6 @@ public class ClientCompanyCommandIntegrationTest {
         .andExpect(status().isBadRequest());
   }
 
-
   @Test
   @DisplayName("고객사를 삭제하면 204가 반환되고 DB에서 제거된다.")
   void deleteExistingClientCompany_returnsDeleted() throws Exception {
@@ -181,8 +180,8 @@ public class ClientCompanyCommandIntegrationTest {
 
     // when & then
     mockMvc
-            .perform(delete("/api/v1/client-companies/{clientCode}", clientCode))
-            .andExpect(status().isNoContent());
+        .perform(delete("/api/v1/client-companies/{clientCode}", clientCode))
+        .andExpect(status().isNoContent());
 
     // then: DB에서 해당 기술 스택이 제거되었는지 확인한다.
     assertThat(domainRepository.findById(clientCode)).isNotPresent();
@@ -196,11 +195,11 @@ public class ClientCompanyCommandIntegrationTest {
 
     // when & then
     mockMvc
-            .perform(delete("/api/v1/client-companies/{domainName}", clientCode))
-            .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.errorCode").value(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getCode()))
-            .andExpect(jsonPath("$.message").value(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage()))
-            .andExpect(jsonPath("$.timestamp").exists());
+        .perform(delete("/api/v1/client-companies/{domainName}", clientCode))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getCode()))
+        .andExpect(jsonPath("$.message").value(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage()))
+        .andExpect(jsonPath("$.timestamp").exists());
   }
 }

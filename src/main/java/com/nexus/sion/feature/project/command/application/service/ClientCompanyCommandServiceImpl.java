@@ -67,7 +67,7 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
   @Override
   public void deleteClientCompany(String clientCode) {
     // 기존에 존재하는 고객사인지 확인
-    if(!clientCompanyRepository.existsById(clientCode)) {
+    if (!clientCompanyRepository.existsById(clientCode)) {
       throw new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND);
     }
 

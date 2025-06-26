@@ -257,7 +257,6 @@ class ClientCompanyCommandServiceImplTest {
     assertThat(clientCompany.getContactNumber()).isEqualTo("010-0000-0000"); // null 무시됨
   }
 
-
   @Test
   void deleteClientCompany_존재하면삭제() {
     // given
@@ -280,11 +279,11 @@ class ClientCompanyCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      service.deleteClientCompany(clientCode);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              service.deleteClientCompany(clientCode);
+            });
 
     // then
     assertEquals(ErrorCode.CLIENT_COMPANY_NOT_FOUND, exception.getErrorCode());

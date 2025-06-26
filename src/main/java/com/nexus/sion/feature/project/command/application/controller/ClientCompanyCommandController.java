@@ -41,8 +41,7 @@ public class ClientCompanyCommandController {
 
   @Operation(summary = "고객사 삭제", description = "고객사 삭제 기능")
   @DeleteMapping("/{clientCode}")
-  public ResponseEntity<ApiResponse<Void>> delete(
-          @PathVariable String clientCode) {
+  public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String clientCode) {
     clientCompanyCommandService.deleteClientCompany(clientCode);
     return ResponseEntity.noContent().build();
   }
