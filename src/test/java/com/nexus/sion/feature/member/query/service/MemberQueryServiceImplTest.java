@@ -3,50 +3,45 @@ package com.nexus.sion.feature.member.query.service;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.jooq.generated.enums.GradeGradeCode;
-import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
-import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
-import com.nexus.sion.feature.member.query.util.SortFieldSelector;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.example.jooq.generated.enums.GradeGradeCode;
 import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
+import com.nexus.sion.feature.member.query.util.SortFieldSelector;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MemberQueryService 단위 테스트")
 class MemberQueryServiceImplTest {
 
-  @InjectMocks
-  private MemberQueryServiceImpl memberQueryService;
+  @InjectMocks private MemberQueryServiceImpl memberQueryService;
 
-  @Mock
-  private MemberQueryRepository memberQueryRepository;
+  @Mock private MemberQueryRepository memberQueryRepository;
 
-  @Mock
-  private MemberConditionBuilder memberConditionBuilder;
+  @Mock private MemberConditionBuilder memberConditionBuilder;
 
-  @Mock
-  private SortFieldSelector sortFieldSelector;
+  @Mock private SortFieldSelector sortFieldSelector;
 
   @DisplayName("올바른 요청에 대해 필터 및 정렬 조건이 적용된 회원 목록을 반환한다")
   @Test
@@ -209,13 +204,15 @@ class MemberQueryServiceImplTest {
     @BeforeEach
     void setUp() {
 
-      baseQuery = new MemberListQuery(
+      baseQuery =
+          new MemberListQuery(
               MemberStatus.AVAILABLE,
               List.of(GradeGradeCode.S),
               List.of("Java", "Spring"),
-              "employeeName", "asc",
-              1, 10
-      );
+              "employeeName",
+              "asc",
+              1,
+              10);
 
       baseCondition = MEMBER.ROLE.isNotNull(); // 단순한 조건으로 설정
       baseSortField = MEMBER.EMPLOYEE_NAME.asc();
@@ -225,11 +222,10 @@ class MemberQueryServiceImplTest {
     @DisplayName("상태 필터만 있는 경우 - 정상 조회")
     void givenStatusOnly_whenSearch_thenReturnsFiltered() {
       // given
-      List<MemberSquadListResponse> mockResults = List.of(
-              new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java")
-      );
+      List<MemberSquadListResponse> mockResults =
+          List.of(new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java"));
 
-      //when
+      // when
     }
 
     @Test
@@ -248,18 +244,19 @@ class MemberQueryServiceImplTest {
     @DisplayName("성공: 상태 + 등급 + 기술스택 조건으로 정상 조회")
     void givenValidFilters_whenSearch_thenReturnsPagedResult() {
       // given
-      List<MemberSquadListResponse> mockResults = List.of(
-              new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java")
-      );
+      List<MemberSquadListResponse> mockResults =
+          List.of(new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java"));
 
       when(memberConditionBuilder.build(baseQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
-              .thenAnswer(invocation -> baseSortField);
+          .thenAnswer(invocation -> baseSortField);
       when(memberQueryRepository.countMembers(baseCondition)).thenReturn(1L);
-      when(memberQueryRepository.findAllSquadMembers(baseQuery, baseCondition, baseSortField)).thenReturn(mockResults);
+      when(memberQueryRepository.findAllSquadMembers(baseQuery, baseCondition, baseSortField))
+          .thenReturn(mockResults);
 
       // when
-      PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(baseQuery);
+      PageResponse<MemberSquadListResponse> result =
+          memberQueryService.squadSearchMembers(baseQuery);
 
       // then
       assertThat(result.getTotalElements()).isEqualTo(1L);
@@ -280,23 +277,23 @@ class MemberQueryServiceImplTest {
     @DisplayName("성공: 필터 없이 전체 조회 요청 시 전체 목록 반환")
     void givenNoFilter_whenSearch_thenReturnsAllMembers() {
       // given
-      MemberListQuery noFilterQuery = new MemberListQuery(
-              null, null, null, "employeeName", "asc", 1, 10
-      );
+      MemberListQuery noFilterQuery =
+          new MemberListQuery(null, null, null, "employeeName", "asc", 1, 10);
 
       when(memberConditionBuilder.build(noFilterQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
-              .thenAnswer(invocation -> baseSortField);
+          .thenAnswer(invocation -> baseSortField);
 
-      List<MemberSquadListResponse> results = List.of(
-              new MemberSquadListResponse("EMP001", "홍길동", null, "AVAILABLE", "Spring")
-      );
+      List<MemberSquadListResponse> results =
+          List.of(new MemberSquadListResponse("EMP001", "홍길동", null, "AVAILABLE", "Spring"));
 
       when(memberQueryRepository.countMembers(baseCondition)).thenReturn(1L);
-      when(memberQueryRepository.findAllSquadMembers(noFilterQuery, baseCondition, baseSortField)).thenReturn(results);
+      when(memberQueryRepository.findAllSquadMembers(noFilterQuery, baseCondition, baseSortField))
+          .thenReturn(results);
 
       // when
-      PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(noFilterQuery);
+      PageResponse<MemberSquadListResponse> result =
+          memberQueryService.squadSearchMembers(noFilterQuery);
 
       // then
       assertThat(result.getContent()).hasSize(1);
@@ -306,7 +303,8 @@ class MemberQueryServiceImplTest {
       verify(memberConditionBuilder).build(noFilterQuery);
       verify(sortFieldSelector).select("employeeName", "asc");
       verify(memberQueryRepository).countMembers(baseCondition);
-      verify(memberQueryRepository).findAllSquadMembers(noFilterQuery, baseCondition, baseSortField);
+      verify(memberQueryRepository)
+          .findAllSquadMembers(noFilterQuery, baseCondition, baseSortField);
       verifyNoMoreInteractions(memberConditionBuilder, sortFieldSelector, memberQueryRepository);
     }
 
@@ -314,23 +312,22 @@ class MemberQueryServiceImplTest {
     @DisplayName("예외: 정렬 기준이 유효하지 않은 경우 예외 발생")
     void givenInvalidSortBy_whenSearch_thenThrowsException() {
       // given
-      MemberListQuery badSortQuery = new MemberListQuery(
-              null, null, null, "invalidField", "asc", 1, 10
-      );
+      MemberListQuery badSortQuery =
+          new MemberListQuery(null, null, null, "invalidField", "asc", 1, 10);
 
       when(sortFieldSelector.select(eq("invalidField"), eq("asc")))
-              .thenThrow(new BusinessException(ErrorCode.INVALID_SORT_COLUMN));
+          .thenThrow(new BusinessException(ErrorCode.INVALID_SORT_COLUMN));
 
       // when & then
-      assertThrows(BusinessException.class, () -> {
-        memberQueryService.squadSearchMembers(badSortQuery);
-      });
+      assertThrows(
+          BusinessException.class,
+          () -> {
+            memberQueryService.squadSearchMembers(badSortQuery);
+          });
 
       // verify
       verify(sortFieldSelector).select(eq("invalidField"), eq("asc"));
       verifyNoInteractions(memberConditionBuilder, memberQueryRepository);
     }
-
   }
-
-  }
+}

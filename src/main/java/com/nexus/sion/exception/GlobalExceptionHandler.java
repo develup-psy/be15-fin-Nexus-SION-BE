@@ -1,9 +1,5 @@
 package com.nexus.sion.exception;
 
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.nexus.sion.common.dto.ApiResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -30,7 +28,8 @@ public class GlobalExceptionHandler {
 
   /** 유효성 검사 예외 처리 */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ApiResponse<Void>> handleValidationException(MethodArgumentNotValidException e) {
+  public ResponseEntity<ApiResponse<Void>> handleValidationException(
+      MethodArgumentNotValidException e) {
     ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
     StringBuilder errorMessage = new StringBuilder(errorCode.getMessage());
     for (FieldError error : e.getBindingResult().getFieldErrors()) {
@@ -47,6 +46,7 @@ public class GlobalExceptionHandler {
     log.error("Unhandled 예외 발생: {}", e.getMessage(), e);
     String[] errorSplit = e.getClass().toString().split("\\.");
     ApiResponse<Void> response =
+        ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
             ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
     String errorClass = e.getClass().getSimpleName();
     ;

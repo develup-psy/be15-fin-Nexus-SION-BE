@@ -1,15 +1,9 @@
 package com.nexus.sion.feature.member.query.service;
 
-import static com.example.jooq.generated.tables.Grade.GRADE;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
-import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
-import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
-import com.nexus.sion.feature.member.query.util.SortFieldSelector;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -20,10 +14,14 @@ import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
+import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
+import com.nexus.sion.feature.member.query.util.SortFieldSelector;
 
 import lombok.RequiredArgsConstructor;
 
@@ -98,9 +96,9 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     Condition condition = memberConditionBuilder.build(query);
 
     long total = memberQueryRepository.countMembers(condition);
-    List<MemberSquadListResponse> content = memberQueryRepository.findAllSquadMembers(query, condition, sortField);
+    List<MemberSquadListResponse> content =
+        memberQueryRepository.findAllSquadMembers(query, condition, sortField);
 
     return PageResponse.fromJooq(content, total, query.page(), query.size());
-
   }
 }

@@ -34,8 +34,7 @@ class StatisticsQueryControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockBean
-  private StatisticsQueryService service;
+  @MockBean private StatisticsQueryService service;
 
   @MockBean private TechStackQueryService techStackQueryService;
 

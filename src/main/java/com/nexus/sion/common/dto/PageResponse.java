@@ -48,8 +48,7 @@ public class PageResponse<T> {
 
   /* JOOQ 사용 방법 */
   public static <T> PageResponse<T> fromJooq(
-      List<T> content, long totalElements, int currentPage, int pageSize
-  ) {
+      List<T> content, long totalElements, int currentPage, int pageSize) {
     int totalPages = (int) Math.ceil((double) totalElements / pageSize);
     boolean hasNext = (long) (currentPage + 1) * pageSize < totalElements;
     boolean hasPrevious = currentPage > 0;

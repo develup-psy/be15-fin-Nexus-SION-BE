@@ -7,16 +7,17 @@ import static org.jooq.impl.DSL.*;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
-import com.nexus.sion.feature.member.query.util.TopTechStackSubqueryProvider;
 import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.MemberRole;
+import com.example.jooq.generated.enums.MemberStatus;
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import com.nexus.sion.feature.member.query.util.TopTechStackSubqueryProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -223,41 +224,48 @@ public class MemberQueryRepository {
         .fetchOptionalInto(MemberDetailResponse.class);
   }
 
-
-
-  public List<MemberSquadListResponse> findAllSquadMembers(MemberListQuery query, Condition condition, SortField<?> sortField) {
-    TopTechStackSubqueryProvider.TopTechStackSubquery topStack = topTechStackSubqueryProvider.getTopTechStackSubquery();
+  public List<MemberSquadListResponse> findAllSquadMembers(
+      MemberListQuery query, Condition condition, SortField<?> sortField) {
+    TopTechStackSubqueryProvider.TopTechStackSubquery topStack =
+        topTechStackSubqueryProvider.getTopTechStackSubquery();
 
     if (query.techStacks() != null && !query.techStacks().isEmpty()) {
-      condition = condition.andExists(
+      condition =
+          condition.andExists(
               dsl.selectOne()
-                      .from(DEVELOPER_TECH_STACK)
-                      .where(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                      .and(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(query.techStacks()))
-      );
+                  .from(DEVELOPER_TECH_STACK)
+                  .where(
+                      DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                          MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+                  .and(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(query.techStacks())));
     }
 
     return dsl.select(
-                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    MEMBER.EMPLOYEE_NAME,
-                    MEMBER.GRADE_CODE,
-                    MEMBER.STATUS,
-                    topStack.techStackName()
-            )
-            .from(MEMBER)
-            .leftJoin(topStack.table())
-            .on(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(topStack.empId())
-                    .and(topStack.rowNumberField().eq(1)))
-            .where(condition)
-            .orderBy(sortField)
-            .limit(query.size())
-            .offset(query.page() * query.size())
-            .fetch(record -> new MemberSquadListResponse(
+            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+            MEMBER.EMPLOYEE_NAME,
+            MEMBER.GRADE_CODE,
+            MEMBER.STATUS,
+            topStack.techStackName())
+        .from(MEMBER)
+        .leftJoin(topStack.table())
+        .on(
+            MEMBER
+                .EMPLOYEE_IDENTIFICATION_NUMBER
+                .eq(topStack.empId())
+                .and(topStack.rowNumberField().eq(1)))
+        .where(condition)
+        .orderBy(sortField)
+        .limit(query.size())
+        .offset(query.page() * query.size())
+        .fetch(
+            record ->
+                new MemberSquadListResponse(
                     record.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
                     record.get(MEMBER.EMPLOYEE_NAME),
-                    record.get(MEMBER.GRADE_CODE) != null ? record.get(MEMBER.GRADE_CODE).name() : null,
+                    record.get(MEMBER.GRADE_CODE) != null
+                        ? record.get(MEMBER.GRADE_CODE).name()
+                        : null,
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
-                    record.get(topStack.techStackName())
-            ));
+                    record.get(topStack.techStackName())));
   }
 }
