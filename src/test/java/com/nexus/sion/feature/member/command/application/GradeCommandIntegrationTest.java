@@ -73,9 +73,11 @@ public class GradeCommandIntegrationTest {
     Grade gradeA = gradeRepository.findByGradeCode(GradeCode.A).orElseThrow();
     assertThat(gradeA.getProductivity()).isEqualTo(new BigDecimal("3"));
     assertThat(gradeA.getMonthlyUnitPrice()).isEqualTo(100000);
+    assertThat(gradeA.getRatio()).isEqualTo(new BigDecimal("0.2")); // ratio 값 확인 추가
 
     Grade gradeB = gradeRepository.findByGradeCode(GradeCode.B).orElseThrow();
     assertThat(gradeB.getProductivity()).isEqualTo(new BigDecimal("2.6")); // updated
     assertThat(gradeB.getMonthlyUnitPrice()).isEqualTo(50000); // not updated
+    assertThat(gradeB.getRatio()).isEqualTo(new BigDecimal("0.2")); // ratio 값 확인 추가
   }
 }
