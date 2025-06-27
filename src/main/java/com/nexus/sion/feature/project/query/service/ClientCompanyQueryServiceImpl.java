@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.SortField;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
@@ -38,7 +39,7 @@ public class ClientCompanyQueryServiceImpl implements ClientCompanyQueryService 
 
     long total = clientCompanyQueryRepository.countByCondition(condition);
     List<ClientCompanyDto> content =
-        clientCompanyQueryRepository.findAllByCondition(condition, sortField, page, size);
+        clientCompanyQueryRepository.findClientCompaniesByCondition(condition, sortField, page, size);
 
     return PageResponse.fromJooq(content, total, page, size);
   }
