@@ -18,6 +18,8 @@ import org.jooq.SortField;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
+import com.example.jooq.generated.enums.MemberGradeCode;
+import com.example.jooq.generated.enums.MemberStatus;
 import com.example.jooq.generated.enums.ProjectStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
@@ -401,5 +403,30 @@ public class StatisticsQueryRepository {
         .on(rankedTech.field("job_name", String.class).eq(jobNameField))
         .groupBy(jobNameField)
         .fetchInto(JobParticipationStatsDto.class);
+  }
+
+  public List<MemberWaitingCountDto> findWaitingCountByGrade() {
+    var gradeValues =
+        DSL.values(
+                DSL.row(MemberGradeCode.S),
+                DSL.row(MemberGradeCode.A),
+                DSL.row(MemberGradeCode.B),
+                DSL.row(MemberGradeCode.C),
+                DSL.row(MemberGradeCode.D))
+            .as("grades", "grade_code");
+
+    Field<MemberGradeCode> gradeCodeField = gradeValues.field("grade_code", MemberGradeCode.class);
+
+    return dsl.select(
+            gradeCodeField, DSL.count(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER).as("waiting_count"))
+        .from(gradeValues)
+        .leftJoin(MEMBER)
+        .on(MEMBER.GRADE_CODE.eq(gradeCodeField).and(MEMBER.STATUS.eq(MemberStatus.AVAILABLE)))
+        .groupBy(gradeCodeField)
+        .orderBy(gradeCodeField.asc())
+        .fetch(
+            record ->
+                new MemberWaitingCountDto(
+                    record.get(gradeCodeField), record.get("waiting_count", Integer.class)));
   }
 }

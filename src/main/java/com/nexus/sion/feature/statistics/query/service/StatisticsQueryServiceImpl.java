@@ -14,32 +14,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StatisticsQueryServiceImpl implements StatisticsQueryService {
 
-  private final StatisticsQueryRepository repository;
+  private final StatisticsQueryRepository statisticsQueryRepository;
 
   @Override
   public List<TechStackCountDto> getStackMemberCounts(List<String> stackNames) {
-    return repository.findStackMemberCount(stackNames);
+    return statisticsQueryRepository.findStackMemberCount(stackNames);
   }
 
   @Override
   public PageResponse<DeveloperDto> getAllDevelopers(int page, int size) {
-    return repository.findAllDevelopers(page, size);
+    return statisticsQueryRepository.findAllDevelopers(page, size);
   }
 
   @Override
   public PageResponse<TechStackCareerDto> getStackAverageCareersPaged(
       List<String> stackNames, int page, int size, String sort, String direction) {
-    return repository.findStackAverageCareerPaged(stackNames, page, size, sort, direction);
+    return statisticsQueryRepository.findStackAverageCareerPaged(
+        stackNames, page, size, sort, direction);
   }
 
   @Override
   public PageResponse<TechStackMonthlyUsageDto> getPopularTechStacksGroupedByMonth(
       String period, int page, int size, Integer top) {
-    return repository.findMonthlyPopularTechStacks(period, page, size, top);
+    return statisticsQueryRepository.findMonthlyPopularTechStacks(period, page, size, top);
   }
 
   @Override
   public List<JobParticipationStatsDto> getJobParticipationStats() {
-    return repository.getJobParticipationStats();
+    return statisticsQueryRepository.getJobParticipationStats();
+  }
+
+  @Override
+  public List<MemberWaitingCountDto> getWaitingCountsByGrade() {
+    return statisticsQueryRepository.findWaitingCountByGrade();
   }
 }
