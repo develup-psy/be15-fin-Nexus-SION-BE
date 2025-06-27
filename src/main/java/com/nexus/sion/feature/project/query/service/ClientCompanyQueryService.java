@@ -4,5 +4,5 @@ import com.nexus.sion.feature.project.query.dto.response.ClientCompanyListRespon
 
 public interface ClientCompanyQueryService {
 
-    ClientCompanyListResponse findAllClientCompany();
+  ClientCompanyListResponse findAllClientCompany();
 }
