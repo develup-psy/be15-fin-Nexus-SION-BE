@@ -19,8 +19,7 @@ public class SquadCommandController {
   private final SquadCommandService squadCommandService;
 
   @PostMapping("/manual")
-  public ResponseEntity<Void> registerManualSquad(
-      @RequestBody @Valid SquadRegisterRequest request) {
+  public ResponseEntity<Void> registerManualSquad(@RequestBody @Valid SquadRegisterRequest request) {
     squadCommandService.registerManualSquad(request);
     return ResponseEntity.ok().build();
   }
@@ -30,4 +29,11 @@ public class SquadCommandController {
     squadCommandService.updateManualSquad(request);
     return ResponseEntity.ok().build();
   }
+
+  @DeleteMapping("/{squadCode}")
+  public ResponseEntity<Void> deleteSquad(@PathVariable String squadCode) {
+    squadCommandService.deleteSquad(squadCode);
+    return ResponseEntity.noContent().build();
+  }
+
 }
