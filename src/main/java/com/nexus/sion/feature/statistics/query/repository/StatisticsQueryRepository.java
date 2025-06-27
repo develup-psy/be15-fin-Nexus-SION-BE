@@ -15,9 +15,12 @@ import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.SortField;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
+import com.example.jooq.generated.enums.MemberGradeCode;
+import com.example.jooq.generated.enums.MemberStatus;
 import com.example.jooq.generated.enums.ProjectStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
@@ -401,5 +404,47 @@ public class StatisticsQueryRepository {
         .on(rankedTech.field("job_name", String.class).eq(jobNameField))
         .groupBy(jobNameField)
         .fetchInto(JobParticipationStatsDto.class);
+  }
+
+  public List<MemberWaitingCountDto> findWaitingCountByGrade() {
+    var gradeValues =
+            DSL.values(
+                            DSL.row(MemberGradeCode.S),
+                            DSL.row(MemberGradeCode.A),
+                            DSL.row(MemberGradeCode.B),
+                            DSL.row(MemberGradeCode.C),
+                            DSL.row(MemberGradeCode.D))
+                    .as("grades", "grade_code");
+
+    Field<MemberGradeCode> gradeCodeField = gradeValues.field("grade_code", MemberGradeCode.class);
+
+    Table<?> memberSubquery = DSL.select(
+                    MEMBER.GRADE_CODE,
+                    DSL.count().as("total_count"),
+                    DSL.sum(DSL.when(MEMBER.STATUS.eq(MemberStatus.AVAILABLE), 1).otherwise(0)).as("waiting_count")
+            )
+            .from(MEMBER)
+            .groupBy(MEMBER.GRADE_CODE)
+            .asTable("member_stats");
+
+    Field<Integer> waitingCountField = DSL.coalesce(memberSubquery.field("waiting_count", Integer.class), 0);
+    Field<Integer> totalCountField = DSL.coalesce(memberSubquery.field("total_count", Integer.class), 0);
+
+    return dsl.select(
+                    gradeCodeField,
+                    waitingCountField,
+                    totalCountField
+            )
+            .from(gradeValues)
+            .leftJoin(memberSubquery)
+            .on(gradeCodeField.eq(memberSubquery.field(MEMBER.GRADE_CODE)))
+            .orderBy(gradeCodeField.asc())
+            .fetch(record ->
+                    new MemberWaitingCountDto(
+                            record.get(gradeCodeField),
+                            record.get(waitingCountField),
+                            record.get(totalCountField)
+                    )
+            );
   }
 }
