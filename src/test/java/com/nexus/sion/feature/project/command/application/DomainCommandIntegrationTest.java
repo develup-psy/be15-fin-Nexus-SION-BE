@@ -52,7 +52,7 @@ public class DomainCommandIntegrationTest {
   }
 
   @Test
-  @DisplayName("이미 존재하는 도메인은 저장하지 않고, 200이 반환된다.")
+  @DisplayName("이미 존재하는 도메인은 예외처리 된다.")
   void registerExistingDomain_doesNotSaveAgain() throws Exception {
     // given
     String existingDomainName = "domainName";
@@ -67,10 +67,13 @@ public class DomainCommandIntegrationTest {
             post("/api/v1/domains")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk()); // 200 반환되는지 확인
+        .andExpect(status().isConflict()) // <-- 409 기대
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.errorCode").value("30007"))
+        .andExpect(jsonPath("$.message").value("이미 존재하는 도메인입니다."));
 
     // then - 여전히 하나만 존재
-    assertThat(domainRepository.findAll().size()).isEqualTo(existingCount);
+    assertThat(domainRepository.count()).isEqualTo(existingCount);
   }
 
   @Test

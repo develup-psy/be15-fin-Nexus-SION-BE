@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import com.nexus.sion.common.domain.BaseTimeEntity;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 
 import lombok.*;
 
@@ -48,5 +49,23 @@ public class ClientCompany extends BaseTimeEntity {
         .contactNumber(request.getContactNumber())
         .domainName(request.getDomainName())
         .build();
+  }
+
+  public void update(ClientCompanyUpdateRequest request) {
+    if (request.getCompanyName() != null) {
+      this.companyName = request.getCompanyName();
+    }
+    if (request.getDomainName() != null) {
+      this.domainName = request.getDomainName();
+    }
+    if (request.getContactPerson() != null) {
+      this.contactPerson = request.getContactPerson();
+    }
+    if (request.getEmail() != null) {
+      this.email = request.getEmail();
+    }
+    if (request.getContactNumber() != null) {
+      this.contactNumber = request.getContactNumber();
+    }
   }
 }

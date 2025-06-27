@@ -9,6 +9,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.util.Validator;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
 import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 
@@ -49,6 +50,18 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
     clientCompany.setClientCode(clientCode);
 
     clientCompanyRepository.save(clientCompany);
+  }
+
+  @Transactional
+  @Override
+  public void updateClientCompany(ClientCompanyUpdateRequest request, String clientCode) {
+    // 기존에 존재하는 고객사인지 확인
+    ClientCompany clientCompany =
+        clientCompanyRepository
+            .findById(clientCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND));
+
+    clientCompany.update(request);
   }
 
   private String generateClientCode(String companyName) {
