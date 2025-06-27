@@ -9,6 +9,8 @@ import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 
 import lombok.*;
 
+import static com.nexus.sion.common.constants.GradeRatioConstants.GRADE_RATIO;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,7 +43,7 @@ public class Grade {
   @PrePersist
   public void prePersist() {
     if (this.ratio == null) {
-      this.ratio = new BigDecimal("0.2");
+      this.ratio = new BigDecimal(GRADE_RATIO);
     }
   }
 }
