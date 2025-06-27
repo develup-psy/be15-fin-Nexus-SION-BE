@@ -63,13 +63,11 @@ public class SquadQueryRepository {
             .offset(page * size)
             .fetch();
 
-    Long total =
-        Objects.requireNonNullElse(
-            dsl.selectCount()
-                .from(SQUAD)
-                .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                .fetchOne(0, Long.class),
-            0L);
+      Long total =
+              dsl.selectCount()
+                      .from(SQUAD)
+                      .where(SQUAD.PROJECT_CODE.eq(projectCode))
+                      .fetchOne(0, Long.class);
 
     List<SquadListResponse> content =
         records.stream()
