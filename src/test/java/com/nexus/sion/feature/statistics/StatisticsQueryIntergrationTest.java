@@ -110,4 +110,16 @@ class StatisticsQueryIntergrationTest {
         .andExpect(jsonPath("$.data.content[0].latestProjectName").exists())
         .andExpect(jsonPath("$.data.content[0].topJobName").exists());
   }
+
+  @Test
+  @DisplayName("GET /participation - 직무별 참여 통계 조회")
+  void getJobParticipationStats() throws Exception {
+    mockMvc
+        .perform(get("/api/v1/statistics/participation"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data[0].jobName").exists())
+        .andExpect(jsonPath("$.data[0].memberCount").isNumber());
+  }
 }

@@ -15,4 +15,6 @@ public interface StatisticsQueryService {
 
   PageResponse<TechStackMonthlyUsageDto> getPopularTechStacksGroupedByMonth(
       String period, int page, int size, Integer top);
+
+  List<JobParticipationStatsDto> getJobParticipationStats();
 }

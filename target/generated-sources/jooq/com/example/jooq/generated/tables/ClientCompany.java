@@ -50,11 +50,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
 
   /** The column <code>sion.client_company.company_name</code>. */
   public final TableField<ClientCompanyRecord, String> COMPANY_NAME =
-      createField(
-          DSL.name("company_name"),
-          SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
-          this,
-          "");
+      createField(DSL.name("company_name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
   /** The column <code>sion.client_company.created_at</code>. */
   public final TableField<ClientCompanyRecord, LocalDateTime> CREATED_AT =
@@ -139,6 +135,11 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
   @Override
   public UniqueKey<ClientCompanyRecord> getPrimaryKey() {
     return Keys.KEY_CLIENT_COMPANY_PRIMARY;
+  }
+
+  @Override
+  public List<UniqueKey<ClientCompanyRecord>> getUniqueKeys() {
+    return Arrays.asList(Keys.KEY_CLIENT_COMPANY_COMPANY_NAME);
   }
 
   @Override

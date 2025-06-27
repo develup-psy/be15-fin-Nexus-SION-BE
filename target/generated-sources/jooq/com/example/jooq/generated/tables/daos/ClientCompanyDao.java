@@ -79,6 +79,17 @@ public class ClientCompanyDao
     return fetch(ClientCompany.CLIENT_COMPANY.COMPANY_NAME, values);
   }
 
+  /** Fetch a unique record that has <code>company_name = value</code> */
+  public com.example.jooq.generated.tables.pojos.ClientCompany fetchOneByCompanyName(String value) {
+    return fetchOne(ClientCompany.CLIENT_COMPANY.COMPANY_NAME, value);
+  }
+
+  /** Fetch a unique record that has <code>company_name = value</code> */
+  public Optional<com.example.jooq.generated.tables.pojos.ClientCompany> fetchOptionalByCompanyName(
+      String value) {
+    return fetchOptional(ClientCompany.CLIENT_COMPANY.COMPANY_NAME, value);
+  }
+
   /**
    * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
    * upperInclusive</code>

@@ -72,6 +72,12 @@ public class Keys {
           DSL.name("KEY_certificate_PRIMARY"),
           new TableField[] {Certificate.CERTIFICATE.CERTIFICATE_NAME},
           true);
+  public static final UniqueKey<ClientCompanyRecord> KEY_CLIENT_COMPANY_COMPANY_NAME =
+      Internal.createUniqueKey(
+          ClientCompany.CLIENT_COMPANY,
+          DSL.name("KEY_client_company_company_name"),
+          new TableField[] {ClientCompany.CLIENT_COMPANY.COMPANY_NAME},
+          true);
   public static final UniqueKey<ClientCompanyRecord> KEY_CLIENT_COMPANY_PRIMARY =
       Internal.createUniqueKey(
           ClientCompany.CLIENT_COMPANY,

@@ -76,4 +76,10 @@ public class StatisticsQueryController {
     response = statisticsQueryService.getPopularTechStacksGroupedByMonth(period, page, size, null);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
+
+  @GetMapping("/participation")
+  public ResponseEntity<ApiResponse<List<JobParticipationStatsDto>>> getJobStats() {
+    var result = statisticsQueryService.getJobParticipationStats();
+    return ResponseEntity.ok(ApiResponse.success(result));
+  }
 }
