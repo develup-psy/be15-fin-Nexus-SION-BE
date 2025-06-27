@@ -4,6 +4,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.repository.GradeCommandRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class GradeCommandServiceImpl implements GradeCommandService {
     private final GradeCommandRepository gradeRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public void setGrades(UnitPriceSetRequest request) {
         request.getGrades().forEach(gradeDto -> {
@@ -37,6 +39,7 @@ public class GradeCommandServiceImpl implements GradeCommandService {
         if (gradeDto.getProductivity() != null) grade.setProductivity(gradeDto.getProductivity());
         if (gradeDto.getMonthlyUnitPrice() != null) grade.setMonthlyUnitPrice(gradeDto.getMonthlyUnitPrice());
 
+        grade.setRatio();
         gradeRepository.save(grade); // update
     }
 }

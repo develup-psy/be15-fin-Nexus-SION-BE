@@ -41,4 +41,11 @@ public class Grade {
   public void setRatio() {
     this.ratio = new BigDecimal("0.2");
   }
+
+  @PrePersist
+  public void prePersist() {
+    if (this.ratio == null) {
+      this.ratio = new BigDecimal("0.2");
+    }
+  }
 }
