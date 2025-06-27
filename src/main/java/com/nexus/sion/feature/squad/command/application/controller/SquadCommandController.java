@@ -30,4 +30,10 @@ public class SquadCommandController {
     squadCommandService.updateManualSquad(request);
     return ResponseEntity.ok().build();
   }
+
+  @DeleteMapping("/{squadCode}")
+  public ResponseEntity<Void> deleteSquad(@PathVariable String squadCode) {
+    squadCommandService.deleteSquad(squadCode);
+    return ResponseEntity.noContent().build();
+  }
 }
