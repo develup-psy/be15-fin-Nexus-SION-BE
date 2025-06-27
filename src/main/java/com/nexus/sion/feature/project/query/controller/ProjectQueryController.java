@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
+import com.nexus.sion.feature.project.query.dto.response.ProjectDetailResponse;
 import com.nexus.sion.feature.project.query.dto.response.ProjectListResponse;
 import com.nexus.sion.feature.project.query.service.ProjectQueryService;
 
@@ -17,10 +18,18 @@ public class ProjectQueryController {
 
   private final ProjectQueryService projectQueryService;
 
+  // 목록 조회
   @PostMapping("/list")
   public ApiResponse<PageResponse<ProjectListResponse>> searchProjects(
       @RequestBody ProjectListRequest request) {
     PageResponse<ProjectListResponse> result = projectQueryService.findProjects(request);
+    return ApiResponse.success(result);
+  }
+
+  // 상세 조회
+  @GetMapping("/list/{projectCode}")
+  public ApiResponse<ProjectDetailResponse> getProjectDetail(@PathVariable String projectCode) {
+    ProjectDetailResponse result = projectQueryService.getProjectDetail(projectCode);
     return ApiResponse.success(result);
   }
 }

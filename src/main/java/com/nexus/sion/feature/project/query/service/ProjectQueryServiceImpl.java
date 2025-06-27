@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
+import com.nexus.sion.feature.project.query.dto.response.ProjectDetailResponse;
 import com.nexus.sion.feature.project.query.dto.response.ProjectListResponse;
 import com.nexus.sion.feature.project.query.repository.ProjectQueryRepository;
 
@@ -18,5 +19,10 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
   @Override
   public PageResponse<ProjectListResponse> findProjects(ProjectListRequest request) {
     return projectQueryRepository.findProjects(request);
+  }
+
+  @Override
+  public ProjectDetailResponse getProjectDetail(String projectCode) {
+    return projectQueryRepository.getProjectDetail(projectCode);
   }
 }

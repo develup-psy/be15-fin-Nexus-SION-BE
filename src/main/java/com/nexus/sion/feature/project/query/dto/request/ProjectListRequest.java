@@ -12,7 +12,7 @@ import lombok.*;
 public class ProjectListRequest {
   private String keyword;
   private Long maxBudget;
-  private Double maxPeriodInMonth;
+  private Integer maxPeriodInMonth;
   private Integer maxNumberOfMembers;
   private List<String> statuses;
 

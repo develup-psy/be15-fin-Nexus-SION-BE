@@ -1,7 +1,14 @@
 package com.nexus.sion.feature.project.query.repository;
 
+import static com.example.jooq.generated.tables.JobAndTechStack.JOB_AND_TECH_STACK;
+import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
+import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
+import static com.example.jooq.generated.tables.Squad.SQUAD;
+import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
+import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -9,11 +16,15 @@ import java.util.stream.Collectors;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
+import com.nexus.sion.feature.project.query.dto.response.ProjectDetailResponse;
 import com.nexus.sion.feature.project.query.dto.response.ProjectListResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +36,7 @@ public class ProjectQueryRepository {
   private final DSLContext dsl;
 
   public PageResponse<ProjectListResponse> findProjects(ProjectListRequest request) {
-
-    // 1. 키워드 조건 (내부 OR)
+    // 키워드 조건 (내부 OR)
     Condition keywordCondition = DSL.noCondition();
     if (request.getKeyword() != null && !request.getKeyword().isBlank()) {
       String keyword = "%" + request.getKeyword() + "%";
@@ -38,7 +48,7 @@ public class ProjectQueryRepository {
               .or(PROJECT.DESCRIPTION.likeIgnoreCase(keyword));
     }
 
-    // 2. 나머지 필터 조건 (AND)
+    // 필터 조건 (AND)
     Condition filterCondition = PROJECT.DELETED_AT.isNull();
     if (request.getMaxBudget() != null) {
       filterCondition = filterCondition.and(PROJECT.BUDGET.le(request.getMaxBudget()));
@@ -51,13 +61,13 @@ public class ProjectQueryRepository {
       filterCondition = filterCondition.and(PROJECT.STATUS.in(request.getStatuses()));
     }
 
-    // 최종 조건: 키워드 AND 필터 조건
+    // 최종 WHERE 조건: keyword AND filter
     Condition finalCondition = keywordCondition.and(filterCondition);
 
     // 전체 개수
     long totalCount = dsl.selectCount().from(PROJECT).where(finalCondition).fetchOne(0, long.class);
 
-    // 데이터 조회 (페이징 적용)
+    // 데이터 조회
     List<ProjectListResponse> content =
         dsl
             .selectFrom(PROJECT)
@@ -99,5 +109,73 @@ public class ProjectQueryRepository {
             .collect(Collectors.toList());
 
     return PageResponse.fromJooq(content, totalCount, request.getPage(), request.getSize());
+  }
+
+  public ProjectDetailResponse getProjectDetail(String projectCode) {
+    // 1. 프로젝트 기본 정보
+    Record project = dsl.selectFrom(PROJECT).where(PROJECT.PROJECT_CODE.eq(projectCode)).fetchOne();
+
+    if (project == null) {
+      throw new BusinessException(ErrorCode.PROJECT_NOT_FOUND);
+    }
+
+    // 2. 기간 계산
+    LocalDate start = project.get(PROJECT.START_DATE);
+    LocalDate end =
+        project.get(PROJECT.ACTUAL_END_DATE) != null
+            ? project.get(PROJECT.ACTUAL_END_DATE)
+            : project.get(PROJECT.EXPECTED_END_DATE);
+    String duration = start + " ~ " + end;
+
+    // 3. 예산 포맷
+    String budget = "₩" + new DecimalFormat("#,###").format(project.get(PROJECT.BUDGET));
+
+    // 4. 기술스택 목록
+    List<String> techStacks =
+        dsl.selectDistinct(TECH_STACK.TECH_STACK_NAME)
+            .from(PROJECT_AND_JOB)
+            .join(JOB_AND_TECH_STACK)
+            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+            .join(TECH_STACK)
+            .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
+            .where(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
+            .fetchInto(String.class);
+
+    // 5. 스쿼드 구성원
+    List<ProjectDetailResponse.SquadMemberInfo> members =
+        dsl.select(
+                SQUAD_EMPLOYEE.IS_LEADER,
+                MEMBER.PROFILE_IMAGE_URL,
+                MEMBER.EMPLOYEE_NAME,
+                PROJECT_AND_JOB.JOB_NAME)
+            .from(SQUAD)
+            .join(SQUAD_EMPLOYEE)
+            .on(SQUAD.SQUAD_CODE.eq(SQUAD_EMPLOYEE.SQUAD_CODE))
+            .join(MEMBER)
+            .on(
+                SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .join(PROJECT_AND_JOB)
+            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저
+            .fetch()
+            .map(
+                r ->
+                    new ProjectDetailResponse.SquadMemberInfo(
+                        Boolean.TRUE.equals(r.get(SQUAD_EMPLOYEE.IS_LEADER)),
+                        r.get(MEMBER.PROFILE_IMAGE_URL),
+                        r.get(MEMBER.EMPLOYEE_NAME),
+                        r.get(PROJECT_AND_JOB.JOB_NAME)));
+
+    return new ProjectDetailResponse(
+        project.get(PROJECT.TITLE),
+        project.get(PROJECT.DOMAIN_NAME),
+        project.get(PROJECT.REQUEST_SPECIFICATION_URL),
+        project.get(PROJECT.DESCRIPTION),
+        duration,
+        budget,
+        techStacks,
+        members);
   }
 }
