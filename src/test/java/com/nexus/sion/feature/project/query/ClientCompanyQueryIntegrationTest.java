@@ -56,15 +56,53 @@ public class ClientCompanyQueryIntegrationTest {
   @DisplayName("고객사 전체 조회 - 통합 테스트")
   void getAllClientCompanies() throws Exception {
     mockMvc
-        .perform(get("/api/v1/client-companies").contentType(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/v1/client-companies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("page", "0")
+                .param("size", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success").value(true))
-        .andExpect(
-            jsonPath("$.data.clientCompanies[*].clientCode").value(hasItems("test1", "test2")))
-        .andExpect(
-            jsonPath("$.data.clientCompanies[*].companyName")
-                .value(hasItems("company1", "company2")))
-        .andExpect(
-            jsonPath("$.data.clientCompanies[*].domainName").value(hasItems("domain1", "domain1")));
+        // content에 test1, test2 포함 여부만 확인 (총 개수는 변수화 불가)
+        .andExpect(jsonPath("$.data.content[*].clientCode", hasItems("test1", "test2")))
+        .andExpect(jsonPath("$.data.content[*].companyName", hasItems("company1", "company2")))
+        .andExpect(jsonPath("$.data.content[*].domainName", hasItems("domain1")));
+  }
+
+  @Test
+  @DisplayName("회사명 일부로만 조회 - 통합 테스트")
+  void getLikeClientCompanies() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/client-companies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("page", "0")
+                .param("size", "10")
+                .param("companyName", "company"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        // content에 test1, test2 포함 여부만 확인 (총 개수는 변수화 불가)
+        .andExpect(jsonPath("$.data.content[*].clientCode", hasItems("test1", "test2")))
+        .andExpect(jsonPath("$.data.content[*].companyName", hasItems("company1", "company2")))
+        .andExpect(jsonPath("$.data.content[*].domainName", everyItem(is("domain1"))));
+  }
+
+  @Test
+  @DisplayName("회사명으로 필터링된 고객사 조회 - 통합 테스트")
+  void getClientCompaniesByCompanyName() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/client-companies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("page", "0")
+                .param("size", "10")
+                .param("companyName", "company1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data.totalElements").value(1))
+        .andExpect(jsonPath("$.data.content.length()").value(1))
+        .andExpect(jsonPath("$.data.content[0].clientCode").value("test1"))
+        .andExpect(jsonPath("$.data.content[0].companyName").value("company1"))
+        .andExpect(jsonPath("$.data.content[0].domainName").value("domain1"));
   }
 }
