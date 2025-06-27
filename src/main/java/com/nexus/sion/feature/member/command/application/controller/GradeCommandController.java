@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.member.command.application.controller;
 
 import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.application.service.GradeCommandService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +24,8 @@ public class GradeCommandController {
     @Operation(summary = "구간별 단가 설정", description = "구간별 단가 설정 기능")
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> setUnitPriceByGrade(@RequestBody UnitPriceSetRequest request) {
-        gradeCommandService.setUnitPriceByGrade(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
+        gradeCommandService.setGrades(request);
+        return ResponseEntity
+                .ok(ApiResponse.success(null)); // 200 OK
     }
 }
