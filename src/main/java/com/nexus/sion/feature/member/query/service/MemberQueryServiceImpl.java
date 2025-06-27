@@ -1,9 +1,15 @@
 package com.nexus.sion.feature.member.query.service;
 
+import static com.example.jooq.generated.tables.Grade.GRADE;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
+import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
+import com.nexus.sion.feature.member.query.util.SortFieldSelector;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -26,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberQueryServiceImpl implements MemberQueryService {
 
   private final MemberQueryRepository memberQueryRepository;
+  private final MemberConditionBuilder memberConditionBuilder;
+  private final SortFieldSelector sortFieldSelector;
 
   @Override
   public PageResponse<MemberListResponse> getAllMembers(MemberListRequest request) {
@@ -81,5 +89,18 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     return memberQueryRepository
         .findByEmployeeId(employeeId)
         .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+  }
+
+  @Override
+  public PageResponse<MemberSquadListResponse> squadSearchMembers(MemberListQuery query) {
+    // 조건 및 정렬 분리 위임
+    SortField<?> sortField = sortFieldSelector.select(query.sortBy(), query.sortDir());
+    Condition condition = memberConditionBuilder.build(query);
+
+    long total = memberQueryRepository.countMembers(condition);
+    List<MemberSquadListResponse> content = memberQueryRepository.findAllSquadMembers(query, condition, sortField);
+
+    return PageResponse.fromJooq(content, total, query.page(), query.size());
+
   }
 }

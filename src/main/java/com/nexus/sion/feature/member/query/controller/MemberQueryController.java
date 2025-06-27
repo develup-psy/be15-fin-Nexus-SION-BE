@@ -1,5 +1,13 @@
 package com.nexus.sion.feature.member.query.controller;
 
+import com.example.jooq.generated.enums.MemberStatus;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
+import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/members")
+@Slf4j
 public class MemberQueryController {
 
   private final MemberQueryService memberQueryService;
@@ -40,6 +49,17 @@ public class MemberQueryController {
       @PathVariable String employeeId) {
     MemberDetailResponse response = memberQueryService.getMemberDetail(employeeId);
     return ResponseEntity.ok(ApiResponse.success(response));
+  }
+
+  @GetMapping("/squad-search")
+  public ResponseEntity<ApiResponse<PageResponse<MemberSquadListResponse>>> squadSearchDevelopers(
+          @ModelAttribute @Valid MemberSquadSearchRequest request
+  ) {
+    MemberListQuery query = request.toQuery();
+
+    return ResponseEntity.ok(
+            ApiResponse.success(memberQueryService.squadSearchMembers(query))
+    );
   }
 
 }

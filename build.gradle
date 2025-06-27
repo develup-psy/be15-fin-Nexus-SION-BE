@@ -34,6 +34,21 @@ java {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.10" // 최신 버전 사용
+}
+
+jacocoTestReport {
+    dependsOn test // 테스트 실행 후 리포트 생성
+
+    reports {
+        html.required.set(true)      // HTML 리포트
+        xml.required.set(true)       // XML 리포트 (CI용)
+        csv.required.set(false)
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor

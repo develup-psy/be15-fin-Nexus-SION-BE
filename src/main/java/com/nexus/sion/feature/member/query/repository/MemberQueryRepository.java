@@ -7,6 +7,9 @@ import static org.jooq.impl.DSL.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import com.nexus.sion.feature.member.query.util.TopTechStackSubqueryProvider;
 import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberQueryRepository {
 
   private final DSLContext dsl;
+  private final TopTechStackSubqueryProvider topTechStackSubqueryProvider;
 
   public long countMembers(Condition condition) {
     Long count = dsl.selectCount().from(MEMBER).where(condition).fetchOneInto(Long.class);
@@ -217,5 +221,43 @@ public class MemberQueryRepository {
         .from(MEMBER)
         .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
         .fetchOptionalInto(MemberDetailResponse.class);
+  }
+
+
+
+  public List<MemberSquadListResponse> findAllSquadMembers(MemberListQuery query, Condition condition, SortField<?> sortField) {
+    TopTechStackSubqueryProvider.TopTechStackSubquery topStack = topTechStackSubqueryProvider.getTopTechStackSubquery();
+
+    if (query.techStacks() != null && !query.techStacks().isEmpty()) {
+      condition = condition.andExists(
+              dsl.selectOne()
+                      .from(DEVELOPER_TECH_STACK)
+                      .where(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+                      .and(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(query.techStacks()))
+      );
+    }
+
+    return dsl.select(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    MEMBER.EMPLOYEE_NAME,
+                    MEMBER.GRADE_CODE,
+                    MEMBER.STATUS,
+                    topStack.techStackName()
+            )
+            .from(MEMBER)
+            .leftJoin(topStack.table())
+            .on(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(topStack.empId())
+                    .and(topStack.rowNumberField().eq(1)))
+            .where(condition)
+            .orderBy(sortField)
+            .limit(query.size())
+            .offset(query.page() * query.size())
+            .fetch(record -> new MemberSquadListResponse(
+                    record.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
+                    record.get(MEMBER.EMPLOYEE_NAME),
+                    record.get(MEMBER.GRADE_CODE) != null ? record.get(MEMBER.GRADE_CODE).name() : null,
+                    record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
+                    record.get(topStack.techStackName())
+            ));
   }
 }
