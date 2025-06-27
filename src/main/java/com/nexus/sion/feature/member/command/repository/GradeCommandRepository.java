@@ -8,7 +8,5 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 
 public interface GradeCommandRepository extends JpaRepository<Grade, GradeCode> {
-  boolean existsByGradeCodeIsNotNull();
-
   Optional<Grade> findByGradeCode(GradeCode gradeCode);
 }
