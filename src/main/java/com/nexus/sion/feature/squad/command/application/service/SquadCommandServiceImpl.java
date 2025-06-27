@@ -16,6 +16,7 @@ import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
   private final ProjectRepository projectRepository;
+  private final SquadCommentRepository squadCommentRepository;
 
   @Override
   @Transactional
@@ -110,5 +112,21 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                         .build())
             .toList();
     squadEmployeeCommandRepository.saveAll(squadEmployees);
+  }
+
+  @Transactional
+  public void deleteSquad(String squadCode) {
+    // 존재 확인
+    Squad squad =
+        squadCommandRepository
+            .findBySquadCode(squadCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+
+    // 연관 데이터 삭제
+    squadEmployeeCommandRepository.deleteBySquadCode(squadCode);
+    squadCommentRepository.deleteBySquadCode(squadCode);
+
+    // 스쿼드 삭제
+    squadCommandRepository.delete(squad);
   }
 }

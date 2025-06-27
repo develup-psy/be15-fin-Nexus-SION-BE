@@ -23,17 +23,16 @@ import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateR
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 class SquadCommandServiceImplTest {
 
   @InjectMocks private SquadCommandServiceImpl squadCommandService;
-
   @Mock private SquadCommandRepository squadCommandRepository;
-
   @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
-
   @Mock private ProjectRepository projectRepository;
+  @Mock private SquadCommentRepository squadCommentRepository;
 
   @BeforeEach
   void setUp() {
@@ -162,5 +161,46 @@ class SquadCommandServiceImplTest {
     assertThatThrownBy(() -> squadCommandService.updateManualSquad(request))
         .isInstanceOf(BusinessException.class)
         .hasMessageContaining("스쿼드");
+  }
+
+  @Test
+  @DisplayName("스쿼드 삭제에 성공한다")
+  void deleteSquad_success() {
+    // given
+    String squadCode = "ha_1_1_1";
+    Squad squad =
+        Squad.builder()
+            .squadCode(squadCode)
+            .projectCode("ha_1_1")
+            .title("삭제할 스쿼드")
+            .description("테스트용")
+            .build();
+
+    given(squadCommandRepository.findBySquadCode(squadCode)).willReturn(Optional.of(squad));
+
+    // when
+    squadCommandService.deleteSquad(squadCode);
+
+    // then
+    then(squadEmployeeCommandRepository).should(times(1)).deleteBySquadCode(squadCode);
+    then(squadCommentRepository).should(times(1)).deleteBySquadCode(squadCode);
+    then(squadCommandRepository).should(times(1)).delete(squad);
+  }
+
+  @Test
+  @DisplayName("스쿼드 삭제 실패 - 존재하지 않는 스쿼드 코드")
+  void deleteSquad_notFound() {
+    // given
+    String squadCode = "INVALID_CODE";
+    given(squadCommandRepository.findBySquadCode(squadCode)).willReturn(Optional.empty());
+
+    // when & then
+    assertThatThrownBy(() -> squadCommandService.deleteSquad(squadCode))
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.SQUAD_NOT_FOUND.getMessage());
+
+    then(squadEmployeeCommandRepository).shouldHaveNoInteractions();
+    then(squadCommentRepository).shouldHaveNoInteractions();
+    then(squadCommandRepository).should(never()).delete(any());
   }
 }
