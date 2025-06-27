@@ -52,7 +52,8 @@ class ClientCompanyQueryServiceImplTest {
     long totalCount = 2L;
 
     when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(totalCount);
-    when(clientCompanyQueryRepository.findClientCompaniesByCondition(any(), any(), eq(page), eq(size)))
+    when(clientCompanyQueryRepository.findClientCompaniesByCondition(
+            any(), any(), eq(page), eq(size)))
         .thenReturn(mockCompanyList);
 
     // when
@@ -68,7 +69,8 @@ class ClientCompanyQueryServiceImplTest {
         .containsExactly("company1", "company2");
 
     verify(clientCompanyQueryRepository).countByCondition(any());
-    verify(clientCompanyQueryRepository).findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
+    verify(clientCompanyQueryRepository)
+        .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
   }
 
   @Test
@@ -89,7 +91,8 @@ class ClientCompanyQueryServiceImplTest {
             ClientCompanyDto.builder().clientCode("b1").companyName("Beta").build());
 
     when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(2L);
-    when(clientCompanyQueryRepository.findClientCompaniesByCondition(isNull(), any(), eq(page), eq(size)))
+    when(clientCompanyQueryRepository.findClientCompaniesByCondition(
+            isNull(), any(), eq(page), eq(size)))
         .thenReturn(mockList);
 
     // when
@@ -100,7 +103,8 @@ class ClientCompanyQueryServiceImplTest {
     assertThat(response.getTotalElements()).isEqualTo(2L);
     assertThat(response.getContent()).hasSize(2);
     verify(clientCompanyQueryRepository).countByCondition(isNull());
-    verify(clientCompanyQueryRepository).findClientCompaniesByCondition(isNull(), any(), eq(page), eq(size));
+    verify(clientCompanyQueryRepository)
+        .findClientCompaniesByCondition(isNull(), any(), eq(page), eq(size));
   }
 
   @Test
@@ -119,7 +123,8 @@ class ClientCompanyQueryServiceImplTest {
         List.of(ClientCompanyDto.builder().clientCode("t1").companyName("test1").build());
 
     when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(11L);
-    when(clientCompanyQueryRepository.findClientCompaniesByCondition(any(), any(), eq(page), eq(size)))
+    when(clientCompanyQueryRepository.findClientCompaniesByCondition(
+            any(), any(), eq(page), eq(size)))
         .thenReturn(mockList);
 
     // when
@@ -130,6 +135,7 @@ class ClientCompanyQueryServiceImplTest {
     assertThat(response.getTotalElements()).isEqualTo(11L);
     assertThat(response.getContent()).hasSize(1);
     verify(clientCompanyQueryRepository).countByCondition(any());
-    verify(clientCompanyQueryRepository).findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
+    verify(clientCompanyQueryRepository)
+        .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
   }
 }

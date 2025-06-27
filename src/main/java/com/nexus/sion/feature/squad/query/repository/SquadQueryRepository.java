@@ -14,18 +14,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.example.jooq.generated.tables.records.SquadRecord;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import org.jooq.*;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.SquadOriginType;
+import com.example.jooq.generated.tables.records.SquadRecord;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,8 +37,8 @@ public class SquadQueryRepository {
 
   public SquadListResultResponse findSquads(SquadListRequest request) {
     String projectCode = request.getProjectCode();
-      int page = request.getPage();
-      int size = request.getSize();
+    int page = request.getPage();
+    int size = request.getSize();
 
     Map<String, List<SquadListResponse.MemberInfo>> memberMap =
         dsl.select(SQUAD_EMPLOYEE.SQUAD_CODE, MEMBER.EMPLOYEE_NAME, PROJECT_AND_JOB.JOB_NAME)
@@ -55,25 +55,26 @@ public class SquadQueryRepository {
                     new SquadListResponse.MemberInfo(
                         r.get(MEMBER.EMPLOYEE_NAME), r.get(PROJECT_AND_JOB.JOB_NAME)));
 
-      Result<SquadRecord> records = dsl
-              .selectFrom(SQUAD)
-              .where(SQUAD.PROJECT_CODE.eq(projectCode))
-              .orderBy(SQUAD.CREATED_AT.desc())
-              .limit(size)
-              .offset(page * size)
-              .fetch();
+    Result<SquadRecord> records =
+        dsl.selectFrom(SQUAD)
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .orderBy(SQUAD.CREATED_AT.desc())
+            .limit(size)
+            .offset(page * size)
+            .fetch();
 
-      Long total = Objects.requireNonNullElse(
-              dsl.selectCount()
-                      .from(SQUAD)
-                      .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                      .fetchOne(0, Long.class),
-              0L
-      );
+    Long total =
+        Objects.requireNonNullElse(
+            dsl.selectCount()
+                .from(SQUAD)
+                .where(SQUAD.PROJECT_CODE.eq(projectCode))
+                .fetchOne(0, Long.class),
+            0L);
 
-      List<SquadListResponse> content = records
-              .stream()
-              .map(r -> {
+    List<SquadListResponse> content =
+        records.stream()
+            .map(
+                r -> {
                   String code = r.get(SQUAD.SQUAD_CODE);
                   String name = r.get(SQUAD.TITLE);
 
@@ -88,16 +89,16 @@ public class SquadQueryRepository {
                   String cost = "₩" + decimalFormat.format(r.get(SQUAD.ESTIMATED_COST));
 
                   return new SquadListResponse(
-                          code,
-                          name,
-                          isAiRecommended,
-                          memberMap.getOrDefault(code, List.of()),
-                          period,
-                          cost);
-              })
-              .toList();
+                      code,
+                      name,
+                      isAiRecommended,
+                      memberMap.getOrDefault(code, List.of()),
+                      period,
+                      cost);
+                })
+            .toList();
 
-      return new SquadListResultResponse(content, page, size, total);
+    return new SquadListResultResponse(content, page, size, total);
   }
 
   public SquadDetailResponse findSquadDetailByCode(String squadCode) {

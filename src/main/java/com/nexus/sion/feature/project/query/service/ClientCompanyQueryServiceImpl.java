@@ -31,7 +31,7 @@ public class ClientCompanyQueryServiceImpl implements ClientCompanyQueryService 
     Condition condition = DSL.trueCondition(); // 기본적으로 모든 조건 만족
     // 상태 필터
     if (request.getCompanyName() != null && !request.getCompanyName().isBlank()) {
-      condition = CLIENT_COMPANY.COMPANY_NAME.likeIgnoreCase(request.getCompanyName() + "%" );
+      condition = CLIENT_COMPANY.COMPANY_NAME.likeIgnoreCase(request.getCompanyName() + "%");
     }
 
     // 정렬 필드
@@ -39,7 +39,8 @@ public class ClientCompanyQueryServiceImpl implements ClientCompanyQueryService 
 
     long total = clientCompanyQueryRepository.countByCondition(condition);
     List<ClientCompanyDto> content =
-        clientCompanyQueryRepository.findClientCompaniesByCondition(condition, sortField, page, size);
+        clientCompanyQueryRepository.findClientCompaniesByCondition(
+            condition, sortField, page, size);
 
     return PageResponse.fromJooq(content, total, page, size);
   }

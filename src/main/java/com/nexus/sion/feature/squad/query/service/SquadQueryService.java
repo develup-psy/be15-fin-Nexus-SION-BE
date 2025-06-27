@@ -1,10 +1,7 @@
 package com.nexus.sion.feature.squad.query.service;
 
-import java.util.List;
-
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 
 public interface SquadQueryService {

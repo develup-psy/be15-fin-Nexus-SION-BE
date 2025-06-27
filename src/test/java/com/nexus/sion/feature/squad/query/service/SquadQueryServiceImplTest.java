@@ -1,27 +1,27 @@
-//package com.nexus.sion.feature.squad.query.service;
+// package com.nexus.sion.feature.squad.query.service;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.Mockito.*;
+// import static org.assertj.core.api.Assertions.assertThat;
+// import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+// import static org.junit.jupiter.api.Assertions.assertThrows;
+// import static org.mockito.Mockito.*;
 //
-//import java.time.LocalDateTime;
-//import java.util.List;
-//import java.util.Map;
+// import java.time.LocalDateTime;
+// import java.util.List;
+// import java.util.Map;
 //
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.DisplayName;
+// import org.junit.jupiter.api.Test;
+// import org.mockito.Mockito;
 //
-//import com.nexus.sion.exception.BusinessException;
-//import com.nexus.sion.exception.ErrorCode;
-//import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
-//import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-//import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
-//import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
+// import com.nexus.sion.exception.BusinessException;
+// import com.nexus.sion.exception.ErrorCode;
+// import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+// import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
+// import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
+// import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 //
-//class SquadQueryServiceImplTest {
+// class SquadQueryServiceImplTest {
 //
 //  private SquadQueryRepository squadQueryRepository;
 //  private SquadQueryServiceImpl squadQueryService;
@@ -142,4 +142,4 @@
 //    assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
 //    verify(squadQueryRepository, times(1)).findSquadDetailByCode(squadCode);
 //  }
-//}
+// }

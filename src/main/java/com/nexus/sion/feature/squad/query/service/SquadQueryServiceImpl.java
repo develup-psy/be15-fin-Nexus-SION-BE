@@ -6,8 +6,8 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
+import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 
 import lombok.RequiredArgsConstructor;
 

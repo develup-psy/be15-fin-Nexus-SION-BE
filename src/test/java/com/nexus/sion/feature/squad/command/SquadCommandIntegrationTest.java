@@ -3,7 +3,6 @@ package com.nexus.sion.feature.squad.command;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,8 +50,8 @@ class SquadCommandIntegrationTest {
             .description("이 프로젝트는 테스트용입니다.")
             .startDate(LocalDate.of(2025, 1, 1))
             .expectedEndDate(LocalDate.of(2025, 12, 31))
-                .budget(10_000_000L)
-                .status(ProjectStatus.WAITING)
+            .budget(10_000_000L)
+            .status(ProjectStatus.WAITING)
             .requestSpecificationUrl("http://example.com/spec")
             .domainName("CS")
             .build();
