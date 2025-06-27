@@ -38,7 +38,6 @@ public class GradeCommandServiceImpl implements GradeCommandService {
 
   private void createGrade(GradeDto gradeDto) {
     Grade grade = modelMapper.map(gradeDto, Grade.class);
-    grade.setRatio();
     gradeRepository.save(grade); // insert
   }
 
@@ -47,7 +46,6 @@ public class GradeCommandServiceImpl implements GradeCommandService {
     if (gradeDto.getMonthlyUnitPrice() != null)
       grade.setMonthlyUnitPrice(gradeDto.getMonthlyUnitPrice());
 
-    grade.setRatio();
     gradeRepository.save(grade); // update
   }
 }

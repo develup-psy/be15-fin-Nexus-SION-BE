@@ -38,10 +38,6 @@ public class Grade {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
-  public void setRatio() {
-    this.ratio = new BigDecimal("0.2");
-  }
-
   @PrePersist
   public void prePersist() {
     if (this.ratio == null) {
