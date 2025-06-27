@@ -3,6 +3,7 @@ package com.nexus.sion.feature.squad.command;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,27 +41,28 @@ class SquadCommandIntegrationTest {
 
   @BeforeEach
   void setup() {
-    domainRepository.save(Domain.of("HR"));
+    domainRepository.save(Domain.of("CS"));
     // 프로젝트 더미 데이터 삽입
     Project project =
         Project.builder()
-            .projectCode("ha_1_1")
-            .clientCode("ha_1")
+            .projectCode("PRJ001")
+            .clientCode("C001")
             .title("더미 프로젝트")
             .description("이 프로젝트는 테스트용입니다.")
             .startDate(LocalDate.of(2025, 1, 1))
             .expectedEndDate(LocalDate.of(2025, 12, 31))
-            .status(ProjectStatus.WAITING)
+                .budget(10_000_000L)
+                .status(ProjectStatus.WAITING)
             .requestSpecificationUrl("http://example.com/spec")
-            .domainName("HR")
+            .domainName("CS")
             .build();
     projectRepository.save(project);
 
     // 스쿼드 더미 데이터 삽입
     Squad squad =
         Squad.builder()
-            .squadCode("ha_1_1_1")
-            .projectCode("ha_1_1")
+            .squadCode("SQUAD001")
+            .projectCode("PRJ001")
             .title("기존 스쿼드")
             .description("기존 설명")
             .originType(OriginType.MANUAL)
@@ -74,7 +76,7 @@ class SquadCommandIntegrationTest {
   void registerSquad_success() throws Exception {
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
-            .projectCode("ha_1_1")
+            .projectCode("PRJ001")
             .title("스쿼드 A")
             .description("신규 백엔드 개발 스쿼드")
             .members(
@@ -103,7 +105,7 @@ class SquadCommandIntegrationTest {
   void registerSquad_fail_whenMissingRequiredField() throws Exception {
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
-            .projectCode("ha_1_1")
+            .projectCode("PRJ001")
             .title(null) // 필수 누락
             .description("설명 없음")
             .members(
@@ -128,8 +130,8 @@ class SquadCommandIntegrationTest {
   void updateSquad_success() throws Exception {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
-            .squadCode("ha_1_1_1")
-            .projectCode("ha_1_1")
+            .squadCode("SQUAD001")
+            .projectCode("PRJ001")
             .title("수정된 스쿼드 제목")
             .description("수정된 설명입니다.")
             .members(
@@ -159,7 +161,7 @@ class SquadCommandIntegrationTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode("not_exist_code")
-            .projectCode("ha_1_1")
+            .projectCode("PRJ001")
             .title("제목")
             .description("설명")
             .members(
@@ -183,7 +185,7 @@ class SquadCommandIntegrationTest {
   @DisplayName("스쿼드 삭제 성공")
   void deleteSquad_success() throws Exception {
     // given
-    String squadCode = "ha_1_1_1";
+    String squadCode = "SQUAD001";
 
     // when & then
     mockMvc
