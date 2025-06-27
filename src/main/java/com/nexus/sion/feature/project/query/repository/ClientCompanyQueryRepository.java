@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ClientCompanyQueryRepository {
   private final DSLContext dsl;
 
-  public List<ClientCompanyDto> findAllByCondition(
+  public List<ClientCompanyDto> findClientCompaniesByCondition(
       Condition condition, SortField<?> sortField, int page, int size) {
     return dsl.select(
             CLIENT_COMPANY.CLIENT_CODE,
