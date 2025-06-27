@@ -1,10 +1,8 @@
 package com.nexus.sion.feature.member.command.application.dto.request;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import lombok.*;
-
-import java.math.BigDecimal;
 import java.util.List;
+
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
@@ -12,5 +10,5 @@ import java.util.List;
 @Builder
 @Setter
 public class UnitPriceSetRequest {
-    List<GradeDto> grades;
+  List<GradeDto> grades;
 }

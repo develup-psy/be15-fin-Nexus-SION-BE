@@ -1,9 +1,10 @@
 package com.nexus.sion.feature.member.command.application.dto.request;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import lombok.*;
-
 import java.math.BigDecimal;
+
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
 @Builder
 @Setter
 public class GradeDto {
-    private GradeCode gradeCode;
-    private BigDecimal productivity;
-    private Integer monthlyUnitPrice;
+  private GradeCode gradeCode;
+  private BigDecimal productivity;
+  private Integer monthlyUnitPrice;
 }
