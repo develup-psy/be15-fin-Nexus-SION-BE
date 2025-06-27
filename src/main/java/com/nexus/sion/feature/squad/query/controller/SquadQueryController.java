@@ -2,11 +2,9 @@ package com.nexus.sion.feature.squad.query.controller;
 
 import java.util.List;
 
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
@@ -23,10 +21,18 @@ public class SquadQueryController {
   private final SquadQueryService squadQueryService;
 
   @GetMapping("/project/{projectCode}")
-  public List<SquadListResponse> getSquads(@PathVariable String projectCode) {
-    SquadListRequest request = new SquadListRequest();
-    request.setProjectCode(projectCode);
-    return squadQueryService.findSquads(request);
+  public ResponseEntity<SquadListResultResponse> getSquads(
+          @PathVariable String projectCode,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
+
+    SquadListRequest request = SquadListRequest.builder()
+            .projectCode(projectCode)
+            .page(page)
+            .size(size)
+            .build();
+
+    return ResponseEntity.ok(squadQueryService.findSquads(request));
   }
 
   @GetMapping("/{squadCode}")
