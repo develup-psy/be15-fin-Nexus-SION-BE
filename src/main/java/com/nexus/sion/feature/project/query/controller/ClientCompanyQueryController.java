@@ -1,8 +1,5 @@
 package com.nexus.sion.feature.project.query.controller;
 
-import com.nexus.sion.common.dto.PageResponse;
-import com.nexus.sion.feature.project.query.dto.request.ClientCompanySearchRequest;
-import com.nexus.sion.feature.project.query.dto.response.ClientCompanyDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.project.query.dto.response.ClientCompanyListResponse;
+import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.feature.project.query.dto.request.ClientCompanySearchRequest;
+import com.nexus.sion.feature.project.query.dto.response.ClientCompanyDto;
 import com.nexus.sion.feature.project.query.service.ClientCompanyQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,9 +24,9 @@ public class ClientCompanyQueryController {
 
   @GetMapping
   public ResponseEntity<ApiResponse<PageResponse<ClientCompanyDto>>> getAllClientCompanies(
-          @Validated @ModelAttribute ClientCompanySearchRequest request
-  ) {
-    PageResponse<ClientCompanyDto> clientCompanies = clientCompanyQueryService.findClientCompanies(request);
+      @Validated @ModelAttribute ClientCompanySearchRequest request) {
+    PageResponse<ClientCompanyDto> clientCompanies =
+        clientCompanyQueryService.findClientCompanies(request);
     return ResponseEntity.ok(ApiResponse.success(clientCompanies));
   }
 }
