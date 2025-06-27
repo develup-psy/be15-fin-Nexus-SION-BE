@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class MemberWaitingCountDto {
   private MemberGradeCode gradeCode;
   private int waitingCount;
+  private int totalCount;
 }
