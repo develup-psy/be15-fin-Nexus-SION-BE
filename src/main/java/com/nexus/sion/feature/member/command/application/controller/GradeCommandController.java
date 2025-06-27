@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/grades")
-@Tag(name = "", description = "")
+@Tag(name = "등급 관리", description = "등급별 단가 및 생산성 관리 API")
 public class GradeCommandController {
 
   private final GradeCommandService gradeCommandService;
