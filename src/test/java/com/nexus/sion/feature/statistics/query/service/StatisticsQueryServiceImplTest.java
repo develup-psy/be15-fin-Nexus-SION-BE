@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.example.jooq.generated.enums.MemberGradeCode;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.statistics.query.dto.*;
 import com.nexus.sion.feature.statistics.query.repository.StatisticsQueryRepository;
@@ -106,6 +107,7 @@ class StatisticsQueryServiceImplTest {
     assertEquals(9, result.getContent().get(1).getMonthlyUsage().get("2025-02"));
   }
 
+  // 직무별 등록된 인원수
   @Test
   void getJobParticipationStats_returnsStatsList() {
     List<JobParticipationStatsDto> mockResult =
@@ -131,5 +133,24 @@ class StatisticsQueryServiceImplTest {
     assertEquals("백엔드", result.get(0).getJobName());
     assertEquals(8, result.get(1).getMemberCount());
     assertEquals("Vue", result.get(1).getTopTechStack1());
+  }
+
+  // 등급별 대기 상태 인원 수 조회 기능을 테스트
+  @Test
+  void getWaitingCountByGrade_returnsWaitingStats() {
+    List<MemberWaitingCountDto> mockResult =
+        List.of(
+            new MemberWaitingCountDto(MemberGradeCode.S, 3),
+            new MemberWaitingCountDto(MemberGradeCode.A, 2),
+            new MemberWaitingCountDto(MemberGradeCode.B, 0));
+
+    when(repository.findWaitingCountByGrade()).thenReturn(mockResult);
+
+    List<MemberWaitingCountDto> result = service.getWaitingCountsByGrade();
+
+    assertEquals(3, result.size());
+    assertEquals(MemberGradeCode.S, result.get(0).getGradeCode());
+    assertEquals(2, result.get(1).getWaitingCount());
+    assertEquals(0, result.get(2).getWaitingCount());
   }
 }

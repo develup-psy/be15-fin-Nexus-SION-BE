@@ -122,4 +122,16 @@ class StatisticsQueryIntergrationTest {
         .andExpect(jsonPath("$.data[0].jobName").exists())
         .andExpect(jsonPath("$.data[0].memberCount").isNumber());
   }
+
+  @Test
+  @DisplayName("GET /grade/waiting - 등급별 대기 상태 인원 수 조회")
+  void getWaitingCountByGrade() throws Exception {
+    mockMvc
+        .perform(get("/api/v1/statistics/waiting-count-by-grade"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data[0].gradeCode").exists())
+        .andExpect(jsonPath("$.data[0].waitingCount").isNumber());
+  }
 }
