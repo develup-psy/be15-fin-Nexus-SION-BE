@@ -48,9 +48,7 @@ public class GlobalExceptionHandler {
     ApiResponse<Void> response =
         ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
             ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
-    String errorClass = e.getClass().getSimpleName();
     ;
-    ApiResponse<Void> response = ApiResponse.failure(errorClass, e.getMessage());
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
