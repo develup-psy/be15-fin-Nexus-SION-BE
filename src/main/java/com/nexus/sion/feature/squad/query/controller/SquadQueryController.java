@@ -19,11 +19,10 @@ public class SquadQueryController {
 
   @GetMapping("/project/{projectCode}")
   public ResponseEntity<SquadListResultResponse> getSquads(
-          @PathVariable String projectCode,
-          @ModelAttribute SquadListRequest request) {request.setProjectCode(projectCode);
+      @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
+    request.setProjectCode(projectCode);
     return ResponseEntity.ok(squadQueryService.findSquads(request));
   }
-
 
   @GetMapping("/{squadCode}")
   public ResponseEntity<SquadDetailResponse> getSquadDetail(@PathVariable String squadCode) {
