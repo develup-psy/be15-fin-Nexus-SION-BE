@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 @Setter
 public class MemberSquadSearchRequest {
-
+  private String keyword;
   private String status; // Optional, 검증 필요
   private List<String> grade; // Optional
   private List<String> stacks; // Optional
@@ -54,6 +54,6 @@ public class MemberSquadSearchRequest {
     }
 
     return new MemberListQuery(
-        parsedStatus, parsedGrades, this.stacks, this.sortBy, this.sortDir, this.page, this.size);
+        keyword, parsedStatus, parsedGrades, this.stacks, this.sortBy, this.sortDir, this.page, this.size);
   }
 }

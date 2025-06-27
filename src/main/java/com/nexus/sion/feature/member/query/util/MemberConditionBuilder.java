@@ -21,6 +21,12 @@ public class MemberConditionBuilder {
       condition = condition.and(MEMBER.GRADE_CODE.in(query.grades()));
     }
 
+    if (query.keyword() != null && !query.keyword().isBlank()) {
+      condition = condition.and(
+              MEMBER.EMPLOYEE_NAME.containsIgnoreCase(query.keyword())
+      );
+    }
+
     return condition;
   }
 }

@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.member.query.controller;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -51,9 +53,12 @@ public class MemberQueryController {
 
   @GetMapping("/squad-search")
   public ResponseEntity<ApiResponse<PageResponse<MemberSquadListResponse>>> squadSearchDevelopers(
-      @ModelAttribute @Valid MemberSquadSearchRequest request) {
+      @ModelAttribute MemberSquadSearchRequest request) {
     MemberListQuery query = request.toQuery();
 
     return ResponseEntity.ok(ApiResponse.success(memberQueryService.squadSearchMembers(query)));
   }
+
+
+
 }
