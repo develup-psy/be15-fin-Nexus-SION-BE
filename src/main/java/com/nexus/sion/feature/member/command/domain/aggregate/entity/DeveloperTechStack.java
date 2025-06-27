@@ -9,6 +9,7 @@ import lombok.*;
 @Entity
 @Table(name = "developer_tech_stack")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder

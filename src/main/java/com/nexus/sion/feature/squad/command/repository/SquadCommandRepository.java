@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,6 @@ public interface SquadCommandRepository extends JpaRepository<Squad, String> {
   long countByProjectCode(String projectCode);
 
   Optional<Squad> findBySquadCode(String squadCode);
+
+  List<Squad> findByProjectCode(String projectCode);
 }
