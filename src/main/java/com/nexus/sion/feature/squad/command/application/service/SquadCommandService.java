@@ -7,4 +7,6 @@ public interface SquadCommandService {
   void registerManualSquad(SquadRegisterRequest request);
 
   void updateManualSquad(SquadUpdateRequest request);
+
+  void deleteSquad(String squadCode);
 }
