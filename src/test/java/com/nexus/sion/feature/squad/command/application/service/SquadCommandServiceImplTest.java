@@ -4,13 +4,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,7 @@ import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateR
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 class SquadCommandServiceImplTest {
@@ -34,7 +33,6 @@ class SquadCommandServiceImplTest {
   @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
   @Mock private ProjectRepository projectRepository;
   @Mock private SquadCommentRepository squadCommentRepository;
-
 
   @BeforeEach
   void setUp() {
@@ -170,7 +168,8 @@ class SquadCommandServiceImplTest {
   void deleteSquad_success() {
     // given
     String squadCode = "ha_1_1_1";
-    Squad squad = Squad.builder()
+    Squad squad =
+        Squad.builder()
             .squadCode(squadCode)
             .projectCode("ha_1_1")
             .title("삭제할 스쿼드")
@@ -197,8 +196,8 @@ class SquadCommandServiceImplTest {
 
     // when & then
     assertThatThrownBy(() -> squadCommandService.deleteSquad(squadCode))
-            .isInstanceOf(BusinessException.class)
-            .hasMessage(ErrorCode.SQUAD_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessage(ErrorCode.SQUAD_NOT_FOUND.getMessage());
 
     then(squadEmployeeCommandRepository).shouldHaveNoInteractions();
     then(squadCommentRepository).shouldHaveNoInteractions();
