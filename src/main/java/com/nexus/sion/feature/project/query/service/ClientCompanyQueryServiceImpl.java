@@ -27,10 +27,10 @@ public class ClientCompanyQueryServiceImpl implements ClientCompanyQueryService 
     int page = request.getPage();
     int size = request.getSize();
 
-    Condition condition = null;
+    Condition condition = DSL.trueCondition(); // 기본적으로 모든 조건 만족
     // 상태 필터
     if (request.getCompanyName() != null && !request.getCompanyName().isBlank()) {
-      condition = CLIENT_COMPANY.COMPANY_NAME.likeIgnoreCase(request.getCompanyName() + "%");
+      condition = CLIENT_COMPANY.COMPANY_NAME.likeIgnoreCase(request.getCompanyName() + "%" );
     }
 
     // 정렬 필드
