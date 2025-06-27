@@ -272,7 +272,7 @@ class ClientCompanyCommandServiceImplTest {
   }
 
   @Test
-  void deleteDomain_존재하지않으면에러() {
+  void deleteClientCompany_존재하지않으면에러() {
     // given
     String clientCode = "고객사코드";
     when(clientCompanyRepository.existsById(clientCode)).thenReturn(false);
