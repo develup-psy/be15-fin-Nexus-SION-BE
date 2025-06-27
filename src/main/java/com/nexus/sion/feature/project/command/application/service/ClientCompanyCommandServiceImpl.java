@@ -64,6 +64,17 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
     clientCompany.update(request);
   }
 
+  @Override
+  public void deleteClientCompany(String clientCode) {
+    // 기존에 존재하는 고객사인지 확인
+    if (!clientCompanyRepository.existsById(clientCode)) {
+      throw new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND);
+    }
+
+    // 고객사 삭제
+    clientCompanyRepository.deleteById(clientCode);
+  }
+
   private String generateClientCode(String companyName) {
     String prefix = companyName.substring(0, 2).toLowerCase(); // 접두사
     String codePrefix = prefix + "_";
