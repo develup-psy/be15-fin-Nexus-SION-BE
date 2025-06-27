@@ -17,4 +17,6 @@ public interface StatisticsQueryService {
       String period, int page, int size, Integer top);
 
   List<JobParticipationStatsDto> getJobParticipationStats();
+
+  List<MemberWaitingCountDto> getWaitingCountsByGrade();
 }
