@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
+import static com.nexus.sion.common.constants.GradeRatioConstants.GRADE_RATIO;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -8,8 +10,6 @@ import jakarta.persistence.*;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 
 import lombok.*;
-
-import static com.nexus.sion.common.constants.GradeRatioConstants.GRADE_RATIO;
 
 @Entity
 @Getter
