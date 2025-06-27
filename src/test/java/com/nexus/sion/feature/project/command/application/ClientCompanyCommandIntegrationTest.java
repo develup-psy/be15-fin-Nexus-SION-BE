@@ -188,14 +188,14 @@ public class ClientCompanyCommandIntegrationTest {
   }
 
   @Test
-  @DisplayName("존재하지 않는 도메인은 에러를 반환한다.")
-  void deleteExistingDomain_returnsError() throws Exception {
+  @DisplayName("존재하지 않는 고객사는 에러를 반환한다.")
+  void deleteExistingClientCode_returnsError() throws Exception {
     // given
     String clientCode = "test";
 
     // when & then
     mockMvc
-        .perform(delete("/api/v1/client-companies/{domainName}", clientCode))
+        .perform(delete("/api/v1/client-companies/{clientCode}", clientCode))
         .andExpect(status().is4xxClientError())
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.errorCode").value(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getCode()))
