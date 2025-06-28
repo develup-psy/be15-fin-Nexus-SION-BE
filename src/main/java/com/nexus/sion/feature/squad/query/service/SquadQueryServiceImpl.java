@@ -2,6 +2,12 @@ package com.nexus.sion.feature.squad.query.service;
 
 import java.util.List;
 
+import java.util.List;
+import java.util.Map;
+
+import com.nexus.sion.feature.squad.query.dto.request.SquadCandidateRequest;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
+import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -81,5 +87,13 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   @Override
   public SquadDetailResponse getConfirmedSquadByProjectCode(String projectCode) {
     return squadQueryRepository.findConfirmedSquadByProjectCode(projectCode);
+  }
+
+  @Override
+  public SquadCandidateResponse findCandidatesByRoles(String projectId) {
+    Map<String, List<DeveloperSummary>> candidatesByJob =
+            squadQueryRepository.findCandidatesByProjectIdGroupedByJob(projectId);
+
+    return new SquadCandidateResponse(candidatesByJob);
   }
 }

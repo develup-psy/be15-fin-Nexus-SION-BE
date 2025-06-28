@@ -9,13 +9,20 @@ import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.jooq.generated.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
+import com.nexus.sion.feature.squad.query.util.JsonUtils;
 import org.jooq.*;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.SquadOriginType;
@@ -279,4 +286,88 @@ public class SquadQueryRepository {
 
       return findSquadDetailByCode(squadCode);
   }
+
+    public Map<String, List<DeveloperSummary>> findCandidatesByProjectIdGroupedByJob(String projectCode) {
+        // 1. 프로젝트의 각 직무별 요구 기술스택 조회
+        Map<String, List<String>> jobToStacks = findRequiredStacksByProject(projectCode);
+
+        // 2. 직무별 후보 개발자 리스트 구성
+        Map<String, List<DeveloperSummary>> result = new HashMap<>();
+
+        for (Map.Entry<String, List<String>> entry : jobToStacks.entrySet()) {
+            String job = entry.getKey();
+            List<String> requiredStacks = entry.getValue();
+
+            List<DeveloperSummary> candidates = findMatchingDevelopersWithDomain(requiredStacks);
+            result.put(job, candidates);
+        }
+
+        return result;
+    }
+
+    private Map<String, List<String>> findRequiredStacksByProject(String projectCode) {
+        return dsl.select(PROJECT_AND_JOB.JOB_NAME, JOB_AND_TECH_STACK.TECH_STACK_NAME)
+                .from(PROJECT_AND_JOB)
+                .join(JOB_AND_TECH_STACK)
+                .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+                .where(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
+                .fetchGroups(
+                        r -> r.get(PROJECT_AND_JOB.JOB_NAME),
+                        r -> r.get(JOB_AND_TECH_STACK.TECH_STACK_NAME)
+                );
+    }
+
+
+
+    private List<DeveloperSummary> findMatchingDevelopersWithDomain(List<String> requiredStacks) {
+        final int MIN_SCORE = 50;
+
+        // 테이블 Alias
+        var m = MEMBER.as("m");
+        var dts = DEVELOPER_TECH_STACK.as("dts");
+        var se = SQUAD_EMPLOYEE.as("se");
+        var s = SQUAD.as("s");
+        var p = PROJECT.as("p");
+
+        return dsl.select(
+                        m.EMPLOYEE_IDENTIFICATION_NUMBER,
+                        m.EMPLOYEE_NAME,
+                        m.GRADE_CODE,
+                        DSL.jsonObjectAgg(dts.TECH_STACK_NAME, dts.TECH_STACK_TOTAL_SCORES).as("stack_scores"),
+                        DSL.jsonArrayAggDistinct(p.DOMAIN_NAME).as("domain_list")
+                )
+                .from(m)
+                .join(dts).on(m.EMPLOYEE_IDENTIFICATION_NUMBER.eq(dts.EMPLOYEE_IDENTIFICATION_NUMBER))
+                .leftJoin(se).on(m.EMPLOYEE_IDENTIFICATION_NUMBER.eq(se.EMPLOYEE_IDENTIFICATION_NUMBER))
+                .leftJoin(s).on(se.SQUAD_CODE.eq(s.SQUAD_CODE))
+                .leftJoin(p).on(s.PROJECT_CODE.eq(p.PROJECT_CODE))
+                .where(m.STATUS.eq(MemberStatus.AVAILABLE)
+                        .and(dts.TECH_STACK_NAME.in(requiredStacks))
+                        .and(dts.TECH_STACK_TOTAL_SCORES.ge(MIN_SCORE))
+                )
+                .groupBy(m.EMPLOYEE_IDENTIFICATION_NUMBER)
+                .fetchStream()
+                .map(r -> {
+                    // JSON -> Map<String, Integer>
+                    Map<String, Integer> stackMap = JsonUtils.toMap(r.get("stack_scores", String.class));
+                    List<String> domainList = JsonUtils.toList(r.get("domain_list", String.class));
+
+                    // 모든 스택을 최소 점수 이상 보유한 경우만 필터링
+                    boolean valid = requiredStacks.stream().allMatch(stack ->
+                            stackMap.containsKey(stack) && stackMap.get(stack) >= MIN_SCORE);
+                    if (!valid) return null;
+
+                    return new DeveloperSummary(
+                            r.get(m.EMPLOYEE_IDENTIFICATION_NUMBER, String.class),
+                            r.get(m.EMPLOYEE_NAME, String.class),
+                            r.get(m.GRADE_CODE, String.class),
+                            stackMap.entrySet().stream()
+                                    .collect(Collectors.toMap(Map.Entry::getKey, e -> (double) e.getValue())),
+                            domainList
+                    );
+                })
+                .filter(Objects::nonNull)
+                .toList(); // Java 17 이상
+    }
+
 }
