@@ -57,7 +57,8 @@ class StatisticsQueryServiceImplTest {
   void getStackAverageCareersPaged_returnsPagedCareerStats() {
     PageResponse<TechStackCareerDto> mockPage =
         PageResponse.fromJooq(List.of(new TechStackCareerDto("Java", 5.2, 1.0, 10.0, 3)), 1, 0, 10);
-    when(statisticsQueryRepository.findStackAverageCareerPaged(sampleStacks, 0, 10, "averageCareer", "desc"))
+    when(statisticsQueryRepository.findStackAverageCareerPaged(
+            sampleStacks, 0, 10, "averageCareer", "desc"))
         .thenReturn(mockPage);
 
     PageResponse<TechStackCareerDto> result =
@@ -96,7 +97,8 @@ class StatisticsQueryServiceImplTest {
     PageResponse<TechStackMonthlyUsageDto> mockPage =
         PageResponse.fromJooq(List.of(dto1, dto2), 2, page, size);
 
-    when(statisticsQueryRepository.findMonthlyPopularTechStacks(period, page, size, top)).thenReturn(mockPage);
+    when(statisticsQueryRepository.findMonthlyPopularTechStacks(period, page, size, top))
+        .thenReturn(mockPage);
 
     PageResponse<TechStackMonthlyUsageDto> result =
         service.getPopularTechStacksGroupedByMonth(period, page, size, top);
@@ -139,11 +141,10 @@ class StatisticsQueryServiceImplTest {
   @Test
   void getWaitingCountByGrade_returnsWaitingStats() {
     List<MemberWaitingCountDto> mockResult =
-            List.of(
-                    new MemberWaitingCountDto(MemberGradeCode.S, 3, 5),
-                    new MemberWaitingCountDto(MemberGradeCode.A, 2, 4),
-                    new MemberWaitingCountDto(MemberGradeCode.B, 0, 2)
-            );
+        List.of(
+            new MemberWaitingCountDto(MemberGradeCode.S, 3, 5),
+            new MemberWaitingCountDto(MemberGradeCode.A, 2, 4),
+            new MemberWaitingCountDto(MemberGradeCode.B, 0, 2));
 
     when(statisticsQueryRepository.findWaitingCountByGrade()).thenReturn(mockResult);
 

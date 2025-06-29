@@ -26,8 +26,8 @@ import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus
 import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
-import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;

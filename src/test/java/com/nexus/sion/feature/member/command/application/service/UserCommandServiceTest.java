@@ -33,8 +33,8 @@ import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus
 import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
-import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
 
 @ExtendWith(MockitoExtension.class)
 class UserCommandServiceTest {
@@ -181,8 +181,7 @@ class UserCommandServiceTest {
     when(departmentRepository.existsById("개발팀")).thenReturn(true);
     when(memberRepository.existsByEmail(req.email())).thenReturn(false);
     when(memberRepository.existsByEmployeeIdentificationNumber(EMP_ID)).thenReturn(false);
-    when(initialScoreRepository.findByCareerYears(3))
-        .thenReturn(Optional.of(mockInitialScore));
+    when(initialScoreRepository.findByCareerYears(3)).thenReturn(Optional.of(mockInitialScore));
     when(passwordEncoder.encode(anyString())).thenReturn("encoded");
 
     // when
