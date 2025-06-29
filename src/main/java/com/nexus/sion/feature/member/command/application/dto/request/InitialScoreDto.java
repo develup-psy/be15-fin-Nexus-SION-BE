@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.command.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class InitialScoreDto {
-  @NotBlank Integer minYears;
+  @NotNull
+  Integer minYears;
   Integer maxYears;
-  @NotBlank Integer score;
+  @NotNull Integer score;
 }
