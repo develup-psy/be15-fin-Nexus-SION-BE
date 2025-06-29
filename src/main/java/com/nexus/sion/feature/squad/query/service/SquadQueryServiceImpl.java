@@ -1,13 +1,17 @@
 package com.nexus.sion.feature.squad.query.service;
 
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.List;
 
 import java.util.List;
 import java.util.Map;
 
 import com.nexus.sion.feature.squad.query.dto.request.SquadCandidateRequest;
-import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
-import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
+import com.nexus.sion.feature.squad.query.dto.response.*;
+import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
+import com.nexus.sion.feature.squad.query.util.CalculateSquad;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -23,9 +27,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SquadQueryServiceImpl implements SquadQueryService {
 
   private final SquadQueryRepository squadQueryRepository;
+  private final SquadQueryMapper squadQueryMapper;
+  private final CalculateSquad calculateSquad;
   private final ProjectRepository projectRepository;
 
   @Override
@@ -91,9 +98,28 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
   @Override
   public SquadCandidateResponse findCandidatesByRoles(String projectId) {
-    Map<String, List<DeveloperSummary>> candidatesByJob =
-            squadQueryRepository.findCandidatesByProjectIdGroupedByJob(projectId);
+    List<JobInfo> jobList = squadQueryMapper.findJobsByProjectId(projectId);
 
-    return new SquadCandidateResponse(candidatesByJob);
+    Map<String, List<DeveloperSummary>> result = new LinkedHashMap<>();
+
+    for (JobInfo job : jobList) {
+      List<DeveloperSummary> developers =
+              squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
+      result.put(job.getJobName(), developers);
+    }
+
+    calculateSquad.applyWeightToCandidates(result);
+    for (List<DeveloperSummary> list : result.values()) {
+      list.sort(Comparator.comparingDouble(DeveloperSummary::getWeight).reversed());
+    }
+
+    return new SquadCandidateResponse(result);
+  }
+
+  @Override
+  public Map<String, Integer> findRequiredMemberCountByRoles(String projectId) {
+    List<JobAndCount> result = squadQueryMapper.findRequiredMemberCountByRoles(projectId);
+    return result.stream()
+            .collect(Collectors.toMap(JobAndCount::getJobName, JobAndCount::getRequiredNumber));
   }
 }

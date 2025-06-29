@@ -1,8 +1,8 @@
 package com.nexus.sion.feature.squad.query.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.nexus.sion.feature.squad.query.dto.request.SquadCandidateRequest;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
@@ -26,4 +26,6 @@ public interface SquadQueryService {
   SquadDetailResponse getConfirmedSquadByProjectCode(String projectCode);
 
   SquadCandidateResponse findCandidatesByRoles(String projectId);
+
+  Map<String, Integer> findRequiredMemberCountByRoles(String projectId);
 }
