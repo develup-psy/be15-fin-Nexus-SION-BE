@@ -16,8 +16,7 @@ public class Grade implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private GradeGradeCode gradeCode;
-  private Integer minScore;
-  private Integer maxScore;
+  private BigDecimal ratio;
   private BigDecimal productivity;
   private Integer monthlyUnitPrice;
   private LocalDateTime createdAt;
@@ -27,8 +26,7 @@ public class Grade implements Serializable {
 
   public Grade(Grade value) {
     this.gradeCode = value.gradeCode;
-    this.minScore = value.minScore;
-    this.maxScore = value.maxScore;
+    this.ratio = value.ratio;
     this.productivity = value.productivity;
     this.monthlyUnitPrice = value.monthlyUnitPrice;
     this.createdAt = value.createdAt;
@@ -37,15 +35,13 @@ public class Grade implements Serializable {
 
   public Grade(
       GradeGradeCode gradeCode,
-      Integer minScore,
-      Integer maxScore,
+      BigDecimal ratio,
       BigDecimal productivity,
       Integer monthlyUnitPrice,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.gradeCode = gradeCode;
-    this.minScore = minScore;
-    this.maxScore = maxScore;
+    this.ratio = ratio;
     this.productivity = productivity;
     this.monthlyUnitPrice = monthlyUnitPrice;
     this.createdAt = createdAt;
@@ -62,24 +58,14 @@ public class Grade implements Serializable {
     this.gradeCode = gradeCode;
   }
 
-  /** Getter for <code>sion.grade.min_score</code>. */
-  public Integer getMinScore() {
-    return this.minScore;
+  /** Getter for <code>sion.grade.ratio</code>. */
+  public BigDecimal getRatio() {
+    return this.ratio;
   }
 
-  /** Setter for <code>sion.grade.min_score</code>. */
-  public void setMinScore(Integer minScore) {
-    this.minScore = minScore;
-  }
-
-  /** Getter for <code>sion.grade.max_score</code>. */
-  public Integer getMaxScore() {
-    return this.maxScore;
-  }
-
-  /** Setter for <code>sion.grade.max_score</code>. */
-  public void setMaxScore(Integer maxScore) {
-    this.maxScore = maxScore;
+  /** Setter for <code>sion.grade.ratio</code>. */
+  public void setRatio(BigDecimal ratio) {
+    this.ratio = ratio;
   }
 
   /** Getter for <code>sion.grade.productivity</code>. */
@@ -131,12 +117,9 @@ public class Grade implements Serializable {
     if (this.gradeCode == null) {
       if (other.gradeCode != null) return false;
     } else if (!this.gradeCode.equals(other.gradeCode)) return false;
-    if (this.minScore == null) {
-      if (other.minScore != null) return false;
-    } else if (!this.minScore.equals(other.minScore)) return false;
-    if (this.maxScore == null) {
-      if (other.maxScore != null) return false;
-    } else if (!this.maxScore.equals(other.maxScore)) return false;
+    if (this.ratio == null) {
+      if (other.ratio != null) return false;
+    } else if (!this.ratio.equals(other.ratio)) return false;
     if (this.productivity == null) {
       if (other.productivity != null) return false;
     } else if (!this.productivity.equals(other.productivity)) return false;
@@ -157,8 +140,7 @@ public class Grade implements Serializable {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.gradeCode == null) ? 0 : this.gradeCode.hashCode());
-    result = prime * result + ((this.minScore == null) ? 0 : this.minScore.hashCode());
-    result = prime * result + ((this.maxScore == null) ? 0 : this.maxScore.hashCode());
+    result = prime * result + ((this.ratio == null) ? 0 : this.ratio.hashCode());
     result = prime * result + ((this.productivity == null) ? 0 : this.productivity.hashCode());
     result =
         prime * result + ((this.monthlyUnitPrice == null) ? 0 : this.monthlyUnitPrice.hashCode());
@@ -172,8 +154,7 @@ public class Grade implements Serializable {
     StringBuilder sb = new StringBuilder("Grade (");
 
     sb.append(gradeCode);
-    sb.append(", ").append(minScore);
-    sb.append(", ").append(maxScore);
+    sb.append(", ").append(ratio);
     sb.append(", ").append(productivity);
     sb.append(", ").append(monthlyUnitPrice);
     sb.append(", ").append(createdAt);

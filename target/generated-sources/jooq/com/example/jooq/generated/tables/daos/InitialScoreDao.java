@@ -63,18 +63,33 @@ public class InitialScoreDao
   }
 
   /**
-   * Fetch records that have <code>years BETWEEN lowerInclusive AND
+   * Fetch records that have <code>min_years BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchRangeOfYears(
+  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchRangeOfMinYears(
       Integer lowerInclusive, Integer upperInclusive) {
-    return fetchRange(InitialScore.INITIAL_SCORE.YEARS, lowerInclusive, upperInclusive);
+    return fetchRange(InitialScore.INITIAL_SCORE.MIN_YEARS, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>years IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchByYears(
+  /** Fetch records that have <code>min_years IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchByMinYears(
       Integer... values) {
-    return fetch(InitialScore.INITIAL_SCORE.YEARS, values);
+    return fetch(InitialScore.INITIAL_SCORE.MIN_YEARS, values);
+  }
+
+  /**
+   * Fetch records that have <code>max_years BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchRangeOfMaxYears(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(InitialScore.INITIAL_SCORE.MAX_YEARS, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>max_years IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.InitialScore> fetchByMaxYears(
+      Integer... values) {
+    return fetch(InitialScore.INITIAL_SCORE.MAX_YEARS, values);
   }
 
   /**

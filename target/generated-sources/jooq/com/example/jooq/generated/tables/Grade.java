@@ -9,11 +9,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.Function6;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -54,17 +54,9 @@ public class Grade extends TableImpl<GradeRecord> {
           this,
           "");
 
-  /** The column <code>sion.grade.min_score</code>. */
-  public final TableField<GradeRecord, Integer> MIN_SCORE =
-      createField(DSL.name("min_score"), SQLDataType.INTEGER.nullable(false), this, "");
-
-  /** The column <code>sion.grade.max_score</code>. */
-  public final TableField<GradeRecord, Integer> MAX_SCORE =
-      createField(
-          DSL.name("max_score"),
-          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
-          this,
-          "");
+  /** The column <code>sion.grade.ratio</code>. */
+  public final TableField<GradeRecord, BigDecimal> RATIO =
+      createField(DSL.name("ratio"), SQLDataType.DECIMAL(5, 4).nullable(false), this, "");
 
   /** The column <code>sion.grade.productivity</code>. */
   public final TableField<GradeRecord, BigDecimal> PRODUCTIVITY =
@@ -165,21 +157,20 @@ public class Grade extends TableImpl<GradeRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row7 type methods
+  // Row6 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row7<GradeGradeCode, Integer, Integer, BigDecimal, Integer, LocalDateTime, LocalDateTime>
+  public Row6<GradeGradeCode, BigDecimal, BigDecimal, Integer, LocalDateTime, LocalDateTime>
       fieldsRow() {
-    return (Row7) super.fieldsRow();
+    return (Row6) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function7<
+      Function6<
               ? super GradeGradeCode,
-              ? super Integer,
-              ? super Integer,
+              ? super BigDecimal,
               ? super BigDecimal,
               ? super Integer,
               ? super LocalDateTime,
@@ -192,10 +183,9 @@ public class Grade extends TableImpl<GradeRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function7<
+      Function6<
               ? super GradeGradeCode,
-              ? super Integer,
-              ? super Integer,
+              ? super BigDecimal,
               ? super BigDecimal,
               ? super Integer,
               ? super LocalDateTime,

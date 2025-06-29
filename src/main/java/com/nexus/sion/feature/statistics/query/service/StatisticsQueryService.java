@@ -19,4 +19,6 @@ public interface StatisticsQueryService {
   List<JobParticipationStatsDto> getJobParticipationStats();
 
   List<MemberWaitingCountDto> getWaitingCountsByGrade();
+
+  List<GradeSalaryStatsDto> getGradeSalaryStats();
 }
