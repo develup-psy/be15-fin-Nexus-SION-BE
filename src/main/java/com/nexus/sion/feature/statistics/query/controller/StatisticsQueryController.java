@@ -97,7 +97,7 @@ public class StatisticsQueryController {
 
   @GetMapping("/tech-adoption-trend")
   public ResponseEntity<ApiResponse<List<TechAdoptionTrendDto>>> getTrendByYear(
-          @RequestParam int year) {
+      @RequestParam int year) {
     List<TechAdoptionTrendDto> response = statisticsQueryService.getTechAdoptionTrendsByYear(year);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
