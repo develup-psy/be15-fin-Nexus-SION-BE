@@ -6,16 +6,15 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
 import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
 import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
+import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
+import static org.jooq.impl.DSL.year;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.SortField;
-import org.jooq.Table;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
@@ -489,5 +488,124 @@ public class StatisticsQueryRepository {
                     record.get("minSalary", Long.class),
                     record.get("maxSalary", Long.class),
                     Math.round(record.get("avgSalary", Double.class)))); // 평균값은 반올림
+  }
+
+  public List<TechAdoptionTrendDto> findTechAdoptionTrendsByYear(int year) {
+    LocalDate fromDate = LocalDate.of(year, 1, 1);
+    LocalDate toDate = LocalDate.of(year, 12, 31);
+
+    Field<String> techStackNameField = DSL.field("techStackName", String.class);
+    Field<String> projectCodeField = DSL.field("projectCode", String.class);
+    Field<Integer> quarterField = DSL.field("quarter", Integer.class);
+    Field<Integer> yearField = DSL.val(year).as("year");
+
+    Field<Integer> monthField = DSL.extract(PROJECT.START_DATE, DatePart.MONTH);
+    Field<Integer> quarterCalc =
+        DSL.when(monthField.le(3), 1)
+            .when(monthField.le(6), 2)
+            .when(monthField.le(9), 3)
+            .otherwise(4);
+
+    // 기술 스택별 프로젝트-분기 조합 (중복 제거)
+    Table<?> techProjectQuarter =
+        dsl.selectDistinct(
+                TECH_STACK.TECH_STACK_NAME.as("techStackName"),
+                PROJECT.PROJECT_CODE.as("projectCode"),
+                quarterCalc.as("quarter"))
+            .from(PROJECT)
+            .join(PROJECT_AND_JOB)
+            .on(PROJECT.PROJECT_CODE.eq(PROJECT_AND_JOB.PROJECT_CODE))
+            .join(JOB_AND_TECH_STACK)
+            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+            .join(TECH_STACK)
+            .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
+            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
+            .and(PROJECT.START_DATE.between(fromDate, toDate))
+            .asTable("tech_project_quarter");
+
+    // 전체 고유 프로젝트 수 (연도 내)
+    Table<?> distinctProjectsInYear =
+        dsl.selectDistinct(PROJECT.PROJECT_CODE)
+            .from(PROJECT)
+            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
+            .and(PROJECT.START_DATE.between(fromDate, toDate))
+            .asTable("distinct_projects");
+
+    long totalProjectsInYear =
+        dsl.selectCount().from(distinctProjectsInYear).fetchOne(0, Long.class);
+
+    // 기술 스택별 분기별 프로젝트 수
+    var records =
+        dsl.select(
+                techStackNameField,
+                yearField,
+                quarterField,
+                DSL.countDistinct(projectCodeField).cast(Long.class).as("projectCount"))
+            .from(techProjectQuarter)
+            .groupBy(techStackNameField, quarterField)
+            .orderBy(quarterField.asc())
+            .fetch();
+
+    // 분기별 전체 프로젝트 수
+    Map<Integer, Long> totalProjectsPerQuarter =
+        dsl.select(
+                quarterCalc.as("quarter"),
+                DSL.countDistinct(PROJECT.PROJECT_CODE).cast(Long.class).as("total"))
+            .from(PROJECT)
+            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
+            .and(PROJECT.START_DATE.between(fromDate, toDate))
+            .groupBy(quarterCalc)
+            .fetchMap(DSL.field("quarter", Integer.class), DSL.field("total", Long.class));
+
+    // 기술 스택별 고유 프로젝트 수 (중복 제거)
+    Map<String, Long> techStackProjectCounts =
+        dsl.select(
+                TECH_STACK.TECH_STACK_NAME,
+                DSL.countDistinct(PROJECT.PROJECT_CODE).cast(Long.class).as("projectCount"))
+            .from(PROJECT)
+            .join(PROJECT_AND_JOB)
+            .on(PROJECT.PROJECT_CODE.eq(PROJECT_AND_JOB.PROJECT_CODE))
+            .join(JOB_AND_TECH_STACK)
+            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+            .join(TECH_STACK)
+            .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
+            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
+            .and(PROJECT.START_DATE.between(fromDate, toDate))
+            .groupBy(TECH_STACK.TECH_STACK_NAME)
+            .fetchMap(TECH_STACK.TECH_STACK_NAME, DSL.field("projectCount", Long.class));
+
+    // DTO 생성
+    return records.stream()
+        .map(
+            record -> {
+              String tech = record.get(techStackNameField);
+              Integer quarter = record.get(quarterField);
+              Long count = record.get("projectCount", Long.class);
+              long total = totalProjectsPerQuarter.getOrDefault(quarter, 0L);
+              double percentage = (total == 0) ? 0.0 : ((double) count / total) * 100.0;
+              double totalPercentage =
+                  (totalProjectsInYear == 0)
+                      ? 0.0
+                      : ((double) techStackProjectCounts.getOrDefault(tech, 0L)
+                              / totalProjectsInYear)
+                          * 100.0;
+
+              return TechAdoptionTrendDto.builder()
+                  .techStackName(tech)
+                  .year(year)
+                  .quarter(quarter)
+                  .projectCount(count)
+                  .percentage(percentage)
+                  .totalPercentage(totalPercentage)
+                  .build();
+            })
+        .toList();
+  }
+
+  public List<Integer> findProjectYears() {
+    return dsl.selectDistinct(year(PROJECT.START_DATE))
+        .from(PROJECT)
+        .orderBy(year(PROJECT.START_DATE).desc())
+        .fetchInto(Integer.class);
   }
 }

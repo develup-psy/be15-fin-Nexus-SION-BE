@@ -53,4 +53,14 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   public List<GradeSalaryStatsDto> getGradeSalaryStats() {
     return statisticsQueryRepository.getGradeSalaryStatistics();
   }
+
+  @Override
+  public List<TechAdoptionTrendDto> getTechAdoptionTrendsByYear(int year) {
+    return statisticsQueryRepository.findTechAdoptionTrendsByYear(year);
+  }
+
+  @Override
+  public List<Integer> getProjectYears() {
+    return statisticsQueryRepository.findProjectYears();
+  }
 }
