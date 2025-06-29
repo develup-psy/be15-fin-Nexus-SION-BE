@@ -1,8 +1,8 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import com.nexus.sion.common.domain.BaseTimeEntity;
 
 import lombok.*;
 
@@ -12,32 +12,18 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class InitialScore {
+public class InitialScore extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
-  private int years;
+  @Column(name = "min_years", nullable = false)
+  private Integer minYears;
+
+  @Column(name = "max_years")
+  private Integer maxYears;
 
   @Column(nullable = false)
-  private int score;
-
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
-
-  @PrePersist
-  public void prePersist() {
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = LocalDateTime.now();
-  }
-
-  @PreUpdate
-  public void preUpdate() {
-    this.updatedAt = LocalDateTime.now();
-  }
+  private Integer score;
 }

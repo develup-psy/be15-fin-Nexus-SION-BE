@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.member.command.repository;
+package com.nexus.sion.feature.member.command.domain.repository;
 
 import java.util.Optional;
 

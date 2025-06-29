@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
+import static com.nexus.sion.common.constants.GradeRatioConstants.GRADE_RATIO;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,15 +23,14 @@ public class Grade {
   @Column(name = "grade_code", nullable = false, length = 1)
   private GradeCode gradeCode;
 
-  @Column(name = "min_score", nullable = false)
-  private int minScore;
+  @Column(name = "ratio", nullable = false, precision = 5, scale = 4)
+  private BigDecimal ratio;
 
-  @Column(name = "max_score")
-  private Integer maxScore;
-
+  @Setter
   @Column(name = "productivity", nullable = false, precision = 10, scale = 4)
   private BigDecimal productivity;
 
+  @Setter
   @Column(name = "monthly_unit_price", nullable = false)
   private int monthlyUnitPrice;
 
@@ -38,4 +39,11 @@ public class Grade {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  @PrePersist
+  public void prePersist() {
+    if (this.ratio == null) {
+      this.ratio = new BigDecimal(GRADE_RATIO);
+    }
+  }
 }
