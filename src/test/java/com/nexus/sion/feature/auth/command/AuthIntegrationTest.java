@@ -30,7 +30,7 @@ import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenR
 import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.security.jwt.JwtTokenProvider;
 
 @SpringBootTest

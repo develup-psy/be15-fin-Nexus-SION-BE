@@ -27,7 +27,7 @@ import com.nexus.sion.feature.member.command.domain.repository.DepartmentReposit
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
 import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;

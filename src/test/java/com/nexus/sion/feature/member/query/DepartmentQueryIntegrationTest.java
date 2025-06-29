@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Department;
 import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc

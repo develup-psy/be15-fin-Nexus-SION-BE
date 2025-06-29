@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Position;
 import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
