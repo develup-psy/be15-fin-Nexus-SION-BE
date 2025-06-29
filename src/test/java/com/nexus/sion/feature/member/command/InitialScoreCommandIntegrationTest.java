@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreDto;
-import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequset;
+import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequest;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
 
 @SpringBootTest
@@ -38,7 +38,7 @@ public class InitialScoreCommandIntegrationTest {
             InitialScoreDto.builder().minYears(1).maxYears(3).score(50).build(),
             InitialScoreDto.builder().minYears(4).maxYears(6).score(70).build(),
             InitialScoreDto.builder().minYears(7).maxYears(null).score(90).build());
-    InitialScoreSetRequset request = InitialScoreSetRequset.builder().initialScores(scores).build();
+    InitialScoreSetRequest request = InitialScoreSetRequest.builder().initialScores(scores).build();
 
     String jsonRequest = objectMapper.writeValueAsString(request);
 

@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreDto;
-import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequset;
+import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequest;
 import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +34,7 @@ class InitialScoreCommandServiceImplTest {
             InitialScoreDto.builder().minYears(6).maxYears(10).score(60).build(),
             InitialScoreDto.builder().minYears(11).maxYears(null).score(70).build());
 
-    InitialScoreSetRequset request = InitialScoreSetRequset.builder().initialScores(scores).build();
+    InitialScoreSetRequest request = InitialScoreSetRequest.builder().initialScores(scores).build();
 
     // when
     initialScoreCommandService.setInitialScores(request);
@@ -53,13 +53,13 @@ class InitialScoreCommandServiceImplTest {
             InitialScoreDto.builder().minYears(6).maxYears(10).score(60).build(),
             InitialScoreDto.builder().minYears(11).maxYears(null).score(70).build());
 
-    InitialScoreSetRequset request = InitialScoreSetRequset.builder().initialScores(scores).build();
+    InitialScoreSetRequest request = InitialScoreSetRequest.builder().initialScores(scores).build();
 
     // when & then
     assertThatThrownBy(() -> initialScoreCommandService.setInitialScores(request))
         .isInstanceOf(BusinessException.class)
         .extracting(e -> ((BusinessException) e).getErrorCode())
-        .isEqualTo(ErrorCode.FIRST_MIN_YEARS_SOULD_BE_1);
+        .isEqualTo(ErrorCode.FIRST_MIN_YEARS_SHOULD_BE_1);
   }
 
   @Test
@@ -76,7 +76,7 @@ class InitialScoreCommandServiceImplTest {
                 .build() // 마지막 maxYears가 null이 아님
             );
 
-    InitialScoreSetRequset request = InitialScoreSetRequset.builder().initialScores(scores).build();
+    InitialScoreSetRequest request = InitialScoreSetRequest.builder().initialScores(scores).build();
 
     // when & then
     assertThatThrownBy(() -> initialScoreCommandService.setInitialScores(request))
@@ -98,7 +98,7 @@ class InitialScoreCommandServiceImplTest {
                 .build(), // 5 + 1 != 7 -> 연속성 오류
             InitialScoreDto.builder().minYears(11).maxYears(null).score(70).build());
 
-    InitialScoreSetRequset request = InitialScoreSetRequset.builder().initialScores(scores).build();
+    InitialScoreSetRequest request = InitialScoreSetRequest.builder().initialScores(scores).build();
 
     assertThatThrownBy(() -> initialScoreCommandService.setInitialScores(request))
         .isInstanceOf(BusinessException.class)

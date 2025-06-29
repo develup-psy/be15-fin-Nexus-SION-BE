@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequset;
+import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequest;
 import com.nexus.sion.feature.member.command.application.service.InitialScoreCommandService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +25,8 @@ public class InitialScoreCommandController {
   @Operation(summary = "연차별 초기 스택 점수 설정", description = "연차별 초기 스택 점수 설정 가능")
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> setInitialScores(
-      @RequestBody InitialScoreSetRequset requset) {
-    initialScoreCommandService.setInitialScores(requset);
+      @RequestBody InitialScoreSetRequest request) {
+    initialScoreCommandService.setInitialScores(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
