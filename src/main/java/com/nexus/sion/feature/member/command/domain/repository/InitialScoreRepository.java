@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 
-public interface InitialScoreRepository extends JpaRepository<InitialScore, String> {
+public interface InitialScoreRepository extends JpaRepository<InitialScore, Long> {
   @Query(
       "SELECT i FROM InitialScore i "
           + "WHERE i.minYears <= :careerYears "
