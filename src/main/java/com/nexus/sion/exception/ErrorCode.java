@@ -37,6 +37,9 @@ public enum ErrorCode {
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
   ALREADY_DELETED_USER("20013", "이미 삭제된 구성원입니다.", HttpStatus.BAD_REQUEST),
   CANNOT_DELETE_ADMIN("20014", "관리자는 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
+  FIRST_MIN_YEARS_SOULD_BE_1("20015", "첫 번째 구간의 minYears는 1이어야 합니다.", HttpStatus.BAD_REQUEST),
+  LAST_MAX_YEARS_SHOULD_BE_NULL("20016", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
+  INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20017", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
 
   // project
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
