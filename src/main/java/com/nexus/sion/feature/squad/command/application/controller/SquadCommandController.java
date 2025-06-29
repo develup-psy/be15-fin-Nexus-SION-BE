@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
+import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -36,4 +38,14 @@ public class SquadCommandController {
     squadCommandService.deleteSquad(squadCode);
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("/recommendation")
+  public ResponseEntity<ApiResponse<Void>> recommendSquad(
+          @RequestBody @Valid SquadRecommendationRequest request) {
+
+    squadCommandService.recommendSquad(request);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+
 }

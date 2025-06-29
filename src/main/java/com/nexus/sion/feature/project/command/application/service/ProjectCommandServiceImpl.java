@@ -1,6 +1,8 @@
 package com.nexus.sion.feature.project.command.application.service;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,5 +137,14 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
+  }
+
+  @Override
+  public Map<String, Long> findProjectAndJobIdMap(String projectId) {
+    return projectAndJobRepository.findByProjectCode(projectId).stream()
+            .collect(Collectors.toMap(
+                    ProjectAndJob::getJobName,
+                    ProjectAndJob::getId
+            ));
   }
 }

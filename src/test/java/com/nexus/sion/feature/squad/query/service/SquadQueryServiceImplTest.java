@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,11 +27,12 @@ class SquadQueryServiceImplTest {
 
   private SquadQueryRepository squadQueryRepository;
   private SquadQueryServiceImpl squadQueryService;
+  private SquadQueryMapper squadQueryMapper;
 
   @BeforeEach
   void setUp() {
     squadQueryRepository = Mockito.mock(SquadQueryRepository.class);
-    squadQueryService = new SquadQueryServiceImpl(squadQueryRepository);
+    squadQueryService = new SquadQueryServiceImpl(squadQueryRepository, squadQueryMapper);
   }
 
   @Test

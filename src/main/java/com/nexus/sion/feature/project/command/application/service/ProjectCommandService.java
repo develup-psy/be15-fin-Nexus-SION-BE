@@ -4,6 +4,8 @@ import com.nexus.sion.feature.project.command.application.dto.request.ProjectReg
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
+import java.util.Map;
+
 public interface ProjectCommandService {
   ProjectRegisterResponse registerProject(ProjectRegisterRequest request);
 
@@ -12,4 +14,6 @@ public interface ProjectCommandService {
   void deleteProject(String projectCode);
 
   void updateProjectStatus(String projectCode, Project.ProjectStatus status);
+
+    Map<String, Long> findProjectAndJobIdMap(String projectId);
 }

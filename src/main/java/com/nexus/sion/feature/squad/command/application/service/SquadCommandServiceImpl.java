@@ -1,8 +1,25 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
+import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
+import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
+import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
+import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
+import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
+import com.nexus.sion.feature.squad.command.domain.service.SquadCombinationGeneratorImpl;
+import com.nexus.sion.feature.squad.command.domain.service.SquadDomainService;
+import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
+import com.nexus.sion.feature.squad.command.domain.service.SquadSelectorImpl;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
+import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,12 +40,20 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SquadCommandServiceImpl implements SquadCommandService {
 
   private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
   private final ProjectRepository projectRepository;
   private final SquadCommentRepository squadCommentRepository;
+  private final SquadQueryService squadQueryService;
+  private final SquadCombinationGeneratorImpl squadCombinationGenerator;
+  private final SquadEvaluatorImpl squadEvaluator;
+  private final SquadSelectorImpl squadSelector;
+  private final GradeDomainService gradeDomainService;
+  private final ProjectCommandService projectCommandService;
+  private final SquadDomainService squadDomainService;
 
   @Override
   @Transactional
@@ -128,5 +153,88 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     // 스쿼드 삭제
     squadCommandRepository.delete(squad);
+  }
+
+  @Override
+  public void recommendSquad(SquadRecommendationRequest request) {
+    String projectId = request.getProjectId();
+    RecommendationCriteria criteria = request.getCriteria();
+
+    // 1. 후보군 조회
+    Map<String, List<DeveloperSummary>> candidates =
+            squadQueryService.findCandidatesByRoles(projectId).candidates();
+
+    Map<String, Integer> requiredCountByRole =
+            squadQueryService.findRequiredMemberCountByRoles(projectId);
+
+    // 2. 프로젝트별 원하는 직무수에 따라 모든 가능한 조합을 생성
+    List<Map<String, List<DeveloperSummary>>> combinations =
+            squadCombinationGenerator.generate(candidates, requiredCountByRole);
+
+    if (combinations.isEmpty()) {
+      throw new IllegalStateException("생성 가능한 스쿼드 조합이 없습니다.");
+    }
+
+    // 2-1. 평가를 위한 데이터로 전처리
+    List<Map<String, List<CandidateSummary>>> transformedCombinations =
+            combinations.stream()
+                    .map(squad -> squad.entrySet().stream()
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey, // jobName
+                                    entry -> entry.getValue().stream()
+                                            .map(dev -> CandidateSummary.builder()
+                                                    .memberId(dev.getId())
+                                                    .name(dev.getName())
+                                                    .jobName(entry.getKey())
+                                                    .techStackScore((int) dev.getAvgTechScore())
+                                                    .domainRelevance(dev.getDomainCount() / 10.0)
+                                                    .costPerMonth(gradeDomainService.getMonthlyUnitPrice(dev.getGrade()))
+                                                    .productivityFactor(gradeDomainService.getProductivityFactor(dev.getGrade()))
+                                                    .build())
+                                            .toList()
+                            ))
+                    ).toList();
+
+    // 3. 조합 평가
+    List<EvaluatedSquad> evaluatedSquads = squadEvaluator.evaluateAll(transformedCombinations);
+
+    // 4. 추천 기준에 따라 최적 조합 선택
+    EvaluatedSquad bestSquad = squadSelector.selectBest(evaluatedSquads, criteria);
+
+    String squadCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase(); // 예시
+
+
+    Squad squad = Squad.builder()
+            .squadCode(squadCode)
+            .projectCode(projectId)
+            .title("AI 추천 스쿼드 (" + criteria.name() + ")")
+            .description("기준: " + criteria.name())
+            .isActive(false)
+            .estimatedCost(BigDecimal.valueOf(bestSquad.getTotalMonthlyCost()))
+            .estimatedDuration(BigDecimal.valueOf(bestSquad.getEstimatedDuration()))
+            .originType(OriginType.AI)  // enum
+            .recommendationReason(squadDomainService.buildRecommendationReason(criteria, bestSquad))
+            .build();
+
+    squadCommandRepository.save(squad);
+
+    Map<String, Long> jobIdMap = projectCommandService.findProjectAndJobIdMap(projectId);
+
+    List<SquadEmployee> squadEmployees = bestSquad.getSquad().entrySet().stream()
+            .flatMap(entry -> {
+              String jobName = entry.getKey();
+              Long projectAndJobId = jobIdMap.get(jobName);
+              return entry.getValue().stream().map(candidate -> SquadEmployee.builder()
+                      .assignedDate(LocalDate.now())
+                      .employeeIdentificationNumber(String.valueOf(candidate.getMemberId()))
+                      .projectAndJobId(projectAndJobId)
+                      .squadCode(squadCode)
+                      .isLeader(false)
+                      .totalSkillScore(candidate.getTechStackScore())
+                      .build());
+            })
+            .toList();
+
+    squadEmployeeCommandRepository.saveAll(squadEmployees);
   }
 }
