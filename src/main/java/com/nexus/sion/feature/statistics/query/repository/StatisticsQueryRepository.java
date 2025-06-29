@@ -446,22 +446,48 @@ public class StatisticsQueryRepository {
                     record.get(totalCountField)));
   }
 
+  // 제안
   public List<GradeSalaryStatsDto> getGradeSalaryStatistics() {
+    // 1. 모든 등급을 포함하는 가상 테이블 생성
+    var gradeValues =
+        DSL.values(
+                DSL.row(MemberGradeCode.S),
+                DSL.row(MemberGradeCode.A),
+                DSL.row(MemberGradeCode.B),
+                DSL.row(MemberGradeCode.C),
+                DSL.row(MemberGradeCode.D))
+            .as("grades", "grade_code");
+
+    Field<MemberGradeCode> gradeCodeField = gradeValues.field("grade_code", MemberGradeCode.class);
+
+    // 2. 등급별 연봉 통계를 계산하는 서브쿼리
+    var salaryStatsSubquery =
+        dsl.select(
+                MEMBER.GRADE_CODE,
+                DSL.min(MEMBER.SALARY).as("minSalary"),
+                DSL.max(MEMBER.SALARY).as("maxSalary"),
+                DSL.avg(MEMBER.SALARY).as("avgSalary"))
+            .from(MEMBER)
+            .where(MEMBER.SALARY.isNotNull().and(MEMBER.GRADE_CODE.isNotNull()))
+            .groupBy(MEMBER.GRADE_CODE)
+            .asTable("salary_stats");
+
+    // 3. 가상 테이블과 서브쿼리를 LEFT JOIN하여 모든 등급에 대한 결과 보장
     return dsl.select(
-            MEMBER.GRADE_CODE,
-            DSL.min(MEMBER.SALARY).as("minSalary"),
-            DSL.max(MEMBER.SALARY).as("maxSalary"),
-            DSL.avg(MEMBER.SALARY).as("avgSalary"))
-        .from(MEMBER)
-        .where(MEMBER.SALARY.isNotNull().and(MEMBER.GRADE_CODE.isNotNull()))
-        .groupBy(MEMBER.GRADE_CODE)
+            gradeCodeField,
+            DSL.coalesce(salaryStatsSubquery.field("minSalary", Long.class), 0L).as("minSalary"),
+            DSL.coalesce(salaryStatsSubquery.field("maxSalary", Long.class), 0L).as("maxSalary"),
+            DSL.coalesce(salaryStatsSubquery.field("avgSalary", Double.class), 0.0).as("avgSalary"))
+        .from(gradeValues)
+        .leftJoin(salaryStatsSubquery)
+        .on(gradeCodeField.eq(salaryStatsSubquery.field(MEMBER.GRADE_CODE)))
+        .orderBy(gradeCodeField.asc())
         .fetch(
             record ->
                 new GradeSalaryStatsDto(
-                    record.get(MEMBER.GRADE_CODE),
+                    record.get(gradeCodeField),
                     record.get("minSalary", Long.class),
                     record.get("maxSalary", Long.class),
-                    Math.round(record.get("avgSalary", Double.class)) // 반올림 처리
-                    ));
+                    Math.round(record.get("avgSalary", Double.class)))); // 평균값은 반올림
   }
 }
