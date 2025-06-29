@@ -62,14 +62,15 @@ public class InitialScoreCommandServiceImpl implements InitialScoreCommandServic
     initialScoreRepository.deleteAll();
 
     // 새로운 정보 등록
-    List<InitialScore> newScores = scores.stream()
+    List<InitialScore> newScores =
+        scores.stream()
             .map(
-                    grade ->
-                            InitialScore.builder()
-                                    .minYears(grade.getMinYears())
-                                    .maxYears(grade.getMaxYears())
-                                    .score(grade.getScore())
-                                    .build())
+                grade ->
+                    InitialScore.builder()
+                        .minYears(grade.getMinYears())
+                        .maxYears(grade.getMaxYears())
+                        .score(grade.getScore())
+                        .build())
             .toList();
     initialScoreRepository.saveAll(newScores);
   }
