@@ -181,7 +181,7 @@ class UserCommandServiceTest {
     when(departmentRepository.existsById("개발팀")).thenReturn(true);
     when(memberRepository.existsByEmail(req.email())).thenReturn(false);
     when(memberRepository.existsByEmployeeIdentificationNumber(EMP_ID)).thenReturn(false);
-    when(initialScoreRepository.findTopByYearsLessThanEqualOrderByYearsDesc(3))
+    when(initialScoreRepository.findByCareerYears(3))
         .thenReturn(Optional.of(mockInitialScore));
     when(passwordEncoder.encode(anyString())).thenReturn("encoded");
 
@@ -217,7 +217,7 @@ class UserCommandServiceTest {
     when(memberRepository.findById(EMP_ID)).thenReturn(Optional.of(member));
     when(positionRepository.existsById("백엔드")).thenReturn(true);
     when(departmentRepository.existsById("개발팀")).thenReturn(true);
-    when(initialScoreRepository.findTopByYearsLessThanEqualOrderByYearsDesc(anyInt()))
+    when(initialScoreRepository.findByCareerYears(anyInt()))
         .thenReturn(Optional.of(mockInitialScore));
     when(developerTechStackRepository.findAllByEmployeeIdentificationNumber(EMP_ID))
         .thenReturn(List.of());

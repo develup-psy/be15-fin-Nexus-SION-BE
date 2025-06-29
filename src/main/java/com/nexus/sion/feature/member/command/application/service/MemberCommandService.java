@@ -126,7 +126,7 @@ public class MemberCommandService {
 
       int initialScore =
           initialScoreRepository
-              .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
+              .findByCareerYears(request.careerYears())
               .map(InitialScore::getScore)
               .orElse(0);
 
@@ -237,7 +237,7 @@ public class MemberCommandService {
 
     int initialScore =
         initialScoreRepository
-            .findTopByYearsLessThanEqualOrderByYearsDesc(request.careerYears())
+            .findByCareerYears(request.careerYears())
             .map(InitialScore::getScore)
             .orElse(0);
 
