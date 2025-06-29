@@ -22,7 +22,7 @@ public interface StatisticsQueryService {
 
   List<GradeSalaryStatsDto> getGradeSalaryStats();
 
-  PageResponse<TechAdoptionTrendDto> getTechAdoptionTrendsByYearPaged(int year, int page, int size);
+  List<TechAdoptionTrendDto> getTechAdoptionTrendsByYear(int year);
 
   List<Integer> getProjectYears();
 }

@@ -55,18 +55,8 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   }
 
   @Override
-  public PageResponse<TechAdoptionTrendDto> getTechAdoptionTrendsByYearPaged(
-      int year, int page, int size) {
-    List<TechAdoptionTrendDto> all = statisticsQueryRepository.findTechAdoptionTrendsByYear(year);
-
-    int total = all.size();
-    int fromIndex = page * size;
-    int toIndex = Math.min(fromIndex + size, total);
-
-    List<TechAdoptionTrendDto> pageContent =
-        fromIndex >= total ? List.of() : all.subList(fromIndex, toIndex);
-
-    return PageResponse.fromJooq(pageContent, total, page, size);
+  public List<TechAdoptionTrendDto> getTechAdoptionTrendsByYear(int year) {
+    return statisticsQueryRepository.findTechAdoptionTrendsByYear(year);
   }
 
   @Override
