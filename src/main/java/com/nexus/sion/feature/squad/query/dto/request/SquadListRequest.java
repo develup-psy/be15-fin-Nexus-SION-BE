@@ -9,4 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class SquadListRequest {
   private String projectCode;
+  private int page = 0;
+  private int size = 10;
 }

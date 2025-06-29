@@ -1,16 +1,11 @@
 package com.nexus.sion.feature.squad.query.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,10 +18,10 @@ public class SquadQueryController {
   private final SquadQueryService squadQueryService;
 
   @GetMapping("/project/{projectCode}")
-  public List<SquadListResponse> getSquads(@PathVariable String projectCode) {
-    SquadListRequest request = new SquadListRequest();
+  public ResponseEntity<SquadListResultResponse> getSquads(
+      @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
     request.setProjectCode(projectCode);
-    return squadQueryService.findSquads(request);
+    return ResponseEntity.ok(squadQueryService.findSquads(request));
   }
 
   @GetMapping("/{squadCode}")
