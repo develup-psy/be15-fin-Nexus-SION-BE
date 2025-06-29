@@ -1,12 +1,28 @@
 package com.nexus.sion.feature.squad.query.dto.response;
 
-import java.util.List;
-import java.util.Map;
 
-public record DeveloperSummary(
-        String id ,
-        String name,
-        String grade,
-        Map<String, Double> stackScores,
-        List<String> domains
-) {}
+import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class DeveloperSummary {
+
+    private String id;
+    private String name;
+    private String grade;
+
+    private double avgTechScore;
+    private int domainCount;
+    private Double weight;
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+}
+

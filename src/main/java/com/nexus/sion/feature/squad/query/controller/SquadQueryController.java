@@ -39,6 +39,7 @@ public class SquadQueryController {
   public ResponseEntity<ApiResponse<SquadCandidateResponse>> getCandidates(
           @RequestParam String projectId
   ) {
+
     return ResponseEntity.ok(ApiResponse.success(squadQueryService.findCandidatesByRoles(projectId)));
   }
 }
