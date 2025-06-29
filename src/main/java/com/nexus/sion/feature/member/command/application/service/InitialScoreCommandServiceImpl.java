@@ -40,7 +40,7 @@ public class InitialScoreCommandServiceImpl implements InitialScoreCommandServic
 
             // 마지막 구간이면 maxYears == null
             if (i == scores.size() - 1) {
-                if (current.getMaxYears() == null) {
+                if (current.getMaxYears() != null) {
                     throw new BusinessException(ErrorCode.LAST_MAX_YEARS_SHOULD_BE_NULL);
                 }
             } else {

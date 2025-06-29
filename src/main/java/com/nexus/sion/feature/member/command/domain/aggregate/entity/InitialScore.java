@@ -18,11 +18,11 @@ public class InitialScore extends BaseTimeEntity {
   private Long id;
 
   @Column(name = "min_years", nullable = false)
-  private int minYears;
+  private Integer minYears;
 
   @Column(name = "max_years")
-  private int maxYears;
+  private Integer maxYears;
 
   @Column(nullable = false)
-  private int score;
+  private Integer score;
 }
