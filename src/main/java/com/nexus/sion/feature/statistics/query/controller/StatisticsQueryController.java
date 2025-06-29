@@ -94,4 +94,20 @@ public class StatisticsQueryController {
     var result = statisticsQueryService.getGradeSalaryStats();
     return ResponseEntity.ok(ApiResponse.success(result));
   }
+
+  @GetMapping("/tech-adoption-trend")
+  public ResponseEntity<ApiResponse<PageResponse<TechAdoptionTrendDto>>> getTrendByYear(
+      @RequestParam int year,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    PageResponse<TechAdoptionTrendDto> response =
+        statisticsQueryService.getTechAdoptionTrendsByYearPaged(year, page, size);
+    return ResponseEntity.ok(ApiResponse.success(response));
+  }
+
+  @GetMapping("/project/years")
+  public ResponseEntity<ApiResponse<List<Integer>>> getProjectYears() {
+    List<Integer> years = statisticsQueryService.getProjectYears();
+    return ResponseEntity.ok(ApiResponse.success(years));
+  }
 }

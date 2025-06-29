@@ -6,16 +6,15 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
 import static com.example.jooq.generated.tables.ProjectAndJob.PROJECT_AND_JOB;
 import static com.example.jooq.generated.tables.SquadEmployee.SQUAD_EMPLOYEE;
+import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
+import static org.jooq.impl.DSL.year;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.SortField;
-import org.jooq.Table;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
@@ -489,5 +488,73 @@ public class StatisticsQueryRepository {
                     record.get("minSalary", Long.class),
                     record.get("maxSalary", Long.class),
                     Math.round(record.get("avgSalary", Double.class)))); // 평균값은 반올림
+  }
+
+  public List<TechAdoptionTrendDto> findTechAdoptionTrendsByYear(int year) {
+    LocalDate fromDate = LocalDate.of(year, 1, 1);
+    LocalDate toDate = LocalDate.of(year, 12, 31);
+
+    Field<String> techStackNameField = TECH_STACK.TECH_STACK_NAME;
+    Field<Integer> yearField = DSL.val(year).as("year");
+    Field<Integer> monthField = DSL.extract(PROJECT.START_DATE, DatePart.MONTH);
+    Field<Integer> quarterField =
+        DSL.when(monthField.le(3), 1)
+            .when(monthField.le(6), 2)
+            .when(monthField.le(9), 3)
+            .otherwise(4)
+            .as("quarter");
+
+    Field<Long> projectCountField =
+        DSL.countDistinct(PROJECT.PROJECT_CODE).cast(Long.class).as("projectCount");
+
+    var records =
+        dsl.select(techStackNameField, yearField, quarterField, projectCountField)
+            .from(PROJECT)
+            .join(PROJECT_AND_JOB)
+            .on(PROJECT.PROJECT_CODE.eq(PROJECT_AND_JOB.PROJECT_CODE))
+            .join(JOB_AND_TECH_STACK)
+            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+            .join(TECH_STACK)
+            .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
+            .where(PROJECT.STATUS.in(ProjectStatus.IN_PROGRESS, ProjectStatus.COMPLETE))
+            .and(PROJECT.START_DATE.between(fromDate, toDate))
+            .groupBy(techStackNameField, quarterField)
+            .orderBy(quarterField.asc())
+            .fetch();
+
+    // 분기별 총합 구하기
+    Map<Integer, Long> quarterTotals = new HashMap<>();
+    for (var record : records) {
+      int quarter = record.get("quarter", Integer.class);
+      long count = record.get("projectCount", Long.class);
+      quarterTotals.merge(quarter, count, Long::sum);
+    }
+
+    // DTO 변환
+    return records.stream()
+        .map(
+            record -> {
+              String tech = record.get(techStackNameField);
+              Integer quarter = record.get("quarter", Integer.class);
+              Long count = record.get("projectCount", Long.class);
+              long total = quarterTotals.getOrDefault(quarter, 1L);
+              double percentage = Math.round(((double) count / total) * 1000.0) / 10.0;
+
+              return TechAdoptionTrendDto.builder()
+                  .techStackName(tech)
+                  .year(year)
+                  .quarter(quarter)
+                  .projectCount(count)
+                  .percentage(percentage)
+                  .build();
+            })
+        .toList();
+  }
+
+  public List<Integer> findProjectYears() {
+    return dsl.selectDistinct(year(PROJECT.START_DATE))
+        .from(PROJECT)
+        .orderBy(year(PROJECT.START_DATE).desc())
+        .fetchInto(Integer.class);
   }
 }

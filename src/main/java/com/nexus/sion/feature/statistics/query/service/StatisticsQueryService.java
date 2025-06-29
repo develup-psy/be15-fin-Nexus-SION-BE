@@ -21,4 +21,8 @@ public interface StatisticsQueryService {
   List<MemberWaitingCountDto> getWaitingCountsByGrade();
 
   List<GradeSalaryStatsDto> getGradeSalaryStats();
+
+  PageResponse<TechAdoptionTrendDto> getTechAdoptionTrendsByYearPaged(int year, int page, int size);
+
+  List<Integer> getProjectYears();
 }
