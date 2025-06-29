@@ -7,9 +7,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mariadb://localhost:3306/SION
+    username: root
+    password: 8897
 
   jpa:
     hibernate:
@@ -31,6 +31,21 @@ spring:
           max-idle: 5  # 최대 유휴 연결 수
           min-idle: 1  # 최소 유휴 연결 수
           max-wait: 2000ms  # 최대 대기 시간
+
+mybatis:
+  mapper-locations: classpath:/mappers/**/*.xml
+  type-aliases-package: >
+    com.nexus.sion.feature.squad.query.mapper
+    com.nexus.sion.feature.auth.query.mapper
+    com.nexus.sion.feature.evaluation.query.mapper
+    com.nexus.sion.feature.member.query.mapper
+    com.nexus.sion.feature.project.query.mapper
+    com.nexus.sion.feature.statistics.query.mapper
+    com.nexus.sion.feature.techstack.query.mapper
+  configuration:
+    map-underscore-to-camel-case: true
+    use-actual-param-name: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 jwt:
   secret: ${JWT_SECRET}
@@ -61,6 +76,9 @@ logging:
   level:
     root: INFO
     com.nexus.sion: INFO
+    org.mybatis: DEBUG
+    jdbc.sqlonly: DEBUG
+    com.nexus.sion.feature.squad.query.mapper: DEBUG
 
 management:
   endpoints:

@@ -37,6 +37,8 @@ public enum ErrorCode {
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
   ALREADY_DELETED_USER("20013", "이미 삭제된 구성원입니다.", HttpStatus.BAD_REQUEST),
   CANNOT_DELETE_ADMIN("20014", "관리자는 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
+  INVALID_SORT_COLUMN("20015", "유효하지 않는 정렬 기준입니다", HttpStatus.BAD_REQUEST),
+  INVALID_GRADE("20016", "유효하지 않는 등급 정보입니다. ", HttpStatus.BAD_REQUEST),
   FIRST_MIN_YEARS_SHOULD_BE_1("20015", "첫 번째 구간의 minYears는 1이어야 합니다.", HttpStatus.BAD_REQUEST),
   LAST_MAX_YEARS_SHOULD_BE_NULL("20016", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
   INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20017", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
