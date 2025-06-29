@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

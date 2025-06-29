@@ -1,0 +1,77 @@
+package com.nexus.sion.feature.member.command.application.service;
+
+import java.util.List;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreDto;
+import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreSetRequest;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
+import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class InitialScoreCommandServiceImpl implements InitialScoreCommandService {
+
+  private final InitialScoreRepository initialScoreRepository;
+
+  @Transactional
+  @Override
+  public void setInitialScores(InitialScoreSetRequest request) {
+    List<InitialScoreDto> scores = request.getInitialScores();
+
+    /* 유효성 검사
+     * 1️⃣ 첫 번째 구간의 minYears 는 무조건 1 이어야 한다.
+     * 2️⃣ 각 구간은 이전 maxYears 와 다음 minYears 가 정확히 1 차이가 나야 한다.
+     * 3️⃣ 마지막 구간의 maxYears 는 null 이어야 한다.
+     */
+
+    // 1. 첫 번째 minYears == 1 체크
+    if (scores.get(0).getMinYears() != 1) {
+      throw new BusinessException(ErrorCode.FIRST_MIN_YEARS_SHOULD_BE_1);
+    }
+
+    // 3. 각 구간이 연속되는지 체크 + 마지막 maxYears == null
+    for (int i = 0; i < scores.size(); i++) {
+      InitialScoreDto current = scores.get(i);
+
+      // 마지막 구간이면 maxYears == null
+      if (i == scores.size() - 1) {
+        if (current.getMaxYears() != null) {
+          throw new BusinessException(ErrorCode.LAST_MAX_YEARS_SHOULD_BE_NULL);
+        }
+      } else {
+        InitialScoreDto next = scores.get(i + 1);
+        if (current.getMaxYears() == null) {
+          throw new BusinessException(ErrorCode.INTERVAL_YEARS_SHOULD_BE_CONTINUOUS);
+        }
+
+        if (next.getMinYears() != current.getMaxYears() + 1) {
+          throw new BusinessException(ErrorCode.INTERVAL_YEARS_SHOULD_BE_CONTINUOUS);
+        }
+      }
+    }
+
+    // 기존 정보 remove
+    initialScoreRepository.deleteAll();
+
+    // 새로운 정보 등록
+    List<InitialScore> newScores =
+        scores.stream()
+            .map(
+                grade ->
+                    InitialScore.builder()
+                        .minYears(grade.getMinYears())
+                        .maxYears(grade.getMaxYears())
+                        .score(grade.getScore())
+                        .build())
+            .toList();
+    initialScoreRepository.saveAll(newScores);
+  }
+}

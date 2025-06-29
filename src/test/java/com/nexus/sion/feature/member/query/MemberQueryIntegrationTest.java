@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.repository.MemberRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
