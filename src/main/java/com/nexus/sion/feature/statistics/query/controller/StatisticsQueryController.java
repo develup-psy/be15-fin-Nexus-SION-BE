@@ -88,4 +88,10 @@ public class StatisticsQueryController {
     List<MemberWaitingCountDto> result = statisticsQueryService.getWaitingCountsByGrade();
     return ResponseEntity.ok(ApiResponse.success(result));
   }
+
+  @GetMapping("/salary-stats-by-grade")
+  public ResponseEntity<ApiResponse<List<GradeSalaryStatsDto>>> getSalaryStatsByGrade() {
+    var result = statisticsQueryService.getGradeSalaryStats();
+    return ResponseEntity.ok(ApiResponse.success(result));
+  }
 }

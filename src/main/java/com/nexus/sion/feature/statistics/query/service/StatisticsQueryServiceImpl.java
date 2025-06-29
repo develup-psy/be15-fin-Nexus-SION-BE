@@ -48,4 +48,9 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   public List<MemberWaitingCountDto> getWaitingCountsByGrade() {
     return statisticsQueryRepository.findWaitingCountByGrade();
   }
+
+  @Override
+  public List<GradeSalaryStatsDto> getGradeSalaryStats() {
+    return statisticsQueryRepository.getGradeSalaryStatistics();
+  }
 }

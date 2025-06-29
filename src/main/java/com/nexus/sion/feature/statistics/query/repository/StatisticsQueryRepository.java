@@ -447,4 +447,23 @@ public class StatisticsQueryRepository {
                     )
             );
   }
+
+  public List<GradeSalaryStatsDto> getGradeSalaryStatistics() {
+    return dsl.select(
+                    MEMBER.GRADE_CODE,
+                    DSL.min(MEMBER.SALARY).as("minSalary"),
+                    DSL.max(MEMBER.SALARY).as("maxSalary"),
+                    DSL.avg(MEMBER.SALARY).as("avgSalary")
+            )
+            .from(MEMBER)
+            .where(MEMBER.SALARY.isNotNull()
+                    .and(MEMBER.GRADE_CODE.isNotNull()))
+            .groupBy(MEMBER.GRADE_CODE)
+            .fetch(record -> new GradeSalaryStatsDto(
+                    record.get(MEMBER.GRADE_CODE),
+                    record.get("minSalary", Long.class),
+                    record.get("maxSalary", Long.class),
+                    Math.round(record.get("avgSalary", Double.class)) // 반올림 처리
+            ));
+  }
 }
