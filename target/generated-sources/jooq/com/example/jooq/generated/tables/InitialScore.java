@@ -8,11 +8,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -44,11 +45,19 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
 
   /** The column <code>sion.initial_score.id</code>. */
   public final TableField<InitialScoreRecord, Long> ID =
-      createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>sion.initial_score.years</code>. */
-  public final TableField<InitialScoreRecord, Integer> YEARS =
-      createField(DSL.name("years"), SQLDataType.INTEGER.nullable(false), this, "");
+  /** The column <code>sion.initial_score.min_years</code>. */
+  public final TableField<InitialScoreRecord, Integer> MIN_YEARS =
+      createField(DSL.name("min_years"), SQLDataType.INTEGER.nullable(false), this, "");
+
+  /** The column <code>sion.initial_score.max_years</code>. */
+  public final TableField<InitialScoreRecord, Integer> MAX_YEARS =
+      createField(
+          DSL.name("max_years"),
+          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
+          this,
+          "");
 
   /** The column <code>sion.initial_score.score</code>. */
   public final TableField<InitialScoreRecord, Integer> SCORE =
@@ -107,6 +116,11 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
   }
 
   @Override
+  public Identity<InitialScoreRecord, Long> getIdentity() {
+    return (Identity<InitialScoreRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<InitialScoreRecord> getPrimaryKey() {
     return Keys.KEY_INITIAL_SCORE_PRIMARY;
   }
@@ -145,18 +159,19 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row5 type methods
+  // Row6 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row5<Long, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
-    return (Row5) super.fieldsRow();
+  public Row6<Long, Integer, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
+    return (Row6) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function5<
+      Function6<
               ? super Long,
+              ? super Integer,
               ? super Integer,
               ? super Integer,
               ? super LocalDateTime,
@@ -169,8 +184,9 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function5<
+      Function6<
               ? super Long,
+              ? super Integer,
               ? super Integer,
               ? super Integer,
               ? super LocalDateTime,

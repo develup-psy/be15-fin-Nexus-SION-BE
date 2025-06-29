@@ -13,7 +13,8 @@ public class InitialScore implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Long id;
-  private Integer years;
+  private Integer minYears;
+  private Integer maxYears;
   private Integer score;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -22,16 +23,23 @@ public class InitialScore implements Serializable {
 
   public InitialScore(InitialScore value) {
     this.id = value.id;
-    this.years = value.years;
+    this.minYears = value.minYears;
+    this.maxYears = value.maxYears;
     this.score = value.score;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
   }
 
   public InitialScore(
-      Long id, Integer years, Integer score, LocalDateTime createdAt, LocalDateTime updatedAt) {
+      Long id,
+      Integer minYears,
+      Integer maxYears,
+      Integer score,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
     this.id = id;
-    this.years = years;
+    this.minYears = minYears;
+    this.maxYears = maxYears;
     this.score = score;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -47,14 +55,24 @@ public class InitialScore implements Serializable {
     this.id = id;
   }
 
-  /** Getter for <code>sion.initial_score.years</code>. */
-  public Integer getYears() {
-    return this.years;
+  /** Getter for <code>sion.initial_score.min_years</code>. */
+  public Integer getMinYears() {
+    return this.minYears;
   }
 
-  /** Setter for <code>sion.initial_score.years</code>. */
-  public void setYears(Integer years) {
-    this.years = years;
+  /** Setter for <code>sion.initial_score.min_years</code>. */
+  public void setMinYears(Integer minYears) {
+    this.minYears = minYears;
+  }
+
+  /** Getter for <code>sion.initial_score.max_years</code>. */
+  public Integer getMaxYears() {
+    return this.maxYears;
+  }
+
+  /** Setter for <code>sion.initial_score.max_years</code>. */
+  public void setMaxYears(Integer maxYears) {
+    this.maxYears = maxYears;
   }
 
   /** Getter for <code>sion.initial_score.score</code>. */
@@ -96,9 +114,12 @@ public class InitialScore implements Serializable {
     if (this.id == null) {
       if (other.id != null) return false;
     } else if (!this.id.equals(other.id)) return false;
-    if (this.years == null) {
-      if (other.years != null) return false;
-    } else if (!this.years.equals(other.years)) return false;
+    if (this.minYears == null) {
+      if (other.minYears != null) return false;
+    } else if (!this.minYears.equals(other.minYears)) return false;
+    if (this.maxYears == null) {
+      if (other.maxYears != null) return false;
+    } else if (!this.maxYears.equals(other.maxYears)) return false;
     if (this.score == null) {
       if (other.score != null) return false;
     } else if (!this.score.equals(other.score)) return false;
@@ -116,7 +137,8 @@ public class InitialScore implements Serializable {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.years == null) ? 0 : this.years.hashCode());
+    result = prime * result + ((this.minYears == null) ? 0 : this.minYears.hashCode());
+    result = prime * result + ((this.maxYears == null) ? 0 : this.maxYears.hashCode());
     result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -128,7 +150,8 @@ public class InitialScore implements Serializable {
     StringBuilder sb = new StringBuilder("InitialScore (");
 
     sb.append(id);
-    sb.append(", ").append(years);
+    sb.append(", ").append(minYears);
+    sb.append(", ").append(maxYears);
     sb.append(", ").append(score);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);

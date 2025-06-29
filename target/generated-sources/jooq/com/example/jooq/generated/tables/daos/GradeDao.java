@@ -62,31 +62,17 @@ public class GradeDao
   }
 
   /**
-   * Fetch records that have <code>min_score BETWEEN lowerInclusive AND
+   * Fetch records that have <code>ratio BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.Grade> fetchRangeOfMinScore(
-      Integer lowerInclusive, Integer upperInclusive) {
-    return fetchRange(Grade.GRADE.MIN_SCORE, lowerInclusive, upperInclusive);
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchRangeOfRatio(
+      BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+    return fetchRange(Grade.GRADE.RATIO, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>min_score IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Grade> fetchByMinScore(Integer... values) {
-    return fetch(Grade.GRADE.MIN_SCORE, values);
-  }
-
-  /**
-   * Fetch records that have <code>max_score BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.Grade> fetchRangeOfMaxScore(
-      Integer lowerInclusive, Integer upperInclusive) {
-    return fetchRange(Grade.GRADE.MAX_SCORE, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>max_score IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Grade> fetchByMaxScore(Integer... values) {
-    return fetch(Grade.GRADE.MAX_SCORE, values);
+  /** Fetch records that have <code>ratio IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchByRatio(BigDecimal... values) {
+    return fetch(Grade.GRADE.RATIO, values);
   }
 
   /**
