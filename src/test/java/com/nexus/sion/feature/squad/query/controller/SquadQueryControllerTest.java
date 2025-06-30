@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,14 +75,18 @@ class SquadQueryControllerTest {
     SquadListRequest request = new SquadListRequest();
     request.setProjectCode(projectCode);
 
-    when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(List.of(squad));
+    SquadListResultResponse response =
+            new SquadListResultResponse(List.of(squad), 1, 0, 10);
 
+
+    when(squadQueryService.findSquads(any(SquadListRequest.class)))
+            .thenReturn(response);
     mockMvc
         .perform(
             get("/api/v1/squads/project/{projectCode}", projectCode)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].squadCode").value("ha_1_1_1"))
-        .andDo(print());
+            .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+            .andDo(print());
   }
 }

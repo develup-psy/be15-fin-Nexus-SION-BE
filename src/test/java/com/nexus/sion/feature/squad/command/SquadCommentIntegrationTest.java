@@ -35,7 +35,7 @@ class SquadCommentCommandIntegrationTest {
     // given
     String squadCode = "ha_1_1_1"; // 실제 DB에 존재하는 코드일 것
     SquadCommentRegisterRequest request =
-        new SquadCommentRegisterRequest("EMP001", "스쿼드에 대한 코멘트입니다.");
+        new SquadCommentRegisterRequest("02202308", "스쿼드에 대한 코멘트입니다.");
 
     // when & then
     mockMvc
@@ -50,7 +50,7 @@ class SquadCommentCommandIntegrationTest {
   @DisplayName("코멘트 내용이 공백이면 400 에러를 반환한다")
   void registerComment_fail_whenContentIsBlank() throws Exception {
     String squadCode = "ha_1_1_1";
-    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("EMP001", " ");
+    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("02202308", " ");
 
     mockMvc
         .perform(
@@ -67,7 +67,7 @@ class SquadCommentCommandIntegrationTest {
     SquadComment comment =
         SquadComment.builder()
             .squadCode("ha_1_1_1")
-            .employeeIdentificationNumber("EMP001")
+            .employeeIdentificationNumber("02202308")
             .content("삭제 테스트 코멘트입니다.")
             .build();
     squadCommentRepository.saveAndFlush(comment);
@@ -88,7 +88,7 @@ class SquadCommentCommandIntegrationTest {
     SquadComment comment =
         SquadComment.builder()
             .squadCode("ha_1_1_1")
-            .employeeIdentificationNumber("EMP001")
+            .employeeIdentificationNumber("02202308")
             .content("스쿼드 불일치 테스트")
             .build();
     squadCommentRepository.saveAndFlush(comment);

@@ -80,11 +80,20 @@ public class SquadQueryRepository {
                   boolean isAiRecommended = SquadOriginType.AI.equals(originType);
 
                   LocalDate start = r.get(SQUAD.CREATED_AT).toLocalDate();
-                  LocalDate end = start.plusMonths(r.get(SQUAD.ESTIMATED_DURATION).longValue());
-                  String period = start + " ~ " + end;
 
-                  DecimalFormat decimalFormat = new DecimalFormat("#,###");
-                  String cost = "₩" + decimalFormat.format(r.get(SQUAD.ESTIMATED_COST));
+                    // null일 경우 0개월 처리
+                    BigDecimal duration = r.get(SQUAD.ESTIMATED_DURATION);
+                    long durationValue = duration != null ? duration.longValue() : 0L;
+                    LocalDate end = start.plusMonths(durationValue);
+                    String period = start + " ~ " + end;
+
+                    DecimalFormat decimalFormat = new DecimalFormat("#,###");
+
+                    // null일 경우 0원 처리
+                    BigDecimal estimatedCost = r.get(SQUAD.ESTIMATED_COST);
+                    String cost = "₩" + decimalFormat.format(
+                            estimatedCost != null ? estimatedCost : BigDecimal.ZERO
+                    );
 
                   return new SquadListResponse(
                       code,
@@ -108,9 +117,11 @@ public class SquadQueryRepository {
 
     boolean aiRecommended = SquadOriginType.AI.equals(squadRecord.get(SQUAD.ORIGIN_TYPE));
 
-    BigDecimal duration = squadRecord.get(SQUAD.ESTIMATED_DURATION);
-    DecimalFormat format = new DecimalFormat("0.##"); // 소수점 1자리까지만 표시 (예: 3.5개월)
-    String estimatedPeriod = format.format(duration) + "개월";
+      BigDecimal duration = squadRecord.get(SQUAD.ESTIMATED_DURATION);
+      BigDecimal safeDuration = duration != null ? duration : BigDecimal.ZERO;
+
+      DecimalFormat format = new DecimalFormat("0.##"); // 소수점 1자리까지만 표시 (예: 3.5개월)
+      String estimatedPeriod = format.format(safeDuration) + "개월";
 
     // 비용 세부내역용 records
     var records =
@@ -131,14 +142,19 @@ public class SquadQueryRepository {
             .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
             .fetch();
 
-    // 개발자 단가 총합 계산
-    BigDecimal totalCost =
-        records.stream()
-            .map(r -> BigDecimal.valueOf(r.get(GRADE.MONTHLY_UNIT_PRICE)).multiply(duration))
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+      // 개발자 단가 총합 계산
+      BigDecimal totalCost =
+              records.stream()
+                      .map(r -> {
+                          Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
+                          BigDecimal price = monthlyUnitPrice != null ? BigDecimal.valueOf(monthlyUnitPrice) : BigDecimal.ZERO;
+                          return price.multiply(safeDuration);
+                      })
+                      .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-    DecimalFormat decimalFormat = new DecimalFormat("#,###");
-    String estimatedCost = "₩" + decimalFormat.format(totalCost);
+      DecimalFormat decimalFormat = new DecimalFormat("#,###");
+      String estimatedCost = "₩" + decimalFormat.format(totalCost);
+
     // 구성원 조회
     List<SquadDetailResponse.MemberInfo> members =
         dsl.select(
@@ -164,16 +180,20 @@ public class SquadQueryRepository {
                         r.get(PROJECT_AND_JOB.JOB_NAME),
                         r.get(MEMBER.EMPLOYEE_NAME)));
 
-    List<SquadDetailResponse.CostBreakdown> costDetails =
-        records.stream()
-            .map(
-                r ->
-                    new SquadDetailResponse.CostBreakdown(
-                        r.get(MEMBER.EMPLOYEE_NAME),
-                        r.get(PROJECT_AND_JOB.JOB_NAME),
-                        String.valueOf(r.get(MEMBER.GRADE_CODE)),
-                        "₩" + decimalFormat.format(r.get(GRADE.MONTHLY_UNIT_PRICE))))
-            .toList();
+      // 단가 세부 정보
+      List<SquadDetailResponse.CostBreakdown> costDetails =
+              records.stream()
+                      .map(r -> {
+                          Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
+                          int safePrice = monthlyUnitPrice != null ? monthlyUnitPrice : 0;
+                          return new SquadDetailResponse.CostBreakdown(
+                                  r.get(MEMBER.EMPLOYEE_NAME),
+                                  r.get(PROJECT_AND_JOB.JOB_NAME),
+                                  String.valueOf(r.get(MEMBER.GRADE_CODE)),
+                                  "₩" + decimalFormat.format(safePrice)
+                          );
+                      })
+                      .toList();
 
     List<String> techStacks =
         dsl.selectDistinct(TECH_STACK.TECH_STACK_NAME)
