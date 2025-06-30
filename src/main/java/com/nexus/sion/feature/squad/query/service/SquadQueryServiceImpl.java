@@ -53,7 +53,15 @@ public class SquadQueryServiceImpl implements SquadQueryService {
     if (project.getStatus() == Project.ProjectStatus.COMPLETE
         || project.getStatus() == Project.ProjectStatus.INCOMPLETE) {
 
-      SquadDetailResponse confirmed = getConfirmedSquadByProjectCode(projectCode);
+      // 예외 발생 대신 null 체크 후 fallback 처리
+      SquadDetailResponse confirmed = null;
+      try {
+        confirmed = getConfirmedSquadByProjectCode(projectCode);
+      } catch (BusinessException e) {
+        // 로그를 남기고 빈 응답 반환
+        return null; // 또는 Optional.empty() 또는 new SquadDetailResponse() 등
+      }
+
       return confirmed;
     }
 
@@ -72,8 +80,6 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
   @Override
   public SquadDetailResponse getConfirmedSquadByProjectCode(String projectCode) {
-    return squadQueryRepository
-        .findConfirmedSquadByProjectCode(projectCode)
-        .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
+    return squadQueryRepository.findConfirmedSquadByProjectCode(projectCode);
   }
 }

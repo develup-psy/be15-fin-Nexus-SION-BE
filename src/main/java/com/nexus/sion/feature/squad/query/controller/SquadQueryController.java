@@ -17,8 +17,8 @@ public class SquadQueryController {
   private final SquadQueryService squadQueryService;
 
   @GetMapping("/project/{projectCode}")
-  public ResponseEntity<?> getSquadsOrConfirmed(
-      @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
+  public ResponseEntity<Object> getSquadsOrConfirmed(
+          @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
     request.setProjectCode(projectCode);
     Object response = squadQueryService.findSquadsOrConfirmed(request);
     return ResponseEntity.ok(response);
