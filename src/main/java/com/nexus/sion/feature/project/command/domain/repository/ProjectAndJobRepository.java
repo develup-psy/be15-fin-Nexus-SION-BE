@@ -10,4 +10,5 @@ public interface ProjectAndJobRepository extends JpaRepository<ProjectAndJob, Lo
   List<ProjectAndJob> findByProjectCode(String projectCode);
 
   void deleteByProjectCode(String projectCode);
+
 }

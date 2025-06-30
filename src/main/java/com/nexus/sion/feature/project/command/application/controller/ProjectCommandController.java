@@ -11,6 +11,8 @@ import com.nexus.sion.feature.project.command.application.service.ProjectCommand
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -46,4 +48,15 @@ public class ProjectCommandController {
     projectCommandService.updateProjectStatus(projectCode, status);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
+
+  @PostMapping("/{projectCode}/analyze")
+  public ResponseEntity<Void> analyzeProject(
+          @PathVariable String projectCode,
+          @RequestParam("file") MultipartFile multipartFile) {
+
+    projectCommandService.analyzeProject(projectCode, multipartFile);
+    return ResponseEntity.accepted().build(); //202는 처리가 완료되지 않았음을 나타냄
+  }
+
+
 }

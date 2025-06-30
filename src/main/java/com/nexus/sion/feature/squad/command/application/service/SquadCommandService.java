@@ -3,6 +3,7 @@ package com.nexus.sion.feature.squad.command.application.service;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import jakarta.validation.Valid;
 
 public interface SquadCommandService {
@@ -12,5 +13,5 @@ public interface SquadCommandService {
 
   void deleteSquad(String squadCode);
 
-    void recommendSquad(@Valid SquadRecommendationRequest request);
+  SquadRecommendationResponse recommendSquad(@Valid SquadRecommendationRequest request);
 }

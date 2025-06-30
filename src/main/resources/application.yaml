@@ -5,6 +5,11 @@ spring:
   application:
     name: SION
 
+  servlet:
+    multipart:
+      max-file-size: 10MB       # 업로드 파일 하나의 최대 크기
+      max-request-size: 10MB    # 요청 전체 크기 제한
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/SION
