@@ -9,4 +9,7 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTe
 public interface DeveloperTechStackRepository extends JpaRepository<DeveloperTechStack, Long> {
 
   List<DeveloperTechStack> findAllByEmployeeIdentificationNumber(String employeeId);
+
+  DeveloperTechStack findByEmployeeIdentificationNumberAndTechStackName(
+      String employeeId, String techStackName);
 }
