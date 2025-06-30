@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.List;
 import java.util.Map;
 
-import com.nexus.sion.feature.squad.query.dto.request.SquadCandidateRequest;
-import com.nexus.sion.feature.squad.query.dto.response.*;
-import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
-import com.nexus.sion.feature.squad.query.util.CalculateSquad;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -19,11 +14,15 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.*;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
+import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
+import com.nexus.sion.feature.squad.query.util.CalculateSquad;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -104,7 +103,7 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
     for (JobInfo job : jobList) {
       List<DeveloperSummary> developers =
-              squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
+          squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
       result.put(job.getJobName(), developers);
     }
 
@@ -120,6 +119,6 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   public Map<String, Integer> findRequiredMemberCountByRoles(String projectId) {
     List<JobAndCount> result = squadQueryMapper.findRequiredMemberCountByRoles(projectId);
     return result.stream()
-            .collect(Collectors.toMap(JobAndCount::getJobName, JobAndCount::getRequiredNumber));
+        .collect(Collectors.toMap(JobAndCount::getJobName, JobAndCount::getRequiredNumber));
   }
 }

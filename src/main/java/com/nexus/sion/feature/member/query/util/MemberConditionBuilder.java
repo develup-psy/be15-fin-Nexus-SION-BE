@@ -22,9 +22,7 @@ public class MemberConditionBuilder {
     }
 
     if (query.keyword() != null && !query.keyword().isBlank()) {
-      condition = condition.and(
-              MEMBER.EMPLOYEE_NAME.containsIgnoreCase(query.keyword())
-      );
+      condition = condition.and(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(query.keyword()));
     }
 
     return condition;

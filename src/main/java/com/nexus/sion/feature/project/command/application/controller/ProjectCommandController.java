@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
@@ -11,8 +12,6 @@ import com.nexus.sion.feature.project.command.application.service.ProjectCommand
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -51,12 +50,9 @@ public class ProjectCommandController {
 
   @PostMapping("/{projectCode}/analyze")
   public ResponseEntity<Void> analyzeProject(
-          @PathVariable String projectCode,
-          @RequestParam("file") MultipartFile multipartFile) {
+      @PathVariable String projectCode, @RequestParam("file") MultipartFile multipartFile) {
 
     projectCommandService.analyzeProject(projectCode, multipartFile);
-    return ResponseEntity.accepted().build(); //202는 처리가 완료되지 않았음을 나타냄
+    return ResponseEntity.accepted().build(); // 202는 처리가 완료되지 않았음을 나타냄
   }
-
-
 }

@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.squad.query.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;

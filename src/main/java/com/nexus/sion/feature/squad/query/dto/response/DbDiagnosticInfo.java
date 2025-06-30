@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class DbDiagnosticInfo {
-    private String connectedDatabase;
-    private String connectedUser;
+  private String connectedDatabase;
+  private String connectedUser;
 }

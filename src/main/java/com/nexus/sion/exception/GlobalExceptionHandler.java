@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     String[] errorSplit = e.getClass().toString().split("\\.");
     ApiResponse<Void> response =
         ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
-            ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
+    ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
     ;
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }

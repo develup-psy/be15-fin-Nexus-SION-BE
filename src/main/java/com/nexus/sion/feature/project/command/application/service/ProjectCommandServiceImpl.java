@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
-import com.nexus.sion.feature.project.command.application.dto.response.ProjectAnalysisResult;
-import com.nexus.sion.feature.project.command.domain.service.ProjectDomainService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,20 +14,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
-import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
-import com.nexus.sion.feature.project.command.domain.aggregate.*;
-import com.nexus.sion.feature.project.command.domain.repository.*;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
+import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
+import com.nexus.sion.feature.project.command.application.dto.response.ProjectAnalysisResult;
+import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
+import com.nexus.sion.feature.project.command.domain.aggregate.*;
+import com.nexus.sion.feature.project.command.domain.repository.*;
+import com.nexus.sion.feature.project.command.domain.service.ProjectDomainService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -56,19 +56,19 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
     Project project =
-            Project.builder()
-                    .projectCode(request.getProjectCode())
-                    .domainName(request.getDomainName())
-                    .description(request.getDescription())
-                    .title(request.getTitle())
-                    .budget(request.getBudget())
-                    .startDate(request.getStartDate())
-                    .expectedEndDate(request.getExpectedEndDate())
-                    .status(Project.ProjectStatus.WAITING)
-                    .numberOfMembers(request.getNumberOfMembers())
-                    .clientCode(request.getClientCode())
-                    .requestSpecificationUrl(request.getRequestSpecificationUrl())
-                    .build();
+        Project.builder()
+            .projectCode(request.getProjectCode())
+            .domainName(request.getDomainName())
+            .description(request.getDescription())
+            .title(request.getTitle())
+            .budget(request.getBudget())
+            .startDate(request.getStartDate())
+            .expectedEndDate(request.getExpectedEndDate())
+            .status(Project.ProjectStatus.WAITING)
+            .numberOfMembers(request.getNumberOfMembers())
+            .clientCode(request.getClientCode())
+            .requestSpecificationUrl(request.getRequestSpecificationUrl())
+            .build();
     projectCommandRepository.save(project);
 
     saveJobsAndTechStacks(request);
@@ -78,9 +78,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void updateProject(ProjectRegisterRequest request) {
     Project project =
-            projectCommandRepository
-                    .findById(request.getProjectCode())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        projectCommandRepository
+            .findById(request.getProjectCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
@@ -95,9 +95,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
     projectAndJobs.forEach(
-            job -> {
-              jobAndTechStackRepository.deleteByProjectJobId(job.getId());
-            });
+        job -> {
+          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
+        });
     projectAndJobRepository.deleteByProjectCode(request.getProjectCode());
 
     saveJobsAndTechStacks(request);
@@ -105,43 +105,43 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
     request
-            .getJobs()
-            .forEach(
-                    job -> {
-                      ProjectAndJob projectAndJob =
-                              ProjectAndJob.builder()
-                                      .projectCode(request.getProjectCode())
-                                      .jobName(job.getJobName())
-                                      .requiredNumber(job.getRequiredNumber())
-                                      .build();
-                      projectAndJobRepository.save(projectAndJob);
+        .getJobs()
+        .forEach(
+            job -> {
+              ProjectAndJob projectAndJob =
+                  ProjectAndJob.builder()
+                      .projectCode(request.getProjectCode())
+                      .jobName(job.getJobName())
+                      .requiredNumber(job.getRequiredNumber())
+                      .build();
+              projectAndJobRepository.save(projectAndJob);
 
-                      job.getTechStacks()
-                              .forEach(
-                                      tech -> {
-                                        JobAndTechStack jobAndTechStack =
-                                                JobAndTechStack.builder()
-                                                        .projectJobId(projectAndJob.getId())
-                                                        .techStackName(tech.getTechStackName())
-                                                        .priority(tech.getPriority())
-                                                        .build();
-                                        jobAndTechStackRepository.save(jobAndTechStack);
-                                      });
-                    });
+              job.getTechStacks()
+                  .forEach(
+                      tech -> {
+                        JobAndTechStack jobAndTechStack =
+                            JobAndTechStack.builder()
+                                .projectJobId(projectAndJob.getId())
+                                .techStackName(tech.getTechStackName())
+                                .priority(tech.getPriority())
+                                .build();
+                        jobAndTechStackRepository.save(jobAndTechStack);
+                      });
+            });
   }
 
   @Override
   public void deleteProject(String projectCode) {
     Project project =
-            projectCommandRepository
-                    .findById(projectCode)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        projectCommandRepository
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(projectCode);
     projectAndJobs.forEach(
-            job -> {
-              jobAndTechStackRepository.deleteByProjectJobId(job.getId());
-            });
+        job -> {
+          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
+        });
     projectAndJobRepository.deleteByProjectCode(projectCode);
 
     projectCommandRepository.delete(project);
@@ -150,9 +150,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
     Project project =
-            projectCommandRepository
-                    .findById(projectCode)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        projectCommandRepository
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
@@ -166,10 +166,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public Map<String, Long> findProjectAndJobIdMap(String projectId) {
     return projectAndJobRepository.findByProjectCode(projectId).stream()
-            .collect(Collectors.toMap(
-                    ProjectAndJob::getJobName,
-                    ProjectAndJob::getId
-            ));
+        .collect(Collectors.toMap(ProjectAndJob::getJobName, ProjectAndJob::getId));
   }
 
   @Transactional
@@ -189,7 +186,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       headers.setContentType(MediaType.MULTIPART_FORM_DATA);
       HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
-      ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8100/fp-infer", request, String.class);
+      ResponseEntity<String> response =
+          restTemplate.postForEntity("http://localhost:8100/fp-infer", request, String.class);
 
       log.info(response.getBody());
 
@@ -209,32 +207,35 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       ProjectFpSummary savedSummary = projectFpSummaryRepository.save(analysisResult.summary());
       log.info("[Saved]!! ProjectFpSummary:{}", savedSummary);
 
-      List<ProjectFunctionEstimate> updatedFunctions = analysisResult.functions().stream()
-              .filter(func -> {
-                boolean hasName = StringUtils.hasText(func.getFunctionName());
-                if (!hasName) {
-                  log.warn("FP 분석 결과에 function_name이 없는 항목이 있어 저장에서 제외됩니다. 내용: {}", func);
-                }
-                return hasName;
-              })
-              .map(func -> ProjectFunctionEstimate.builder()
-                      .projectFpSummaryId(savedSummary.getId())
-                      .functionName(func.getFunctionName())
-                      .functionType(func.getFunctionType())
-                      .complexity(func.getComplexity())
-                      .functionScore(func.getFunctionScore())
-                      .description(func.getDescription())
-                      .relatedTablesCount(func.getRelatedTablesCount())
-                      .relatedFieldsCount(func.getRelatedFieldsCount())
-                      .build()
-              )
+      List<ProjectFunctionEstimate> updatedFunctions =
+          analysisResult.functions().stream()
+              .filter(
+                  func -> {
+                    boolean hasName = StringUtils.hasText(func.getFunctionName());
+                    if (!hasName) {
+                      log.warn("FP 분석 결과에 function_name이 없는 항목이 있어 저장에서 제외됩니다. 내용: {}", func);
+                    }
+                    return hasName;
+                  })
+              .map(
+                  func ->
+                      ProjectFunctionEstimate.builder()
+                          .projectFpSummaryId(savedSummary.getId())
+                          .functionName(func.getFunctionName())
+                          .functionType(func.getFunctionType())
+                          .complexity(func.getComplexity())
+                          .functionScore(func.getFunctionScore())
+                          .description(func.getDescription())
+                          .relatedTablesCount(func.getRelatedTablesCount())
+                          .relatedFieldsCount(func.getRelatedFieldsCount())
+                          .build())
               .toList();
 
       projectFunctionEstimateRepository.saveAll(updatedFunctions);
 
     } catch (Exception e) {
       log.error("[FP 분석 실패] {}", e.getMessage(), e);
-      throw new RuntimeException(e);  // 반드시 rethrow
+      throw new RuntimeException(e); // 반드시 rethrow
     } finally {
       if (tempFile != null) tempFile.delete();
     }

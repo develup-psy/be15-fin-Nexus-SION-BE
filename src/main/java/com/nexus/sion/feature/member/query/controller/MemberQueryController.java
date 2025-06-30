@@ -1,9 +1,5 @@
 package com.nexus.sion.feature.member.query.controller;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import jakarta.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +54,4 @@ public class MemberQueryController {
 
     return ResponseEntity.ok(ApiResponse.success(memberQueryService.squadSearchMembers(query)));
   }
-
-
-
 }

@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProjectAnalyzeRequest {
-    private String projectCode;
+  private String projectCode;
 }

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,7 @@ import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
+import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 
 class SquadQueryServiceImplTest {

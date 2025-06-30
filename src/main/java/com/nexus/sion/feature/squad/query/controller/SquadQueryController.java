@@ -1,14 +1,11 @@
 package com.nexus.sion.feature.squad.query.controller;
 
-import java.util.List;
-
-import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.squad.query.dto.request.SquadCandidateRequest;
-import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
@@ -37,9 +34,9 @@ public class SquadQueryController {
 
   @GetMapping("/candidates")
   public ResponseEntity<ApiResponse<SquadCandidateResponse>> getCandidates(
-          @RequestParam String projectId
-  ) {
+      @RequestParam String projectId) {
 
-    return ResponseEntity.ok(ApiResponse.success(squadQueryService.findCandidatesByRoles(projectId)));
+    return ResponseEntity.ok(
+        ApiResponse.success(squadQueryService.findCandidatesByRoles(projectId)));
   }
 }

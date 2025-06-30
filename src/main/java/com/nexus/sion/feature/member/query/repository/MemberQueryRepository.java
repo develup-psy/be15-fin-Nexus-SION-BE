@@ -11,7 +11,6 @@ import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.MemberRole;
-import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;

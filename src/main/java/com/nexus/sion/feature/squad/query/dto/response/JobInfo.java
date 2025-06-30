@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.squad.query.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobInfo {
-    private Long projectAndJobId;
-    private String jobName;
+  private Long projectAndJobId;
+  private String jobName;
 }
-

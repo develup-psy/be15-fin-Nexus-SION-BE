@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobAndCount {
-    private String jobName;
-    private Integer requiredNumber;
+  private String jobName;
+  private Integer requiredNumber;
 }

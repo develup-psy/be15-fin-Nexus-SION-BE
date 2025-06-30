@@ -1,15 +1,15 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
-import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.application.service.SquadCommandService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,11 +42,9 @@ public class SquadCommandController {
 
   @PostMapping("/recommendation")
   public ResponseEntity<ApiResponse<SquadRecommendationResponse>> recommendSquad(
-          @RequestBody @Valid SquadRecommendationRequest request) {
+      @RequestBody @Valid SquadRecommendationRequest request) {
 
     SquadRecommendationResponse result = squadCommandService.recommendSquad(request);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
-
-
 }

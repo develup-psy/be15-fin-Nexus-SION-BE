@@ -5,36 +5,34 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
-import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
-import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
-import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
-import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
-import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
-import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
-import com.nexus.sion.feature.squad.command.domain.service.SquadCombinationGeneratorImpl;
-import com.nexus.sion.feature.squad.command.domain.service.SquadDomainService;
-import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
-import com.nexus.sion.feature.squad.command.domain.service.SquadSelectorImpl;
-import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
-import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
+import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
+import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
+import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
+import com.nexus.sion.feature.squad.command.domain.service.SquadCombinationGeneratorImpl;
+import com.nexus.sion.feature.squad.command.domain.service.SquadDomainService;
+import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
+import com.nexus.sion.feature.squad.command.domain.service.SquadSelectorImpl;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
+import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -161,36 +159,45 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     RecommendationCriteria criteria = request.getCriteria();
 
     Map<String, List<DeveloperSummary>> candidates =
-            squadQueryService.findCandidatesByRoles(projectId).candidates();
+        squadQueryService.findCandidatesByRoles(projectId).candidates();
 
     Map<String, Integer> requiredCountByRole =
-            squadQueryService.findRequiredMemberCountByRoles(projectId);
+        squadQueryService.findRequiredMemberCountByRoles(projectId);
 
     List<Map<String, List<DeveloperSummary>>> combinations =
-            squadCombinationGenerator.generate(candidates, requiredCountByRole);
+        squadCombinationGenerator.generate(candidates, requiredCountByRole);
 
     if (combinations.isEmpty()) {
       throw new IllegalStateException("생성 가능한 스쿼드 조합이 없습니다.");
     }
 
     List<Map<String, List<CandidateSummary>>> transformedCombinations =
-            combinations.stream()
-                    .map(squad -> squad.entrySet().stream()
-                            .collect(Collectors.toMap(
-                                    Map.Entry::getKey,
-                                    entry -> entry.getValue().stream()
-                                            .map(dev -> CandidateSummary.builder()
+        combinations.stream()
+            .map(
+                squad ->
+                    squad.entrySet().stream()
+                        .collect(
+                            Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry ->
+                                    entry.getValue().stream()
+                                        .map(
+                                            dev ->
+                                                CandidateSummary.builder()
                                                     .memberId(dev.getId())
                                                     .name(dev.getName())
                                                     .jobName(entry.getKey())
                                                     .techStackScore((int) dev.getAvgTechScore())
                                                     .domainRelevance(dev.getDomainCount() / 10.0)
-                                                    .costPerMonth(gradeDomainService.getMonthlyUnitPrice(dev.getGrade()))
-                                                    .productivityFactor(gradeDomainService.getProductivityFactor(dev.getGrade()))
+                                                    .costPerMonth(
+                                                        gradeDomainService.getMonthlyUnitPrice(
+                                                            dev.getGrade()))
+                                                    .productivityFactor(
+                                                        gradeDomainService.getProductivityFactor(
+                                                            dev.getGrade()))
                                                     .build())
-                                            .toList()
-                            )))
-                    .toList();
+                                        .toList())))
+            .toList();
 
     List<EvaluatedSquad> evaluatedSquads = squadEvaluator.evaluateAll(transformedCombinations);
 
@@ -198,7 +205,8 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     String squadCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
-    Squad squad = Squad.builder()
+    Squad squad =
+        Squad.builder()
             .squadCode(squadCode)
             .projectCode(projectId)
             .title("AI 추천 스쿼드 (" + criteria.name() + ")")
@@ -214,53 +222,65 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     Map<String, Long> jobIdMap = projectCommandService.findProjectAndJobIdMap(projectId);
 
-    Optional<CandidateSummary> leaderCandidate = bestSquad.getSquad().values().stream()
+    Optional<CandidateSummary> leaderCandidate =
+        bestSquad.getSquad().values().stream()
             .flatMap(Collection::stream)
             .max(Comparator.comparingDouble(c -> c.getTechStackScore() + c.getDomainRelevance()));
 
-    String leaderId = leaderCandidate
-            .map(c -> String.valueOf(c.getMemberId()))
-            .orElse(null); // 혹시 모를 예외 대비
+    String leaderId =
+        leaderCandidate.map(c -> String.valueOf(c.getMemberId())).orElse(null); // 혹시 모를 예외 대비
 
-    List<SquadEmployee> squadEmployees = bestSquad.getSquad().entrySet().stream()
-            .flatMap(entry -> {
-              String jobName = entry.getKey();
-              Long projectAndJobId = jobIdMap.get(jobName);
-              return entry.getValue().stream().map(candidate -> SquadEmployee.builder()
-                      .assignedDate(LocalDate.now())
-                      .employeeIdentificationNumber(String.valueOf(candidate.getMemberId()))
-                      .projectAndJobId(projectAndJobId)
-                      .squadCode(squadCode)
-                      .isLeader(String.valueOf(candidate.getMemberId()).equals(leaderId))
-                      .totalSkillScore(candidate.getTechStackScore())
-                      .build());
-            })
+    List<SquadEmployee> squadEmployees =
+        bestSquad.getSquad().entrySet().stream()
+            .flatMap(
+                entry -> {
+                  String jobName = entry.getKey();
+                  Long projectAndJobId = jobIdMap.get(jobName);
+                  return entry.getValue().stream()
+                      .map(
+                          candidate ->
+                              SquadEmployee.builder()
+                                  .assignedDate(LocalDate.now())
+                                  .employeeIdentificationNumber(
+                                      String.valueOf(candidate.getMemberId()))
+                                  .projectAndJobId(projectAndJobId)
+                                  .squadCode(squadCode)
+                                  .isLeader(
+                                      String.valueOf(candidate.getMemberId()).equals(leaderId))
+                                  .totalSkillScore(candidate.getTechStackScore())
+                                  .build());
+                })
             .toList();
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
 
     // 응답 객체 생성 및 반환
     return SquadRecommendationResponse.builder()
-            .squadCode(squad.getSquadCode())
-            .projectCode(squad.getProjectCode())
-            .title(squad.getTitle())
-            .description(squad.getDescription())
-            .estimatedCost(squad.getEstimatedCost())
-            .estimatedDuration(squad.getEstimatedDuration())
-            .recommendationReason(squad.getRecommendationReason())
-            .members(
-                    bestSquad.getSquad().entrySet().stream()
-                            .flatMap(entry -> {
-                              String jobName = entry.getKey();
-                              return entry.getValue().stream()
-                                      .map(candidate -> SquadRecommendationResponse.MemberInfo.builder()
-                                              .employeeIdentificationNumber(String.valueOf(candidate.getMemberId()))
-                                              .jobName(jobName)
-                                              .isLeader(String.valueOf(candidate.getMemberId()).equals(leaderId))
-                                              .totalSkillScore(candidate.getTechStackScore())
-                                              .build());
-                            }).toList()
-            )
-            .build();
+        .squadCode(squad.getSquadCode())
+        .projectCode(squad.getProjectCode())
+        .title(squad.getTitle())
+        .description(squad.getDescription())
+        .estimatedCost(squad.getEstimatedCost())
+        .estimatedDuration(squad.getEstimatedDuration())
+        .recommendationReason(squad.getRecommendationReason())
+        .members(
+            bestSquad.getSquad().entrySet().stream()
+                .flatMap(
+                    entry -> {
+                      String jobName = entry.getKey();
+                      return entry.getValue().stream()
+                          .map(
+                              candidate ->
+                                  SquadRecommendationResponse.MemberInfo.builder()
+                                      .employeeIdentificationNumber(
+                                          String.valueOf(candidate.getMemberId()))
+                                      .jobName(jobName)
+                                      .isLeader(
+                                          String.valueOf(candidate.getMemberId()).equals(leaderId))
+                                      .totalSkillScore(candidate.getTechStackScore())
+                                      .build());
+                    })
+                .toList())
+        .build();
   }
 }

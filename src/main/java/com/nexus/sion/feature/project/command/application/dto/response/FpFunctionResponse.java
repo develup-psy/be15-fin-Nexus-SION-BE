@@ -7,12 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class FpFunctionResponse {
-    private String fp_type;
-    private String function_name;
-    private String description;
-    private String complexity;
-    private int estimated_det;
-    private int estimated_ftr;
-    private int score;
+  private String fp_type;
+  private String function_name;
+  private String description;
+  private String complexity;
+  private int estimated_det;
+  private int estimated_ftr;
+  private int score;
 }
-

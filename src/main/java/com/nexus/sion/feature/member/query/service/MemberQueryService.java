@@ -15,5 +15,4 @@ public interface MemberQueryService {
   MemberDetailResponse getMemberDetail(String employeeId);
 
   PageResponse<MemberSquadListResponse> squadSearchMembers(MemberListQuery request);
-
 }

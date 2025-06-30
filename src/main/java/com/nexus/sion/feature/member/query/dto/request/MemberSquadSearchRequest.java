@@ -54,6 +54,13 @@ public class MemberSquadSearchRequest {
     }
 
     return new MemberListQuery(
-        keyword, parsedStatus, parsedGrades, this.stacks, this.sortBy, this.sortDir, this.page, this.size);
+        keyword,
+        parsedStatus,
+        parsedGrades,
+        this.stacks,
+        this.sortBy,
+        this.sortDir,
+        this.page,
+        this.size);
   }
 }
