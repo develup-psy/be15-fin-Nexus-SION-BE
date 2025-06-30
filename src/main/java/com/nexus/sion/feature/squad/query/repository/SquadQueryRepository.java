@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.jooq.*;
@@ -256,4 +257,29 @@ public class SquadQueryRepository {
         squadRecord.get(SQUAD.RECOMMENDATION_REASON),
         comments);
   }
+
+    public boolean existsByProjectCodeAndIsActive(String projectCode) {
+        return dsl.fetchExists(
+                dsl.selectFrom(SQUAD)
+                        .where(SQUAD.PROJECT_CODE.eq(projectCode))
+                        .and(SQUAD.IS_ACTIVE.isTrue())
+        );
+    }
+
+    public Optional<SquadDetailResponse> findConfirmedSquadByProjectCode(String projectCode) {
+        String squadCode = dsl
+                .select(SQUAD.SQUAD_CODE)
+                .from(SQUAD)
+                .where(SQUAD.PROJECT_CODE.eq(projectCode))
+                .and(SQUAD.IS_ACTIVE.isTrue())
+                .fetchOneInto(String.class);
+
+        if (squadCode == null) {
+            return Optional.empty();
+        }
+
+        // 기존 상세 조회 재사용
+        return Optional.of(findSquadDetailByCode(squadCode));
+    }
+
 }
