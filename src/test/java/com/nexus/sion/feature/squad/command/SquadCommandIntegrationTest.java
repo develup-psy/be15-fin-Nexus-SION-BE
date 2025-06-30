@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.util.List;
 
-import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
-import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +17,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project.ProjectStatus;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
@@ -40,44 +40,41 @@ class SquadCommandIntegrationTest {
   @Autowired private ProjectRepository projectRepository;
   @Autowired private SquadCommandRepository squadCommandRepository;
   @Autowired private ClientCompanyRepository clientCompanyRepository;
+
   @BeforeEach
   void setup() {
     // 1. 선행 데이터 - 클라이언트 회사 저장
     clientCompanyRepository.save(
-            ClientCompany.builder()
-                    .clientCode("C001")
-                    .companyName("카카오")
-                    .domainName("CS")
-                    .build());
+        ClientCompany.builder().clientCode("C001").companyName("카카오").domainName("CS").build());
 
     // 2. 도메인 저장
     domainRepository.save(Domain.of("CS"));
 
     // 3. 프로젝트 저장
     Project project =
-            Project.builder()
-                    .projectCode("PRJ001")
-                    .clientCode("C001") // 위에서 저장한 client_code 사용
-                    .title("더미 프로젝트")
-                    .description("이 프로젝트는 테스트용입니다.")
-                    .startDate(LocalDate.of(2025, 1, 1))
-                    .expectedEndDate(LocalDate.of(2025, 12, 31))
-                    .budget(10_000_000L)
-                    .status(ProjectStatus.WAITING)
-                    .requestSpecificationUrl("http://example.com/spec")
-                    .domainName("CS")
-                    .build();
+        Project.builder()
+            .projectCode("PRJ001")
+            .clientCode("C001") // 위에서 저장한 client_code 사용
+            .title("더미 프로젝트")
+            .description("이 프로젝트는 테스트용입니다.")
+            .startDate(LocalDate.of(2025, 1, 1))
+            .expectedEndDate(LocalDate.of(2025, 12, 31))
+            .budget(10_000_000L)
+            .status(ProjectStatus.WAITING)
+            .requestSpecificationUrl("http://example.com/spec")
+            .domainName("CS")
+            .build();
     projectRepository.save(project);
 
     // 4. 스쿼드 저장
     Squad squad =
-            Squad.builder()
-                    .squadCode("SQUAD001")
-                    .projectCode("PRJ001")
-                    .title("기존 스쿼드")
-                    .description("기존 설명")
-                    .originType(OriginType.MANUAL)
-                    .build();
+        Squad.builder()
+            .squadCode("SQUAD001")
+            .projectCode("PRJ001")
+            .title("기존 스쿼드")
+            .description("기존 설명")
+            .originType(OriginType.MANUAL)
+            .build();
     squadCommandRepository.save(squad);
   }
 

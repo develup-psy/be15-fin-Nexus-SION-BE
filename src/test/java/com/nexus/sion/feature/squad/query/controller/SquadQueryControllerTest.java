@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 @WebMvcTest(SquadQueryController.class)
@@ -75,18 +75,15 @@ class SquadQueryControllerTest {
     SquadListRequest request = new SquadListRequest();
     request.setProjectCode(projectCode);
 
-    SquadListResultResponse response =
-            new SquadListResultResponse(List.of(squad), 1, 0, 10);
+    SquadListResultResponse response = new SquadListResultResponse(List.of(squad), 1, 0, 10);
 
-
-    when(squadQueryService.findSquads(any(SquadListRequest.class)))
-            .thenReturn(response);
+    when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(response);
     mockMvc
         .perform(
             get("/api/v1/squads/project/{projectCode}", projectCode)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
-            .andDo(print());
+        .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+        .andDo(print());
   }
 }

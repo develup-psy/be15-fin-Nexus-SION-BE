@@ -31,10 +31,8 @@ import com.example.jooq.generated.enums.SquadOriginType;
 @Transactional
 class SquadQueryIntegrationTest {
 
-  @Autowired
-  private MockMvc mockMvc;
-  @Autowired
-  private DSLContext dsl;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private DSLContext dsl;
 
   private String testSquadCode;
 
@@ -50,18 +48,18 @@ class SquadQueryIntegrationTest {
 
     // 스쿼드 더미 데이터 삽입
     dsl.insertInto(SQUAD)
-            .set(SQUAD.SQUAD_CODE, testSquadCode)
-            .set(SQUAD.PROJECT_CODE, projectCode)
-            .set(SQUAD.TITLE, "백엔드 스쿼드")
-            .set(SQUAD.DESCRIPTION, "테스트용 스쿼드")
-            .set(SQUAD.IS_ACTIVE, (byte) 1)
-            .set(SQUAD.CREATED_AT, LocalDateTime.now())
-            .set(SQUAD.UPDATED_AT, LocalDateTime.now())
-            .set(SQUAD.ESTIMATED_DURATION, BigDecimal.valueOf(3L)) // 예: 3개월
-            .set(SQUAD.ESTIMATED_COST, BigDecimal.valueOf(3000000L)) // 예: 300만원
-            .set(SQUAD.ORIGIN_TYPE, SquadOriginType.AI)
-            .set(SQUAD.RECOMMENDATION_REASON, "직접 구성됨")
-            .execute();
+        .set(SQUAD.SQUAD_CODE, testSquadCode)
+        .set(SQUAD.PROJECT_CODE, projectCode)
+        .set(SQUAD.TITLE, "백엔드 스쿼드")
+        .set(SQUAD.DESCRIPTION, "테스트용 스쿼드")
+        .set(SQUAD.IS_ACTIVE, (byte) 1)
+        .set(SQUAD.CREATED_AT, LocalDateTime.now())
+        .set(SQUAD.UPDATED_AT, LocalDateTime.now())
+        .set(SQUAD.ESTIMATED_DURATION, BigDecimal.valueOf(3L)) // 예: 3개월
+        .set(SQUAD.ESTIMATED_COST, BigDecimal.valueOf(3000000L)) // 예: 300만원
+        .set(SQUAD.ORIGIN_TYPE, SquadOriginType.AI)
+        .set(SQUAD.RECOMMENDATION_REASON, "직접 구성됨")
+        .execute();
 
     // 참고: 추후 member, grade, squad_employee 등 관련 테이블도 더미 추가 필요
   }
@@ -70,18 +68,18 @@ class SquadQueryIntegrationTest {
   @DisplayName("스쿼드 상세 조회 API는 정상 응답을 반환한다.")
   void getSquadDetail_success() throws Exception {
     mockMvc
-            .perform(get("/api/v1/squads/" + testSquadCode).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.squadCode").value(testSquadCode))
-            .andExpect(jsonPath("$.squadName").value("백엔드 스쿼드"))
-            .andExpect(jsonPath("$.aiRecommended").value(true))
-            .andExpect(jsonPath("$.estimatedPeriod").exists())
-            .andExpect(jsonPath("$.estimatedCost").exists())
-            .andExpect(jsonPath("$.members").isArray())
-            .andExpect(jsonPath("$.techStacks").isArray())
-            .andExpect(jsonPath("$.costDetails").isArray())
-            .andExpect(jsonPath("$.summary.jobCounts").exists())
-            .andExpect(jsonPath("$.summary.gradeCounts").exists());
+        .perform(get("/api/v1/squads/" + testSquadCode).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.squadCode").value(testSquadCode))
+        .andExpect(jsonPath("$.squadName").value("백엔드 스쿼드"))
+        .andExpect(jsonPath("$.aiRecommended").value(true))
+        .andExpect(jsonPath("$.estimatedPeriod").exists())
+        .andExpect(jsonPath("$.estimatedCost").exists())
+        .andExpect(jsonPath("$.members").isArray())
+        .andExpect(jsonPath("$.techStacks").isArray())
+        .andExpect(jsonPath("$.costDetails").isArray())
+        .andExpect(jsonPath("$.summary.jobCounts").exists())
+        .andExpect(jsonPath("$.summary.gradeCounts").exists());
   }
 
   @Test
@@ -91,9 +89,9 @@ class SquadQueryIntegrationTest {
     String projectCode = "ha_1_1";
 
     mockMvc
-            .perform(get("/api/v1/squads/project/{projectCode}", projectCode))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
-            .andExpect(jsonPath("$.content[0].squadName", not(emptyOrNullString())));
+        .perform(get("/api/v1/squads/project/{projectCode}", projectCode))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+        .andExpect(jsonPath("$.content[0].squadName", not(emptyOrNullString())));
   }
 }

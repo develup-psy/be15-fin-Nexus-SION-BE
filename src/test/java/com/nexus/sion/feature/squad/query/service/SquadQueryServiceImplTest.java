@@ -1,28 +1,28 @@
- package com.nexus.sion.feature.squad.query.service;
+package com.nexus.sion.feature.squad.query.service;
 
- import static org.assertj.core.api.Assertions.assertThat;
- import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
- import static org.junit.jupiter.api.Assertions.assertThrows;
- import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
- import java.time.LocalDateTime;
- import java.util.List;
- import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
- import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
- import org.junit.jupiter.api.BeforeEach;
- import org.junit.jupiter.api.DisplayName;
- import org.junit.jupiter.api.Test;
- import org.mockito.Mockito;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
- import com.nexus.sion.exception.BusinessException;
- import com.nexus.sion.exception.ErrorCode;
- import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
- import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
- import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
- import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
+import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 
- class SquadQueryServiceImplTest {
+class SquadQueryServiceImplTest {
 
   private SquadQueryRepository squadQueryRepository;
   private SquadQueryServiceImpl squadQueryService;
@@ -37,49 +37,43 @@
   @DisplayName("스쿼드 목록을 정상적으로 조회한다")
   void findSquads_returnsSquadList() {
     // given
-      SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
+    SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
 
+    SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("홍길동", "백엔드");
+    SquadListResponse squad =
+        new SquadListResponse(
+            "SQD-1", "백엔드팀", false, List.of(member), "2024-01-01 ~ 2024-04-01", "₩3,000,000");
 
-      SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("홍길동", "백엔드");
-      SquadListResponse squad =
-              new SquadListResponse(
-                      "SQD-1",
-                      "백엔드팀",
-                      false,
-                      List.of(member),
-                      "2024-01-01 ~ 2024-04-01",
-                      "₩3,000,000");
+    List<SquadListResponse> content = List.of(squad);
+    SquadListResultResponse mockResult = new SquadListResultResponse(content, 1, 0, 10);
 
-      List<SquadListResponse> content = List.of(squad);
-      SquadListResultResponse mockResult = new SquadListResultResponse(content, 1, 0, 10);
+    when(squadQueryRepository.findSquads(request)).thenReturn(mockResult);
 
-      when(squadQueryRepository.findSquads(request)).thenReturn(mockResult);
+    // when
+    SquadListResultResponse result = squadQueryService.findSquads(request);
 
-      // when
-      SquadListResultResponse result = squadQueryService.findSquads(request);
-
-      // then
-      assertThat(result.getContent()).hasSize(1);
-      assertThat(result.getContent().get(0).getSquadCode()).isEqualTo("SQD-1");
-      assertThat(result.getContent().get(0).getMembers()).hasSize(1);
-      verify(squadQueryRepository, times(1)).findSquads(request);
+    // then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).getSquadCode()).isEqualTo("SQD-1");
+    assertThat(result.getContent().get(0).getMembers()).hasSize(1);
+    verify(squadQueryRepository, times(1)).findSquads(request);
   }
 
-     @Test
-     @DisplayName("스쿼드 목록이 없으면 예외를 던진다")
-     void findSquads_throwsException_whenNoSquadsFound() {
-         // given
-         SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
-         SquadListResultResponse emptyResult = new SquadListResultResponse(List.of(), 0, 0, 10);
-         when(squadQueryRepository.findSquads(request)).thenReturn(emptyResult);
+  @Test
+  @DisplayName("스쿼드 목록이 없으면 예외를 던진다")
+  void findSquads_throwsException_whenNoSquadsFound() {
+    // given
+    SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
+    SquadListResultResponse emptyResult = new SquadListResultResponse(List.of(), 0, 0, 10);
+    when(squadQueryRepository.findSquads(request)).thenReturn(emptyResult);
 
-         // when & then
-         assertThatThrownBy(() -> squadQueryService.findSquads(request))
-                 .isInstanceOf(BusinessException.class)
-                 .hasMessageContaining(ErrorCode.PROJECT_SQUAD_NOT_FOUND.getMessage());
+    // when & then
+    assertThatThrownBy(() -> squadQueryService.findSquads(request))
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.PROJECT_SQUAD_NOT_FOUND.getMessage());
 
-         verify(squadQueryRepository, times(1)).findSquads(request);
-     }
+    verify(squadQueryRepository, times(1)).findSquads(request);
+  }
 
   @Test
   @DisplayName("스쿼드 상세정보를 정상적으로 반환한다")
@@ -146,4 +140,4 @@
     assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
     verify(squadQueryRepository, times(1)).findSquadDetailByCode(squadCode);
   }
- }
+}

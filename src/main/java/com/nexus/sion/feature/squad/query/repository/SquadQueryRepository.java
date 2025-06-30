@@ -11,7 +11,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jooq.*;
@@ -63,11 +62,11 @@ public class SquadQueryRepository {
             .offset(page * size)
             .fetch();
 
-      Long total =
-              dsl.selectCount()
-                      .from(SQUAD)
-                      .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                      .fetchOne(0, Long.class);
+    Long total =
+        dsl.selectCount()
+            .from(SQUAD)
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .fetchOne(0, Long.class);
 
     List<SquadListResponse> content =
         records.stream()
@@ -81,19 +80,20 @@ public class SquadQueryRepository {
 
                   LocalDate start = r.get(SQUAD.CREATED_AT).toLocalDate();
 
-                    // null일 경우 0개월 처리
-                    BigDecimal duration = r.get(SQUAD.ESTIMATED_DURATION);
-                    long durationValue = duration != null ? duration.longValue() : 0L;
-                    LocalDate end = start.plusMonths(durationValue);
-                    String period = start + " ~ " + end;
+                  // null일 경우 0개월 처리
+                  BigDecimal duration = r.get(SQUAD.ESTIMATED_DURATION);
+                  long durationValue = duration != null ? duration.longValue() : 0L;
+                  LocalDate end = start.plusMonths(durationValue);
+                  String period = start + " ~ " + end;
 
-                    DecimalFormat decimalFormat = new DecimalFormat("#,###");
+                  DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-                    // null일 경우 0원 처리
-                    BigDecimal estimatedCost = r.get(SQUAD.ESTIMATED_COST);
-                    String cost = "₩" + decimalFormat.format(
-                            estimatedCost != null ? estimatedCost : BigDecimal.ZERO
-                    );
+                  // null일 경우 0원 처리
+                  BigDecimal estimatedCost = r.get(SQUAD.ESTIMATED_COST);
+                  String cost =
+                      "₩"
+                          + decimalFormat.format(
+                              estimatedCost != null ? estimatedCost : BigDecimal.ZERO);
 
                   return new SquadListResponse(
                       code,
@@ -117,11 +117,11 @@ public class SquadQueryRepository {
 
     boolean aiRecommended = SquadOriginType.AI.equals(squadRecord.get(SQUAD.ORIGIN_TYPE));
 
-      BigDecimal duration = squadRecord.get(SQUAD.ESTIMATED_DURATION);
-      BigDecimal safeDuration = duration != null ? duration : BigDecimal.ZERO;
+    BigDecimal duration = squadRecord.get(SQUAD.ESTIMATED_DURATION);
+    BigDecimal safeDuration = duration != null ? duration : BigDecimal.ZERO;
 
-      DecimalFormat format = new DecimalFormat("0.##"); // 소수점 1자리까지만 표시 (예: 3.5개월)
-      String estimatedPeriod = format.format(safeDuration) + "개월";
+    DecimalFormat format = new DecimalFormat("0.##"); // 소수점 1자리까지만 표시 (예: 3.5개월)
+    String estimatedPeriod = format.format(safeDuration) + "개월";
 
     // 비용 세부내역용 records
     var records =
@@ -142,18 +142,22 @@ public class SquadQueryRepository {
             .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
             .fetch();
 
-      // 개발자 단가 총합 계산
-      BigDecimal totalCost =
-              records.stream()
-                      .map(r -> {
-                          Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
-                          BigDecimal price = monthlyUnitPrice != null ? BigDecimal.valueOf(monthlyUnitPrice) : BigDecimal.ZERO;
-                          return price.multiply(safeDuration);
-                      })
-                      .reduce(BigDecimal.ZERO, BigDecimal::add);
+    // 개발자 단가 총합 계산
+    BigDecimal totalCost =
+        records.stream()
+            .map(
+                r -> {
+                  Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
+                  BigDecimal price =
+                      monthlyUnitPrice != null
+                          ? BigDecimal.valueOf(monthlyUnitPrice)
+                          : BigDecimal.ZERO;
+                  return price.multiply(safeDuration);
+                })
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-      DecimalFormat decimalFormat = new DecimalFormat("#,###");
-      String estimatedCost = "₩" + decimalFormat.format(totalCost);
+    DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    String estimatedCost = "₩" + decimalFormat.format(totalCost);
 
     // 구성원 조회
     List<SquadDetailResponse.MemberInfo> members =
@@ -180,20 +184,20 @@ public class SquadQueryRepository {
                         r.get(PROJECT_AND_JOB.JOB_NAME),
                         r.get(MEMBER.EMPLOYEE_NAME)));
 
-      // 단가 세부 정보
-      List<SquadDetailResponse.CostBreakdown> costDetails =
-              records.stream()
-                      .map(r -> {
-                          Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
-                          int safePrice = monthlyUnitPrice != null ? monthlyUnitPrice : 0;
-                          return new SquadDetailResponse.CostBreakdown(
-                                  r.get(MEMBER.EMPLOYEE_NAME),
-                                  r.get(PROJECT_AND_JOB.JOB_NAME),
-                                  String.valueOf(r.get(MEMBER.GRADE_CODE)),
-                                  "₩" + decimalFormat.format(safePrice)
-                          );
-                      })
-                      .toList();
+    // 단가 세부 정보
+    List<SquadDetailResponse.CostBreakdown> costDetails =
+        records.stream()
+            .map(
+                r -> {
+                  Integer monthlyUnitPrice = r.get(GRADE.MONTHLY_UNIT_PRICE);
+                  int safePrice = monthlyUnitPrice != null ? monthlyUnitPrice : 0;
+                  return new SquadDetailResponse.CostBreakdown(
+                      r.get(MEMBER.EMPLOYEE_NAME),
+                      r.get(PROJECT_AND_JOB.JOB_NAME),
+                      String.valueOf(r.get(MEMBER.GRADE_CODE)),
+                      "₩" + decimalFormat.format(safePrice));
+                })
+            .toList();
 
     List<String> techStacks =
         dsl.selectDistinct(TECH_STACK.TECH_STACK_NAME)
