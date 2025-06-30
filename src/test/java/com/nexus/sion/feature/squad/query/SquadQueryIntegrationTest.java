@@ -38,8 +38,8 @@ class SquadQueryIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testSquadCode = "kt_1_1_1";
-    String projectCode = "kt_1_1";
+    testSquadCode = "ha_1_1_1";
+    String projectCode = "ha_1_1";
 
     // 자식 테이블 먼저 삭제
     dsl.deleteFrom(SQUAD_EMPLOYEE).where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(testSquadCode)).execute();
@@ -86,12 +86,12 @@ class SquadQueryIntegrationTest {
   @DisplayName("프로젝트 코드로 스쿼드 목록을 조회한다")
   @WithMockUser(username = "testuser")
   void getSquadsByProjectCode_success() throws Exception {
-    String projectCode = "kt_1_1";
+    String projectCode = "ha_1_1";
 
     mockMvc
         .perform(get("/api/v1/squads/project/{projectCode}", projectCode))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].squadCode", not(emptyOrNullString())))
-        .andExpect(jsonPath("$[0].squadName", not(emptyOrNullString())));
+        .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+        .andExpect(jsonPath("$.content[0].squadName", not(emptyOrNullString())));
   }
 }

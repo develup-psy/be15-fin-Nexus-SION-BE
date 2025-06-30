@@ -17,10 +17,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project.ProjectStatus;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
@@ -37,15 +39,22 @@ class SquadCommandIntegrationTest {
   @Autowired private DomainRepository domainRepository;
   @Autowired private ProjectRepository projectRepository;
   @Autowired private SquadCommandRepository squadCommandRepository;
+  @Autowired private ClientCompanyRepository clientCompanyRepository;
 
   @BeforeEach
   void setup() {
+    // 1. 선행 데이터 - 클라이언트 회사 저장
+    clientCompanyRepository.save(
+        ClientCompany.builder().clientCode("C001").companyName("카카오").domainName("CS").build());
+
+    // 2. 도메인 저장
     domainRepository.save(Domain.of("CS"));
-    // 프로젝트 더미 데이터 삽입
+
+    // 3. 프로젝트 저장
     Project project =
         Project.builder()
             .projectCode("PRJ001")
-            .clientCode("C001")
+            .clientCode("C001") // 위에서 저장한 client_code 사용
             .title("더미 프로젝트")
             .description("이 프로젝트는 테스트용입니다.")
             .startDate(LocalDate.of(2025, 1, 1))
@@ -57,7 +66,7 @@ class SquadCommandIntegrationTest {
             .build();
     projectRepository.save(project);
 
-    // 스쿼드 더미 데이터 삽입
+    // 4. 스쿼드 저장
     Squad squad =
         Squad.builder()
             .squadCode("SQUAD001")
@@ -75,18 +84,18 @@ class SquadCommandIntegrationTest {
   void registerSquad_success() throws Exception {
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
-            .projectCode("PRJ001")
+            .projectCode("ha_1_1")
             .title("스쿼드 A")
             .description("신규 백엔드 개발 스쿼드")
             .members(
                 List.of(
                     SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP001")
-                        .projectAndJobId(101L)
+                        .employeeIdentificationNumber("01202305")
+                        .projectAndJobId(1L)
                         .build(),
                     SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP002")
-                        .projectAndJobId(102L)
+                        .employeeIdentificationNumber("02202306")
+                        .projectAndJobId(2L)
                         .build()))
             .build();
 
@@ -136,12 +145,12 @@ class SquadCommandIntegrationTest {
             .members(
                 List.of(
                     SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP001")
-                        .projectAndJobId(101L)
+                        .employeeIdentificationNumber("01202305")
+                        .projectAndJobId(1L)
                         .build(),
                     SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP003")
-                        .projectAndJobId(103L)
+                        .employeeIdentificationNumber("02202306")
+                        .projectAndJobId(3L)
                         .build()))
             .build();
 
@@ -166,8 +175,8 @@ class SquadCommandIntegrationTest {
             .members(
                 List.of(
                     SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP001")
-                        .projectAndJobId(101L)
+                        .employeeIdentificationNumber("01202305")
+                        .projectAndJobId(1L)
                         .build()))
             .build();
 
