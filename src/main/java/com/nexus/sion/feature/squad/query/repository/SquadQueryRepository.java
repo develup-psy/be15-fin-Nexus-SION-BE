@@ -258,28 +258,26 @@ public class SquadQueryRepository {
         comments);
   }
 
-    public boolean existsByProjectCodeAndIsActive(String projectCode) {
-        return dsl.fetchExists(
-                dsl.selectFrom(SQUAD)
-                        .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                        .and(SQUAD.IS_ACTIVE.isTrue())
-        );
+  public boolean existsByProjectCodeAndIsActive(String projectCode) {
+    return dsl.fetchExists(
+        dsl.selectFrom(SQUAD)
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .and(SQUAD.IS_ACTIVE.isTrue()));
+  }
+
+  public Optional<SquadDetailResponse> findConfirmedSquadByProjectCode(String projectCode) {
+    String squadCode =
+        dsl.select(SQUAD.SQUAD_CODE)
+            .from(SQUAD)
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .and(SQUAD.IS_ACTIVE.isTrue())
+            .fetchOneInto(String.class);
+
+    if (squadCode == null) {
+      return Optional.empty();
     }
 
-    public Optional<SquadDetailResponse> findConfirmedSquadByProjectCode(String projectCode) {
-        String squadCode = dsl
-                .select(SQUAD.SQUAD_CODE)
-                .from(SQUAD)
-                .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                .and(SQUAD.IS_ACTIVE.isTrue())
-                .fetchOneInto(String.class);
-
-        if (squadCode == null) {
-            return Optional.empty();
-        }
-
-        // 기존 상세 조회 재사용
-        return Optional.of(findSquadDetailByCode(squadCode));
-    }
-
+    // 기존 상세 조회 재사용
+    return Optional.of(findSquadDetailByCode(squadCode));
+  }
 }
