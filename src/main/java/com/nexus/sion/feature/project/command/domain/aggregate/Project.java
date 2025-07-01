@@ -60,10 +60,21 @@ public class Project extends BaseTimeEntity {
   @Column(name = "request_specification_url", length = 255)
   private String requestSpecificationUrl;
 
+  @Column(name = "analysis_status")
+  @Enumerated(EnumType.STRING)
+  private AnalysisStatus analysisStatus = AnalysisStatus.PENDING;
+
   public enum ProjectStatus {
     WAITING,
     IN_PROGRESS,
     COMPLETE,
     INCOMPLETE
+  }
+
+  public enum AnalysisStatus {
+    PENDING,      // 분석 요청 전
+    PROCEEDING,   // 분석 진행 중
+    COMPLETE,     // 분석 완료
+    FAILED        // 실패
   }
 }
