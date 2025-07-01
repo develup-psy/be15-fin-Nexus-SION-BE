@@ -12,4 +12,5 @@ public class MemberCreateRequest {
   private String password;
   private String phoneNumber;
   private String email;
+  private String birthday;
 }
