@@ -12,9 +12,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/SION
-    username: root
-    password: 8897
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
