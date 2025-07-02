@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,11 @@ public class SquadQueryController {
   private final SquadQueryService squadQueryService;
 
   @GetMapping("/project/{projectCode}")
-  public ResponseEntity<SquadListResultResponse> getSquads(
-      @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
+  public ResponseEntity<Object> getSquadsOrConfirmed(
+          @PathVariable String projectCode, @ModelAttribute SquadListRequest request) {
     request.setProjectCode(projectCode);
-    return ResponseEntity.ok(squadQueryService.findSquads(request));
+    Object response = squadQueryService.findSquadsOrConfirmed(request);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{squadCode}")

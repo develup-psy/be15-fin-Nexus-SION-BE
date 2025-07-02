@@ -11,4 +11,13 @@ public interface SquadQueryService {
 
   // 스쿼드 상세 조회
   SquadDetailResponse getSquadDetailByCode(String squadCode);
+
+  // 확정된 스쿼드가 있으면 상세, 없으면 목록 조회
+  Object findSquadsOrConfirmed(SquadListRequest request);
+
+  // 해당 프로젝트에 확정된 스쿼드가 있는지 확인
+  boolean hasConfirmedSquad(String projectCode);
+
+  // 해당 프로젝트의 확정된 스쿼드 상세 조회
+  SquadDetailResponse getConfirmedSquadByProjectCode(String projectCode);
 }
