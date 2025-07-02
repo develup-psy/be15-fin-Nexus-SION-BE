@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.query.controller;
 
+import com.nexus.sion.feature.project.query.dto.response.ProjectForSquadResponse;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
@@ -32,4 +33,12 @@ public class ProjectQueryController {
     ProjectDetailResponse result = projectQueryService.getProjectDetail(projectCode);
     return ApiResponse.success(result);
   }
+
+  //스쿼드용 상세조회
+  @GetMapping("/squad/{projectCode}")
+  public ApiResponse<ProjectForSquadResponse> getProjectInfoForSquad(@PathVariable String projectCode) {
+    ProjectForSquadResponse result = projectQueryService.getProjectInfoForSquad(projectCode);
+    return ApiResponse.success(result);
+  }
+
 }
