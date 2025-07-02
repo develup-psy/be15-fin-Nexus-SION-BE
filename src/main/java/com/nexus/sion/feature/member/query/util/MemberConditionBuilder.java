@@ -8,10 +8,20 @@ import org.springframework.stereotype.Component;
 import com.example.jooq.generated.enums.MemberRole;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 
+import java.util.List;
+
 @Component
 public class MemberConditionBuilder {
   public Condition build(MemberListQuery query) {
-    Condition condition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.INSIDER));
+    Condition condition = MEMBER.DELETED_AT.isNull();
+
+    if (query.memberRoles() != null && !query.memberRoles().isEmpty()) {
+      List<MemberRole> roles = query.memberRoles().stream()
+              .map(String::toUpperCase)
+              .map(MemberRole::valueOf)
+              .toList();
+      condition = condition.and(MEMBER.ROLE.in(roles));
+    }
 
     if (query.status() != null) {
       condition = condition.and(MEMBER.STATUS.eq(query.status()));

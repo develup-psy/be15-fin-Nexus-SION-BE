@@ -1,8 +1,10 @@
 package com.nexus.sion.feature.member.query.repository;
 
+import static com.example.jooq.generated.Tables.GRADE;
 import static com.example.jooq.generated.tables.DeveloperTechStack.DEVELOPER_TECH_STACK;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.SQLDataType.VARCHAR;
 
 import java.util.List;
 import java.util.Optional;
@@ -224,47 +226,56 @@ public class MemberQueryRepository {
   }
 
   public List<MemberSquadListResponse> findAllSquadMembers(
-      MemberListQuery query, Condition condition, SortField<?> sortField) {
+          MemberListQuery query, Condition condition, SortField<?> sortField) {
+
     TopTechStackSubqueryProvider.TopTechStackSubquery topStack =
-        topTechStackSubqueryProvider.getTopTechStackSubquery();
+            topTechStackSubqueryProvider.getTopTechStackSubquery();
 
     if (query.techStacks() != null && !query.techStacks().isEmpty()) {
       condition =
-          condition.andExists(
-              dsl.selectOne()
-                  .from(DEVELOPER_TECH_STACK)
-                  .where(
-                      DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
-                          MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                  .and(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(query.techStacks())));
+              condition.andExists(
+                      dsl.selectOne()
+                              .from(DEVELOPER_TECH_STACK)
+                              .where(
+                                      DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                                              MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+                              .and(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(query.techStacks())));
     }
 
-    return dsl.select(
-            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-            MEMBER.EMPLOYEE_NAME,
-            MEMBER.GRADE_CODE,
-            MEMBER.STATUS,
-            topStack.techStackName())
-        .from(MEMBER)
-        .leftJoin(topStack.table())
-        .on(
-            MEMBER
-                .EMPLOYEE_IDENTIFICATION_NUMBER
-                .eq(topStack.empId())
-                .and(topStack.rowNumberField().eq(1)))
-        .where(condition)
-        .orderBy(sortField)
-        .limit(query.size())
-        .offset(query.page() * query.size())
-        .fetch(
-            record ->
-                new MemberSquadListResponse(
-                    record.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
-                    record.get(MEMBER.EMPLOYEE_NAME),
-                    record.get(MEMBER.GRADE_CODE) != null
-                        ? record.get(MEMBER.GRADE_CODE).name()
-                        : null,
-                    record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
-                    record.get(topStack.techStackName())));
+    return dsl
+            .select(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    MEMBER.EMPLOYEE_NAME,
+                    MEMBER.GRADE_CODE,
+                    MEMBER.STATUS,
+                    topStack.techStackName(),
+                    GRADE.MONTHLY_UNIT_PRICE,
+                    GRADE.PRODUCTIVITY)
+            .from(MEMBER)
+            .leftJoin(topStack.table())
+            .on(
+                    MEMBER
+                            .EMPLOYEE_IDENTIFICATION_NUMBER
+                            .eq(topStack.empId())
+                            .and(topStack.rowNumberField().eq(1)))
+            .leftJoin(GRADE)
+            .on(MEMBER.GRADE_CODE.cast(VARCHAR).eq(GRADE.GRADE_CODE.cast(VARCHAR))) // 등급 기준으로 join
+            .where(condition)
+            .orderBy(sortField)
+            .limit(query.size())
+            .offset(query.page() * query.size())
+            .fetch(record ->
+                    new MemberSquadListResponse(
+                            record.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
+                            record.get(MEMBER.EMPLOYEE_NAME),
+                            record.get(MEMBER.GRADE_CODE) != null
+                                    ? record.get(MEMBER.GRADE_CODE).name()
+                                    : null,
+                            record.get(MEMBER.STATUS) != null
+                                    ? record.get(MEMBER.STATUS).name()
+                                    : null,
+                            record.get(topStack.techStackName()),
+                            record.get(GRADE.MONTHLY_UNIT_PRICE),
+                            record.get(GRADE.PRODUCTIVITY)));
   }
 }
