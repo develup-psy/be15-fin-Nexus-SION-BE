@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
@@ -45,5 +46,13 @@ public class ProjectCommandController {
       @PathVariable String projectCode, @PathVariable Project.ProjectStatus status) {
     projectCommandService.updateProjectStatus(projectCode, status);
     return ResponseEntity.ok(ApiResponse.success(null));
+  }
+
+  @PostMapping("/{projectCode}/analyze")
+  public ResponseEntity<Void> analyzeProject(
+      @PathVariable String projectCode, @RequestParam("file") MultipartFile multipartFile) {
+
+    projectCommandService.analyzeProject(projectCode, multipartFile);
+    return ResponseEntity.accepted().build(); // 202는 처리가 완료되지 않았음을 나타냄
   }
 }

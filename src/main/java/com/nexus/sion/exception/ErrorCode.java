@@ -37,9 +37,11 @@ public enum ErrorCode {
   INVALID_BIRTHDAY("20012", "생일이 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
   ALREADY_DELETED_USER("20013", "이미 삭제된 구성원입니다.", HttpStatus.BAD_REQUEST),
   CANNOT_DELETE_ADMIN("20014", "관리자는 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
-  FIRST_MIN_YEARS_SHOULD_BE_1("20015", "첫 번째 구간의 minYears는 1이어야 합니다.", HttpStatus.BAD_REQUEST),
-  LAST_MAX_YEARS_SHOULD_BE_NULL("20016", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
-  INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20017", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
+  INVALID_SORT_COLUMN("20015", "유효하지 않는 정렬 기준입니다", HttpStatus.BAD_REQUEST),
+  INVALID_GRADE("20016", "유효하지 않는 등급 정보입니다. ", HttpStatus.BAD_REQUEST),
+  FIRST_MIN_YEARS_SHOULD_BE_1("20017", "첫 번째 구간의 minYears는 1이어야 합니다.", HttpStatus.BAD_REQUEST),
+  LAST_MAX_YEARS_SHOULD_BE_NULL("20018", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
+  INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20019", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
 
   // project
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
@@ -69,7 +71,10 @@ public enum ErrorCode {
   TECH_STACK_ALREADY_EXIST("50002", "이미 존재하는 기술스택입니다.", HttpStatus.CONFLICT),
 
   // statistics
-  INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST);
+  INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST),
+
+  // FP
+  FP_NOT_FOUND("70001","총 FP 포인트가 없는 프로젝트 평가입니다." ,HttpStatus.NOT_FOUND );
 
   // evaluation
 

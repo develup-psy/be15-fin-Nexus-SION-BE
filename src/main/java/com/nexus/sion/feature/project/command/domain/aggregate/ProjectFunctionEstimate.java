@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.*;
 
@@ -14,6 +15,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@EntityListeners(AuditingEntityListener.class)
+@ToString
 public class ProjectFunctionEstimate {
 
   @Id
@@ -49,8 +52,8 @@ public class ProjectFunctionEstimate {
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
-  @Column(name = "project_fp_summary_id", nullable = false, length = 255)
-  private String projectFpSummaryId;
+  @Column(name = "project_fp_summary_id")
+  private Long projectFpSummaryId;
 
   public enum FunctionType {
     EI,
@@ -64,5 +67,13 @@ public class ProjectFunctionEstimate {
     SIMPLE,
     MEDIUM,
     COMPLEX
+  }
+
+  public static FunctionType fromString(String value) {
+    try {
+      return FunctionType.valueOf(value);
+    } catch (IllegalArgumentException e) {
+      return null; // 또는 Optional.empty(), null, UNKNOWN 등 처리
+    }
   }
 }

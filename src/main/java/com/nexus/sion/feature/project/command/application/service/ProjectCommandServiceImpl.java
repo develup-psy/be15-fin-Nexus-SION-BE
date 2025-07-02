@@ -1,9 +1,14 @@
 package com.nexus.sion.feature.project.command.application.service;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -11,17 +16,22 @@ import com.nexus.sion.feature.project.command.application.dto.request.ProjectReg
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
+import com.nexus.sion.feature.project.command.domain.service.ProjectDomainService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private final ProjectCommandRepository projectCommandRepository;
   private final ProjectAndJobRepository projectAndJobRepository;
   private final JobAndTechStackRepository jobAndTechStackRepository;
+  private final ProjectAnalysisService projectAnalysisService;
+  private final ProjectRepository projectRepository;
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -135,5 +145,29 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
+  }
+
+  @Override
+  public Map<String, Long> findProjectAndJobIdMap(String projectId) {
+    return projectAndJobRepository.findByProjectCode(projectId).stream()
+        .collect(Collectors.toMap(ProjectAndJob::getJobName, ProjectAndJob::getId));
+  }
+
+  @Transactional
+  @Override
+  public void analyzeProject(String projectId, MultipartFile multipartFile) {
+    Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    project.setAnalysisStatus(Project.AnalysisStatus.PROCEEDING);
+    projectRepository.save(project);
+
+    projectAnalysisService.analyzeProject(projectId, multipartFile)
+            .exceptionally(ex -> {
+              log.error("FP 분석 실패", ex);
+              project.setAnalysisStatus(Project.AnalysisStatus.FAILED);
+              projectRepository.save(project);
+              return null;
+            });
   }
 }

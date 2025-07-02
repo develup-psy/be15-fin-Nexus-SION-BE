@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.*;
 
@@ -15,6 +16,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@EntityListeners(AuditingEntityListener.class)
+@ToString
 public class ProjectFpSummary {
 
   @Id

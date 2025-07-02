@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper">
+
+    <resultMap id="DeveloperSummaryMap" type="com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="grade" column="grade"/>
+        <result property="avgTechScore" column="avgTechScore"/>
+        <result property="domainCount" column="domainCount"/>
+    </resultMap>
+
+    <select id="findJobsByProjectId"
+            resultType="com.nexus.sion.feature.squad.query.dto.response.JobInfo">
+        SELECT
+                paj.project_and_job_id AS projectAndJobId,
+                paj.job_name AS jobName
+          FROM project p
+          JOIN project_and_job paj
+            ON paj.project_code = p.project_code
+         WHERE p.project_code = #{projectId}
+    </select>
+
+    <select id="findDevelopersByStacksPerJob" resultType="com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary">
+        SELECT
+                m.employee_identification_number AS id,
+                m.employee_name AS name,
+                m.grade_code AS grade,
+                COALESCE(AVG(dts.tech_stack_total_scores), 0) AS avgTechScore,
+                COALESCE(domain_info.domain_count, 0) AS domainCount
+          FROM SION.member m
+          JOIN SION.developer_tech_stack dts
+            ON m.employee_identification_number = dts.employee_identification_number
+          JOIN SION.job_and_tech_stack jts
+            ON dts.tech_stack_name = jts.tech_stack_name
+          LEFT JOIN (
+            SELECT se.employee_identification_number, COUNT(*) AS domain_count
+              FROM SION.squad_employee se
+              JOIN SION.squad sq ON se.squad_code = sq.squad_code
+              JOIN SION.project prj ON sq.project_code = prj.project_code
+             WHERE prj.domain_name = (
+                SELECT domain_name FROM SION.project WHERE project_code = #{projectId}
+             )
+            GROUP BY se.employee_identification_number
+        ) AS domain_info
+           ON m.employee_identification_number = domain_info.employee_identification_number
+        WHERE m.status = 'AVAILABLE'
+          AND jts.project_and_job_id = #{projectAndJobId}
+        GROUP BY
+        m.employee_identification_number,
+        m.employee_name,
+        m.grade_code,
+        domain_info.domain_count
+        HAVING COUNT(DISTINCT dts.tech_stack_name) = (
+            SELECT COUNT(DISTINCT jts2.tech_stack_name)
+              FROM SION.job_and_tech_stack jts2
+             WHERE jts2.project_and_job_id = #{projectAndJobId}
+        )
+    </select>
+
+    <select id="findRequiredMemberCountByRoles"
+            resultType="com.nexus.sion.feature.squad.query.dto.response.JobAndCount">
+        SELECT
+        job_name AS jobName,
+        required_number AS requiredNumber
+        FROM project_and_job
+        WHERE project_code = #{projectId}
+    </select>
+
+</mapper>

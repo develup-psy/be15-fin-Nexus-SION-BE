@@ -1,0 +1,4 @@
+package com.nexus.sion.feature.member.query.dto.response;
+
+public record MemberSquadListResponse(
+    String employeeId, String name, String grade, String status, String topTechStackName) {}
