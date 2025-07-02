@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
 
@@ -13,6 +14,7 @@ import org.apache.ibatis.plugin.*;
       method = "prepare",
       args = {Connection.class, Integer.class})
 })
+@Slf4j
 public class SqlLogInterceptor implements Interceptor {
 
   @Override
@@ -21,14 +23,13 @@ public class SqlLogInterceptor implements Interceptor {
     String sql = statementHandler.getBoundSql().getSql();
     Object param = statementHandler.getBoundSql().getParameterObject();
 
-    System.out.println("[MyBatis SQL] ▶ " + sql);
-
+    log.debug("[MyBatis SQL] ▶ {}", sql);
     // 파라미터가 Map이면 키-값 출력
     if (param instanceof Map<?, ?> map) {
-      System.out.println("[MyBatis Param] ▶ ");
-      map.forEach((k, v) -> System.out.println("  - " + k + " = " + v));
+      log.debug("[MyBatis Param] ▶ ");
+      map.forEach((k, v) -> log.debug("  - {} = {}", k, v));
     } else {
-      System.out.println("[MyBatis Param] ▶ " + param);
+      log.debug("[MyBatis Param] ▶ {}", param);
     }
 
     return invocation.proceed();
