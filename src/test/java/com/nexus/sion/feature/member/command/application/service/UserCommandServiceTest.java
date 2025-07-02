@@ -59,7 +59,8 @@ class UserCommandServiceTest {
   @BeforeEach
   void setUp() {
     request =
-        new MemberCreateRequest("EMP123", "홍길동", "Password123!", "01011111111", "test@example.com","19800102");
+        new MemberCreateRequest(
+            "EMP123", "홍길동", "Password123!", "01011111111", "test@example.com", "19800102");
   }
 
   @Test
@@ -87,7 +88,8 @@ class UserCommandServiceTest {
   void registerUser_실패_비밀번호형식불일치() {
     // given
     MemberCreateRequest invalidRequest =
-        new MemberCreateRequest("EMP123", "홍길동", "Password1", "01011111111", "test@example.com","19700603");
+        new MemberCreateRequest(
+            "EMP123", "홍길동", "Password1", "01011111111", "test@example.com", "19700603");
     // when
     BusinessException exception =
         assertThrows(BusinessException.class, () -> userService.registerUser(invalidRequest));
@@ -131,7 +133,12 @@ class UserCommandServiceTest {
     // given
     MemberCreateRequest invalidRequest =
         new MemberCreateRequest(
-            "EMP123", "홍길동", "Password123!", "010-1234-5678", "test@example.com","19700603"); // 하이픈 포함된 잘못된 번호
+            "EMP123",
+            "홍길동",
+            "Password123!",
+            "010-1234-5678",
+            "test@example.com",
+            "19700603"); // 하이픈 포함된 잘못된 번호
 
     // when
     BusinessException exception =
@@ -146,9 +153,14 @@ class UserCommandServiceTest {
     // given
     MemberCreateRequest invalidRequest =
         new MemberCreateRequest(
-            "EMP123", "홍길동", "Password123!", "01012345678", "invalid-email" // @
+            "EMP123",
+            "홍길동",
+            "Password123!",
+            "01012345678",
+            "invalid-email" // @
             // 없음
-            ,"19700603");
+            ,
+            "19700603");
 
     // when
     BusinessException exception =

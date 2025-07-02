@@ -47,13 +47,14 @@ public class AuthController {
 
   @PostMapping("/refresh")
   public ResponseEntity<ApiResponse<AccessTokenResponse>> refreshToken(
-          @CookieValue(name = "refreshToken", required = true) String refreshToken) {
+      @CookieValue(name = "refreshToken", required = true) String refreshToken) {
     TokenResponse response = authService.refreshToken(refreshToken);
     return buildTokenResponse(response);
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<ApiResponse<Void>> logout(@CookieValue(name = "refreshToken", required = true) String refreshToken) {
+  public ResponseEntity<ApiResponse<Void>> logout(
+      @CookieValue(name = "refreshToken", required = true) String refreshToken) {
     authService.logout(refreshToken);
 
     ResponseCookie deleteCookie = createDeleteRefreshTokenCookie(); // 만료용 쿠키 생성

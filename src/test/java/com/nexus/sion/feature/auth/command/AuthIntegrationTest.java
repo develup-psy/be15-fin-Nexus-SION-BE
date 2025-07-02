@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
-import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
 import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
@@ -134,7 +133,7 @@ public class AuthIntegrationTest {
         mockMvc
             .perform(
                 post("/api/v1/members/refresh")
-                        .cookie(new Cookie("refreshToken", validRefreshToken)))
+                    .cookie(new Cookie("refreshToken", validRefreshToken)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.accessToken").exists())
             .andReturn();
@@ -165,8 +164,7 @@ public class AuthIntegrationTest {
     // when & then
     mockMvc
         .perform(
-            post("/api/v1/members/refresh")
-                    .cookie(new Cookie("refreshToken", fakeRefreshToken)))
+            post("/api/v1/members/refresh").cookie(new Cookie("refreshToken", fakeRefreshToken)))
         .andExpect(status().is4xxClientError());
   }
 
@@ -180,9 +178,7 @@ public class AuthIntegrationTest {
 
     // when & then
     mockMvc
-        .perform(
-            post("/api/v1/members/refresh")
-                    .cookie(new Cookie("refreshToken", notStoredToken)))
+        .perform(post("/api/v1/members/refresh").cookie(new Cookie("refreshToken", notStoredToken)))
         .andExpect(status().is4xxClientError());
   }
 
@@ -195,8 +191,7 @@ public class AuthIntegrationTest {
     MockHttpServletResponse response =
         mockMvc
             .perform(
-                post("/api/v1/members/logout")
-                        .cookie(new Cookie("refreshToken", refreshToken)))
+                post("/api/v1/members/logout").cookie(new Cookie("refreshToken", refreshToken)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
