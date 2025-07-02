@@ -21,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class MemberSquadSearchRequest {
   private String keyword;
-  private String status; // Optional, 검증 필요
-  private List<String> grade; // Optional
-  private List<String> stacks; // Optional
+  private String status;
+  private List<String> grade;
+  private List<String> stacks;
 
   private String sortBy = "employeeName";
   private String sortDir = "asc";
@@ -49,7 +49,7 @@ public class MemberSquadSearchRequest {
         parsedGrades =
             this.grade.stream().map(s -> GradeGradeCode.valueOf(s.toUpperCase())).toList();
       } catch (IllegalArgumentException e) {
-        throw new BusinessException(ErrorCode.TECH_STACK_NOT_FOUND);
+        throw new BusinessException(ErrorCode.INVALID_GRADE);
       }
     }
 

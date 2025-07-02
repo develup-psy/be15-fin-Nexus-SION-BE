@@ -199,7 +199,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                                         .toList())))
             .toList();
 
-    List<EvaluatedSquad> evaluatedSquads = squadEvaluator.evaluateAll(transformedCombinations);
+    List<EvaluatedSquad> evaluatedSquads = squadEvaluator.evaluateAll(projectId, transformedCombinations);
 
     EvaluatedSquad bestSquad = squadSelector.selectBest(evaluatedSquads, criteria);
 

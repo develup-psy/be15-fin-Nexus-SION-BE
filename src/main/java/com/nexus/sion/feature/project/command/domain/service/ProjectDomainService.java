@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProjectDomainService {
 
   public ProjectAnalysisResult analyze(FPInferResponse result) {
-    String projectCode = result.getProject_id();
-    int totalFp = result.getTotal_fp_score();
+    String projectCode = result.getProjectId();
+    int totalFp = result.getTotalFpScore();
 
     // ⏱️ 예상 기간/예산 계산
     double effortPerFP = 0.25;
@@ -45,7 +45,7 @@ public class ProjectDomainService {
         result.getFunctions().stream()
             .filter(
                 func ->
-                    isValidFunctionType(func.getFp_type())
+                    isValidFunctionType(func.getFpType())
                         && isValidComplexity(func.getComplexity()))
             .map(
                 func ->
@@ -53,15 +53,15 @@ public class ProjectDomainService {
                         .projectFpSummaryId(summary.getId())
                         .functionType(
                             ProjectFunctionEstimate.FunctionType.valueOf(
-                                func.getFp_type().toUpperCase()))
+                                func.getFpType().toUpperCase()))
                         .complexity(
                             ProjectFunctionEstimate.Complexity.valueOf(
                                 func.getComplexity().toUpperCase()))
                         .functionScore(func.getScore())
                         .description(func.getDescription())
-                        .relatedTablesCount(func.getEstimated_det())
-                        .relatedFieldsCount(func.getEstimated_ftr())
-                        .functionName(func.getFunction_name())
+                        .relatedTablesCount(func.getEstimatedDet())
+                        .relatedFieldsCount(func.getEstimatedFtr())
+                        .functionName(func.getFunctionName())
                         .build())
             .toList();
 

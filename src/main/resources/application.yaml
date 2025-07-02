@@ -91,3 +91,6 @@ management:
       exposure:
         include: ["health", "metrics", "prometheus"]
 
+ai:
+  fp-infer-url: http://localhost:8100/fp-infer
+

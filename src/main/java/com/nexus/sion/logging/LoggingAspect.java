@@ -1,4 +1,4 @@
-package com.nexus.sion.infra.logging;
+package com.nexus.sion.logging;
 
 import java.util.Arrays;
 
