@@ -9,8 +9,10 @@ public class ProjectListResponse {
   private String projectCode;
   private String title;
   private String description;
-  private String period;
+  private String startDate;
+  private String endDate;
+  private int period;
   private String status;
   private String domainName;
-  private Integer numberOfMembers;
+  private Integer hrCount;
 }
