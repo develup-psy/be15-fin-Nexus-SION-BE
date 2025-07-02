@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.Duration;
 import java.util.Arrays;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -26,7 +27,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.feature.auth.command.application.dto.request.LoginRequest;
-import com.nexus.sion.feature.auth.command.application.dto.request.RefreshTokenRequest;
 import com.nexus.sion.feature.auth.command.domain.aggregate.RefreshToken;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
@@ -128,15 +128,12 @@ public class AuthIntegrationTest {
     // given
     String validRefreshToken = redisTemplate.opsForValue().get(employeeId).getToken();
 
-    RefreshTokenRequest request = new RefreshTokenRequest(validRefreshToken);
-
     // when
     MvcResult result =
         mockMvc
             .perform(
                 post("/api/v1/members/refresh")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .cookie(new Cookie("refreshToken", validRefreshToken)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.accessToken").exists())
             .andReturn();
@@ -163,14 +160,11 @@ public class AuthIntegrationTest {
   void refreshToken_user_does_not_exist() throws Exception {
     // given
     String fakeRefreshToken = jwtTokenProvider.createRefreshToken("FAKE_USER", "USER");
-    RefreshTokenRequest request = new RefreshTokenRequest(fakeRefreshToken);
 
     // when & then
     mockMvc
         .perform(
-            post("/api/v1/members/refresh")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+            post("/api/v1/members/refresh").cookie(new Cookie("refreshToken", fakeRefreshToken)))
         .andExpect(status().is4xxClientError());
   }
 
@@ -179,16 +173,12 @@ public class AuthIntegrationTest {
     // given
     String notStoredToken =
         jwtTokenProvider.createRefreshToken(employeeId, "USER"); // 새로운 토큰이기 때문에 redis에 없음
-    RefreshTokenRequest request = new RefreshTokenRequest(notStoredToken);
 
     redisTemplate.delete(employeeId); // Redis에 저장된 기존 토큰 제거
 
     // when & then
     mockMvc
-        .perform(
-            post("/api/v1/members/refresh")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+        .perform(post("/api/v1/members/refresh").cookie(new Cookie("refreshToken", notStoredToken)))
         .andExpect(status().is4xxClientError());
   }
 
@@ -196,15 +186,12 @@ public class AuthIntegrationTest {
   void logout_shouldInvalidateTokenAndSetDeleteCookie() throws Exception {
     // given
     String refreshToken = redisTemplate.opsForValue().get(employeeId).getToken();
-    RefreshTokenRequest request = new RefreshTokenRequest(refreshToken);
 
     // when
     MockHttpServletResponse response =
         mockMvc
             .perform(
-                post("/api/v1/members/logout")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                post("/api/v1/members/logout").cookie(new Cookie("refreshToken", refreshToken)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
