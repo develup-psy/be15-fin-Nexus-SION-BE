@@ -2,9 +2,9 @@ package com.nexus.sion.feature.member.query.service;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreDto;
+import com.nexus.sion.feature.member.query.dto.response.InitialScoreResponseDto;
 
 public interface InitialScoreQueryService {
 
-  List<InitialScoreDto> getInitialScores();
+  List<InitialScoreResponseDto> getInitialScores();
 }

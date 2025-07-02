@@ -4,10 +4,9 @@ import static com.example.jooq.generated.Tables.INITIAL_SCORE;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.InitialScoreResponseDto;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-
-import com.nexus.sion.feature.member.command.application.dto.request.InitialScoreDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,9 +16,9 @@ public class InitialScoreQueryRepository {
 
   private final DSLContext dsl;
 
-  public List<InitialScoreDto> getAllScores() {
-    return dsl.select(INITIAL_SCORE.MIN_YEARS, INITIAL_SCORE.MAX_YEARS, INITIAL_SCORE.SCORE)
+  public List<InitialScoreResponseDto> getAllScores() {
+    return dsl.select(INITIAL_SCORE.ID, INITIAL_SCORE.MIN_YEARS, INITIAL_SCORE.MAX_YEARS, INITIAL_SCORE.SCORE)
         .from(INITIAL_SCORE)
-        .fetchInto(InitialScoreDto.class);
+        .fetchInto(InitialScoreResponseDto.class);
   }
 }
