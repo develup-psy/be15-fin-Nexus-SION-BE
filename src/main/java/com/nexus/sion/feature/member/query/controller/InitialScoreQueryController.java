@@ -2,13 +2,13 @@ package com.nexus.sion.feature.member.query.controller;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.query.dto.response.InitialScoreResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.member.query.dto.response.InitialScoreResponseDto;
 import com.nexus.sion.feature.member.query.service.InitialScoreQueryService;
 
 import io.swagger.v3.oas.annotations.Operation;
