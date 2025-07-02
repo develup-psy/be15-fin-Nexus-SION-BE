@@ -14,6 +14,7 @@ import com.nexus.sion.feature.project.command.domain.repository.ProjectFunctionE
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,6 +45,9 @@ public class ProjectAnalysisService {
     private final ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
     private final ProjectRepository projectRepository;
 
+    @Value("${ai.fp-infer-url}")
+    private String fpInferUrl;
+
     @Async
     public CompletableFuture<Void> analyzeProject(String projectId, MultipartFile multipartFile) {
         File tempFile = null;
@@ -60,7 +64,7 @@ public class ProjectAnalysisService {
             HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
             ResponseEntity<String> response =
-                    restTemplate.postForEntity("http://localhost:8100/fp-infer", request, String.class);
+                    restTemplate.postForEntity(fpInferUrl, request, String.class);
 
             log.info(response.getBody());
 
