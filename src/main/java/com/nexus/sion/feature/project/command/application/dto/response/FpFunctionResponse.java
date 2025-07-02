@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.project.command.application.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -8,15 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class FpFunctionResponse {
-  @JsonProperty("fp_type")
-  private String fpType;
-  @JsonProperty("function_name")
-  private String functionName;
+  private String fp_type;
+  private String function_name;
   private String description;
   private String complexity;
-  @JsonProperty("estimated_det")
-  private int estimatedDet;
-  @JsonProperty("estimated_ftr")
-  private int estimatedFtr;
+  private int estimated_det;
+  private int estimated_ftr;
   private int score;
 }

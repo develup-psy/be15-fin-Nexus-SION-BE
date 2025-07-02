@@ -19,7 +19,7 @@ public interface SquadQueryMapper {
 
   List<DeveloperSummary> findDevelopersByStacksPerJob(
       @Param("projectAndJobId") Long projectAndJobId, @Param("projectId") String projectId);
-
+  ;
 
   List<JobInfo> findJobsByProjectId(@Param("projectId") String projectId);
 
