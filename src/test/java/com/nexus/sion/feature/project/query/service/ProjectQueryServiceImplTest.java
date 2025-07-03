@@ -37,12 +37,14 @@ class ProjectQueryServiceImplTest {
     ProjectListResponse project =
         new ProjectListResponse(
             "PROJ-001",
-            "AI 플랫폼 개발",
-            "AI 기반 분석 시스템 구축",
-            "2025-01-01 ~ 2025-06-30",
-            "IN_PROGRESS",
-            "인공지능",
-            6);
+            "AI 기반 리포트 시스템",
+            "보고서 자동 생성",
+            "2025-03-01",
+            "2025-06-01",
+            4,
+            "COMPLETE",
+            "HR시스템",
+            5);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 10);
 
@@ -65,7 +67,15 @@ class ProjectQueryServiceImplTest {
 
     ProjectListResponse project =
         new ProjectListResponse(
-            "PROJ-002", "웹 리뉴얼", "프론트엔드 개선", "2025-02-01 ~ 2025-05-01", "WAITING", "웹", 3);
+            "PROJ-002",
+            "웹 리뉴얼",
+            "프론트엔드 개선",
+            "2025-02-01 ~ 2025-05-01",
+            "WAITING",
+            3,
+            "COMPLETE",
+            "웹",
+            5);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 5);
 
@@ -93,10 +103,12 @@ class ProjectQueryServiceImplTest {
             "PROJ-003",
             "AI 기반 리포트 시스템",
             "보고서 자동 생성",
-            "2025-03-01 ~ 2025-06-01",
+            "2025-03-01",
+            "2025-06-01",
+            4,
             "COMPLETE",
-            "데이터",
-            4);
+            "HR시스템",
+            5);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 5);
 
@@ -106,7 +118,7 @@ class ProjectQueryServiceImplTest {
 
     assertThat(result.getContent()).hasSize(1);
     assertThat(result.getContent().get(0).getTitle()).contains("AI");
-    assertThat(result.getContent().get(0).getNumberOfMembers()).isLessThanOrEqualTo(10);
+    assertThat(result.getContent().get(0).getHrCount()).isLessThanOrEqualTo(10);
     verify(repository).findProjects(request);
   }
 

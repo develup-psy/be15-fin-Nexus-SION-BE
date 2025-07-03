@@ -10,12 +10,12 @@ import static com.example.jooq.generated.tables.TechStack.TECH_STACK;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jooq.Condition;
-import org.jooq.DSLContext;
+import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
@@ -50,15 +50,25 @@ public class ProjectQueryRepository {
 
     // 필터 조건 (AND)
     Condition filterCondition = PROJECT.DELETED_AT.isNull();
+
     if (request.getMaxBudget() != null) {
       filterCondition = filterCondition.and(PROJECT.BUDGET.le(request.getMaxBudget()));
     }
+
     if (request.getMaxNumberOfMembers() != null) {
       filterCondition =
           filterCondition.and(PROJECT.NUMBER_OF_MEMBERS.le(request.getMaxNumberOfMembers()));
     }
+
     if (request.getStatuses() != null && !request.getStatuses().isEmpty()) {
       filterCondition = filterCondition.and(PROJECT.STATUS.in(request.getStatuses()));
+    }
+
+    if (request.getMaxPeriodInMonth() != null) {
+      Field<LocalDate> endDate = DSL.coalesce(PROJECT.ACTUAL_END_DATE, PROJECT.EXPECTED_END_DATE);
+      Field<Integer> months =
+          DSL.field("timestampdiff(month, {0}, {1})", Integer.class, PROJECT.START_DATE, endDate);
+      filterCondition = filterCondition.and(months.le(request.getMaxPeriodInMonth()));
     }
 
     // 최종 WHERE 조건: keyword AND filter
@@ -77,17 +87,6 @@ public class ProjectQueryRepository {
             .offset(request.getPage() * request.getSize())
             .fetch()
             .stream()
-            .filter(
-                record -> {
-                  if (request.getMaxPeriodInMonth() == null) return true;
-                  LocalDate start = record.get(PROJECT.START_DATE);
-                  LocalDate end =
-                      record.get(PROJECT.ACTUAL_END_DATE) != null
-                          ? record.get(PROJECT.ACTUAL_END_DATE)
-                          : record.get(PROJECT.EXPECTED_END_DATE);
-                  long months = ChronoUnit.MONTHS.between(start, end);
-                  return months <= request.getMaxPeriodInMonth();
-                })
             .map(
                 record -> {
                   LocalDate start = record.get(PROJECT.START_DATE);
@@ -95,13 +94,19 @@ public class ProjectQueryRepository {
                       record.get(PROJECT.ACTUAL_END_DATE) != null
                           ? record.get(PROJECT.ACTUAL_END_DATE)
                           : record.get(PROJECT.EXPECTED_END_DATE);
-                  String period = start + " ~ " + end;
+
+                  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+                  String formattedStart = formatter.format(start);
+                  String formattedEnd = formatter.format(end);
+                  int months = (int) ChronoUnit.MONTHS.between(start, end);
 
                   return new ProjectListResponse(
                       record.get(PROJECT.PROJECT_CODE),
                       record.get(PROJECT.TITLE),
                       record.get(PROJECT.DESCRIPTION),
-                      period,
+                      formattedStart,
+                      formattedEnd,
+                      months,
                       String.valueOf(record.get(PROJECT.STATUS)),
                       record.get(PROJECT.DOMAIN_NAME),
                       record.get(PROJECT.NUMBER_OF_MEMBERS));
