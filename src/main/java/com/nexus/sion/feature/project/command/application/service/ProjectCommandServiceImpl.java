@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
@@ -15,7 +17,7 @@ import com.nexus.sion.feature.project.command.application.dto.request.ProjectReg
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
-import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.project.command.domain.service.ProjectDomainService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +51,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .numberOfMembers(request.getNumberOfMembers())
             .clientCode(request.getClientCode())
             .requestSpecificationUrl(request.getRequestSpecificationUrl())
-            .analysisStatus(Project.AnalysisStatus.PENDING)
             .build();
     projectCommandRepository.save(project);
 
@@ -165,28 +166,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         .collect(Collectors.toMap(ProjectAndJob::getJobName, ProjectAndJob::getId));
   }
 
+  @Transactional
   @Override
   public void analyzeProject(String projectId, MultipartFile multipartFile) {
-    Project project =
-        projectRepository
-            .findById(projectId)
+    Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    // 분석 가능 상태인지 확인 (PENDING 또는 FAILED만 허용)
-    Project.AnalysisStatus status = project.getAnalysisStatus();
-    if (status != Project.AnalysisStatus.PENDING && status != Project.AnalysisStatus.FAILED) {
-      throw new BusinessException(ErrorCode.PROJECT_ANALYSIS_ALREADY_IN_PROGRESS);
-    }
-
-    // 분석 상태 진행 중으로 변경
     project.setAnalysisStatus(Project.AnalysisStatus.PROCEEDING);
     projectRepository.save(project);
 
-    projectAnalysisService
-        .analyzeProject(projectId, multipartFile)
-        .exceptionally(
-            ex -> {
-    // 비동기 분석 호출 하고 실패 시 예외 처리
     projectAnalysisService.analyzeProject(projectId, multipartFile)
             .exceptionally(ex -> {
               log.error("FP 분석 실패", ex);

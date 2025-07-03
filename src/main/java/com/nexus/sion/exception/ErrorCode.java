@@ -85,7 +85,6 @@ public enum ErrorCode {
   // FP
   FP_NOT_FOUND("70001","총 FP 포인트가 없는 프로젝트 평가입니다." ,HttpStatus.NOT_FOUND ),
   PROJECT_ANALYSIS_ALREADY_IN_PROGRESS("70002", "이미 분석이 진행 중이거나 완료된 프로젝트입니다.",HttpStatus.CONFLICT ),;
-  FP_NOT_FOUND("70001", "총 FP 포인트가 없는 프로젝트 평가입니다.", HttpStatus.NOT_FOUND);
 
   // evaluation
 
