@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
 public class GradeDto {
   private GradeCode gradeCode;
   private BigDecimal productivity;
