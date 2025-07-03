@@ -3,15 +3,13 @@ package com.nexus.sion.feature.squad.command.application.dto.internal;
 import java.util.List;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class EvaluatedSquad {
   private Map<String, List<CandidateSummary>> squad;
   private int averageTechStackScore;

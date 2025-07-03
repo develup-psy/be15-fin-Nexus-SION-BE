@@ -69,11 +69,17 @@ public class SquadEvaluatorImpl {
       double estimatedDuration = Math.ceil(totalManMonth / productivitySum);
       int totalCost = (int) Math.ceil(monthlyCost * estimatedDuration);
 
-      // [3] 예산/기간 조건 필터링
-      boolean overBudget = maxBudget != null && totalCost > maxBudget;
-      boolean overDuration = maxDuration != null && estimatedDuration > maxDuration;
+      // 예산/기간 조건 필터링
+//      boolean overBudget = maxBudget != null && totalCost > maxBudget;
+//      boolean overDuration = maxDuration != null && estimatedDuration > maxDuration;
+//
+//      if (overBudget || overDuration) continue;
+      System.out.println("maxBudget = " + maxBudget);
+      System.out.println("totalCost = " + totalCost);
 
-      if (overBudget || overDuration) continue;
+      System.out.println("maxDuration = " + maxDuration);
+      System.out.println("estimatedDuration = " + estimatedDuration);
+
 
       String reason = "";
       if(Objects.nonNull(maxBudget) && Objects.nonNull(maxDuration)){
