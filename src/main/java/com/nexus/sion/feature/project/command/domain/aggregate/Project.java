@@ -60,6 +60,7 @@ public class Project extends BaseTimeEntity {
   @Column(name = "request_specification_url", length = 255)
   private String requestSpecificationUrl;
 
+  @Builder.Default
   @Column(name = "analysis_status")
   @Enumerated(EnumType.STRING)
   private AnalysisStatus analysisStatus = AnalysisStatus.PENDING;

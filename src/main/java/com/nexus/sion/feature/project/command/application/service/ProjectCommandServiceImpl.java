@@ -50,6 +50,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .numberOfMembers(request.getNumberOfMembers())
             .clientCode(request.getClientCode())
             .requestSpecificationUrl(request.getRequestSpecificationUrl())
+            .analysisStatus(Project.AnalysisStatus.PENDING)
             .build();
     projectCommandRepository.save(project);
 
