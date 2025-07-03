@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Intercepts({
   @Signature(

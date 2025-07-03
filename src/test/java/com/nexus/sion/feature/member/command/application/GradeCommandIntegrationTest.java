@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +20,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,7 +29,7 @@ public class GradeCommandIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
 
-    @Autowired private GradeRepository gradeRepository;
+  @Autowired private GradeRepository gradeRepository;
 
   @Autowired private ObjectMapper objectMapper;
 

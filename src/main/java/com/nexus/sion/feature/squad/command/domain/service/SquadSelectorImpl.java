@@ -12,25 +12,30 @@ import com.nexus.sion.feature.squad.command.domain.aggregate.enums.Recommendatio
 public class SquadSelectorImpl {
 
   public EvaluatedSquad selectBest(List<EvaluatedSquad> squads, RecommendationCriteria criteria) {
-    double minCost = squads.stream().mapToDouble(EvaluatedSquad::getTotalMonthlyCost).min().orElse(0);
-    double maxCost = squads.stream().mapToDouble(EvaluatedSquad::getTotalMonthlyCost).max().orElse(1);
-    double minDuration = squads.stream().mapToDouble(EvaluatedSquad::getEstimatedDuration).min().orElse(0);
-    double maxDuration = squads.stream().mapToDouble(EvaluatedSquad::getEstimatedDuration).max().orElse(1);
+    double minCost =
+        squads.stream().mapToDouble(EvaluatedSquad::getTotalMonthlyCost).min().orElse(0);
+    double maxCost =
+        squads.stream().mapToDouble(EvaluatedSquad::getTotalMonthlyCost).max().orElse(1);
+    double minDuration =
+        squads.stream().mapToDouble(EvaluatedSquad::getEstimatedDuration).min().orElse(0);
+    double maxDuration =
+        squads.stream().mapToDouble(EvaluatedSquad::getEstimatedDuration).max().orElse(1);
 
     return squads.stream()
-            .max(Comparator.comparingDouble(
-                    squad -> calculateScore(squad, criteria, minCost, maxCost, minDuration, maxDuration)))
-            .orElseThrow(() -> new IllegalArgumentException("추천 가능한 스쿼드가 없습니다."));
+        .max(
+            Comparator.comparingDouble(
+                squad ->
+                    calculateScore(squad, criteria, minCost, maxCost, minDuration, maxDuration)))
+        .orElseThrow(() -> new IllegalArgumentException("추천 가능한 스쿼드가 없습니다."));
   }
 
-
   private double calculateScore(
-          EvaluatedSquad squad,
-          RecommendationCriteria criteria,
-          double minCost,
-          double maxCost,
-          double minDuration,
-          double maxDuration){
+      EvaluatedSquad squad,
+      RecommendationCriteria criteria,
+      double minCost,
+      double maxCost,
+      double minDuration,
+      double maxDuration) {
 
     // 기준 점수 항목 정규화 (높을수록 좋은 항목은 정규화, 낮을수록 좋은 항목은 역정규화)
     double tech = squad.getAverageTechStackScore(); // 높을수록 좋음

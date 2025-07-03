@@ -53,7 +53,8 @@ public enum ErrorCode {
   DOMAIN_ALREADY_EXIST("30007", "이미 존재하는 도메인입니다.", HttpStatus.CONFLICT),
   JOB_ALREADY_EXIST("30008", "이미 존재하는 직무입니다.", HttpStatus.CONFLICT),
   CLIENT_COMPANY_NOT_FOUND("30009", "해당 고객사가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-  CLIENT_COMPANY_DELETE_CONSTRAINT("30010", "해당 고객사는 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
+  CLIENT_COMPANY_DELETE_CONSTRAINT(
+      "30010", "해당 고객사는 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
@@ -75,7 +76,7 @@ public enum ErrorCode {
   INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST),
 
   // FP
-  FP_NOT_FOUND("70001","총 FP 포인트가 없는 프로젝트 평가입니다." ,HttpStatus.NOT_FOUND );
+  FP_NOT_FOUND("70001", "총 FP 포인트가 없는 프로젝트 평가입니다.", HttpStatus.NOT_FOUND);
 
   // evaluation
 

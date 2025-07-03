@@ -314,7 +314,7 @@ class MemberQueryServiceImplTest {
     void givenInvalidSortBy_whenSearch_thenThrowsException() {
       // given
       MemberListQuery badSortQuery =
-          new MemberListQuery(null,null, null, null, "invalidField", "asc", 1, 10);
+          new MemberListQuery(null, null, null, null, "invalidField", "asc", 1, 10);
 
       when(sortFieldSelector.select(eq("invalidField"), eq("asc")))
           .thenThrow(new BusinessException(ErrorCode.INVALID_SORT_COLUMN));

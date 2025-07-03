@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 @ExtendWith(MockitoExtension.class)
 class GradeCommandServiceImplTest {

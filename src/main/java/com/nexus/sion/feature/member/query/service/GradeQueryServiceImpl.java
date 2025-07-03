@@ -1,20 +1,22 @@
 package com.nexus.sion.feature.member.query.service;
 
-import com.nexus.sion.feature.member.query.dto.response.GradeDto;
-import com.nexus.sion.feature.member.query.repository.GradeQueryRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.nexus.sion.feature.member.query.dto.response.GradeDto;
+import com.nexus.sion.feature.member.query.repository.GradeQueryRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class GradeQueryServiceImpl implements  GradeQueryService{
+public class GradeQueryServiceImpl implements GradeQueryService {
 
-    private final GradeQueryRepository gradeQueryRepository;
+  private final GradeQueryRepository gradeQueryRepository;
 
-    @Override
-    public List<GradeDto> getGrade() {
-        return gradeQueryRepository.getGrade();
-    }
+  @Override
+  public List<GradeDto> getGrade() {
+    return gradeQueryRepository.getGrade();
+  }
 }

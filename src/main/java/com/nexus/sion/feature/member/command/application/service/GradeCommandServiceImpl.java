@@ -2,7 +2,6 @@ package com.nexus.sion.feature.member.command.application.service;
 
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 import lombok.RequiredArgsConstructor;
 
