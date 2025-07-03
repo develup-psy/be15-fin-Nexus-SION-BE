@@ -22,16 +22,16 @@ public class SquadCommandController {
   private final SquadCommandService squadCommandService;
 
   @PostMapping("/manual")
-  public ResponseEntity<Void> registerManualSquad(
+  public ResponseEntity<ApiResponse<Void>> registerManualSquad(
       @RequestBody @Valid SquadRegisterRequest request) {
     squadCommandService.registerManualSquad(request);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @PutMapping("/manual")
-  public ResponseEntity<Void> updateManualSquad(@RequestBody @Valid SquadUpdateRequest request) {
+  public ResponseEntity<ApiResponse<Void>> updateManualSquad(@RequestBody @Valid SquadUpdateRequest request) {
     squadCommandService.updateManualSquad(request);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @DeleteMapping("/{squadCode}")

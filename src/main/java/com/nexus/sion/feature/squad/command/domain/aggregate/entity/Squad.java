@@ -47,12 +47,10 @@ public class Squad extends BaseTimeEntity {
   @Column(name = "recommendation_reason", columnDefinition = "TEXT")
   private String recommendationReason;
 
-  public void updateInfo(String title, String description) {
-    if (title != null) {
-      this.title = title;
-    }
-    if (description != null) {
-      this.description = description;
-    }
+  public void updateInfo(String title, String description, BigDecimal estimatedCost, BigDecimal estimatedDuration) {
+    if (title != null) this.title = title;
+    if (description != null) this.description = description;
+    if (estimatedCost != null) this.estimatedCost = estimatedCost;
+    if (estimatedDuration != null) this.estimatedDuration = estimatedDuration;
   }
 }

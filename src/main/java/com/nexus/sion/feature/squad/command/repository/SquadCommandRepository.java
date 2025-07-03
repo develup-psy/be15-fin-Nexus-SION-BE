@@ -3,6 +3,7 @@ package com.nexus.sion.feature.squad.command.repository;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
@@ -14,4 +15,9 @@ public interface SquadCommandRepository extends JpaRepository<Squad, String> {
   Optional<Squad> findBySquadCode(String squadCode);
 
   List<Squad> findByProjectCode(String projectCode);
+
+
+  boolean existsByTitleAndProjectCode(String title, String projectCode);
+
+  boolean existsByTitleAndProjectCodeAndSquadCodeNot(String title, String projectCode, String currentSquadCode);
 }

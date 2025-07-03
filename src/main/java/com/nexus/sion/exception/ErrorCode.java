@@ -68,6 +68,12 @@ public enum ErrorCode {
       "40007", "프로젝트 코드 형식이 올바르지 않습니다. 예: ha_1_1", HttpStatus.BAD_REQUEST),
   SQUAD_ASSIGNMENT_FAILED("40008", "스쿼드 구성 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
   SQUAD_NOT_FOUND("40009", "해당 스쿼드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  SQUAD_TITLE_DUPLICATED("40010","중복된 스쿼드 제목입니다", HttpStatus.BAD_REQUEST),
+  MISSING_REQUIRED_JOB("40011","프로젝트에 필요한 직무가 모두 충족되지 않았습니다",HttpStatus.BAD_REQUEST ),
+  INSUFFICIENT_JOB_MEMBER("40012","직무별 요구되는 인원수가 충족되지 않았습니다",HttpStatus.BAD_REQUEST ),
+  INSUFFICIENT_TOTAL_MEMBER("40013", "프로젝트에 필요한 인원수가 충족되지 않았습니다",HttpStatus.BAD_REQUEST ),
+  EXCEED_PROJECT_BUDGET("40014", "프로젝트 예산 상한선을 충족하지 못한 스쿼드입니다" , HttpStatus.BAD_REQUEST),
+  EXCEED_PROJECT_DURATION("40015", "프로젝트 기간 상한성을 충족하지 못한 스쿼드입니다", HttpStatus.BAD_REQUEST ),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
