@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class GradeDto {
   private GradeCode gradeCode;
+  private BigDecimal ratio;
   private BigDecimal productivity;
   private Integer monthlyUnitPrice;
 }
