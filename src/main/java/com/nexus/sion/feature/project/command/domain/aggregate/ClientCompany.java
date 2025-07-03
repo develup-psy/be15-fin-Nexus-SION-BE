@@ -58,14 +58,8 @@ public class ClientCompany extends BaseTimeEntity {
     if (request.getDomainName() != null) {
       this.domainName = request.getDomainName();
     }
-    if (request.getContactPerson() != null) {
-      this.contactPerson = request.getContactPerson();
-    }
-    if (request.getEmail() != null) {
-      this.email = request.getEmail();
-    }
-    if (request.getContactNumber() != null) {
-      this.contactNumber = request.getContactNumber();
-    }
+    this.contactPerson = request.getContactPerson();
+    this.email = request.getEmail();
+    this.contactNumber = request.getContactNumber();
   }
 }
