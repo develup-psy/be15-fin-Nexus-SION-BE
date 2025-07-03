@@ -9,7 +9,7 @@ import com.nexus.sion.common.s3.service.DocumentS3Service;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/document")
+@RequestMapping("/api/v1/document")
 @RequiredArgsConstructor
 public class DocumentS3Controller {
 

@@ -9,7 +9,7 @@ import com.nexus.sion.common.s3.service.ImageS3Service;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/image")
+@RequestMapping("/api/v1/image")
 @RequiredArgsConstructor
 public class ImageS3Controller {
 
