@@ -12,7 +12,7 @@ public class CandidateSummary {
   private String name;
   private String jobName;
   private int techStackScore;
-  private double domainRelevance; // 0.0 ~ 1.0
-  private int costPerMonth; // 단가 (만원 단위)
-  private double productivityFactor; // 생산성 계수 (예: 1.0, 1.2 등)
+  private double domainRelevance;
+  private int costPerMonth;
+  private double productivityFactor;
 }

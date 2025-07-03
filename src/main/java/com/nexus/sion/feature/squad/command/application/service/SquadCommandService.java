@@ -14,5 +14,5 @@ public interface SquadCommandService {
 
   void deleteSquad(String squadCode);
 
-  SquadRecommendationResponse recommendSquad(@Valid SquadRecommendationRequest request);
+  void recommendSquad(@Valid SquadRecommendationRequest request);
 }

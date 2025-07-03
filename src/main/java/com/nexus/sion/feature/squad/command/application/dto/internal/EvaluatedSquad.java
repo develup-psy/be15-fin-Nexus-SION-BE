@@ -19,4 +19,6 @@ public class EvaluatedSquad {
   private int totalMonthlyCost; // 단가 총합
   private int estimatedManMonth; // 총 인월
   private int estimatedDuration; // 월 단위 기간
+  private int estimatedTotalCost;
+  private String reason;
 }

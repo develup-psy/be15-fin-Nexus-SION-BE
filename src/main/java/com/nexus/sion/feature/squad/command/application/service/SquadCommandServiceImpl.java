@@ -152,16 +152,19 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   }
 
   @Override
-  public SquadRecommendationResponse recommendSquad(SquadRecommendationRequest request) {
+  public void recommendSquad(SquadRecommendationRequest request) {
     String projectId = request.getProjectId();
     RecommendationCriteria criteria = request.getCriteria();
 
+    // 후보 개발자 조회
     Map<String, List<DeveloperSummary>> candidates =
         squadQueryService.findCandidatesByRoles(projectId).candidates();
 
+    // 직무별 필요 인원 수 조회
     Map<String, Integer> requiredCountByRole =
         squadQueryService.findRequiredMemberCountByRoles(projectId);
 
+    // 조합 생성
     List<Map<String, List<DeveloperSummary>>> combinations =
         squadCombinationGenerator.generate(candidates, requiredCountByRole);
 
@@ -202,7 +205,11 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     EvaluatedSquad bestSquad = squadSelector.selectBest(evaluatedSquads, criteria);
 
-    String squadCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+    String projectCode = request.getProjectId();
+    long count = squadCommandRepository.countByProjectCode(projectCode);
+    String squadCode = SquadCodeGenerator.generate(projectCode, count);
+
+    String reason = squadDomainService.buildRecommendationReason(criteria, bestSquad);
 
     Squad squad =
         Squad.builder()
@@ -211,10 +218,10 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .title("AI 추천 스쿼드 (" + criteria.name() + ")")
             .description("기준: " + criteria.name())
             .isActive(false)
-            .estimatedCost(BigDecimal.valueOf(bestSquad.getTotalMonthlyCost()))
+            .estimatedCost(BigDecimal.valueOf(bestSquad.getEstimatedTotalCost()))
             .estimatedDuration(BigDecimal.valueOf(bestSquad.getEstimatedDuration()))
             .originType(OriginType.AI)
-            .recommendationReason(squadDomainService.buildRecommendationReason(criteria, bestSquad))
+            .recommendationReason(reason)
             .build();
 
     squadCommandRepository.save(squad);
@@ -252,34 +259,5 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .toList();
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
-
-    // 응답 객체 생성 및 반환
-    return SquadRecommendationResponse.builder()
-        .squadCode(squad.getSquadCode())
-        .projectCode(squad.getProjectCode())
-        .title(squad.getTitle())
-        .description(squad.getDescription())
-        .estimatedCost(squad.getEstimatedCost())
-        .estimatedDuration(squad.getEstimatedDuration())
-        .recommendationReason(squad.getRecommendationReason())
-        .members(
-            bestSquad.getSquad().entrySet().stream()
-                .flatMap(
-                    entry -> {
-                      String jobName = entry.getKey();
-                      return entry.getValue().stream()
-                          .map(
-                              candidate ->
-                                  SquadRecommendationResponse.MemberInfo.builder()
-                                      .employeeIdentificationNumber(
-                                          String.valueOf(candidate.getMemberId()))
-                                      .jobName(jobName)
-                                      .isLeader(
-                                          String.valueOf(candidate.getMemberId()).equals(leaderId))
-                                      .totalSkillScore(candidate.getTechStackScore())
-                                      .build());
-                    })
-                .toList())
-        .build();
   }
 }
