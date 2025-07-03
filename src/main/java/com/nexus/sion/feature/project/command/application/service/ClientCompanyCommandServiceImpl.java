@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application.service;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -72,13 +73,9 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
 
     try {
       clientCompanyRepository.deleteById(clientCode);
-    } catch (Exception e) {
+    } catch (DataIntegrityViolationException e) {
       // FK 제약 위반인 경우만 처리
-      if (isConstraintViolation(e)) {
-        throw new BusinessException(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT);
-      }
-      // 그 외는 내부 서버 오류로 처리
-      throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
+      throw new BusinessException(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT);
     }
   }
 
@@ -105,16 +102,5 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
     }
 
     return codePrefix + String.format("%03d", nextNumber);
-  }
-
-  private boolean isConstraintViolation(Exception e) {
-    Throwable cause = e;
-    while (cause != null) {
-      if (cause instanceof org.hibernate.exception.ConstraintViolationException) {
-        return true;
-      }
-      cause = cause.getCause();
-    }
-    return false;
   }
 }
