@@ -206,6 +206,7 @@ class MemberQueryServiceImplTest {
 
       baseQuery =
           new MemberListQuery(
+              "키워드",
               MemberStatus.AVAILABLE,
               List.of(GradeGradeCode.S),
               List.of("Java", "Spring"),
@@ -278,7 +279,7 @@ class MemberQueryServiceImplTest {
     void givenNoFilter_whenSearch_thenReturnsAllMembers() {
       // given
       MemberListQuery noFilterQuery =
-          new MemberListQuery(null, null, null, "employeeName", "asc", 1, 10);
+          new MemberListQuery(null, null, null, null, "employeeName", "asc", 1, 10);
 
       when(memberConditionBuilder.build(noFilterQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
@@ -313,7 +314,7 @@ class MemberQueryServiceImplTest {
     void givenInvalidSortBy_whenSearch_thenThrowsException() {
       // given
       MemberListQuery badSortQuery =
-          new MemberListQuery(null, null, null, "invalidField", "asc", 1, 10);
+          new MemberListQuery(null,null, null, null, "invalidField", "asc", 1, 10);
 
       when(sortFieldSelector.select(eq("invalidField"), eq("asc")))
           .thenThrow(new BusinessException(ErrorCode.INVALID_SORT_COLUMN));
