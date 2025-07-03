@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application.service;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -66,13 +67,16 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
 
   @Override
   public void deleteClientCompany(String clientCode) {
-    // 기존에 존재하는 고객사인지 확인
     if (!clientCompanyRepository.existsById(clientCode)) {
       throw new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND);
     }
 
-    // 고객사 삭제
-    clientCompanyRepository.deleteById(clientCode);
+    try {
+      clientCompanyRepository.deleteById(clientCode);
+    } catch (DataIntegrityViolationException e) {
+      // FK 제약 위반인 경우만 처리
+      throw new BusinessException(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT);
+    }
   }
 
   private String generateClientCode(String companyName) {
