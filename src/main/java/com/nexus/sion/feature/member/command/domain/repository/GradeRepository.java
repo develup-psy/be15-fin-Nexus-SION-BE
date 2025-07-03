@@ -6,5 +6,10 @@ import org.springframework.stereotype.Repository;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 
+import java.util.Optional;
+
 @Repository
-public interface GradeRepository extends JpaRepository<Grade, GradeCode> {}
+public interface GradeRepository extends JpaRepository<Grade, GradeCode> {
+    Optional<Grade> findByGradeCode(GradeCode gradeCode);
+
+}
