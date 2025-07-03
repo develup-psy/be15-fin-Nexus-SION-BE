@@ -75,10 +75,8 @@ public class SquadEvaluatorImpl {
 //
 //      if (overBudget || overDuration) continue;
       System.out.println("maxBudget = " + maxBudget);
-      System.out.println("totalCost = " + totalCost);
-
       System.out.println("maxDuration = " + maxDuration);
-      System.out.println("estimatedDuration = " + estimatedDuration);
+      
 
 
       String reason = "";
