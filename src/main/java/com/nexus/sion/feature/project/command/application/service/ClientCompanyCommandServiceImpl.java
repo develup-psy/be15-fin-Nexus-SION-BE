@@ -66,13 +66,20 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
 
   @Override
   public void deleteClientCompany(String clientCode) {
-    // 기존에 존재하는 고객사인지 확인
     if (!clientCompanyRepository.existsById(clientCode)) {
       throw new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND);
     }
 
-    // 고객사 삭제
-    clientCompanyRepository.deleteById(clientCode);
+    try {
+      clientCompanyRepository.deleteById(clientCode);
+    } catch (Exception e) {
+      // FK 제약 위반인 경우만 처리
+      if (isConstraintViolation(e)) {
+        throw new BusinessException(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT);
+      }
+      // 그 외는 내부 서버 오류로 처리
+      throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
   }
 
   private String generateClientCode(String companyName) {
@@ -98,5 +105,16 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
     }
 
     return codePrefix + String.format("%03d", nextNumber);
+  }
+
+  private boolean isConstraintViolation(Exception e) {
+    Throwable cause = e;
+    while (cause != null) {
+      if (cause instanceof org.hibernate.exception.ConstraintViolationException) {
+        return true;
+      }
+      cause = cause.getCause();
+    }
+    return false;
   }
 }
