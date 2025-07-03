@@ -165,7 +165,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         .collect(Collectors.toMap(ProjectAndJob::getJobName, ProjectAndJob::getId));
   }
 
-  @Transactional
   @Override
   public void analyzeProject(String projectId, MultipartFile multipartFile) {
     Project project =
@@ -173,6 +172,13 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .findById(projectId)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
+    // 분석 가능 상태인지 확인 (PENDING 또는 FAILED만 허용)
+    Project.AnalysisStatus status = project.getAnalysisStatus();
+    if (status != Project.AnalysisStatus.PENDING && status != Project.AnalysisStatus.FAILED) {
+      throw new BusinessException(ErrorCode.PROJECT_ANALYSIS_ALREADY_IN_PROGRESS);
+    }
+
+    // 분석 상태 진행 중으로 변경
     project.setAnalysisStatus(Project.AnalysisStatus.PROCEEDING);
     projectRepository.save(project);
 
@@ -180,6 +186,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         .analyzeProject(projectId, multipartFile)
         .exceptionally(
             ex -> {
+    // 비동기 분석 호출 하고 실패 시 예외 처리
+    projectAnalysisService.analyzeProject(projectId, multipartFile)
+            .exceptionally(ex -> {
               log.error("FP 분석 실패", ex);
               project.setAnalysisStatus(Project.AnalysisStatus.FAILED);
               projectRepository.save(project);

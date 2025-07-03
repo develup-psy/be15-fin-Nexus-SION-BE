@@ -83,6 +83,8 @@ public enum ErrorCode {
   INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST),
 
   // FP
+  FP_NOT_FOUND("70001","총 FP 포인트가 없는 프로젝트 평가입니다." ,HttpStatus.NOT_FOUND ),
+  PROJECT_ANALYSIS_ALREADY_IN_PROGRESS("70002", "이미 분석이 진행 중이거나 완료된 프로젝트입니다.",HttpStatus.CONFLICT ),;
   FP_NOT_FOUND("70001", "총 FP 포인트가 없는 프로젝트 평가입니다.", HttpStatus.NOT_FOUND);
 
   // evaluation
