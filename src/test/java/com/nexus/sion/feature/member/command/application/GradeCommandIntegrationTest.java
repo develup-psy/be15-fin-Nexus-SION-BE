@@ -20,7 +20,7 @@ import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import com.nexus.sion.feature.member.command.repository.GradeCommandRepository;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,7 +29,7 @@ public class GradeCommandIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @Autowired private GradeCommandRepository gradeRepository;
+  @Autowired private GradeRepository gradeRepository;
 
   @Autowired private ObjectMapper objectMapper;
 

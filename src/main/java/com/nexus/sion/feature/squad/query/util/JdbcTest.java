@@ -1,7 +1,5 @@
 package com.nexus.sion.feature.squad.query.util;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.sql.*;
 
 public class JdbcTest {
@@ -24,17 +22,17 @@ public class JdbcTest {
 
     try (Connection conn = DriverManager.getConnection(jdbcUrl, dbUsername, dbPassword)) {
       String sql =
-              "SELECT project_and_job_id, job_name FROM project_and_job WHERE project_code = ?";
+          "SELECT project_and_job_id, job_name FROM project_and_job WHERE project_code = ?";
       PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setString(1, "PRJ001");
 
       ResultSet rs = stmt.executeQuery();
       while (rs.next()) {
         System.out.println(
-                "project_and_job_id = "
-                        + rs.getString("project_and_job_id")
-                        + ", job_name = "
-                        + rs.getString("job_name"));
+            "project_and_job_id = "
+                + rs.getString("project_and_job_id")
+                + ", job_name = "
+                + rs.getString("job_name"));
       }
     } catch (Exception e) {
       e.printStackTrace();

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.feature.member.command.application.dto.request.GradeDto;
 import com.nexus.sion.feature.member.command.application.dto.request.UnitPriceSetRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
-import com.nexus.sion.feature.member.command.repository.GradeCommandRepository;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GradeCommandServiceImpl implements GradeCommandService {
 
-  private final GradeCommandRepository gradeRepository;
+  private final GradeRepository gradeRepository;
   private final ModelMapper modelMapper;
 
   @Transactional

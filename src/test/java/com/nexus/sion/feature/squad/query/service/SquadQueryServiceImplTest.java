@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.nexus.sion.feature.squad.query.util.CalculateSquad;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,12 +16,14 @@ import org.mockito.Mockito;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
+import com.nexus.sion.feature.squad.query.util.CalculateSquad;
 
 class SquadQueryServiceImplTest {
 
@@ -30,13 +31,17 @@ class SquadQueryServiceImplTest {
   private SquadQueryServiceImpl squadQueryService;
   private SquadQueryMapper squadQueryMapper;
   private CalculateSquad calculateSquad;
+  private ProjectRepository projectRepository;
 
   @BeforeEach
   void setUp() {
     squadQueryRepository = Mockito.mock(SquadQueryRepository.class);
     squadQueryMapper = Mockito.mock(SquadQueryMapper.class);
     calculateSquad = Mockito.mock(CalculateSquad.class);
-    squadQueryService = new SquadQueryServiceImpl(squadQueryRepository, squadQueryMapper, calculateSquad);
+    projectRepository = Mockito.mock(ProjectRepository.class);
+    squadQueryService =
+        new SquadQueryServiceImpl(
+            squadQueryRepository, squadQueryMapper, calculateSquad, projectRepository);
   }
 
   @Test

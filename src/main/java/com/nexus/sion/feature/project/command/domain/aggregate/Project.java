@@ -72,9 +72,9 @@ public class Project extends BaseTimeEntity {
   }
 
   public enum AnalysisStatus {
-    PENDING,      // 분석 요청 전
-    PROCEEDING,   // 분석 진행 중
-    COMPLETE,     // 분석 완료
-    FAILED        // 실패
+    PENDING, // 분석 요청 전
+    PROCEEDING, // 분석 진행 중
+    COMPLETE, // 분석 완료
+    FAILED // 실패
   }
 }

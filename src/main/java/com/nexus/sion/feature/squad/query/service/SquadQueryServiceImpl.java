@@ -1,11 +1,9 @@
 package com.nexus.sion.feature.squad.query.service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.List;
-
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
