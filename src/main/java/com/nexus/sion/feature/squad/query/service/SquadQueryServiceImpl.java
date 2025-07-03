@@ -140,4 +140,9 @@ public class SquadQueryServiceImpl implements SquadQueryService {
     return result.stream()
         .collect(Collectors.toMap(JobAndCount::getJobName, JobAndCount::getRequiredNumber));
   }
+
+  @Override
+  public AISquadDetailResponse getAISquadDetailByCode(String squadCode) {
+    return squadQueryRepository.fetchSquadDetail(squadCode);
+  }
 }
