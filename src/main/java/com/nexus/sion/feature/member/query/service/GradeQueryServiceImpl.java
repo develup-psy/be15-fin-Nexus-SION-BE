@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GradeQueryServiceImpl implements  GradeQueryService{
 
-    GradeQueryRepository gradeQueryRepository;
+    private final GradeQueryRepository gradeQueryRepository;
 
     @Override
     public List<GradeDto> getGrade() {
