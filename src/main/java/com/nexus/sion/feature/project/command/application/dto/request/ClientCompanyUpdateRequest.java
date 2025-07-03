@@ -19,7 +19,7 @@ public class ClientCompanyUpdateRequest {
   String email;
 
   @Pattern(
-      regexp = "^01[016789]-\\d{3,4}-\\d{4}$",
-      message = "유효한 휴대전화 번호 형식이 아닙니다. 예: 010-1234-5678")
+      regexp = "^01[016789]\\d{7,8}$",
+      message = "유효한 휴대전화 번호 형식이 아닙니다. 예: 01012345678")
   String contactNumber;
 }
