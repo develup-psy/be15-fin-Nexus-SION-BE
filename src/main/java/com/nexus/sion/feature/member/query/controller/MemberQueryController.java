@@ -53,9 +53,9 @@ public class MemberQueryController {
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 
-  @GetMapping("/squad-search")
+  @PostMapping("/squad-search")
   public ResponseEntity<ApiResponse<PageResponse<MemberSquadListResponse>>> squadSearchDevelopers(
-      @ModelAttribute MemberSquadSearchRequest request) {
+      @RequestBody MemberSquadSearchRequest request) {
 
     // 1. Status 파싱
     MemberStatus parsedStatus = null;
