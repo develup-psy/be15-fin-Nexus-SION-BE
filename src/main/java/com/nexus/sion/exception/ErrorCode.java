@@ -73,7 +73,7 @@ public enum ErrorCode {
   INSUFFICIENT_JOB_MEMBER("40012","직무별 요구되는 인원수가 충족되지 않았습니다",HttpStatus.BAD_REQUEST ),
   INSUFFICIENT_TOTAL_MEMBER("40013", "프로젝트에 필요한 인원수가 충족되지 않았습니다",HttpStatus.BAD_REQUEST ),
   EXCEED_PROJECT_BUDGET("40014", "프로젝트 예산 상한선을 충족하지 못한 스쿼드입니다" , HttpStatus.BAD_REQUEST),
-  EXCEED_PROJECT_DURATION("40015", "프로젝트 기간 상한성을 충족하지 못한 스쿼드입니다", HttpStatus.BAD_REQUEST ),
+  EXCEED_PROJECT_DURATION("40015", "프로젝트 기간 상한선을 충족하지 못한 스쿼드입니다", HttpStatus.BAD_REQUEST ),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
