@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexus.sion.feature.project.query.mapper.ProjectQueryMapper">
+    <select id="findProjectInfo" resultType="com.nexus.sion.feature.project.query.dto.response.ProjectForSquadResponse">
+        SELECT
+                p.project_code AS projectCode,
+                p.budget AS budgetLimit,
+                DATEDIFF(p.expected_end_date, p.start_date) / 30.0 AS durationLimit,
+                fps.estimated_duration AS estimatedDuration,
+                fps.total_effort AS totalEffort,
+                fps.estimated_cost AS estimatedCost
+          FROM project p
+          LEFT JOIN project_fp_summary fps ON p.project_code = fps.project_code
+        WHERE p.project_code = #{projectCode}
+    </select>
+
+    <select id="findJobRequirements" resultType="com.nexus.sion.feature.project.query.dto.response.JobRequirement">
+        SELECT
+                j.name AS jobName,
+                paj.required_number AS requiredCount
+          FROM project_and_job paj
+          JOIN job j ON paj.job_name = j.name
+        WHERE paj.project_code = #{projectCode}
+    </select>
+
+
+</mapper>

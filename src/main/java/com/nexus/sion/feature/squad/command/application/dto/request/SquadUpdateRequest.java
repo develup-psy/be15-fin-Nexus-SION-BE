@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.dto.request;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
@@ -14,28 +15,21 @@ import lombok.*;
 @Builder
 public class SquadUpdateRequest {
 
-  @NotBlank(message = "수정할 스쿼드 코드가 필요합니다.")
-  private String squadCode; // 수정할 스쿼드 코드
+  @NotBlank
+  private String squadCode;  // 수정할 스쿼드 식별자
 
-  @NotBlank(message = "프로젝트 코드는 필수입니다.")
-  private String projectCode; // 프로젝트 코드
+  @NotBlank
+  private String title;
 
-  private String title; // 스쿼드 이름
+  private String description;
 
-  private String description; // 스쿼드 설명
+  @NotNull
+  private BigDecimal estimatedCost;
 
-  @NotEmpty(message = "구성원 목록은 1명 이상이어야 합니다.")
-  private List<Member> members;
+  @NotNull
+  private BigDecimal estimatedDuration;
 
-  @Getter
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Builder
-  public static class Member {
-    @NotBlank(message = "사번은 필수입니다.")
-    private String employeeIdentificationNumber; // 개발자 사번
+  @NotEmpty
+  private List<Developer> developers;
 
-    @NotNull(message = "직무-프로젝트 ID는 필수입니다.")
-    private Long projectAndJobId; // 직무 ID
-  }
 }

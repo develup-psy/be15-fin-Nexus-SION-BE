@@ -1,5 +1,9 @@
 package com.nexus.sion.feature.member.query.controller;
 
+import com.example.jooq.generated.enums.GradeGradeCode;
+import com.example.jooq.generated.enums.MemberStatus;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,8 @@ import com.nexus.sion.feature.member.query.service.MemberQueryService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,11 +53,50 @@ public class MemberQueryController {
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 
-  @GetMapping("/squad-search")
+  @PostMapping("/squad-search")
   public ResponseEntity<ApiResponse<PageResponse<MemberSquadListResponse>>> squadSearchDevelopers(
-      @ModelAttribute MemberSquadSearchRequest request) {
-    MemberListQuery query = request.toQuery();
+      @RequestBody MemberSquadSearchRequest request) {
 
-    return ResponseEntity.ok(ApiResponse.success(memberQueryService.squadSearchMembers(query)));
+    // 1. Status 파싱
+    MemberStatus parsedStatus = null;
+    if (request.getStatus() != null && !request.getStatus().isBlank()) {
+      try {
+        parsedStatus = MemberStatus.valueOf(request.getStatus().toUpperCase());
+      } catch (IllegalArgumentException e) {
+        throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);
+      }
+    }
+
+    // 2. Grade 파싱
+    List<GradeGradeCode> parsedGrades = null;
+    if (request.getGrades() != null && !request.getGrades().isEmpty()) {
+      try {
+        parsedGrades = request.getGrades().stream()
+                .map(s -> GradeGradeCode.valueOf(s.toUpperCase()))
+                .toList();
+      } catch (IllegalArgumentException e) {
+        throw new BusinessException(ErrorCode.INVALID_GRADE);
+      }
+    }
+
+    // 3. Role 필터링 파싱 (INSIDER, OUTSIDER)
+    List<String> memberRoles = request.getMemberRoles();
+
+    // 4. MemberListQuery 생성
+    MemberListQuery query = new MemberListQuery(
+            request.getKeyword(),
+            parsedStatus,
+            parsedGrades,
+            request.getStacks(),
+            request.getSortBy(),
+            request.getSortDir(),
+            request.getPage(),
+            request.getSize(),
+            memberRoles
+    );
+
+    // 5. 서비스 호출 및 응답
+    PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(query);
+    return ResponseEntity.ok(ApiResponse.success(result));
   }
 }

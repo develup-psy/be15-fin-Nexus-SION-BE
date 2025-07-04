@@ -19,6 +19,12 @@ test {
     finalizedBy jacocoTestReport // 테스트 후 커버리지 리포트 생성
 }
 
+configurations {
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+}
+
 jacocoTestReport {
     dependsOn test // 테스트가 선행되어야 리포트 생성 가능
     reports {

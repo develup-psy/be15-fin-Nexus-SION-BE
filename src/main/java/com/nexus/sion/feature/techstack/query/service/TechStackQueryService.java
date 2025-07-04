@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface TechStackQueryService {
   List<String> findAllStackNames();
+
+    List<String> autocomplete(String keyword);
 }

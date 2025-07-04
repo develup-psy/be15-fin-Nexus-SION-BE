@@ -30,8 +30,11 @@
                 m.employee_name AS name,
                 m.grade_code AS grade,
                 COALESCE(AVG(dts.tech_stack_total_scores), 0) AS avgTechScore,
-                COALESCE(domain_info.domain_count, 0) AS domainCount
+                COALESCE(domain_info.domain_count, 0) AS domainCount,
+                g.productivity AS productivity,
+                g.monthly_unit_price AS monthlyUnitPrice
           FROM SION.member m
+          JOIN SION.grade g ON g.grade_code = m.grade_code
           JOIN SION.developer_tech_stack dts
             ON m.employee_identification_number = dts.employee_identification_number
           JOIN SION.job_and_tech_stack jts

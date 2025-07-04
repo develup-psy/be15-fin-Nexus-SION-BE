@@ -15,11 +15,6 @@ public class SortFieldSelector {
     boolean isDesc = "desc".equalsIgnoreCase(sortDir);
 
     return switch (sortBy) {
-      case "employeeId" ->
-          isDesc
-              ? MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.desc()
-              : MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.asc();
-      case "joinedAt" -> isDesc ? MEMBER.JOINED_AT.desc() : MEMBER.JOINED_AT.asc();
       case "grade" -> isDesc ? MEMBER.GRADE_CODE.desc() : MEMBER.GRADE_CODE.asc();
       case "employeeName" -> isDesc ? MEMBER.EMPLOYEE_NAME.desc() : MEMBER.EMPLOYEE_NAME.asc();
       default -> throw new BusinessException(ErrorCode.INVALID_SORT_COLUMN);

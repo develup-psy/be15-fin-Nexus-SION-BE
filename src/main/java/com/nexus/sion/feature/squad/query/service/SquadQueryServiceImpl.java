@@ -62,13 +62,13 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
   private Project getProjectOrThrow(String projectCode) {
     return projectRepository
-        .findById(projectCode)
-        .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+            .findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
   }
 
   private boolean isProjectComplete(Project project) {
     return project.getStatus() == Project.ProjectStatus.COMPLETE
-        || project.getStatus() == Project.ProjectStatus.INCOMPLETE;
+            || project.getStatus() == Project.ProjectStatus.INCOMPLETE;
   }
 
   private SquadDetailResponse getConfirmedSquadIfExistsOrThrow(String projectCode) {
@@ -115,5 +115,10 @@ public class SquadQueryServiceImpl implements SquadQueryService {
     List<JobAndCount> result = squadQueryMapper.findRequiredMemberCountByRoles(projectId);
     return result.stream()
         .collect(Collectors.toMap(JobAndCount::getJobName, JobAndCount::getRequiredNumber));
+  }
+
+  @Override
+  public AISquadDetailResponse getAISquadDetailByCode(String squadCode) {
+    return squadQueryRepository.fetchSquadDetail(squadCode);
   }
 }

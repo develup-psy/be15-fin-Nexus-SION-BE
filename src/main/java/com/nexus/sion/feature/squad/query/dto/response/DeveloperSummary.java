@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +20,9 @@ public class DeveloperSummary {
   private double avgTechScore;
   private int domainCount;
   private Double weight;
+
+  int monthlyUnitPrice;
+  BigDecimal productivity;
 
   public void setWeight(Double weight) {
     this.weight = weight;

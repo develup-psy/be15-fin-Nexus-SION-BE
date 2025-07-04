@@ -53,6 +53,6 @@ public class ProjectCommandController {
       @PathVariable String projectCode, @RequestParam("file") MultipartFile multipartFile) {
 
     projectCommandService.analyzeProject(projectCode, multipartFile);
-    return ResponseEntity.accepted().build(); // 202는 처리가 완료되지 않았음을 나타냄
+    return ResponseEntity.accepted().build();
   }
 }

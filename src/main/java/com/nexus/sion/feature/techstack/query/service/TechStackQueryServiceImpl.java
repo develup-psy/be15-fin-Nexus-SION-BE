@@ -18,4 +18,10 @@ public class TechStackQueryServiceImpl implements TechStackQueryService {
   public List<String> findAllStackNames() {
     return repository.findAllStackNames();
   }
+
+  @Override
+  public List<String> autocomplete(String keyword) {
+    return repository.findAutoCompleteTechStacks(keyword);
+  }
+
 }
