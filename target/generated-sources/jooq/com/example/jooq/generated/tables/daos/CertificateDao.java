@@ -140,4 +140,18 @@ public class CertificateDao
       LocalDateTime... values) {
     return fetch(Certificate.CERTIFICATE.UPDATED_AT, values);
   }
+
+  /**
+   * Fetch records that have <code>score BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfScore(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(Certificate.CERTIFICATE.SCORE, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>score IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByScore(Integer... values) {
+    return fetch(Certificate.CERTIFICATE.SCORE, values);
+  }
 }

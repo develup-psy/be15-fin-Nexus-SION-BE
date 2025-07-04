@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import com.example.jooq.generated.enums.DeveloperTechStackHistoryRelatedTable;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord;
 
@@ -88,25 +87,6 @@ public class DeveloperTechStackHistoryDao
   }
 
   /**
-   * Fetch records that have <code>developer_tech_stack_id BETWEEN
-   * lowerInclusive AND upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchRangeOfDeveloperTechStackId(Long lowerInclusive, Long upperInclusive) {
-    return fetchRange(
-        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>developer_tech_stack_id IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchByDeveloperTechStackId(Long... values) {
-    return fetch(
-        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID, values);
-  }
-
-  /**
    * Fetch records that have <code>added_score BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
@@ -122,62 +102,6 @@ public class DeveloperTechStackHistoryDao
   public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory> fetchByAddedScore(
       Integer... values) {
     return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.ADDED_SCORE, values);
-  }
-
-  /**
-   * Fetch records that have <code>cumulative_score BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchRangeOfCumulativeScore(Integer lowerInclusive, Integer upperInclusive) {
-    return fetchRange(
-        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.CUMULATIVE_SCORE,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>cumulative_score IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchByCumulativeScore(Integer... values) {
-    return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.CUMULATIVE_SCORE, values);
-  }
-
-  /**
-   * Fetch records that have <code>related_table BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchRangeOfRelatedTable(
-          DeveloperTechStackHistoryRelatedTable lowerInclusive,
-          DeveloperTechStackHistoryRelatedTable upperInclusive) {
-    return fetchRange(
-        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.RELATED_TABLE,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>related_table IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchByRelatedTable(DeveloperTechStackHistoryRelatedTable... values) {
-    return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.RELATED_TABLE, values);
-  }
-
-  /**
-   * Fetch records that have <code>related_id BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
-      fetchRangeOfRelatedId(Long lowerInclusive, Long upperInclusive) {
-    return fetchRange(
-        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.RELATED_ID,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>related_id IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory> fetchByRelatedId(
-      Long... values) {
-    return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.RELATED_ID, values);
   }
 
   /**
@@ -214,5 +138,42 @@ public class DeveloperTechStackHistoryDao
   public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory> fetchByUpdatedAt(
       LocalDateTime... values) {
     return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.UPDATED_AT, values);
+  }
+
+  /**
+   * Fetch records that have <code>project_code BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
+      fetchRangeOfProjectCode(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.PROJECT_CODE,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>project_code IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory> fetchByProjectCode(
+      String... values) {
+    return fetch(DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.PROJECT_CODE, values);
+  }
+
+  /**
+   * Fetch records that have <code>developer_tech_stack_id BETWEEN
+   * lowerInclusive AND upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
+      fetchRangeOfDeveloperTechStackId(Long lowerInclusive, Long upperInclusive) {
+    return fetchRange(
+        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>developer_tech_stack_id IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperTechStackHistory>
+      fetchByDeveloperTechStackId(Long... values) {
+    return fetch(
+        DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID, values);
   }
 }

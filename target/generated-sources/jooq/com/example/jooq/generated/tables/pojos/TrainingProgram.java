@@ -55,82 +55,82 @@ public class TrainingProgram implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.training_program.training_name</code>. */
+  /** Getter for <code>SION.training_program.training_name</code>. */
   public String getTrainingName() {
     return this.trainingName;
   }
 
-  /** Setter for <code>sion.training_program.training_name</code>. */
+  /** Setter for <code>SION.training_program.training_name</code>. */
   public void setTrainingName(String trainingName) {
     this.trainingName = trainingName;
   }
 
-  /** Getter for <code>sion.training_program.description</code>. */
+  /** Getter for <code>SION.training_program.description</code>. */
   public String getDescription() {
     return this.description;
   }
 
-  /** Setter for <code>sion.training_program.description</code>. */
+  /** Setter for <code>SION.training_program.description</code>. */
   public void setDescription(String description) {
     this.description = description;
   }
 
-  /** Getter for <code>sion.training_program.training_type</code>. */
+  /** Getter for <code>SION.training_program.training_type</code>. */
   public TrainingProgramTrainingType getTrainingType() {
     return this.trainingType;
   }
 
-  /** Setter for <code>sion.training_program.training_type</code>. */
+  /** Setter for <code>SION.training_program.training_type</code>. */
   public void setTrainingType(TrainingProgramTrainingType trainingType) {
     this.trainingType = trainingType;
   }
 
-  /** Getter for <code>sion.training_program.organizer</code>. */
+  /** Getter for <code>SION.training_program.organizer</code>. */
   public String getOrganizer() {
     return this.organizer;
   }
 
-  /** Setter for <code>sion.training_program.organizer</code>. */
+  /** Setter for <code>SION.training_program.organizer</code>. */
   public void setOrganizer(String organizer) {
     this.organizer = organizer;
   }
 
-  /** Getter for <code>sion.training_program.started_at</code>. */
+  /** Getter for <code>SION.training_program.started_at</code>. */
   public LocalDateTime getStartedAt() {
     return this.startedAt;
   }
 
-  /** Setter for <code>sion.training_program.started_at</code>. */
+  /** Setter for <code>SION.training_program.started_at</code>. */
   public void setStartedAt(LocalDateTime startedAt) {
     this.startedAt = startedAt;
   }
 
-  /** Getter for <code>sion.training_program.ended_at</code>. */
+  /** Getter for <code>SION.training_program.ended_at</code>. */
   public LocalDateTime getEndedAt() {
     return this.endedAt;
   }
 
-  /** Setter for <code>sion.training_program.ended_at</code>. */
+  /** Setter for <code>SION.training_program.ended_at</code>. */
   public void setEndedAt(LocalDateTime endedAt) {
     this.endedAt = endedAt;
   }
 
-  /** Getter for <code>sion.training_program.created_at</code>. */
+  /** Getter for <code>SION.training_program.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.training_program.created_at</code>. */
+  /** Setter for <code>SION.training_program.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.training_program.updated_at</code>. */
+  /** Getter for <code>SION.training_program.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.training_program.updated_at</code>. */
+  /** Setter for <code>SION.training_program.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

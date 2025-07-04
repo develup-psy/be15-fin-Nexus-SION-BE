@@ -54,82 +54,82 @@ public class ProjectFpSummary implements Serializable {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>sion.project_fp_summary.project_fp_summary_id</code>. */
+  /** Getter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
   public Long getProjectFpSummaryId() {
     return this.projectFpSummaryId;
   }
 
-  /** Setter for <code>sion.project_fp_summary.project_fp_summary_id</code>. */
+  /** Setter for <code>SION.project_fp_summary.project_fp_summary_id</code>. */
   public void setProjectFpSummaryId(Long projectFpSummaryId) {
     this.projectFpSummaryId = projectFpSummaryId;
   }
 
-  /** Getter for <code>sion.project_fp_summary.total_fp</code>. */
+  /** Getter for <code>SION.project_fp_summary.total_fp</code>. */
   public Integer getTotalFp() {
     return this.totalFp;
   }
 
-  /** Setter for <code>sion.project_fp_summary.total_fp</code>. */
+  /** Setter for <code>SION.project_fp_summary.total_fp</code>. */
   public void setTotalFp(Integer totalFp) {
     this.totalFp = totalFp;
   }
 
-  /** Getter for <code>sion.project_fp_summary.avg_effort_per_fp</code>. */
+  /** Getter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
   public Integer getAvgEffortPerFp() {
     return this.avgEffortPerFp;
   }
 
-  /** Setter for <code>sion.project_fp_summary.avg_effort_per_fp</code>. */
+  /** Setter for <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
   public void setAvgEffortPerFp(Integer avgEffortPerFp) {
     this.avgEffortPerFp = avgEffortPerFp;
   }
 
-  /** Getter for <code>sion.project_fp_summary.total_effort</code>. */
+  /** Getter for <code>SION.project_fp_summary.total_effort</code>. */
   public BigDecimal getTotalEffort() {
     return this.totalEffort;
   }
 
-  /** Setter for <code>sion.project_fp_summary.total_effort</code>. */
+  /** Setter for <code>SION.project_fp_summary.total_effort</code>. */
   public void setTotalEffort(BigDecimal totalEffort) {
     this.totalEffort = totalEffort;
   }
 
-  /** Getter for <code>sion.project_fp_summary.estimated_duration</code>. */
+  /** Getter for <code>SION.project_fp_summary.estimated_duration</code>. */
   public BigDecimal getEstimatedDuration() {
     return this.estimatedDuration;
   }
 
-  /** Setter for <code>sion.project_fp_summary.estimated_duration</code>. */
+  /** Setter for <code>SION.project_fp_summary.estimated_duration</code>. */
   public void setEstimatedDuration(BigDecimal estimatedDuration) {
     this.estimatedDuration = estimatedDuration;
   }
 
-  /** Getter for <code>sion.project_fp_summary.estimated_cost</code>. */
+  /** Getter for <code>SION.project_fp_summary.estimated_cost</code>. */
   public BigDecimal getEstimatedCost() {
     return this.estimatedCost;
   }
 
-  /** Setter for <code>sion.project_fp_summary.estimated_cost</code>. */
+  /** Setter for <code>SION.project_fp_summary.estimated_cost</code>. */
   public void setEstimatedCost(BigDecimal estimatedCost) {
     this.estimatedCost = estimatedCost;
   }
 
-  /** Getter for <code>sion.project_fp_summary.created_at</code>. */
+  /** Getter for <code>SION.project_fp_summary.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.project_fp_summary.created_at</code>. */
+  /** Setter for <code>SION.project_fp_summary.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.project_fp_summary.project_code</code>. */
+  /** Getter for <code>SION.project_fp_summary.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>sion.project_fp_summary.project_code</code>. */
+  /** Setter for <code>SION.project_fp_summary.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }

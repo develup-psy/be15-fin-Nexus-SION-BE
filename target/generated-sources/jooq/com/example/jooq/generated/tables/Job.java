@@ -33,7 +33,7 @@ public class Job extends TableImpl<JobRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.job</code> */
+  /** The reference instance of <code>SION.job</code> */
   public static final Job JOB = new Job();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Job extends TableImpl<JobRecord> {
     return JobRecord.class;
   }
 
-  /** The column <code>sion.job.name</code>. */
+  /** The column <code>SION.job.name</code>. */
   public final TableField<JobRecord, String> NAME =
       createField(DSL.name("name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.job.created_at</code>. */
+  /** The column <code>SION.job.created_at</code>. */
   public final TableField<JobRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -56,7 +56,7 @@ public class Job extends TableImpl<JobRecord> {
           this,
           "");
 
-  /** The column <code>sion.job.updated_at</code>. */
+  /** The column <code>SION.job.updated_at</code>. */
   public final TableField<JobRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -74,17 +74,17 @@ public class Job extends TableImpl<JobRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.job</code> table reference */
+  /** Create an aliased <code>SION.job</code> table reference */
   public Job(String alias) {
     this(DSL.name(alias), JOB);
   }
 
-  /** Create an aliased <code>sion.job</code> table reference */
+  /** Create an aliased <code>SION.job</code> table reference */
   public Job(Name alias) {
     this(alias, JOB);
   }
 
-  /** Create a <code>sion.job</code> table reference */
+  /** Create a <code>SION.job</code> table reference */
   public Job() {
     this(DSL.name("job"), null);
   }

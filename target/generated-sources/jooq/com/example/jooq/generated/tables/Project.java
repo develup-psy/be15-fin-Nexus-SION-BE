@@ -11,11 +11,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function15;
+import org.jooq.Function16;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row15;
+import org.jooq.Row16;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -28,6 +28,7 @@ import org.jooq.impl.TableImpl;
 
 import com.example.jooq.generated.Keys;
 import com.example.jooq.generated.Sion;
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
 import com.example.jooq.generated.enums.ProjectStatus;
 import com.example.jooq.generated.tables.records.ProjectRecord;
 
@@ -37,7 +38,7 @@ public class Project extends TableImpl<ProjectRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.project</code> */
+  /** The reference instance of <code>SION.project</code> */
   public static final Project PROJECT = new Project();
 
   /** The class holding records for this type */
@@ -46,31 +47,31 @@ public class Project extends TableImpl<ProjectRecord> {
     return ProjectRecord.class;
   }
 
-  /** The column <code>sion.project.project_code</code>. */
+  /** The column <code>SION.project.project_code</code>. */
   public final TableField<ProjectRecord, String> PROJECT_CODE =
       createField(DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.project.description</code>. */
+  /** The column <code>SION.project.description</code>. */
   public final TableField<ProjectRecord, String> DESCRIPTION =
       createField(DSL.name("description"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>sion.project.title</code>. */
+  /** The column <code>SION.project.title</code>. */
   public final TableField<ProjectRecord, String> TITLE =
       createField(DSL.name("title"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.project.budget</code>. */
+  /** The column <code>SION.project.budget</code>. */
   public final TableField<ProjectRecord, Long> BUDGET =
       createField(DSL.name("budget"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>sion.project.start_date</code>. */
+  /** The column <code>SION.project.start_date</code>. */
   public final TableField<ProjectRecord, LocalDate> START_DATE =
       createField(DSL.name("start_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
-  /** The column <code>sion.project.expected_end_date</code>. */
+  /** The column <code>SION.project.expected_end_date</code>. */
   public final TableField<ProjectRecord, LocalDate> EXPECTED_END_DATE =
       createField(DSL.name("expected_end_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
-  /** The column <code>sion.project.actual_end_date</code>. */
+  /** The column <code>SION.project.actual_end_date</code>. */
   public final TableField<ProjectRecord, LocalDate> ACTUAL_END_DATE =
       createField(
           DSL.name("actual_end_date"),
@@ -78,7 +79,7 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.status</code>. */
+  /** The column <code>SION.project.status</code>. */
   public final TableField<ProjectRecord, ProjectStatus> STATUS =
       createField(
           DSL.name("status"),
@@ -88,7 +89,7 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.number_of_members</code>. */
+  /** The column <code>SION.project.number_of_members</code>. */
   public final TableField<ProjectRecord, Integer> NUMBER_OF_MEMBERS =
       createField(
           DSL.name("number_of_members"),
@@ -96,7 +97,7 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.created_at</code>. */
+  /** The column <code>SION.project.created_at</code>. */
   public final TableField<ProjectRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -106,7 +107,7 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.updated_at</code>. */
+  /** The column <code>SION.project.updated_at</code>. */
   public final TableField<ProjectRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -116,7 +117,7 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.deleted_at</code>. */
+  /** The column <code>SION.project.deleted_at</code>. */
   public final TableField<ProjectRecord, LocalDateTime> DELETED_AT =
       createField(
           DSL.name("deleted_at"),
@@ -125,11 +126,11 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.client_code</code>. */
+  /** The column <code>SION.project.client_code</code>. */
   public final TableField<ProjectRecord, String> CLIENT_CODE =
       createField(DSL.name("client_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.project.request_specification_url</code>. */
+  /** The column <code>SION.project.request_specification_url</code>. */
   public final TableField<ProjectRecord, String> REQUEST_SPECIFICATION_URL =
       createField(
           DSL.name("request_specification_url"),
@@ -137,9 +138,20 @@ public class Project extends TableImpl<ProjectRecord> {
           this,
           "");
 
-  /** The column <code>sion.project.domain_name</code>. */
+  /** The column <code>SION.project.domain_name</code>. */
   public final TableField<ProjectRecord, String> DOMAIN_NAME =
       createField(DSL.name("domain_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+
+  /** The column <code>SION.project.analysis_status</code>. */
+  public final TableField<ProjectRecord, ProjectAnalysisStatus> ANALYSIS_STATUS =
+      createField(
+          DSL.name("analysis_status"),
+          SQLDataType.VARCHAR(10)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("'PENDING'"), SQLDataType.VARCHAR))
+              .asEnumDataType(com.example.jooq.generated.enums.ProjectAnalysisStatus.class),
+          this,
+          "");
 
   private Project(Name alias, Table<ProjectRecord> aliased) {
     this(alias, aliased, null);
@@ -149,17 +161,17 @@ public class Project extends TableImpl<ProjectRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.project</code> table reference */
+  /** Create an aliased <code>SION.project</code> table reference */
   public Project(String alias) {
     this(DSL.name(alias), PROJECT);
   }
 
-  /** Create an aliased <code>sion.project</code> table reference */
+  /** Create an aliased <code>SION.project</code> table reference */
   public Project(Name alias) {
     this(alias, PROJECT);
   }
 
-  /** Create a <code>sion.project</code> table reference */
+  /** Create a <code>SION.project</code> table reference */
   public Project() {
     this(DSL.name("project"), null);
   }
@@ -186,7 +198,7 @@ public class Project extends TableImpl<ProjectRecord> {
   private transient ClientCompany _clientCompany;
   private transient Domain _domain;
 
-  /** Get the implicit join path to the <code>sion.client_company</code> table. */
+  /** Get the implicit join path to the <code>SION.client_company</code> table. */
   public ClientCompany clientCompany() {
     if (_clientCompany == null)
       _clientCompany = new ClientCompany(this, Keys.FK_CLIENT_COMPANY_TO_PROJECT_1);
@@ -194,7 +206,7 @@ public class Project extends TableImpl<ProjectRecord> {
     return _clientCompany;
   }
 
-  /** Get the implicit join path to the <code>sion.domain</code> table. */
+  /** Get the implicit join path to the <code>SION.domain</code> table. */
   public Domain domain() {
     if (_domain == null) _domain = new Domain(this, Keys.FK_DOMAIN_TO_PROJECT_1);
 
@@ -235,11 +247,11 @@ public class Project extends TableImpl<ProjectRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row15 type methods
+  // Row16 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row15<
+  public Row16<
           String,
           String,
           String,
@@ -254,14 +266,15 @@ public class Project extends TableImpl<ProjectRecord> {
           LocalDateTime,
           String,
           String,
-          String>
+          String,
+          ProjectAnalysisStatus>
       fieldsRow() {
-    return (Row15) super.fieldsRow();
+    return (Row16) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function15<
+      Function16<
               ? super String,
               ? super String,
               ? super String,
@@ -277,6 +290,7 @@ public class Project extends TableImpl<ProjectRecord> {
               ? super String,
               ? super String,
               ? super String,
+              ? super ProjectAnalysisStatus,
               ? extends U>
           from) {
     return convertFrom(Records.mapping(from));
@@ -285,7 +299,7 @@ public class Project extends TableImpl<ProjectRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function15<
+      Function16<
               ? super String,
               ? super String,
               ? super String,
@@ -301,6 +315,7 @@ public class Project extends TableImpl<ProjectRecord> {
               ? super String,
               ? super String,
               ? super String,
+              ? super ProjectAnalysisStatus,
               ? extends U>
           from) {
     return convertFrom(toType, Records.mapping(from));

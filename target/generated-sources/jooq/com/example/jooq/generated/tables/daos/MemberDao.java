@@ -320,4 +320,18 @@ public class MemberDao
   public List<com.example.jooq.generated.tables.pojos.Member> fetchByRole(MemberRole... values) {
     return fetch(Member.MEMBER.ROLE, values);
   }
+
+  /**
+   * Fetch records that have <code>total_score BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchRangeOfTotalScore(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(Member.MEMBER.TOTAL_SCORE, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>total_score IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Member> fetchByTotalScore(Integer... values) {
+    return fetch(Member.MEMBER.TOTAL_SCORE, values);
+  }
 }

@@ -38,7 +38,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.project_function_estimate</code> */
+  /** The reference instance of <code>SION.project_function_estimate</code> */
   public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
       new ProjectFunctionEstimate();
 
@@ -48,7 +48,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
     return ProjectFunctionEstimateRecord.class;
   }
 
-  /** The column <code>sion.project_function_estimate.project_function_estimate_id</code>. */
+  /** The column <code>SION.project_function_estimate.project_function_estimate_id</code>. */
   public final TableField<ProjectFunctionEstimateRecord, Long> PROJECT_FUNCTION_ESTIMATE_ID =
       createField(
           DSL.name("project_function_estimate_id"),
@@ -56,11 +56,11 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           this,
           "");
 
-  /** The column <code>sion.project_function_estimate.function_name</code>. */
+  /** The column <code>SION.project_function_estimate.function_name</code>. */
   public final TableField<ProjectFunctionEstimateRecord, String> FUNCTION_NAME =
       createField(DSL.name("function_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>sion.project_function_estimate.function_type</code>. */
+  /** The column <code>SION.project_function_estimate.function_type</code>. */
   public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateFunctionType>
       FUNCTION_TYPE =
           createField(
@@ -72,7 +72,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               this,
               "");
 
-  /** The column <code>sion.project_function_estimate.complexity</code>. */
+  /** The column <code>SION.project_function_estimate.complexity</code>. */
   public final TableField<ProjectFunctionEstimateRecord, ProjectFunctionEstimateComplexity>
       COMPLEXITY =
           createField(
@@ -84,11 +84,11 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
               this,
               "");
 
-  /** The column <code>sion.project_function_estimate.function_score</code>. */
+  /** The column <code>SION.project_function_estimate.function_score</code>. */
   public final TableField<ProjectFunctionEstimateRecord, Integer> FUNCTION_SCORE =
       createField(DSL.name("function_score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>sion.project_function_estimate.description</code>. */
+  /** The column <code>SION.project_function_estimate.description</code>. */
   public final TableField<ProjectFunctionEstimateRecord, String> DESCRIPTION =
       createField(
           DSL.name("description"),
@@ -96,11 +96,11 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           this,
           "");
 
-  /** The column <code>sion.project_function_estimate.related_tables_count</code>. */
+  /** The column <code>SION.project_function_estimate.related_tables_count</code>. */
   public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_TABLES_COUNT =
       createField(DSL.name("related_tables_count"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>sion.project_function_estimate.related_fields_count</code>. */
+  /** The column <code>SION.project_function_estimate.related_fields_count</code>. */
   public final TableField<ProjectFunctionEstimateRecord, Integer> RELATED_FIELDS_COUNT =
       createField(
           DSL.name("related_fields_count"),
@@ -108,7 +108,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           this,
           "");
 
-  /** The column <code>sion.project_function_estimate.created_at</code>. */
+  /** The column <code>SION.project_function_estimate.created_at</code>. */
   public final TableField<ProjectFunctionEstimateRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -117,7 +117,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
           this,
           "");
 
-  /** The column <code>sion.project_function_estimate.project_fp_summary_id</code>. */
+  /** The column <code>SION.project_function_estimate.project_fp_summary_id</code>. */
   public final TableField<ProjectFunctionEstimateRecord, Long> PROJECT_FP_SUMMARY_ID =
       createField(DSL.name("project_fp_summary_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
@@ -130,17 +130,17 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.project_function_estimate</code> table reference */
+  /** Create an aliased <code>SION.project_function_estimate</code> table reference */
   public ProjectFunctionEstimate(String alias) {
     this(DSL.name(alias), PROJECT_FUNCTION_ESTIMATE);
   }
 
-  /** Create an aliased <code>sion.project_function_estimate</code> table reference */
+  /** Create an aliased <code>SION.project_function_estimate</code> table reference */
   public ProjectFunctionEstimate(Name alias) {
     this(alias, PROJECT_FUNCTION_ESTIMATE);
   }
 
-  /** Create a <code>sion.project_function_estimate</code> table reference */
+  /** Create a <code>SION.project_function_estimate</code> table reference */
   public ProjectFunctionEstimate() {
     this(DSL.name("project_function_estimate"), null);
   }
@@ -172,7 +172,7 @@ public class ProjectFunctionEstimate extends TableImpl<ProjectFunctionEstimateRe
 
   private transient ProjectFpSummary _projectFpSummary;
 
-  /** Get the implicit join path to the <code>sion.project_fp_summary</code> table. */
+  /** Get the implicit join path to the <code>SION.project_fp_summary</code> table. */
   public ProjectFpSummary projectFpSummary() {
     if (_projectFpSummary == null)
       _projectFpSummary =

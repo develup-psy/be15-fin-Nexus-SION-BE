@@ -20,62 +20,62 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.user_certificate_history.user_certificate_history_id</code>. */
+  /** Setter for <code>SION.user_certificate_history.user_certificate_history_id</code>. */
   public void setUserCertificateHistoryId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.user_certificate_history_id</code>. */
+  /** Getter for <code>SION.user_certificate_history.user_certificate_history_id</code>. */
   public Long getUserCertificateHistoryId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.user_certificate_history.created_at</code>. */
+  /** Setter for <code>SION.user_certificate_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.created_at</code>. */
+  /** Getter for <code>SION.user_certificate_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>sion.user_certificate_history.updated_at</code>. */
+  /** Setter for <code>SION.user_certificate_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.updated_at</code>. */
+  /** Getter for <code>SION.user_certificate_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }
 
-  /** Setter for <code>sion.user_certificate_history.updated_by</code>. */
+  /** Setter for <code>SION.user_certificate_history.updated_by</code>. */
   public void setUpdatedBy(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.updated_by</code>. */
+  /** Getter for <code>SION.user_certificate_history.updated_by</code>. */
   public String getUpdatedBy() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.user_certificate_history.certificate_name</code>. */
+  /** Setter for <code>SION.user_certificate_history.certificate_name</code>. */
   public void setCertificateName(String value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.certificate_name</code>. */
+  /** Getter for <code>SION.user_certificate_history.certificate_name</code>. */
   public String getCertificateName() {
     return (String) get(4);
   }
 
-  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  /** Setter for <code>SION.user_certificate_history.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  /** Getter for <code>SION.user_certificate_history.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(5);
   }

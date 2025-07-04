@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -35,7 +36,7 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.squad_comment</code> */
+  /** The reference instance of <code>SION.squad_comment</code> */
   public static final SquadComment SQUAD_COMMENT = new SquadComment();
 
   /** The class holding records for this type */
@@ -44,15 +45,16 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
     return SquadCommentRecord.class;
   }
 
-  /** The column <code>sion.squad_comment.comment_id</code>. */
+  /** The column <code>SION.squad_comment.comment_id</code>. */
   public final TableField<SquadCommentRecord, Long> COMMENT_ID =
-      createField(DSL.name("comment_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("comment_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>sion.squad_comment.squad_code</code>. */
+  /** The column <code>SION.squad_comment.squad_code</code>. */
   public final TableField<SquadCommentRecord, String> SQUAD_CODE =
       createField(DSL.name("squad_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.squad_comment.employee_identification_number</code>. */
+  /** The column <code>SION.squad_comment.employee_identification_number</code>. */
   public final TableField<SquadCommentRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
           DSL.name("employee_identification_number"),
@@ -60,11 +62,11 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
           this,
           "");
 
-  /** The column <code>sion.squad_comment.content</code>. */
+  /** The column <code>SION.squad_comment.content</code>. */
   public final TableField<SquadCommentRecord, String> CONTENT =
       createField(DSL.name("content"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>sion.squad_comment.created_at</code>. */
+  /** The column <code>SION.squad_comment.created_at</code>. */
   public final TableField<SquadCommentRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -74,7 +76,7 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
           this,
           "");
 
-  /** The column <code>sion.squad_comment.updated_at</code>. */
+  /** The column <code>SION.squad_comment.updated_at</code>. */
   public final TableField<SquadCommentRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -91,17 +93,17 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.squad_comment</code> table reference */
+  /** Create an aliased <code>SION.squad_comment</code> table reference */
   public SquadComment(String alias) {
     this(DSL.name(alias), SQUAD_COMMENT);
   }
 
-  /** Create an aliased <code>sion.squad_comment</code> table reference */
+  /** Create an aliased <code>SION.squad_comment</code> table reference */
   public SquadComment(Name alias) {
     this(alias, SQUAD_COMMENT);
   }
 
-  /** Create a <code>sion.squad_comment</code> table reference */
+  /** Create a <code>SION.squad_comment</code> table reference */
   public SquadComment() {
     this(DSL.name("squad_comment"), null);
   }
@@ -113,6 +115,11 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<SquadCommentRecord, Long> getIdentity() {
+    return (Identity<SquadCommentRecord, Long>) super.getIdentity();
   }
 
   @Override
@@ -128,14 +135,14 @@ public class SquadComment extends TableImpl<SquadCommentRecord> {
   private transient Squad _squad;
   private transient Member _member;
 
-  /** Get the implicit join path to the <code>sion.squad</code> table. */
+  /** Get the implicit join path to the <code>SION.squad</code> table. */
   public Squad squad() {
     if (_squad == null) _squad = new Squad(this, Keys.FK_SQUAD_TO_SQUAD_COMMENT_1);
 
     return _squad;
   }
 
-  /** Get the implicit join path to the <code>sion.member</code> table. */
+  /** Get the implicit join path to the <code>SION.member</code> table. */
   public Member member() {
     if (_member == null) _member = new Member(this, Keys.FK_MEMBER_TO_SQUAD_COMMENT_1);
 

@@ -9,17 +9,23 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
+import com.example.jooq.generated.tables.AiFeedback;
 import com.example.jooq.generated.tables.Certificate;
 import com.example.jooq.generated.tables.ClientCompany;
 import com.example.jooq.generated.tables.Department;
+import com.example.jooq.generated.tables.DeveloperProjectWork;
+import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
+import com.example.jooq.generated.tables.Freelancer;
 import com.example.jooq.generated.tables.Grade;
 import com.example.jooq.generated.tables.InitialScore;
 import com.example.jooq.generated.tables.Job;
 import com.example.jooq.generated.tables.JobAndTechStack;
 import com.example.jooq.generated.tables.Member;
+import com.example.jooq.generated.tables.MemberScoreHistory;
+import com.example.jooq.generated.tables.Notification;
 import com.example.jooq.generated.tables.Position;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.ProjectAndJob;
@@ -31,19 +37,26 @@ import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
 import com.example.jooq.generated.tables.TrainingProgram;
+import com.example.jooq.generated.tables.TrainingRecommendation;
 import com.example.jooq.generated.tables.UserCertificateHistory;
 import com.example.jooq.generated.tables.UserTrainingHistory;
+import com.example.jooq.generated.tables.records.AiFeedbackRecord;
 import com.example.jooq.generated.tables.records.CertificateRecord;
 import com.example.jooq.generated.tables.records.ClientCompanyRecord;
 import com.example.jooq.generated.tables.records.DepartmentRecord;
+import com.example.jooq.generated.tables.records.DeveloperProjectWorkHistoryRecord;
+import com.example.jooq.generated.tables.records.DeveloperProjectWorkRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackRecord;
 import com.example.jooq.generated.tables.records.DomainRecord;
+import com.example.jooq.generated.tables.records.FreelancerRecord;
 import com.example.jooq.generated.tables.records.GradeRecord;
 import com.example.jooq.generated.tables.records.InitialScoreRecord;
 import com.example.jooq.generated.tables.records.JobAndTechStackRecord;
 import com.example.jooq.generated.tables.records.JobRecord;
 import com.example.jooq.generated.tables.records.MemberRecord;
+import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
+import com.example.jooq.generated.tables.records.NotificationRecord;
 import com.example.jooq.generated.tables.records.PositionRecord;
 import com.example.jooq.generated.tables.records.ProjectAndJobRecord;
 import com.example.jooq.generated.tables.records.ProjectEvaluationRecord;
@@ -55,10 +68,11 @@ import com.example.jooq.generated.tables.records.SquadEmployeeRecord;
 import com.example.jooq.generated.tables.records.SquadRecord;
 import com.example.jooq.generated.tables.records.TechStackRecord;
 import com.example.jooq.generated.tables.records.TrainingProgramRecord;
+import com.example.jooq.generated.tables.records.TrainingRecommendationRecord;
 import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
 import com.example.jooq.generated.tables.records.UserTrainingHistoryRecord;
 
-/** A class modelling foreign key relationships and constraints of tables in sion. */
+/** A class modelling foreign key relationships and constraints of tables in SION. */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Keys {
 
@@ -66,6 +80,12 @@ public class Keys {
   // UNIQUE and PRIMARY KEY definitions
   // -------------------------------------------------------------------------
 
+  public static final UniqueKey<AiFeedbackRecord> KEY_AI_FEEDBACK_PRIMARY =
+      Internal.createUniqueKey(
+          AiFeedback.AI_FEEDBACK,
+          DSL.name("KEY_ai_feedback_PRIMARY"),
+          new TableField[] {AiFeedback.AI_FEEDBACK.AI_FEEDBACK_ID},
+          true);
   public static final UniqueKey<CertificateRecord> KEY_CERTIFICATE_PRIMARY =
       Internal.createUniqueKey(
           Certificate.CERTIFICATE,
@@ -90,6 +110,22 @@ public class Keys {
           DSL.name("KEY_department_PRIMARY"),
           new TableField[] {Department.DEPARTMENT.DEPARTMENT_NAME},
           true);
+  public static final UniqueKey<DeveloperProjectWorkRecord> KEY_DEVELOPER_PROJECT_WORK_PRIMARY =
+      Internal.createUniqueKey(
+          DeveloperProjectWork.DEVELOPER_PROJECT_WORK,
+          DSL.name("KEY_developer_project_work_PRIMARY"),
+          new TableField[] {DeveloperProjectWork.DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID},
+          true);
+  public static final UniqueKey<DeveloperProjectWorkHistoryRecord>
+      KEY_DEVELOPER_PROJECT_WORK_HISTORY_PRIMARY =
+          Internal.createUniqueKey(
+              DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY,
+              DSL.name("KEY_developer_project_work_history_PRIMARY"),
+              new TableField[] {
+                DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY
+                    .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              true);
   public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY =
       Internal.createUniqueKey(
           DeveloperTechStack.DEVELOPER_TECH_STACK,
@@ -111,6 +147,12 @@ public class Keys {
           Domain.DOMAIN,
           DSL.name("KEY_domain_PRIMARY"),
           new TableField[] {Domain.DOMAIN.NAME},
+          true);
+  public static final UniqueKey<FreelancerRecord> KEY_FREELANCER_PRIMARY =
+      Internal.createUniqueKey(
+          Freelancer.FREELANCER,
+          DSL.name("KEY_freelancer_PRIMARY"),
+          new TableField[] {Freelancer.FREELANCER.FREELANCER_ID},
           true);
   public static final UniqueKey<GradeRecord> KEY_GRADE_PRIMARY =
       Internal.createUniqueKey(
@@ -138,6 +180,18 @@ public class Keys {
           Member.MEMBER,
           DSL.name("KEY_member_PRIMARY"),
           new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final UniqueKey<MemberScoreHistoryRecord> KEY_MEMBER_SCORE_HISTORY_PRIMARY =
+      Internal.createUniqueKey(
+          MemberScoreHistory.MEMBER_SCORE_HISTORY,
+          DSL.name("KEY_member_score_history_PRIMARY"),
+          new TableField[] {MemberScoreHistory.MEMBER_SCORE_HISTORY.SCORE_HISTORY_ID},
+          true);
+  public static final UniqueKey<NotificationRecord> KEY_NOTIFICATION_PRIMARY =
+      Internal.createUniqueKey(
+          Notification.NOTIFICATION,
+          DSL.name("KEY_notification_PRIMARY"),
+          new TableField[] {Notification.NOTIFICATION.NOTIFICATION_ID},
           true);
   public static final UniqueKey<PositionRecord> KEY_POSITION_PRIMARY =
       Internal.createUniqueKey(
@@ -208,6 +262,14 @@ public class Keys {
           DSL.name("KEY_training_program_PRIMARY"),
           new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
           true);
+  public static final UniqueKey<TrainingRecommendationRecord> KEY_TRAINING_RECOMMENDATION_PRIMARY =
+      Internal.createUniqueKey(
+          TrainingRecommendation.TRAINING_RECOMMENDATION,
+          DSL.name("KEY_training_recommendation_PRIMARY"),
+          new TableField[] {
+            TrainingRecommendation.TRAINING_RECOMMENDATION.TRAINING_RECOMMENDATION_ID
+          },
+          true);
   public static final UniqueKey<UserCertificateHistoryRecord> KEY_USER_CERTIFICATE_HISTORY_PRIMARY =
       Internal.createUniqueKey(
           UserCertificateHistory.USER_CERTIFICATE_HISTORY,
@@ -235,6 +297,45 @@ public class Keys {
           Keys.KEY_DOMAIN_PRIMARY,
           new TableField[] {Domain.DOMAIN.NAME},
           true);
+  public static final ForeignKey<DeveloperProjectWorkRecord, MemberRecord> FK_DPWORK_APPROVER =
+      Internal.createForeignKey(
+          DeveloperProjectWork.DEVELOPER_PROJECT_WORK,
+          DSL.name("FK_DPWORK_APPROVER"),
+          new TableField[] {DeveloperProjectWork.DEVELOPER_PROJECT_WORK.APPROVED_BY},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<DeveloperProjectWorkRecord, MemberRecord> FK_DPWORK_MEMBER =
+      Internal.createForeignKey(
+          DeveloperProjectWork.DEVELOPER_PROJECT_WORK,
+          DSL.name("FK_DPWORK_MEMBER"),
+          new TableField[] {
+            DeveloperProjectWork.DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER
+          },
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<DeveloperProjectWorkRecord, ProjectRecord> FK_DPWORK_PROJECT =
+      Internal.createForeignKey(
+          DeveloperProjectWork.DEVELOPER_PROJECT_WORK,
+          DSL.name("FK_DPWORK_PROJECT"),
+          new TableField[] {DeveloperProjectWork.DEVELOPER_PROJECT_WORK.PROJECT_CODE},
+          Keys.KEY_PROJECT_PRIMARY,
+          new TableField[] {Project.PROJECT.PROJECT_CODE},
+          true);
+  public static final ForeignKey<DeveloperProjectWorkHistoryRecord, DeveloperProjectWorkRecord>
+      FK_DPWH_DPWORK =
+          Internal.createForeignKey(
+              DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY,
+              DSL.name("FK_DPWH_DPWORK"),
+              new TableField[] {
+                DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_ID
+              },
+              Keys.KEY_DEVELOPER_PROJECT_WORK_PRIMARY,
+              new TableField[] {
+                DeveloperProjectWork.DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID
+              },
+              true);
   public static final ForeignKey<DeveloperTechStackRecord, MemberRecord>
       FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1 =
           Internal.createForeignKey(
@@ -255,11 +356,19 @@ public class Keys {
               Keys.KEY_TECH_STACK_PRIMARY,
               new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
               true);
+  public static final ForeignKey<DeveloperTechStackHistoryRecord, ProjectRecord> FK_DTSH_PROJECT =
+      Internal.createForeignKey(
+          DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
+          DSL.name("FK_DTSH_PROJECT"),
+          new TableField[] {DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.PROJECT_CODE},
+          Keys.KEY_PROJECT_PRIMARY,
+          new TableField[] {Project.PROJECT.PROJECT_CODE},
+          true);
   public static final ForeignKey<DeveloperTechStackHistoryRecord, DeveloperTechStackRecord>
-      FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1 =
+      FK_DTSH_TECH_STACK =
           Internal.createForeignKey(
               DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
-              DSL.name("FK_developer_tech_stack_TO_developer_tech_stack_history_1"),
+              DSL.name("FK_DTSH_TECH_STACK"),
               new TableField[] {
                 DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID
               },
@@ -307,6 +416,22 @@ public class Keys {
           new TableField[] {Member.MEMBER.POSITION_NAME},
           Keys.KEY_POSITION_PRIMARY,
           new TableField[] {Position.POSITION.POSITION_NAME},
+          true);
+  public static final ForeignKey<MemberScoreHistoryRecord, MemberRecord> FK_MSH_MEMBER =
+      Internal.createForeignKey(
+          MemberScoreHistory.MEMBER_SCORE_HISTORY,
+          DSL.name("FK_MSH_MEMBER"),
+          new TableField[] {MemberScoreHistory.MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<NotificationRecord, MemberRecord> FK_NOTIFICATION_MEMBER =
+      Internal.createForeignKey(
+          Notification.NOTIFICATION,
+          DSL.name("FK_NOTIFICATION_MEMBER"),
+          new TableField[] {Notification.NOTIFICATION.RECEIVER_ID},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
           true);
   public static final ForeignKey<ProjectRecord, ClientCompanyRecord>
       FK_CLIENT_COMPANY_TO_PROJECT_1 =
@@ -439,6 +564,25 @@ public class Keys {
           Keys.KEY_SQUAD_PRIMARY,
           new TableField[] {Squad.SQUAD.SQUAD_CODE},
           true);
+  public static final ForeignKey<TrainingRecommendationRecord, MemberRecord> FK_TR_MEMBER =
+      Internal.createForeignKey(
+          TrainingRecommendation.TRAINING_RECOMMENDATION,
+          DSL.name("FK_TR_MEMBER"),
+          new TableField[] {
+            TrainingRecommendation.TRAINING_RECOMMENDATION.EMPLOYEE_IDENTIFICATION_NUMBER
+          },
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<TrainingRecommendationRecord, TrainingProgramRecord>
+      FK_TR_TRAINING =
+          Internal.createForeignKey(
+              TrainingRecommendation.TRAINING_RECOMMENDATION,
+              DSL.name("FK_TR_TRAINING"),
+              new TableField[] {TrainingRecommendation.TRAINING_RECOMMENDATION.TRAINING_NAME},
+              Keys.KEY_TRAINING_PROGRAM_PRIMARY,
+              new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
+              true);
   public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord>
       FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1 =
           Internal.createForeignKey(

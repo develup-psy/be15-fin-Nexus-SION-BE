@@ -20,32 +20,32 @@ public class JobRecord extends UpdatableRecordImpl<JobRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.job.name</code>. */
+  /** Setter for <code>SION.job.name</code>. */
   public void setName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.job.name</code>. */
+  /** Getter for <code>SION.job.name</code>. */
   public String getName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>sion.job.created_at</code>. */
+  /** Setter for <code>SION.job.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.job.created_at</code>. */
+  /** Getter for <code>SION.job.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>sion.job.updated_at</code>. */
+  /** Setter for <code>SION.job.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.job.updated_at</code>. */
+  /** Getter for <code>SION.job.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }
