@@ -75,7 +75,7 @@ class SquadQueryControllerTest {
     SquadListRequest request = new SquadListRequest();
     request.setProjectCode(projectCode);
 
-    SquadListResultResponse response = new SquadListResultResponse(List.of(squad), 1, 0, 10);
+    SquadListResultResponse response = new SquadListResultResponse(List.of(squad), 1, 5, 2,10);
 
     when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(response);
     mockMvc

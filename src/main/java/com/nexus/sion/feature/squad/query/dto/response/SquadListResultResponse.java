@@ -11,5 +11,6 @@ public final class SquadListResultResponse implements SquadResponse {
   private List<SquadListResponse> content;
   private int page;
   private int size;
+  private int totalPage;
   private long totalCount;
 }

@@ -105,7 +105,10 @@ public class SquadQueryRepository {
                 })
             .toList();
 
-    return new SquadListResultResponse(content, page, size, total);
+      int totalPages = (int) Math.ceil((double) (total != null ? total : 0) / size);
+
+
+      return new SquadListResultResponse(content, page, size, totalPages, total);
   }
 
   public SquadDetailResponse findSquadDetailByCode(String squadCode) {

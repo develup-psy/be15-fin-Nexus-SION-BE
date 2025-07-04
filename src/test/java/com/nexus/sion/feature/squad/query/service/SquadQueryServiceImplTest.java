@@ -55,7 +55,7 @@ class SquadQueryServiceImplTest {
     SquadListResponse squad =
         new SquadListResponse(
             "SQD-001", "백엔드팀", false, List.of(), "2024-01-01 ~ 2024-04-01", "₩2,000,000");
-    SquadListResultResponse mockList = new SquadListResultResponse(List.of(squad), 0, 10, 1);
+    SquadListResultResponse mockList = new SquadListResultResponse(List.of(squad), 0, 10, 1,1);
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(false);
