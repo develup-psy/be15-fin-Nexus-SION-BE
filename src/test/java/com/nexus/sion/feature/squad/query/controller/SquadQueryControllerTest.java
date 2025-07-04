@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-import com.nexus.sion.common.dto.PageResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
@@ -75,8 +75,7 @@ class SquadQueryControllerTest {
     SquadListRequest request = new SquadListRequest();
     request.setProjectCode(projectCode);
 
-    PageResponse<SquadListResponse> response
-            = PageResponse.fromJooq(List.of(squad), 10, 5, 1);
+    PageResponse<SquadListResponse> response = PageResponse.fromJooq(List.of(squad), 10, 5, 1);
 
     when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(response);
     mockMvc

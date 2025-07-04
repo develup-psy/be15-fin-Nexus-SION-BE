@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.nexus.sion.common.dto.PageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -56,8 +56,7 @@ class SquadQueryServiceImplTest {
     SquadListResponse squad =
         new SquadListResponse(
             "SQD-001", "백엔드팀", false, List.of(), "2024-01-01 ~ 2024-04-01", "₩2,000,000");
-    PageResponse<SquadListResponse> mockList
-            = PageResponse.fromJooq(List.of(squad), 1, 0, 10);
+    PageResponse<SquadListResponse> mockList = PageResponse.fromJooq(List.of(squad), 1, 0, 10);
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(false);

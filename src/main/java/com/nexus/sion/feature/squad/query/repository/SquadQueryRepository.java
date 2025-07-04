@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.common.dto.PageResponse;
 import org.jooq.*;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.SquadOriginType;
 import com.example.jooq.generated.tables.records.SquadRecord;
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
@@ -105,8 +105,7 @@ public class SquadQueryRepository {
                 })
             .toList();
 
-
-      return PageResponse.fromJooq(content, total != null ? total : 0L, page, size);
+    return PageResponse.fromJooq(content, total != null ? total : 0L, page, size);
   }
 
   public SquadDetailResponse findSquadDetailByCode(String squadCode) {
