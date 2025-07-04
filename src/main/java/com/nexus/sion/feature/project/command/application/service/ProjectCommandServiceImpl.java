@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.project.command.application.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,13 +34,11 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
-    if (projectCommandRepository.existsByProjectCode(request.getProjectCode())) {
-      throw new BusinessException(ErrorCode.PROJECT_CODE_DUPLICATED);
-    }
+    String newProjectCode = generateNextProjectCode(request.getClientCode());
 
     Project project =
         Project.builder()
-            .projectCode(request.getProjectCode())
+            .projectCode(newProjectCode)
             .domainName(request.getDomainName())
             .description(request.getDescription())
             .title(request.getTitle())
@@ -54,8 +53,28 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .build();
     projectCommandRepository.save(project);
 
-    saveJobsAndTechStacks(request);
-    return new ProjectRegisterResponse(request.getProjectCode());
+    ProjectRegisterRequest copyRequest =
+        ProjectRegisterRequest.copyWithProjectCode(request, newProjectCode);
+    saveJobsAndTechStacks(copyRequest);
+
+    return new ProjectRegisterResponse(newProjectCode);
+  }
+
+  private String generateNextProjectCode(String clientCode) {
+    List<String> codes = projectRepository.findProjectCodesByClientCode(clientCode);
+
+    int maxNumber = 0;
+    for (String code : codes) {
+      try {
+        String suffix = code.substring(clientCode.length() + 1); // "na001_3" -> "3"
+        int number = Integer.parseInt(suffix);
+        if (number > maxNumber) maxNumber = number;
+      } catch (Exception e) {
+        log.warn("프로젝트 코드 파싱 실패: {}", code);
+      }
+    }
+
+    return clientCode + "_" + (maxNumber + 1);
   }
 
   @Override
@@ -77,10 +96,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectCommandRepository.save(project);
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
-    projectAndJobs.forEach(
-        job -> {
-          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
-        });
+    projectAndJobs.forEach(job -> jobAndTechStackRepository.deleteByProjectJobId(job.getId()));
     projectAndJobRepository.deleteByProjectCode(request.getProjectCode());
 
     saveJobsAndTechStacks(request);
@@ -121,10 +137,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(projectCode);
-    projectAndJobs.forEach(
-        job -> {
-          jobAndTechStackRepository.deleteByProjectJobId(job.getId());
-        });
+    projectAndJobs.forEach(job -> jobAndTechStackRepository.deleteByProjectJobId(job.getId()));
     projectAndJobRepository.deleteByProjectCode(projectCode);
 
     projectCommandRepository.delete(project);
