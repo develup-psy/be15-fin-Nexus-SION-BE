@@ -11,7 +11,7 @@ public class MemberListRequest {
   private int page = 0;
   private int size = 10;
 
-  private String gradeCode; // 예: "JUNIOR", "MID", "SENIOR"
+  private String gradeCode;
   private String role;
   private String status; // ex: "AVAILABLE", "IN_PROJECT", "UNAVAILABLE"
   private String nameInitial;
