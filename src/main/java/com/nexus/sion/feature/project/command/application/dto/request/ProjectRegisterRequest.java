@@ -3,11 +3,13 @@ package com.nexus.sion.feature.project.command.application.dto.request;
 import java.time.LocalDate;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectRegisterRequest {
 
   private String projectCode;
@@ -22,6 +24,23 @@ public class ProjectRegisterRequest {
   private String requestSpecificationUrl; // S3에서 받은 URL
 
   private List<JobInfo> jobs;
+
+  public static ProjectRegisterRequest copyWithProjectCode(
+      ProjectRegisterRequest original, String newProjectCode) {
+    return ProjectRegisterRequest.builder()
+        .projectCode(newProjectCode)
+        .domainName(original.getDomainName())
+        .description(original.getDescription())
+        .title(original.getTitle())
+        .budget(original.getBudget())
+        .startDate(original.getStartDate())
+        .expectedEndDate(original.getExpectedEndDate())
+        .clientCode(original.getClientCode())
+        .numberOfMembers(original.getNumberOfMembers())
+        .requestSpecificationUrl(original.getRequestSpecificationUrl())
+        .jobs(original.getJobs())
+        .build();
+  }
 
   @Getter
   @Setter
