@@ -77,13 +77,13 @@ class SquadQueryControllerTest {
 
     PageResponse<SquadListResponse> response = PageResponse.fromJooq(List.of(squad), 10, 5, 1);
 
-    when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(response);
+    when(squadQueryService.findSquadsOrConfirmed(any(SquadListRequest.class))).thenReturn(response);
     mockMvc
         .perform(
             get("/api/v1/squads/project/{projectCode}", projectCode)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+        .andExpect(jsonPath("$.data.content[0].squadCode").value("ha_1_1_1"))
         .andDo(print());
   }
 }
