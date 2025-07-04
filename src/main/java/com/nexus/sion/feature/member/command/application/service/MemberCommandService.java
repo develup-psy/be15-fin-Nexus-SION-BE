@@ -6,8 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
-import com.nexus.sion.feature.member.command.domain.repository.*;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -20,11 +18,13 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRe
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.*;
 import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;
@@ -134,13 +134,13 @@ public class MemberCommandService {
 
       List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
 
-      GradeCode gradeCode = grades.stream()
+      GradeCode gradeCode =
+          grades.stream()
               .filter(g -> g.getScoreThreshold() > 0) // 유효한 기준이 있는 등급만 대상으로 함
               .filter(g -> totalScore >= g.getScoreThreshold())
               .map(Grade::getGradeCode)
               .findFirst()
               .orElse(GradeCode.B); // 아무 기준도 통과하지 못하면 기본값 B
-
 
       // 생년월일 기반 임의 password 발급
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");

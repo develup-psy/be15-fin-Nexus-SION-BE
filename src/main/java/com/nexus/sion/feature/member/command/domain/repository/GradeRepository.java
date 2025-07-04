@@ -12,5 +12,6 @@ import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, GradeCode> {
   Optional<Grade> findByGradeCode(GradeCode gradeCode);
+
   List<Grade> findAllByOrderByScoreThresholdDesc();
 }
