@@ -4,14 +4,12 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
-import com.example.jooq.generated.enums.GradeGradeCode;
-import com.example.jooq.generated.enums.MemberGradeCode;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.jooq.generated.enums.MemberGradeCode;
 import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.common.dto.PageResponse;
@@ -60,9 +58,10 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     // 등급 필터
     if (request.getGradeCode() != null) {
       try {
-        condition = condition.and(
-                MEMBER.GRADE_CODE.eq(MemberGradeCode.valueOf(request.getGradeCode().toUpperCase()))
-        );
+        condition =
+            condition.and(
+                MEMBER.GRADE_CODE.eq(
+                    MemberGradeCode.valueOf(request.getGradeCode().toUpperCase())));
       } catch (IllegalArgumentException e) {
         throw new BusinessException(ErrorCode.INVALID_GRADE);
       }
@@ -71,9 +70,8 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     // role 필터
     if (request.getRole() != null) {
       try {
-        condition = condition.and(
-                MEMBER.ROLE.eq(MemberRole.valueOf(request.getRole().toUpperCase()))
-        );
+        condition =
+            condition.and(MEMBER.ROLE.eq(MemberRole.valueOf(request.getRole().toUpperCase())));
       } catch (IllegalArgumentException e) {
         throw new BusinessException(ErrorCode.INVALID_MEMBER_ROLE);
       }
