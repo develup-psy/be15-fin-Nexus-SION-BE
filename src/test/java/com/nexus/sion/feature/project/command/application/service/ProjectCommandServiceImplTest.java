@@ -19,6 +19,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.JobInfo;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.TechStackInfo;
+import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
@@ -70,32 +71,30 @@ class ProjectCommandServiceImplTest {
   }
 
   @Test
-  @DisplayName("프로젝트 수정 성공")
+  @DisplayName("프로젝트 수정 성공 - 기본 정보만 수정")
   void updateProject_Success() {
     // given
-    ProjectRegisterRequest request = createRequest();
+    ProjectUpdateRequest request = createUpdateRequest();
 
     Project existingProject = Project.builder().projectCode(request.getProjectCode()).build();
 
     when(projectCommandRepository.findById(request.getProjectCode()))
         .thenReturn(Optional.of(existingProject));
-    when(projectAndJobRepository.findByProjectCode(request.getProjectCode()))
-        .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
 
     // when
     projectCommandService.updateProject(request);
 
     // then
     verify(projectCommandRepository).save(existingProject);
-    verify(jobAndTechStackRepository).deleteByProjectJobId(anyLong());
-    verify(projectAndJobRepository).deleteByProjectCode(request.getProjectCode());
+    verifyNoInteractions(jobAndTechStackRepository); // 기술스택 저장/삭제 없음
+    verifyNoInteractions(projectAndJobRepository); // 직무 변경도 없음
   }
 
   @Test
-  @DisplayName("없는 프로젝트 수정 시 예외 발생")
+  @DisplayName("프로젝트 수정 실패 - 존재하지 않는 프로젝트")
   void updateProject_Fail_When_ProjectNotFound() {
     // given
-    ProjectRegisterRequest request = createRequest();
+    ProjectUpdateRequest request = createUpdateRequest();
     when(projectCommandRepository.findById(request.getProjectCode())).thenReturn(Optional.empty());
 
     // when & then
@@ -195,5 +194,19 @@ class ProjectCommandServiceImplTest {
     request.setRequestSpecificationUrl("https://s3.url/spec.pdf");
     request.setJobs(List.of(job));
     return request;
+  }
+
+  private ProjectUpdateRequest createUpdateRequest() {
+    return ProjectUpdateRequest.builder()
+        .projectCode("P123")
+        .domainName("Updated Domain")
+        .description("Updated Description")
+        .title("Updated Title")
+        .budget(2000000L)
+        .startDate(LocalDate.now())
+        .expectedEndDate(LocalDate.now().plusDays(60))
+        .numberOfMembers(4)
+        .requestSpecificationUrl("https://s3.url/updated_spec.pdf")
+        .build(); // ✅ jobTechStacks 제거됨
   }
 }

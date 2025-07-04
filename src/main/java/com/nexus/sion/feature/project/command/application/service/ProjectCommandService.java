@@ -5,13 +5,14 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
 public interface ProjectCommandService {
   ProjectRegisterResponse registerProject(ProjectRegisterRequest request);
 
-  void updateProject(ProjectRegisterRequest request);
+  void updateProject(ProjectUpdateRequest request);
 
   void deleteProject(String projectCode);
 
