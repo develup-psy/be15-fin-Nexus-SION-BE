@@ -18,6 +18,7 @@ public class ProjectForSquadResponse {
     private Double estimatedDuration;
     private Long estimatedCost;
     private List<JobRequirement> jobRequirements;
+    private Double totalEffort;
 
     public void setJobRequirements(List<JobRequirement> requirements) {
         this.jobRequirements = requirements;

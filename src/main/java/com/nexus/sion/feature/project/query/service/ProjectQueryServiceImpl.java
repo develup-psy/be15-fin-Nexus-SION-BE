@@ -35,6 +35,7 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
 
   @Override
   public ProjectForSquadResponse getProjectInfoForSquad(String projectCode) {
+    System.out.println(projectCode);
     ProjectForSquadResponse response = projectQueryMapper.findProjectInfo(projectCode);
     if (response == null) {
       throw new EntityNotFoundException("Project not found: " + projectCode);
