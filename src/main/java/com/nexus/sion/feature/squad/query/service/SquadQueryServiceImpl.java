@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.common.dto.PageResponse;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -14,7 +15,6 @@ import com.nexus.sion.feature.project.command.domain.repository.ProjectRepositor
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.*;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 import com.nexus.sion.feature.squad.query.util.CalculateSquad;
@@ -44,7 +44,7 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   }
 
   @Override
-  public SquadResponse findSquadsOrConfirmed(SquadListRequest request) {
+  public Object findSquadsOrConfirmed(SquadListRequest request) {
     String projectCode = request.getProjectCode();
     Project project = getProjectOrThrow(projectCode);
 
@@ -81,7 +81,7 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   }
 
   @Override
-  public SquadListResultResponse findSquads(SquadListRequest request) {
+  public PageResponse<SquadListResponse> findSquads(SquadListRequest request) {
     return squadQueryRepository.findSquads(request);
   }
 

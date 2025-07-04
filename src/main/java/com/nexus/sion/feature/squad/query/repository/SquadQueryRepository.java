@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.common.dto.PageResponse;
 import org.jooq.*;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,6 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class SquadQueryRepository {
 
   private final DSLContext dsl;
 
-  public SquadListResultResponse findSquads(SquadListRequest request) {
+  public PageResponse<SquadListResponse> findSquads(SquadListRequest request) {
     String projectCode = request.getProjectCode();
     int page = request.getPage();
     int size = request.getSize();
@@ -105,10 +105,8 @@ public class SquadQueryRepository {
                 })
             .toList();
 
-      int totalPages = (int) Math.ceil((double) (total != null ? total : 0) / size);
 
-
-      return new SquadListResultResponse(content, page, size, totalPages, total);
+      return PageResponse.fromJooq(content, total != null ? total : 0L, page, size);
   }
 
   public SquadDetailResponse findSquadDetailByCode(String squadCode) {
