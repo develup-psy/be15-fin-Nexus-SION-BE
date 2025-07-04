@@ -149,7 +149,7 @@ public class ProjectQueryRepository {
     // 5. 스쿼드 구성원
     List<ProjectDetailResponse.SquadMemberInfo> members =
         dsl.select(
-                SQUAD_EMPLOYEE.IS_LEADER,
+                SQUAD_EMPLOYEE.IS_LEADER, // ✅ 리더 여부 포함
                 MEMBER.PROFILE_IMAGE_URL,
                 MEMBER.EMPLOYEE_NAME,
                 PROJECT_AND_JOB.JOB_NAME)
@@ -163,15 +163,18 @@ public class ProjectQueryRepository {
             .join(PROJECT_AND_JOB)
             .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
             .where(SQUAD.PROJECT_CODE.eq(projectCode))
-            .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저
+            .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저 정렬
             .fetch()
             .map(
                 r ->
                     new ProjectDetailResponse.SquadMemberInfo(
-                        Boolean.TRUE.equals(r.get(SQUAD_EMPLOYEE.IS_LEADER)),
+                        Integer.valueOf(r.get(SQUAD_EMPLOYEE.IS_LEADER)), // 👈 여기로 포함
                         r.get(MEMBER.PROFILE_IMAGE_URL),
                         r.get(MEMBER.EMPLOYEE_NAME),
                         r.get(PROJECT_AND_JOB.JOB_NAME)));
+
+    // ✅ 상태 추출 및 반환에 포함
+    String status = String.valueOf(project.get(PROJECT.STATUS));
 
     return new ProjectDetailResponse(
         project.get(PROJECT.TITLE),
@@ -181,6 +184,8 @@ public class ProjectQueryRepository {
         duration,
         budget,
         techStacks,
-        members);
+        members,
+        status // ✅ 여기 포함
+        );
   }
 }
