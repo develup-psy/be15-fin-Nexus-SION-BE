@@ -16,11 +16,12 @@ public class ProjectDetailResponse {
   private String budget; // ex: ₩29,000,000
   private List<String> techStacks;
   private List<SquadMemberInfo> members;
+  private String status;
 
   @Getter
   @AllArgsConstructor
   public static class SquadMemberInfo {
-    private boolean isLeader;
+    private Integer isLeader;
     private String imageUrl;
     private String name;
     private String job;
