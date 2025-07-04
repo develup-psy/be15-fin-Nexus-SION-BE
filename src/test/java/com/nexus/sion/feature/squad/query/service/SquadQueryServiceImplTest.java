@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.nexus.sion.common.dto.PageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,18 +56,19 @@ class SquadQueryServiceImplTest {
     SquadListResponse squad =
         new SquadListResponse(
             "SQD-001", "백엔드팀", false, List.of(), "2024-01-01 ~ 2024-04-01", "₩2,000,000");
-    SquadListResultResponse mockList = new SquadListResultResponse(List.of(squad), 0, 10, 1,1);
+    PageResponse<SquadListResponse> mockList
+            = PageResponse.fromJooq(List.of(squad), 1, 0, 10);
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(false);
     when(squadQueryRepository.findSquads(request)).thenReturn(mockList);
 
     // when
-    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
+    Object response = squadQueryService.findSquadsOrConfirmed(request);
 
     // then
-    assertThat(response).isInstanceOf(SquadListResultResponse.class);
-    SquadListResultResponse result = (SquadListResultResponse) response;
+    assertThat(response).isInstanceOf(PageResponse.class);
+    PageResponse<SquadListResponse> result = (PageResponse<SquadListResponse>) response;
     assertThat(result.getContent()).hasSize(1);
 
     verify(projectRepository).findById(projectCode);
@@ -110,7 +112,7 @@ class SquadQueryServiceImplTest {
     when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode)).thenReturn(mockDetail);
 
     // when
-    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
+    Object response = squadQueryService.findSquadsOrConfirmed(request);
 
     // then
     assertThat(response).isInstanceOf(SquadDetailResponse.class);
@@ -158,7 +160,7 @@ class SquadQueryServiceImplTest {
     when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode)).thenReturn(mockDetail);
 
     // when
-    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
+    Object response = squadQueryService.findSquadsOrConfirmed(request);
 
     // then
     assertThat(response).isInstanceOf(SquadDetailResponse.class);
