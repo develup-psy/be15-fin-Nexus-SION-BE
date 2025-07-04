@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
 import com.example.jooq.generated.enums.ProjectStatus;
 import com.example.jooq.generated.tables.Project;
 import com.example.jooq.generated.tables.records.ProjectRecord;
@@ -268,5 +269,20 @@ public class ProjectDao
   /** Fetch records that have <code>domain_name IN (values)</code> */
   public List<com.example.jooq.generated.tables.pojos.Project> fetchByDomainName(String... values) {
     return fetch(Project.PROJECT.DOMAIN_NAME, values);
+  }
+
+  /**
+   * Fetch records that have <code>analysis_status BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchRangeOfAnalysisStatus(
+      ProjectAnalysisStatus lowerInclusive, ProjectAnalysisStatus upperInclusive) {
+    return fetchRange(Project.PROJECT.ANALYSIS_STATUS, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>analysis_status IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Project> fetchByAnalysisStatus(
+      ProjectAnalysisStatus... values) {
+    return fetch(Project.PROJECT.ANALYSIS_STATUS, values);
   }
 }

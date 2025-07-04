@@ -34,7 +34,7 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.training_program</code> */
+  /** The reference instance of <code>SION.training_program</code> */
   public static final TrainingProgram TRAINING_PROGRAM = new TrainingProgram();
 
   /** The class holding records for this type */
@@ -43,11 +43,11 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
     return TrainingProgramRecord.class;
   }
 
-  /** The column <code>sion.training_program.training_name</code>. */
+  /** The column <code>SION.training_program.training_name</code>. */
   public final TableField<TrainingProgramRecord, String> TRAINING_NAME =
       createField(DSL.name("training_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>sion.training_program.description</code>. */
+  /** The column <code>SION.training_program.description</code>. */
   public final TableField<TrainingProgramRecord, String> DESCRIPTION =
       createField(
           DSL.name("description"),
@@ -55,7 +55,7 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
           this,
           "");
 
-  /** The column <code>sion.training_program.training_type</code>. */
+  /** The column <code>SION.training_program.training_type</code>. */
   public final TableField<TrainingProgramRecord, TrainingProgramTrainingType> TRAINING_TYPE =
       createField(
           DSL.name("training_type"),
@@ -65,19 +65,19 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
           this,
           "");
 
-  /** The column <code>sion.training_program.organizer</code>. */
+  /** The column <code>SION.training_program.organizer</code>. */
   public final TableField<TrainingProgramRecord, String> ORGANIZER =
       createField(DSL.name("organizer"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.training_program.started_at</code>. */
+  /** The column <code>SION.training_program.started_at</code>. */
   public final TableField<TrainingProgramRecord, LocalDateTime> STARTED_AT =
       createField(DSL.name("started_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-  /** The column <code>sion.training_program.ended_at</code>. */
+  /** The column <code>SION.training_program.ended_at</code>. */
   public final TableField<TrainingProgramRecord, LocalDateTime> ENDED_AT =
       createField(DSL.name("ended_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-  /** The column <code>sion.training_program.created_at</code>. */
+  /** The column <code>SION.training_program.created_at</code>. */
   public final TableField<TrainingProgramRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -87,7 +87,7 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
           this,
           "");
 
-  /** The column <code>sion.training_program.updated_at</code>. */
+  /** The column <code>SION.training_program.updated_at</code>. */
   public final TableField<TrainingProgramRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -105,17 +105,17 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.training_program</code> table reference */
+  /** Create an aliased <code>SION.training_program</code> table reference */
   public TrainingProgram(String alias) {
     this(DSL.name(alias), TRAINING_PROGRAM);
   }
 
-  /** Create an aliased <code>sion.training_program</code> table reference */
+  /** Create an aliased <code>SION.training_program</code> table reference */
   public TrainingProgram(Name alias) {
     this(alias, TRAINING_PROGRAM);
   }
 
-  /** Create a <code>sion.training_program</code> table reference */
+  /** Create a <code>SION.training_program</code> table reference */
   public TrainingProgram() {
     this(DSL.name("training_program"), null);
   }

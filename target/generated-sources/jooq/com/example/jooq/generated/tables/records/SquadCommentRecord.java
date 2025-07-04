@@ -20,62 +20,62 @@ public class SquadCommentRecord extends UpdatableRecordImpl<SquadCommentRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.squad_comment.comment_id</code>. */
+  /** Setter for <code>SION.squad_comment.comment_id</code>. */
   public void setCommentId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.squad_comment.comment_id</code>. */
+  /** Getter for <code>SION.squad_comment.comment_id</code>. */
   public Long getCommentId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.squad_comment.squad_code</code>. */
+  /** Setter for <code>SION.squad_comment.squad_code</code>. */
   public void setSquadCode(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.squad_comment.squad_code</code>. */
+  /** Getter for <code>SION.squad_comment.squad_code</code>. */
   public String getSquadCode() {
     return (String) get(1);
   }
 
-  /** Setter for <code>sion.squad_comment.employee_identification_number</code>. */
+  /** Setter for <code>SION.squad_comment.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.squad_comment.employee_identification_number</code>. */
+  /** Getter for <code>SION.squad_comment.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.squad_comment.content</code>. */
+  /** Setter for <code>SION.squad_comment.content</code>. */
   public void setContent(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.squad_comment.content</code>. */
+  /** Getter for <code>SION.squad_comment.content</code>. */
   public String getContent() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.squad_comment.created_at</code>. */
+  /** Setter for <code>SION.squad_comment.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.squad_comment.created_at</code>. */
+  /** Getter for <code>SION.squad_comment.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(4);
   }
 
-  /** Setter for <code>sion.squad_comment.updated_at</code>. */
+  /** Setter for <code>SION.squad_comment.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.squad_comment.updated_at</code>. */
+  /** Getter for <code>SION.squad_comment.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(5);
   }

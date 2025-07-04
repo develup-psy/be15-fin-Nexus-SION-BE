@@ -8,11 +8,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function7;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -33,7 +33,7 @@ public class Certificate extends TableImpl<CertificateRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.certificate</code> */
+  /** The reference instance of <code>SION.certificate</code> */
   public static final Certificate CERTIFICATE = new Certificate();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Certificate extends TableImpl<CertificateRecord> {
     return CertificateRecord.class;
   }
 
-  /** The column <code>sion.certificate.certificate_name</code>. */
+  /** The column <code>SION.certificate.certificate_name</code>. */
   public final TableField<CertificateRecord, String> CERTIFICATE_NAME =
       createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>sion.certificate.issuing_organization_id</code>. */
+  /** The column <code>SION.certificate.issuing_organization_id</code>. */
   public final TableField<CertificateRecord, LocalDateTime> ISSUING_ORGANIZATION_ID =
       createField(
           DSL.name("issuing_organization_id"),
@@ -54,15 +54,15 @@ public class Certificate extends TableImpl<CertificateRecord> {
           this,
           "");
 
-  /** The column <code>sion.certificate.issue_date</code>. */
+  /** The column <code>SION.certificate.issue_date</code>. */
   public final TableField<CertificateRecord, LocalDateTime> ISSUE_DATE =
       createField(DSL.name("issue_date"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-  /** The column <code>sion.certificate.expiry_date</code>. */
+  /** The column <code>SION.certificate.expiry_date</code>. */
   public final TableField<CertificateRecord, LocalDateTime> EXPIRY_DATE =
       createField(DSL.name("expiry_date"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
-  /** The column <code>sion.certificate.created_at</code>. */
+  /** The column <code>SION.certificate.created_at</code>. */
   public final TableField<CertificateRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -72,13 +72,23 @@ public class Certificate extends TableImpl<CertificateRecord> {
           this,
           "");
 
-  /** The column <code>sion.certificate.updated_at</code>. */
+  /** The column <code>SION.certificate.updated_at</code>. */
   public final TableField<CertificateRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
           SQLDataType.LOCALDATETIME(0)
               .nullable(false)
               .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
+  /** The column <code>SION.certificate.score</code>. */
+  public final TableField<CertificateRecord, Integer> SCORE =
+      createField(
+          DSL.name("score"),
+          SQLDataType.INTEGER
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)),
           this,
           "");
 
@@ -90,17 +100,17 @@ public class Certificate extends TableImpl<CertificateRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.certificate</code> table reference */
+  /** Create an aliased <code>SION.certificate</code> table reference */
   public Certificate(String alias) {
     this(DSL.name(alias), CERTIFICATE);
   }
 
-  /** Create an aliased <code>sion.certificate</code> table reference */
+  /** Create an aliased <code>SION.certificate</code> table reference */
   public Certificate(Name alias) {
     this(alias, CERTIFICATE);
   }
 
-  /** Create a <code>sion.certificate</code> table reference */
+  /** Create a <code>SION.certificate</code> table reference */
   public Certificate() {
     this(DSL.name("certificate"), null);
   }
@@ -153,24 +163,32 @@ public class Certificate extends TableImpl<CertificateRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row6 type methods
+  // Row7 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row6<String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime>
+  public Row7<
+          String,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime,
+          LocalDateTime,
+          Integer>
       fieldsRow() {
-    return (Row6) super.fieldsRow();
+    return (Row7) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function6<
+      Function7<
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super Integer,
               ? extends U>
           from) {
     return convertFrom(Records.mapping(from));
@@ -179,13 +197,14 @@ public class Certificate extends TableImpl<CertificateRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function6<
+      Function7<
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super Integer,
               ? extends U>
           from) {
     return convertFrom(toType, Records.mapping(from));
