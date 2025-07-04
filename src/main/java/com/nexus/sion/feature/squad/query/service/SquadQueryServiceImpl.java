@@ -33,14 +33,6 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   private final ProjectRepository projectRepository;
 
   @Override
-  public SquadListResultResponse findSquads(SquadListRequest request) {
-    SquadListResultResponse result = squadQueryRepository.findSquads(request);
-    return result != null
-        ? result
-        : new SquadListResultResponse(List.of(), request.getPage(), request.getSize(), 0L);
-  }
-
-  @Override
   public SquadDetailResponse getSquadDetailByCode(String squadCode) {
     SquadDetailResponse response = squadQueryRepository.findSquadDetailByCode(squadCode);
 
@@ -51,41 +43,46 @@ public class SquadQueryServiceImpl implements SquadQueryService {
     return response;
   }
 
-  public Object findSquadsOrConfirmed(SquadListRequest request) {
+  @Override
+  public SquadResponse findSquadsOrConfirmed(SquadListRequest request) {
     String projectCode = request.getProjectCode();
-
-    Project project =
-        projectRepository
-            .findById(projectCode)
-            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+    Project project = getProjectOrThrow(projectCode);
 
     // ✅ 종료된 프로젝트면 무조건 확정된 스쿼드만 보여주기
-    if (project.getStatus() == Project.ProjectStatus.COMPLETE
-        || project.getStatus() == Project.ProjectStatus.INCOMPLETE) {
-
-      // 예외 발생 대신 null 체크 후 fallback 처리
-      SquadDetailResponse confirmed = null;
-      try {
-        confirmed = getConfirmedSquadByProjectCode(projectCode);
-      } catch (BusinessException e) {
-        // 로그를 남기고 빈 응답 반환
-        return null; // 또는 Optional.empty() 또는 new SquadDetailResponse() 등
-      }
-
-      return confirmed;
+    if (isProjectComplete(project)) {
+      return getConfirmedSquadIfExistsOrThrow(projectCode);
     }
 
-    // ✅ 진행 중 프로젝트인 경우
     if (hasConfirmedSquad(projectCode)) {
-      return getConfirmedSquadByProjectCode(projectCode);
+      return getConfirmedSquadIfExistsOrThrow(projectCode);
     }
 
-    return findSquads(request);
+    return squadQueryRepository.findSquads(request);
+  }
+
+
+  private Project getProjectOrThrow(String projectCode) {
+    return projectRepository.findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+  }
+
+  private boolean isProjectComplete(Project project) {
+    return project.getStatus() == Project.ProjectStatus.COMPLETE
+            || project.getStatus() == Project.ProjectStatus.INCOMPLETE;
+  }
+
+  private SquadDetailResponse getConfirmedSquadIfExistsOrThrow(String projectCode) {
+    return squadQueryRepository.findConfirmedSquadByProjectCode(projectCode);
   }
 
   @Override
   public boolean hasConfirmedSquad(String projectCode) {
     return squadQueryRepository.existsByProjectCodeAndIsActive(projectCode);
+  }
+
+  @Override
+  public SquadListResultResponse findSquads(SquadListRequest request) {
+    return squadQueryRepository.findSquads(request);
   }
 
   @Override
