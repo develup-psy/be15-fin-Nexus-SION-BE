@@ -29,8 +29,8 @@ class GradeQueryServiceImplTest {
     // given
     List<GradeDto> mockGrades =
         Arrays.asList(
-            new GradeDto(GradeCode.S, new BigDecimal("3"), 150000000),
-            new GradeDto(GradeCode.A, new BigDecimal("2.5"), 100000000));
+            new GradeDto(GradeCode.S, new BigDecimal("0.2"), new BigDecimal("3"), 150000000),
+            new GradeDto(GradeCode.A, new BigDecimal("0.2"), new BigDecimal("2.5"), 100000000));
 
     when(gradeQueryRepository.getGrade()).thenReturn(mockGrades);
 
