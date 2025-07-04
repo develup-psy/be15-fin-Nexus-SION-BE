@@ -19,12 +19,12 @@ import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.SquadOriginType;
 import com.example.jooq.generated.tables.records.SquadRecord;
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class SquadQueryRepository {
 
   private final DSLContext dsl;
 
-  public SquadListResultResponse findSquads(SquadListRequest request) {
+  public PageResponse<SquadListResponse> findSquads(SquadListRequest request) {
     String projectCode = request.getProjectCode();
     int page = request.getPage();
     int size = request.getSize();
@@ -105,7 +105,7 @@ public class SquadQueryRepository {
                 })
             .toList();
 
-    return new SquadListResultResponse(content, page, size, total);
+    return PageResponse.fromJooq(content, total != null ? total : 0L, page, size);
   }
 
   public SquadDetailResponse findSquadDetailByCode(String squadCode) {

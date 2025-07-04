@@ -22,9 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 @WebMvcTest(SquadQueryController.class)
@@ -75,15 +75,15 @@ class SquadQueryControllerTest {
     SquadListRequest request = new SquadListRequest();
     request.setProjectCode(projectCode);
 
-    SquadListResultResponse response = new SquadListResultResponse(List.of(squad), 1, 0, 10);
+    PageResponse<SquadListResponse> response = PageResponse.fromJooq(List.of(squad), 10, 5, 1);
 
-    when(squadQueryService.findSquads(any(SquadListRequest.class))).thenReturn(response);
+    when(squadQueryService.findSquadsOrConfirmed(any(SquadListRequest.class))).thenReturn(response);
     mockMvc
         .perform(
             get("/api/v1/squads/project/{projectCode}", projectCode)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.content[0].squadCode").value("ha_1_1_1"))
+        .andExpect(jsonPath("$.data.content[0].squadCode").value("ha_1_1_1"))
         .andDo(print());
   }
 }

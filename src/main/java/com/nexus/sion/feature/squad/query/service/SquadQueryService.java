@@ -2,22 +2,22 @@ package com.nexus.sion.feature.squad.query.service;
 
 import java.util.Map;
 
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadResponse;
+import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 
 public interface SquadQueryService {
 
   // 프로젝트별 스쿼드 목록 조회
-  SquadListResultResponse findSquads(SquadListRequest request);
+  PageResponse<SquadListResponse> findSquads(SquadListRequest request);
 
   // 스쿼드 상세 조회
   SquadDetailResponse getSquadDetailByCode(String squadCode);
 
   // 확정된 스쿼드가 있으면 상세, 없으면 목록 조회
-  SquadResponse findSquadsOrConfirmed(SquadListRequest request);
+  Object findSquadsOrConfirmed(SquadListRequest request);
 
   // 해당 프로젝트에 확정된 스쿼드가 있는지 확인
   boolean hasConfirmedSquad(String projectCode);
