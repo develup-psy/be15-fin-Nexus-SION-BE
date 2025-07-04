@@ -9,6 +9,7 @@ import org.jooq.SortField;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.jooq.generated.enums.MemberGradeCode;
 import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.common.dto.PageResponse;
@@ -41,7 +42,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     String sortDir = request.getSortDir() != null ? request.getSortDir() : "asc";
 
     // 기본 조건
-    Condition condition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.INSIDER));
+    Condition condition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.ne(MemberRole.ADMIN));
 
     // 상태 필터
     if (request.getStatus() != null) {
@@ -51,6 +52,28 @@ public class MemberQueryServiceImpl implements MemberQueryService {
                 MEMBER.STATUS.eq(MemberStatus.valueOf(request.getStatus().toUpperCase())));
       } catch (IllegalArgumentException e) {
         throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);
+      }
+    }
+
+    // 등급 필터
+    if (request.getGradeCode() != null) {
+      try {
+        condition =
+            condition.and(
+                MEMBER.GRADE_CODE.eq(
+                    MemberGradeCode.valueOf(request.getGradeCode().toUpperCase())));
+      } catch (IllegalArgumentException e) {
+        throw new BusinessException(ErrorCode.INVALID_GRADE);
+      }
+    }
+
+    // role 필터
+    if (request.getRole() != null) {
+      try {
+        condition =
+            condition.and(MEMBER.ROLE.eq(MemberRole.valueOf(request.getRole().toUpperCase())));
+      } catch (IllegalArgumentException e) {
+        throw new BusinessException(ErrorCode.INVALID_MEMBER_ROLE);
       }
     }
 
