@@ -127,9 +127,9 @@ public class ProjectQueryRepository {
     // 2. 기간 계산
     LocalDate start = project.get(PROJECT.START_DATE);
     LocalDate end =
-            project.get(PROJECT.ACTUAL_END_DATE) != null
-                    ? project.get(PROJECT.ACTUAL_END_DATE)
-                    : project.get(PROJECT.EXPECTED_END_DATE);
+        project.get(PROJECT.ACTUAL_END_DATE) != null
+            ? project.get(PROJECT.ACTUAL_END_DATE)
+            : project.get(PROJECT.EXPECTED_END_DATE);
     String duration = start + " ~ " + end;
 
     // 3. 예산 포맷
@@ -137,51 +137,55 @@ public class ProjectQueryRepository {
 
     // 4. 기술스택 목록
     List<String> techStacks =
-            dsl.selectDistinct(TECH_STACK.TECH_STACK_NAME)
-                    .from(PROJECT_AND_JOB)
-                    .join(JOB_AND_TECH_STACK)
-                    .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
-                    .join(TECH_STACK)
-                    .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
-                    .where(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
-                    .fetchInto(String.class);
+        dsl.selectDistinct(TECH_STACK.TECH_STACK_NAME)
+            .from(PROJECT_AND_JOB)
+            .join(JOB_AND_TECH_STACK)
+            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID))
+            .join(TECH_STACK)
+            .on(JOB_AND_TECH_STACK.TECH_STACK_NAME.eq(TECH_STACK.TECH_STACK_NAME))
+            .where(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
+            .fetchInto(String.class);
 
     // 5. 스쿼드 구성원
     List<ProjectDetailResponse.SquadMemberInfo> members =
-            dsl.select(
-                            SQUAD_EMPLOYEE.IS_LEADER, // ✅ 리더 여부 포함
-                            MEMBER.PROFILE_IMAGE_URL,
-                            MEMBER.EMPLOYEE_NAME,
-                            PROJECT_AND_JOB.JOB_NAME)
-                    .from(SQUAD)
-                    .join(SQUAD_EMPLOYEE).on(SQUAD.SQUAD_CODE.eq(SQUAD_EMPLOYEE.SQUAD_CODE))
-                    .join(MEMBER).on(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                    .join(PROJECT_AND_JOB).on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-                    .where(SQUAD.PROJECT_CODE.eq(projectCode))
-                    .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저 정렬
-                    .fetch()
-                    .map(r -> new ProjectDetailResponse.SquadMemberInfo(
-                            Integer.valueOf(r.get(SQUAD_EMPLOYEE.IS_LEADER)), // 👈 여기로 포함
-                            r.get(MEMBER.PROFILE_IMAGE_URL),
-                            r.get(MEMBER.EMPLOYEE_NAME),
-                            r.get(PROJECT_AND_JOB.JOB_NAME)
-                    ));
-
+        dsl.select(
+                SQUAD_EMPLOYEE.IS_LEADER, // ✅ 리더 여부 포함
+                MEMBER.PROFILE_IMAGE_URL,
+                MEMBER.EMPLOYEE_NAME,
+                PROJECT_AND_JOB.JOB_NAME)
+            .from(SQUAD)
+            .join(SQUAD_EMPLOYEE)
+            .on(SQUAD.SQUAD_CODE.eq(SQUAD_EMPLOYEE.SQUAD_CODE))
+            .join(MEMBER)
+            .on(
+                SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .join(PROJECT_AND_JOB)
+            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저 정렬
+            .fetch()
+            .map(
+                r ->
+                    new ProjectDetailResponse.SquadMemberInfo(
+                        Integer.valueOf(r.get(SQUAD_EMPLOYEE.IS_LEADER)), // 👈 여기로 포함
+                        r.get(MEMBER.PROFILE_IMAGE_URL),
+                        r.get(MEMBER.EMPLOYEE_NAME),
+                        r.get(PROJECT_AND_JOB.JOB_NAME)));
 
     // ✅ 상태 추출 및 반환에 포함
     String status = String.valueOf(project.get(PROJECT.STATUS));
 
     return new ProjectDetailResponse(
-            project.get(PROJECT.TITLE),
-            project.get(PROJECT.DOMAIN_NAME),
-            project.get(PROJECT.REQUEST_SPECIFICATION_URL),
-            project.get(PROJECT.DESCRIPTION),
-            duration,
-            budget,
-            techStacks,
-            members,
-            status // ✅ 여기 포함
-    );
+        project.get(PROJECT.TITLE),
+        project.get(PROJECT.DOMAIN_NAME),
+        project.get(PROJECT.REQUEST_SPECIFICATION_URL),
+        project.get(PROJECT.DESCRIPTION),
+        duration,
+        budget,
+        techStacks,
+        members,
+        status // ✅ 여기 포함
+        );
   }
-
 }
