@@ -3,15 +3,6 @@ package com.nexus.sion.feature.project.command.domain.service;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
-import com.nexus.sion.feature.project.command.domain.aggregate.Project;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
-import com.nexus.sion.feature.squad.command.domain.service.SquadGenerateEffortFP;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
@@ -23,32 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class ProjectDomainService {
-  private final ProjectRepository projectRepository;
-  private final GradeRepository gradeRepository;
 
   public ProjectAnalysisResult analyze(FPInferResponse result) {
     String projectCode = result.getProjectId();
     int totalFp = result.getTotalFpScore();
 
-    Project project = projectRepository.findByProjectCode(projectCode)
-            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
-
-    Integer numberOfMembers = project.getNumberOfMembers();
-
-    if (numberOfMembers == null || numberOfMembers <= 0) {
-      throw new BusinessException(ErrorCode.INVALID_INPUT_VALUE, "프로젝트 인원수가 유효하지 않습니다.");
-    }
-
-    Grade gradeB = gradeRepository.findById(GradeCode.B)
-            .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_GRADE, "B등급 정보가 존재하지 않습니다."));
-    int costPerManMonth = gradeB.getMonthlyUnitPrice();
-
-
-    double effortPerFP = SquadGenerateEffortFP.getEffortRatePerFP(totalFp);
+    // ⏱️ 예상 기간/예산 계산
+    double effortPerFP = 0.25;
     double totalEffort = totalFp * effortPerFP;
-    double estimatedDuration = Math.ceil(totalEffort / numberOfMembers);
+    double estimatedDuration = Math.ceil(totalEffort / 2.0);
+    int costPerManMonth = 5_000_000;
     int estimatedCost = (int) (totalEffort * costPerManMonth);
 
     // project_fp_summary 객체 생성

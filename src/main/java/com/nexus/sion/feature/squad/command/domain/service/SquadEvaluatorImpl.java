@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
 import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
 
-import static com.nexus.sion.feature.squad.command.domain.service.SquadGenerateEffortFP.getEffortRatePerFP;
-
 @Service
 @RequiredArgsConstructor
 public class SquadEvaluatorImpl {
@@ -104,5 +102,12 @@ public class SquadEvaluatorImpl {
     }
 
     return results;
+  }
+
+  private static double getEffortRatePerFP(int totalFp) {
+    if (totalFp <= 100) return 0.15;
+    else if (totalFp <= 300) return 0.125;
+    else if (totalFp <= 600) return 0.10;
+    else return 0.08;
   }
 }
