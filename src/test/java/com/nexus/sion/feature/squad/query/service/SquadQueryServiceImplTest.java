@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -16,10 +20,6 @@ import com.nexus.sion.feature.project.command.domain.repository.ProjectRepositor
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
 import com.nexus.sion.feature.squad.query.dto.response.*;
 import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 class SquadQueryServiceImplTest {
 
@@ -32,7 +32,7 @@ class SquadQueryServiceImplTest {
     squadQueryRepository = mock(SquadQueryRepository.class);
     projectRepository = mock(ProjectRepository.class);
     squadQueryService =
-            new SquadQueryServiceImpl(squadQueryRepository, null, null, projectRepository);
+        new SquadQueryServiceImpl(squadQueryRepository, null, null, projectRepository);
   }
 
   @Test
@@ -42,7 +42,8 @@ class SquadQueryServiceImplTest {
     String projectCode = "PJT-001";
     SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    Project project = Project.builder()
+    Project project =
+        Project.builder()
             .projectCode(projectCode)
             .domainName("example.com")
             .description("예시 프로젝트입니다.")
@@ -51,7 +52,8 @@ class SquadQueryServiceImplTest {
             .status(ProjectStatus.IN_PROGRESS)
             .build();
 
-    SquadListResponse squad = new SquadListResponse(
+    SquadListResponse squad =
+        new SquadListResponse(
             "SQD-001", "백엔드팀", false, List.of(), "2024-01-01 ~ 2024-04-01", "₩2,000,000");
     SquadListResultResponse mockList = new SquadListResultResponse(List.of(squad), 0, 10, 1);
 
@@ -79,7 +81,8 @@ class SquadQueryServiceImplTest {
     String projectCode = "PJT-001";
     SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    Project project = Project.builder()
+    Project project =
+        Project.builder()
             .projectCode(projectCode)
             .domainName("example.com")
             .description("예시 프로젝트입니다.")
@@ -88,7 +91,8 @@ class SquadQueryServiceImplTest {
             .status(ProjectStatus.IN_PROGRESS)
             .build();
 
-    SquadDetailResponse mockDetail = new SquadDetailResponse(
+    SquadDetailResponse mockDetail =
+        new SquadDetailResponse(
             "SQD-001",
             "백엔드팀",
             true,
@@ -99,8 +103,7 @@ class SquadQueryServiceImplTest {
             List.of(),
             List.of(),
             null,
-            List.of()
-    );
+            List.of());
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(true);
@@ -126,7 +129,8 @@ class SquadQueryServiceImplTest {
     String projectCode = "PJT-002";
     SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    Project project = Project.builder()
+    Project project =
+        Project.builder()
             .projectCode(projectCode)
             .domainName("example.com")
             .description("예시 프로젝트입니다.")
@@ -136,7 +140,8 @@ class SquadQueryServiceImplTest {
             .build();
     project.setStatus(ProjectStatus.COMPLETE);
 
-    SquadDetailResponse mockDetail = new SquadDetailResponse(
+    SquadDetailResponse mockDetail =
+        new SquadDetailResponse(
             "SQD-002",
             "백엔드팀",
             true,
@@ -147,8 +152,7 @@ class SquadQueryServiceImplTest {
             List.of(),
             List.of(),
             null,
-            List.of()
-    );
+            List.of());
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode)).thenReturn(mockDetail);
@@ -169,7 +173,8 @@ class SquadQueryServiceImplTest {
     String projectCode = "PJT-002";
     SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    Project project = Project.builder()
+    Project project =
+        Project.builder()
             .projectCode(projectCode)
             .domainName("example.com")
             .description("예시 프로젝트입니다.")
@@ -180,12 +185,12 @@ class SquadQueryServiceImplTest {
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode))
-            .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
+        .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
 
     // when & then
     assertThatThrownBy(() -> squadQueryService.findSquadsOrConfirmed(request))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.SQUAD_DETAIL_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.SQUAD_DETAIL_NOT_FOUND.getMessage());
 
     verify(projectRepository).findById(projectCode);
     verify(squadQueryRepository).findConfirmedSquadByProjectCode(projectCode);
