@@ -8,8 +8,9 @@
         SELECT
                 p.project_code AS projectCode,
                 p.budget AS budgetLimit,
-                DATEDIFF(p.expected_end_date, p.start_date) AS durationLimit,
+                DATEDIFF(p.expected_end_date, p.start_date) / 30.0 AS durationLimit,
                 fps.estimated_duration AS estimatedDuration,
+                fps.total_effort AS totalEffort,
                 fps.estimated_cost AS estimatedCost
           FROM project p
           LEFT JOIN project_fp_summary fps ON p.project_code = fps.project_code
