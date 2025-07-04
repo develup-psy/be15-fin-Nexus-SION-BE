@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public final class SquadDetailResponse implements SquadResponse {
+public final class SquadDetailResponse {
   private String squadCode;
   private String squadName;
   private boolean aiRecommended;
