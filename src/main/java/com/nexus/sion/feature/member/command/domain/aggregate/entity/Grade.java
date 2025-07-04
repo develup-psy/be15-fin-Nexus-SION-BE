@@ -40,6 +40,9 @@ public class Grade {
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
 
+  @Column(name = "score_threshold", nullable = false)
+  private int scoreThreshold;
+
   @PrePersist
   public void prePersist() {
     if (this.ratio == null) {
