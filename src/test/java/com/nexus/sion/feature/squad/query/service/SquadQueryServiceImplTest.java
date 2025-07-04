@@ -2,153 +2,192 @@ package com.nexus.sion.feature.squad.query.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project.ProjectStatus;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.*;
+import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
-import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
-import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
-import com.nexus.sion.feature.squad.query.dto.response.SquadListResultResponse;
-import com.nexus.sion.feature.squad.query.mapper.SquadQueryMapper;
-import com.nexus.sion.feature.squad.query.repository.SquadQueryRepository;
-import com.nexus.sion.feature.squad.query.util.CalculateSquad;
 
 class SquadQueryServiceImplTest {
 
   private SquadQueryRepository squadQueryRepository;
   private SquadQueryServiceImpl squadQueryService;
-  private SquadQueryMapper squadQueryMapper;
-  private CalculateSquad calculateSquad;
   private ProjectRepository projectRepository;
 
   @BeforeEach
   void setUp() {
-    squadQueryRepository = Mockito.mock(SquadQueryRepository.class);
-    squadQueryMapper = Mockito.mock(SquadQueryMapper.class);
-    calculateSquad = Mockito.mock(CalculateSquad.class);
-    projectRepository = Mockito.mock(ProjectRepository.class);
+    squadQueryRepository = mock(SquadQueryRepository.class);
+    projectRepository = mock(ProjectRepository.class);
     squadQueryService =
-        new SquadQueryServiceImpl(
-            squadQueryRepository, squadQueryMapper, calculateSquad, projectRepository);
+            new SquadQueryServiceImpl(squadQueryRepository, null, null, projectRepository);
   }
 
   @Test
-  @DisplayName("스쿼드 목록을 정상적으로 조회한다")
-  void findSquads_returnsSquadList() {
+  @DisplayName("진행 중 프로젝트이고 확정 스쿼드가 없으면 스쿼드 목록을 반환한다")
+  void findSquadsOrConfirmed_shouldReturnSquadList_whenOngoingProjectAndNoConfirmed() {
     // given
-    SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
+    String projectCode = "PJT-001";
+    SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    SquadListResponse.MemberInfo member = new SquadListResponse.MemberInfo("홍길동", "백엔드");
-    SquadListResponse squad =
-        new SquadListResponse(
-            "SQD-1", "백엔드팀", false, List.of(member), "2024-01-01 ~ 2024-04-01", "₩3,000,000");
+    Project project = Project.builder()
+            .projectCode(projectCode)
+            .domainName("example.com")
+            .description("예시 프로젝트입니다.")
+            .title("백엔드 시스템 개발")
+            .budget(5000000L)
+            .status(ProjectStatus.IN_PROGRESS)
+            .build();
 
-    List<SquadListResponse> content = List.of(squad);
-    SquadListResultResponse mockResult = new SquadListResultResponse(content, 1, 0, 10);
+    SquadListResponse squad = new SquadListResponse(
+            "SQD-001", "백엔드팀", false, List.of(), "2024-01-01 ~ 2024-04-01", "₩2,000,000");
+    SquadListResultResponse mockList = new SquadListResultResponse(List.of(squad), 0, 10, 1);
 
-    when(squadQueryRepository.findSquads(request)).thenReturn(mockResult);
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(false);
+    when(squadQueryRepository.findSquads(request)).thenReturn(mockList);
 
     // when
-    SquadListResultResponse result = squadQueryService.findSquads(request);
+    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
 
     // then
+    assertThat(response).isInstanceOf(SquadListResultResponse.class);
+    SquadListResultResponse result = (SquadListResultResponse) response;
     assertThat(result.getContent()).hasSize(1);
-    assertThat(result.getContent().get(0).getSquadCode()).isEqualTo("SQD-1");
-    assertThat(result.getContent().get(0).getMembers()).hasSize(1);
-    verify(squadQueryRepository, times(1)).findSquads(request);
+
+    verify(projectRepository).findById(projectCode);
+    verify(squadQueryRepository).existsByProjectCodeAndIsActive(projectCode);
+    verify(squadQueryRepository).findSquads(request);
   }
 
   @Test
-  @DisplayName("스쿼드 목록이 없으면 예외를 던진다")
-  void findSquads_throwsException_whenNoSquadsFound() {
+  @DisplayName("진행 중 프로젝트이고 확정 스쿼드가 있으면 상세 스쿼드를 반환한다")
+  void findSquadsOrConfirmed_shouldReturnConfirmed_whenOngoingProjectAndConfirmedExists() {
     // given
-    SquadListRequest request = new SquadListRequest("ha_1_1", 0, 10);
-    SquadListResultResponse emptyResult = new SquadListResultResponse(List.of(), 0, 0, 10);
-    when(squadQueryRepository.findSquads(request)).thenReturn(emptyResult);
+    String projectCode = "PJT-001";
+    SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    // when & then
-    assertThatThrownBy(() -> squadQueryService.findSquads(request))
-        .isInstanceOf(BusinessException.class)
-        .hasMessageContaining(ErrorCode.PROJECT_SQUAD_NOT_FOUND.getMessage());
+    Project project = Project.builder()
+            .projectCode(projectCode)
+            .domainName("example.com")
+            .description("예시 프로젝트입니다.")
+            .title("백엔드 시스템 개발")
+            .budget(5000000L)
+            .status(ProjectStatus.IN_PROGRESS)
+            .build();
 
-    verify(squadQueryRepository, times(1)).findSquads(request);
-  }
-
-  @Test
-  @DisplayName("스쿼드 상세정보를 정상적으로 반환한다")
-  void getSquadDetailByCode_success() {
-    // given
-    String squadCode = "SQD-001";
-
-    SquadDetailResponse.MemberInfo member =
-        new SquadDetailResponse.MemberInfo(true, "https://img.com/p1.jpg", "백엔드", "홍길동");
-
-    SquadDetailResponse.CostBreakdown cost =
-        new SquadDetailResponse.CostBreakdown("홍길동", "백엔드", "A", "₩2,000,000");
-
-    SquadDetailResponse.SummaryInfo summary =
-        new SquadDetailResponse.SummaryInfo(Map.of("백엔드", 1L), Map.of("A", 1L));
-
-    SquadDetailResponse.CommentResponse comment =
-        new SquadDetailResponse.CommentResponse(
-            1L, "EMP001", "홍길동", LocalDateTime.of(2025, 6, 24, 12, 0));
-
-    SquadDetailResponse mockResponse =
-        new SquadDetailResponse(
-            squadCode,
+    SquadDetailResponse mockDetail = new SquadDetailResponse(
+            "SQD-001",
             "백엔드팀",
             true,
             "3개월",
             "₩2,000,000",
-            summary,
-            List.of("Java", "Spring"),
-            List.of(member),
-            List.of(cost),
-            "직접 구성됨",
-            List.of(comment));
+            new SquadDetailResponse.SummaryInfo(Map.of(), Map.of()),
+            List.of("Java"),
+            List.of(),
+            List.of(),
+            null,
+            List.of()
+    );
 
-    when(squadQueryRepository.findSquadDetailByCode(squadCode)).thenReturn(mockResponse);
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(squadQueryRepository.existsByProjectCodeAndIsActive(projectCode)).thenReturn(true);
+    when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode)).thenReturn(mockDetail);
 
     // when
-    SquadDetailResponse result = squadQueryService.getSquadDetailByCode(squadCode);
+    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
 
     // then
-    assertThat(result.getSquadCode()).isEqualTo(squadCode);
-    assertThat(result.getMembers()).hasSize(1);
-    assertThat(result.getTechStacks()).contains("Java");
-    verify(squadQueryRepository, times(1)).findSquadDetailByCode(squadCode);
+    assertThat(response).isInstanceOf(SquadDetailResponse.class);
+    SquadDetailResponse result = (SquadDetailResponse) response;
+    assertThat(result.getSquadCode()).isEqualTo("SQD-001");
+
+    verify(projectRepository).findById(projectCode);
+    verify(squadQueryRepository).existsByProjectCodeAndIsActive(projectCode);
+    verify(squadQueryRepository).findConfirmedSquadByProjectCode(projectCode);
   }
 
   @Test
-  @DisplayName("스쿼드 코드가 존재하지 않으면 예외를 던진다")
-  void getSquadDetailByCode_notFound_throwsException() {
+  @DisplayName("종료된 프로젝트이면 무조건 확정 스쿼드를 반환한다")
+  void findSquadsOrConfirmed_shouldReturnConfirmed_whenProjectComplete() {
     // given
-    String squadCode = "INVALID";
+    String projectCode = "PJT-002";
+    SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
 
-    when(squadQueryRepository.findSquadDetailByCode(squadCode))
-        .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
+    Project project = Project.builder()
+            .projectCode(projectCode)
+            .domainName("example.com")
+            .description("예시 프로젝트입니다.")
+            .title("백엔드 시스템 개발")
+            .budget(5000000L)
+            .status(ProjectStatus.COMPLETE)
+            .build();
+    project.setStatus(ProjectStatus.COMPLETE);
+
+    SquadDetailResponse mockDetail = new SquadDetailResponse(
+            "SQD-002",
+            "백엔드팀",
+            true,
+            "3개월",
+            "₩2,000,000",
+            new SquadDetailResponse.SummaryInfo(Map.of(), Map.of()),
+            List.of("Spring"),
+            List.of(),
+            List.of(),
+            null,
+            List.of()
+    );
+
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode)).thenReturn(mockDetail);
+
+    // when
+    SquadResponse response = squadQueryService.findSquadsOrConfirmed(request);
+
+    // then
+    assertThat(response).isInstanceOf(SquadDetailResponse.class);
+    verify(projectRepository).findById(projectCode);
+    verify(squadQueryRepository).findConfirmedSquadByProjectCode(projectCode);
+  }
+
+  @Test
+  @DisplayName("종료된 프로젝트인데 확정 스쿼드가 없으면 예외 발생")
+  void findSquadsOrConfirmed_shouldThrow_whenProjectCompleteAndNoConfirmed() {
+    // given
+    String projectCode = "PJT-002";
+    SquadListRequest request = new SquadListRequest(projectCode, 0, 10);
+
+    Project project = Project.builder()
+            .projectCode(projectCode)
+            .domainName("example.com")
+            .description("예시 프로젝트입니다.")
+            .title("백엔드 시스템 개발")
+            .budget(5000000L)
+            .status(ProjectStatus.COMPLETE)
+            .build();
+
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(squadQueryRepository.findConfirmedSquadByProjectCode(projectCode))
+            .thenThrow(new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND));
 
     // when & then
-    BusinessException exception =
-        assertThrows(
-            BusinessException.class,
-            () -> {
-              squadQueryService.getSquadDetailByCode(squadCode);
-            });
+    assertThatThrownBy(() -> squadQueryService.findSquadsOrConfirmed(request))
+            .isInstanceOf(BusinessException.class)
+            .hasMessageContaining(ErrorCode.SQUAD_DETAIL_NOT_FOUND.getMessage());
 
-    assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
-    verify(squadQueryRepository, times(1)).findSquadDetailByCode(squadCode);
+    verify(projectRepository).findById(projectCode);
+    verify(squadQueryRepository).findConfirmedSquadByProjectCode(projectCode);
   }
 }
