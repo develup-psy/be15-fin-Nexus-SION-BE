@@ -47,4 +47,11 @@ public class SquadCommandController {
     squadCommandService.recommendSquad(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
+
+  @PatchMapping("/{squadCode}/confirm")
+  public ResponseEntity<ApiResponse<Void>> confirmSquad(@PathVariable String squadCode) {
+    squadCommandService.confirmSquad(squadCode);
+    return ResponseEntity.ok(ApiResponse.success(null));
+  }
 }
+
