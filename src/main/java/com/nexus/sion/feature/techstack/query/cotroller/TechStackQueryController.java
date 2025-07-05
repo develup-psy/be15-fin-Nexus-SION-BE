@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.techstack.query.cotroller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +13,6 @@ import com.nexus.sion.feature.techstack.query.dto.response.TechStackListResponse
 import com.nexus.sion.feature.techstack.query.service.TechStackQueryService;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,11 +29,8 @@ public class TechStackQueryController {
 
   @GetMapping("/autocomplete")
   public ResponseEntity<ApiResponse<TechStackListResponse>> autocomplete(
-          @RequestParam String keyword
-  ) {
+      @RequestParam String keyword) {
     List<String> results = techStackQueryService.autocomplete(keyword);
-    return ResponseEntity.ok(ApiResponse.success(
-            new TechStackListResponse(results))
-    );
+    return ResponseEntity.ok(ApiResponse.success(new TechStackListResponse(results)));
   }
 }

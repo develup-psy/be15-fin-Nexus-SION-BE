@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 
 public interface SquadCommandService {
   void registerManualSquad(SquadRegisterRequest request);

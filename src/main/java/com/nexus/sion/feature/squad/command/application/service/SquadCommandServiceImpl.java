@@ -2,16 +2,9 @@ package com.nexus.sion.feature.squad.command.application.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
-import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
-import com.nexus.sion.feature.squad.command.domain.service.*;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,17 +13,17 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
 import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
 import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
+import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
+import com.nexus.sion.feature.squad.command.domain.service.*;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
@@ -38,6 +31,7 @@ import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -74,7 +68,8 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     long count = squadCommandRepository.countByProjectCode(projectCode);
     String squadCode = SquadCodeGenerator.generate(projectCode, count);
 
-    Squad squad = Squad.builder()
+    Squad squad =
+        Squad.builder()
             .squadCode(squadCode)
             .projectCode(projectCode)
             .title(request.getTitle())
@@ -87,14 +82,17 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     squadCommandRepository.save(squad);
 
-    List<SquadEmployee> squadEmployees = developers.stream()
-            .map(dev -> SquadEmployee.builder()
-                    .squadCode(squadCode)
-                    .employeeIdentificationNumber(dev.getEmployeeId())
-                    .projectAndJobId(dev.getProjectAndJobId())
-                    .isLeader(dev.getIsLeader())
-                    .assignedDate(LocalDate.now())
-                    .build())
+    List<SquadEmployee> squadEmployees =
+        developers.stream()
+            .map(
+                dev ->
+                    SquadEmployee.builder()
+                        .squadCode(squadCode)
+                        .employeeIdentificationNumber(dev.getEmployeeId())
+                        .projectAndJobId(dev.getProjectAndJobId())
+                        .isLeader(dev.getIsLeader())
+                        .assignedDate(LocalDate.now())
+                        .build())
             .toList();
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
@@ -113,26 +111,32 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     List<Developer> developers = request.getDevelopers();
 
     Project project = squadValidationService.validateAndGetProject(projectCode);
-    squadValidationService.validateSquadTitleUniqueForUpdate(request.getTitle(), projectCode, request.getSquadCode());
+    squadValidationService.validateSquadTitleUniqueForUpdate(
+        request.getTitle(), projectCode, request.getSquadCode());
     squadValidationService.validateDevelopersExist(developers);
     squadValidationService.validateJobRequirements(projectCode, developers);
     squadValidationService.validateBudget(project, request.getEstimatedCost());
     squadValidationService.validateDuration(project, request.getEstimatedDuration());
 
-
-    squad.updateInfo(request.getTitle(), request.getDescription(),
-            request.getEstimatedCost(), request.getEstimatedDuration());
+    squad.updateInfo(
+        request.getTitle(),
+        request.getDescription(),
+        request.getEstimatedCost(),
+        request.getEstimatedDuration());
 
     squadEmployeeCommandRepository.deleteBySquadCode(squadCode);
 
-    List<SquadEmployee> newEmployees = developers.stream()
-            .map(dev -> SquadEmployee.builder()
-                    .squadCode(squadCode)
-                    .employeeIdentificationNumber(dev.getEmployeeId())
-                    .projectAndJobId(dev.getProjectAndJobId())
-                    .isLeader(dev.getIsLeader())
-                    .assignedDate(LocalDate.now())
-                    .build())
+    List<SquadEmployee> newEmployees =
+        developers.stream()
+            .map(
+                dev ->
+                    SquadEmployee.builder()
+                        .squadCode(squadCode)
+                        .employeeIdentificationNumber(dev.getEmployeeId())
+                        .projectAndJobId(dev.getProjectAndJobId())
+                        .isLeader(dev.getIsLeader())
+                        .assignedDate(LocalDate.now())
+                        .build())
             .toList();
 
     squadEmployeeCommandRepository.saveAll(newEmployees);

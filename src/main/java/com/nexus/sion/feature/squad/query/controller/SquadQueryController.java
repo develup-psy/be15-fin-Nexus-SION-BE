@@ -1,11 +1,11 @@
 package com.nexus.sion.feature.squad.query.controller;
 
-import com.nexus.sion.feature.squad.query.dto.response.AISquadDetailResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.AISquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.service.SquadQueryService;
@@ -34,7 +34,8 @@ public class SquadQueryController {
   }
 
   @GetMapping("/{squadCode}/ai")
-  public ResponseEntity<ApiResponse<AISquadDetailResponse>> getAISquadDetail(@PathVariable String squadCode) {
+  public ResponseEntity<ApiResponse<AISquadDetailResponse>> getAISquadDetail(
+      @PathVariable String squadCode) {
     AISquadDetailResponse response = squadQueryService.getAISquadDetailByCode(squadCode);
     return ResponseEntity.ok(ApiResponse.success(response));
   }

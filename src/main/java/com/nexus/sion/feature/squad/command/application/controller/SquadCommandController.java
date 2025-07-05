@@ -9,7 +9,6 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.application.service.SquadCommandService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,8 @@ public class SquadCommandController {
   }
 
   @PutMapping("/manual")
-  public ResponseEntity<ApiResponse<Void>> updateManualSquad(@RequestBody @Valid SquadUpdateRequest request) {
+  public ResponseEntity<ApiResponse<Void>> updateManualSquad(
+      @RequestBody @Valid SquadUpdateRequest request) {
     squadCommandService.updateManualSquad(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
@@ -44,7 +44,7 @@ public class SquadCommandController {
   public ResponseEntity<ApiResponse<Void>> recommendSquad(
       @RequestBody @Valid SquadRecommendationRequest request) {
 
-     squadCommandService.recommendSquad(request);
+    squadCommandService.recommendSquad(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

@@ -15,21 +15,15 @@ import lombok.*;
 @Builder
 public class SquadUpdateRequest {
 
-  @NotBlank
-  private String squadCode;  // 수정할 스쿼드 식별자
+  @NotBlank private String squadCode; // 수정할 스쿼드 식별자
 
-  @NotBlank
-  private String title;
+  @NotBlank private String title;
 
   private String description;
 
-  @NotNull
-  private BigDecimal estimatedCost;
+  @NotNull private BigDecimal estimatedCost;
 
-  @NotNull
-  private BigDecimal estimatedDuration;
+  @NotNull private BigDecimal estimatedDuration;
 
-  @NotEmpty
-  private List<Developer> developers;
-
+  @NotEmpty private List<Developer> developers;
 }
