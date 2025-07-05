@@ -9,6 +9,7 @@ import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class SquadCommentCommandService {
 
   private final SquadCommentRepository squadCommentRepository;
 
+  @Transactional
   public void registerComment(String squadCode, SquadCommentRegisterRequest request) {
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
