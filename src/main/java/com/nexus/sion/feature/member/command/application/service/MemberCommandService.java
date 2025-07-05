@@ -18,16 +18,13 @@ import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRe
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.domain.repository.DepartmentRepository;
-import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
-import com.nexus.sion.feature.member.command.domain.repository.InitialScoreRepository;
-import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
-import com.nexus.sion.feature.member.command.domain.repository.PositionRepository;
+import com.nexus.sion.feature.member.command.domain.repository.*;
 import com.nexus.sion.feature.member.util.Validator;
 
 import lombok.RequiredArgsConstructor;
@@ -45,6 +42,7 @@ public class MemberCommandService {
   private final PositionRepository positionRepository;
   private final DeveloperTechStackRepository developerTechStackRepository;
   private final InitialScoreRepository initialScoreRepository;
+  private final GradeRepository gradeRepository;
 
   @Transactional
   public void registerUser(MemberCreateRequest request) {
@@ -124,13 +122,25 @@ public class MemberCommandService {
         throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
       }
 
+      int techStackCount = request.techStackNames() != null ? request.techStackNames().size() : 0;
+
       int initialScore =
           initialScoreRepository
               .findByCareerYears(request.careerYears())
               .map(InitialScore::getScore)
               .orElse(0);
 
-      // TODO: 계산한 점수 토대로 등급 산정 로직 추가
+      int totalScore = initialScore * techStackCount;
+
+      List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
+
+      GradeCode gradeCode =
+          grades.stream()
+              .filter(g -> g.getScoreThreshold() > 0) // 유효한 기준이 있는 등급만 대상으로 함
+              .filter(g -> totalScore >= g.getScoreThreshold())
+              .map(Grade::getGradeCode)
+              .findFirst()
+              .orElse(GradeCode.B); // 아무 기준도 통과하지 못하면 기본값 B
 
       // 생년월일 기반 임의 password 발급
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
@@ -150,7 +160,7 @@ public class MemberCommandService {
               .departmentName(request.departmentName())
               .profileImageUrl(request.profileImageUrl())
               .salary(request.salary())
-              .gradeCode(GradeCode.D)
+              .gradeCode(gradeCode)
               .role(MemberRole.INSIDER)
               .status(MemberStatus.AVAILABLE)
               .password(passwordEncoder.encode(rawPassword))
@@ -159,8 +169,6 @@ public class MemberCommandService {
               .build();
 
       memberRepository.save(member);
-
-      // TODO: TechStack 검증 로직 추가
 
       // 기술스택 저장
       if (request.techStackNames() != null) {
