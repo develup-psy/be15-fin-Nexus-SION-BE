@@ -96,7 +96,7 @@ class SquadQueryServiceImplTest {
         new SquadDetailResponse(
             "SQD-001",
             "백엔드팀",
-            true,
+            "AI",
             "3개월",
             "₩2,000,000",
             new SquadDetailResponse.SummaryInfo(Map.of(), Map.of()),
@@ -145,7 +145,7 @@ class SquadQueryServiceImplTest {
         new SquadDetailResponse(
             "SQD-002",
             "백엔드팀",
-            true,
+            "MANUAL",
             "3개월",
             "₩2,000,000",
             new SquadDetailResponse.SummaryInfo(Map.of(), Map.of()),
