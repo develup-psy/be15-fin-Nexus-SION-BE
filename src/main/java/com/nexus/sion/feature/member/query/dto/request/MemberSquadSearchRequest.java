@@ -19,7 +19,7 @@ public class MemberSquadSearchRequest {
   private List<String> memberRoles; // INSIDER, OUTSIDER, ADMIN
 
   private String sortBy = "grade"; // 기본 정렬
-  private String sortDir = "asc";  // 오름차순
+  private String sortDir = "asc"; // 오름차순
   private int page = 0;
   private int size = 10;
 }

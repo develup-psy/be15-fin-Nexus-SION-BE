@@ -1,8 +1,9 @@
 package com.nexus.sion.feature.squad.command.domain.service;
 
+import org.springframework.stereotype.Service;
+
 import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SquadDomainService {
@@ -36,7 +37,9 @@ public class SquadDomainService {
     sb.append(getRationale(criteria));
 
     // 4. 수치 기반 보조 설명 (정량 근거)
-    sb.append(String.format(" (기술 점수 평균: %d점, 도메인 적합률: %.0f%%, 예상 기간: %d개월, 총예산: %,d만원)",
+    sb.append(
+        String.format(
+            " (기술 점수 평균: %d점, 도메인 적합률: %.0f%%, 예상 기간: %d개월, 총예산: %,d만원)",
             tech, domain * 100, estimatedDuration, totalCost));
 
     return sb.toString();

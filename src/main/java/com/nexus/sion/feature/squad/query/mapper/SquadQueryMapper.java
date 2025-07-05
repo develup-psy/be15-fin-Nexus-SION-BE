@@ -12,7 +12,6 @@ import com.nexus.sion.feature.squad.query.dto.response.JobInfo;
 @Mapper
 public interface SquadQueryMapper {
 
-
   List<DeveloperSummary> findDevelopersByStacksPerJob(
       @Param("projectAndJobId") Long projectAndJobId, @Param("projectId") String projectId);
 

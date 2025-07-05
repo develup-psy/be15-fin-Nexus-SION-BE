@@ -14,5 +14,4 @@ public record MemberListQuery(
     String sortDir,
     int page,
     int size,
-    List<String> memberRoles
-) {}
+    List<String> memberRoles) {}

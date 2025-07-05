@@ -23,5 +23,4 @@ public class TechStackQueryServiceImpl implements TechStackQueryService {
   public List<String> autocomplete(String keyword) {
     return repository.findAutoCompleteTechStacks(keyword);
   }
-
 }

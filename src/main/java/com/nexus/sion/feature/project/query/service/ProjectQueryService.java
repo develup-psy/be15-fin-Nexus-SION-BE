@@ -11,5 +11,5 @@ public interface ProjectQueryService {
 
   ProjectDetailResponse getProjectDetail(String projectCode);
 
-    ProjectForSquadResponse getProjectInfoForSquad(String projectCode);
+  ProjectForSquadResponse getProjectInfoForSquad(String projectCode);
 }

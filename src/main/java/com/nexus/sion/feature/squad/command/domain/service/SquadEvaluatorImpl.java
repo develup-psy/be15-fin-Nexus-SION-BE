@@ -6,17 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.stereotype.Service;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.aggregate.ProjectFpSummary;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectFpSummaryRepository;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
 import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +27,12 @@ public class SquadEvaluatorImpl {
   private final ProjectRepository projectRepository;
 
   public List<EvaluatedSquad> evaluateAll(
-          String projectId,
-          List<Map<String, List<CandidateSummary>>> squadCombinations
-  ) {
+      String projectId, List<Map<String, List<CandidateSummary>>> squadCombinations) {
 
-    //프로젝트 정보 조회를 위해
-    Project project = projectRepository.findByProjectCode(projectId)
+    // 프로젝트 정보 조회를 위해
+    Project project =
+        projectRepository
+            .findByProjectCode(projectId)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     Long maxBudget = project.getBudget(); // null 가능
@@ -41,28 +42,27 @@ public class SquadEvaluatorImpl {
       maxDuration = (int) Math.ceil(days / 30.0);
     }
 
-    //총 FP 조회
-    int totalFP = projectFpSummaryRepository
+    // 총 FP 조회
+    int totalFP =
+        projectFpSummaryRepository
             .findByProjectCode(projectId)
             .map(ProjectFpSummary::getTotalFp)
             .orElseThrow(() -> new BusinessException(ErrorCode.FP_NOT_FOUND));
-
 
     double effortRate = getEffortRatePerFP(totalFP);
     int totalManMonth = (int) Math.ceil(totalFP * effortRate);
     List<EvaluatedSquad> results = new ArrayList<>();
 
     for (Map<String, List<CandidateSummary>> squadMap : squadCombinations) {
-      List<CandidateSummary> members = squadMap.values().stream()
-              .flatMap(List::stream)
-              .toList();
+      List<CandidateSummary> members = squadMap.values().stream().flatMap(List::stream).toList();
 
       if (members.isEmpty()) continue;
 
       int techSum = members.stream().mapToInt(CandidateSummary::getTechStackScore).sum();
       double domainSum = members.stream().mapToDouble(CandidateSummary::getDomainRelevance).sum();
       int monthlyCost = members.stream().mapToInt(CandidateSummary::getCostPerMonth).sum();
-      double productivitySum = members.stream().mapToDouble(CandidateSummary::getProductivityFactor).sum();
+      double productivitySum =
+          members.stream().mapToDouble(CandidateSummary::getProductivityFactor).sum();
 
       if (productivitySum == 0) continue;
 
@@ -70,25 +70,24 @@ public class SquadEvaluatorImpl {
       int totalCost = (int) Math.ceil(monthlyCost * estimatedDuration);
 
       // 예산/기간 조건 필터링
-//      boolean overBudget = maxBudget != null && totalCost > maxBudget;
-//      boolean overDuration = maxDuration != null && estimatedDuration > maxDuration;
-//
-//      if (overBudget || overDuration) continue;
+      //      boolean overBudget = maxBudget != null && totalCost > maxBudget;
+      //      boolean overDuration = maxDuration != null && estimatedDuration > maxDuration;
+      //
+      //      if (overBudget || overDuration) continue;
       System.out.println("maxBudget = " + maxBudget);
       System.out.println("maxDuration = " + maxDuration);
-      
-
 
       String reason = "";
-      if(Objects.nonNull(maxBudget) && Objects.nonNull(maxDuration)){
+      if (Objects.nonNull(maxBudget) && Objects.nonNull(maxDuration)) {
         reason = "예산과 기간 조건을 만족하는 최적 조합입니다.";
-      }else if(Objects.nonNull(maxBudget)){
+      } else if (Objects.nonNull(maxBudget)) {
         reason = "예산을 만족하는 최적 조합입니다.";
-      }else if(Objects.nonNull(maxDuration)){
+      } else if (Objects.nonNull(maxDuration)) {
         reason = "기간을 만족하는 최적 조합입니다. ";
       }
 
-      results.add(new EvaluatedSquad(
+      results.add(
+          new EvaluatedSquad(
               squadMap,
               techSum / members.size(),
               domainSum / members.size(),
@@ -96,9 +95,7 @@ public class SquadEvaluatorImpl {
               totalManMonth,
               (int) estimatedDuration,
               totalCost,
-              reason
-      ));
-
+              reason));
     }
 
     return results;

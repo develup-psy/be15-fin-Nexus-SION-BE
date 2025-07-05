@@ -30,14 +30,13 @@ public class TechStackQueryRepository {
 
     // CASE 구문으로 시작하는 경우 우선순위 부여
     Field<Integer> orderPriority =
-            DSL.when(nameField.likeIgnoreCase(keyword + "%"), 0)
-                    .otherwise(1);
+        DSL.when(nameField.likeIgnoreCase(keyword + "%"), 0).otherwise(1);
 
     return dsl.select(nameField)
-            .from(TECH_STACK)
-            .where(nameField.containsIgnoreCase(keyword))
-            .orderBy(orderPriority.asc(), nameField.asc())
-            .limit(5)
-            .fetchInto(String.class);
+        .from(TECH_STACK)
+        .where(nameField.containsIgnoreCase(keyword))
+        .orderBy(orderPriority.asc(), nameField.asc())
+        .limit(5)
+        .fetchInto(String.class);
   }
 }

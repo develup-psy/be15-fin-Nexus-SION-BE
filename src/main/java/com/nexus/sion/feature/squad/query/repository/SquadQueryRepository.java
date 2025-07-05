@@ -14,20 +14,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.example.jooq.generated.tables.JobAndTechStack;
-import com.example.jooq.generated.tables.ProjectAndJob;
-import com.example.jooq.generated.tables.SquadEmployee;
-import com.nexus.sion.feature.squad.query.dto.response.AISquadDetailResponse;
 import org.jooq.*;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.SquadOriginType;
+import com.example.jooq.generated.tables.ProjectAndJob;
 import com.example.jooq.generated.tables.records.SquadRecord;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.squad.query.dto.request.SquadListRequest;
+import com.nexus.sion.feature.squad.query.dto.response.AISquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadDetailResponse;
 import com.nexus.sion.feature.squad.query.dto.response.SquadListResponse;
 
@@ -103,7 +101,7 @@ public class SquadQueryRepository {
                   return new SquadListResponse(
                       code,
                       name,
-                      isAiRecommended,
+                      r.get(SQUAD.ORIGIN_TYPE).name(),
                       memberMap.getOrDefault(code, List.of()),
                       period,
                       cost);
@@ -251,7 +249,7 @@ public class SquadQueryRepository {
     return new SquadDetailResponse(
         squadRecord.get(SQUAD.SQUAD_CODE),
         squadRecord.get(SQUAD.TITLE),
-        aiRecommended,
+        squadRecord.get(SQUAD.ORIGIN_TYPE).name(),
         estimatedPeriod,
         estimatedCost,
         summary,
@@ -284,92 +282,105 @@ public class SquadQueryRepository {
     return findSquadDetailByCode(squadCode);
   }
 
-    public AISquadDetailResponse fetchSquadDetail(String squadCode) {
-        var squad = dsl.selectFrom(SQUAD)
-                .where(SQUAD.SQUAD_CODE.eq(squadCode))
-                .fetchOne();
+  public AISquadDetailResponse fetchSquadDetail(String squadCode) {
+    var squad = dsl.selectFrom(SQUAD).where(SQUAD.SQUAD_CODE.eq(squadCode)).fetchOne();
 
-        if (squad == null){
-            throw new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
-        }
+    if (squad == null) {
+      throw new BusinessException(ErrorCode.SQUAD_DETAIL_NOT_FOUND);
+    }
 
-        var employeeRecords = dsl
-                .select(
-                        MEMBER.EMPLOYEE_NAME,
-                        MEMBER.GRADE_CODE,
-                        GRADE.MONTHLY_UNIT_PRICE,
-                        PROJECT_AND_JOB.JOB_NAME
-                )
-                .from(SQUAD_EMPLOYEE)
-                .join(MEMBER).on(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                .join(GRADE).on(MEMBER.GRADE_CODE.cast(VARCHAR).eq(GRADE.GRADE_CODE.cast(VARCHAR)))
-                .join(PROJECT_AND_JOB).on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-                .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
-                .fetch();
+    var employeeRecords =
+        dsl.select(
+                MEMBER.EMPLOYEE_NAME,
+                MEMBER.GRADE_CODE,
+                GRADE.MONTHLY_UNIT_PRICE,
+                PROJECT_AND_JOB.JOB_NAME)
+            .from(SQUAD_EMPLOYEE)
+            .join(MEMBER)
+            .on(
+                SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .join(GRADE)
+            .on(MEMBER.GRADE_CODE.cast(VARCHAR).eq(GRADE.GRADE_CODE.cast(VARCHAR)))
+            .join(PROJECT_AND_JOB)
+            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
+            .fetch();
 
-        var commentRecords = dsl
-                .select(
-                        SQUAD_COMMENT.CONTENT,
-                        SQUAD_COMMENT.CREATED_AT,
-                        MEMBER.EMPLOYEE_NAME
-                )
-                .from(SQUAD_COMMENT)
-                .join(MEMBER).on(SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                .where(SQUAD_COMMENT.SQUAD_CODE.eq(squadCode))
-                .orderBy(SQUAD_COMMENT.CREATED_AT.asc())
-                .fetch();
+    var commentRecords =
+        dsl.select(SQUAD_COMMENT.CONTENT, SQUAD_COMMENT.CREATED_AT, MEMBER.EMPLOYEE_NAME)
+            .from(SQUAD_COMMENT)
+            .join(MEMBER)
+            .on(
+                SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .where(SQUAD_COMMENT.SQUAD_CODE.eq(squadCode))
+            .orderBy(SQUAD_COMMENT.CREATED_AT.asc())
+            .fetch();
 
-        var techStacks =  dsl.selectDistinct(
-                JOB_AND_TECH_STACK.TECH_STACK_NAME)
-                .from(SQUAD_EMPLOYEE)
-                .join(ProjectAndJob.PROJECT_AND_JOB).on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-                .join(JOB_AND_TECH_STACK).on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-                .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
-                .fetch()
-                .getValues(JOB_AND_TECH_STACK.TECH_STACK_NAME);
+    var techStacks =
+        dsl.selectDistinct(JOB_AND_TECH_STACK.TECH_STACK_NAME)
+            .from(SQUAD_EMPLOYEE)
+            .join(ProjectAndJob.PROJECT_AND_JOB)
+            .on(
+                SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(
+                    ProjectAndJob.PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .join(JOB_AND_TECH_STACK)
+            .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD_EMPLOYEE.SQUAD_CODE.eq(squadCode))
+            .fetch()
+            .getValues(JOB_AND_TECH_STACK.TECH_STACK_NAME);
 
-        List<AISquadDetailResponse.MemberDetail> members = employeeRecords.stream()
-                .map(r -> AISquadDetailResponse.MemberDetail.builder()
+    List<AISquadDetailResponse.MemberDetail> members =
+        employeeRecords.stream()
+            .map(
+                r ->
+                    AISquadDetailResponse.MemberDetail.builder()
                         .name(r.get(MEMBER.EMPLOYEE_NAME))
                         .job(r.get(PROJECT_AND_JOB.JOB_NAME))
                         .grade(r.get(MEMBER.GRADE_CODE).name())
                         .monthlyUnitPrice(r.get(GRADE.MONTHLY_UNIT_PRICE))
-                        .build()
-                ).toList();
+                        .build())
+            .toList();
 
-        Map<String, Integer> memberCountByJob = employeeRecords.stream()
-                .collect(Collectors.groupingBy(
-                        r -> r.get(PROJECT_AND_JOB.JOB_NAME),
-                        Collectors.reducing(0, e -> 1, Integer::sum)
-                ));
+    Map<String, Integer> memberCountByJob =
+        employeeRecords.stream()
+            .collect(
+                Collectors.groupingBy(
+                    r -> r.get(PROJECT_AND_JOB.JOB_NAME),
+                    Collectors.reducing(0, e -> 1, Integer::sum)));
 
-        Map<String, Integer> gradeCount = employeeRecords.stream()
-                .collect(Collectors.groupingBy(
-                        r -> r.get(MEMBER.GRADE_CODE).name(),
-                        Collectors.reducing(0, e -> 1, Integer::sum)
-                ));
+    Map<String, Integer> gradeCount =
+        employeeRecords.stream()
+            .collect(
+                Collectors.groupingBy(
+                    r -> r.get(MEMBER.GRADE_CODE).name(),
+                    Collectors.reducing(0, e -> 1, Integer::sum)));
 
-        List<AISquadDetailResponse.CommentDetail> comments = commentRecords.stream()
-                .map(r -> AISquadDetailResponse.CommentDetail.builder()
+    List<AISquadDetailResponse.CommentDetail> comments =
+        commentRecords.stream()
+            .map(
+                r ->
+                    AISquadDetailResponse.CommentDetail.builder()
                         .author(r.get(MEMBER.EMPLOYEE_NAME))
                         .content(r.get(SQUAD_COMMENT.CONTENT))
                         .date(r.get(SQUAD_COMMENT.CREATED_AT).toLocalDate())
-                        .build()
-                ).toList();
+                        .build())
+            .toList();
 
-        return AISquadDetailResponse.builder()
-                .squadCode(squad.get(SQUAD.SQUAD_CODE))
-                .title(squad.get(SQUAD.TITLE))
-                .recommendationCriteria(squad.get(SQUAD.DESCRIPTION))
-                .recommendationReason(squad.get(SQUAD.RECOMMENDATION_REASON))
-                .totalMemberCount(members.size())
-                .memberCountByJob(memberCountByJob)
-                .gradeCount(gradeCount)
-                .techStacks(techStacks)
-                .estimatedDuration(squad.get(SQUAD.ESTIMATED_DURATION).intValue())
-                .totalCost(squad.get(SQUAD.ESTIMATED_COST).intValue())
-                .members(members)
-                .comments(comments)
-                .build();
-    }
+    return AISquadDetailResponse.builder()
+        .squadCode(squad.get(SQUAD.SQUAD_CODE))
+        .title(squad.get(SQUAD.TITLE))
+        .recommendationCriteria(squad.get(SQUAD.DESCRIPTION))
+        .recommendationReason(squad.get(SQUAD.RECOMMENDATION_REASON))
+        .totalMemberCount(members.size())
+        .memberCountByJob(memberCountByJob)
+        .gradeCount(gradeCount)
+        .techStacks(techStacks)
+        .estimatedDuration(squad.get(SQUAD.ESTIMATED_DURATION).intValue())
+        .totalCost(squad.get(SQUAD.ESTIMATED_COST).intValue())
+        .members(members)
+        .comments(comments)
+        .build();
+  }
 }
