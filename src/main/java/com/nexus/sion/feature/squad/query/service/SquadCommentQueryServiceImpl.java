@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SquadCommentQueryServiceImpl implements SquadCommentQueryService {
 
-    private final SquadCommentQueryRepository squadCommentQueryRepository;
+  private final SquadCommentQueryRepository squadCommentQueryRepository;
 
-    @Override
-    public List<SquadCommentResponse> findCommentsBySquadCode(String squadCode) {
-        return squadCommentQueryRepository.findBySquadCode(squadCode);
-    }
+  @Override
+  public List<SquadCommentResponse> findCommentsBySquadCode(String squadCode) {
+    return squadCommentQueryRepository.findBySquadCode(squadCode);
+  }
 }

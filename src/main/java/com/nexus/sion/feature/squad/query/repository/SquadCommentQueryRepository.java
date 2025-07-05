@@ -16,22 +16,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SquadCommentQueryRepository {
 
-    private final DSLContext dsl;
+  private final DSLContext dsl;
 
-    public List<SquadCommentResponse> findBySquadCode(String squadCode) {
-        return dsl
-                .select(
-                        SQUAD_COMMENT.COMMENT_ID,
-                        MEMBER.EMPLOYEE_NAME,
-                        MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-                        SQUAD_COMMENT.CONTENT,
-                        SQUAD_COMMENT.CREATED_AT
-                )
-                .from(SQUAD_COMMENT)
-                .join(MEMBER)
-                .on(SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-                .where(SQUAD_COMMENT.SQUAD_CODE.eq(squadCode))
-                .orderBy(SQUAD_COMMENT.CREATED_AT.asc())
-                .fetchInto(SquadCommentResponse.class);
-    }
+  public List<SquadCommentResponse> findBySquadCode(String squadCode) {
+    return dsl.select(
+            SQUAD_COMMENT.COMMENT_ID,
+            MEMBER.EMPLOYEE_NAME,
+            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+            SQUAD_COMMENT.CONTENT,
+            SQUAD_COMMENT.CREATED_AT)
+        .from(SQUAD_COMMENT)
+        .join(MEMBER)
+        .on(SQUAD_COMMENT.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+        .where(SQUAD_COMMENT.SQUAD_CODE.eq(squadCode))
+        .orderBy(SQUAD_COMMENT.CREATED_AT.asc())
+        .fetchInto(SquadCommentResponse.class);
+  }
 }

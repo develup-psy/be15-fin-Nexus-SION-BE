@@ -54,4 +54,3 @@ public class SquadCommandController {
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
-

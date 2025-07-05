@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -9,7 +10,6 @@ import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
