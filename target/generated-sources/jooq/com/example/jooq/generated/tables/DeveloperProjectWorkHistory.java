@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function8;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -54,7 +55,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
       DEVELOPER_PROJECT_WORK_HISTORY_ID =
           createField(
               DSL.name("developer_project_work_history_id"),
-              SQLDataType.BIGINT.nullable(false),
+              SQLDataType.BIGINT.nullable(false).identity(true),
               this,
               "");
 
@@ -150,6 +151,11 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
+  }
+
+  @Override
+  public Identity<DeveloperProjectWorkHistoryRecord, Long> getIdentity() {
+    return (Identity<DeveloperProjectWorkHistoryRecord, Long>) super.getIdentity();
   }
 
   @Override

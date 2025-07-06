@@ -18,18 +18,18 @@ import com.example.jooq.generated.tables.Freelancer;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
     implements Record9<
-        Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate> {
+        String, String, String, String, Integer, String, LocalDateTime, String, LocalDate> {
 
   private static final long serialVersionUID = 1L;
 
   /** Setter for <code>SION.freelancer.freelancer_id</code>. */
-  public void setFreelancerId(Long value) {
+  public void setFreelancerId(String value) {
     set(0, value);
   }
 
   /** Getter for <code>SION.freelancer.freelancer_id</code>. */
-  public Long getFreelancerId() {
-    return (Long) get(0);
+  public String getFreelancerId() {
+    return (String) get(0);
   }
 
   /** Setter for <code>SION.freelancer.name</code>. */
@@ -117,7 +117,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   // -------------------------------------------------------------------------
 
   @Override
-  public Record1<Long> key() {
+  public Record1<String> key() {
     return (Record1) super.key();
   }
 
@@ -126,19 +126,19 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   // -------------------------------------------------------------------------
 
   @Override
-  public Row9<Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
+  public Row9<String, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
       fieldsRow() {
     return (Row9) super.fieldsRow();
   }
 
   @Override
-  public Row9<Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
+  public Row9<String, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
       valuesRow() {
     return (Row9) super.valuesRow();
   }
 
   @Override
-  public Field<Long> field1() {
+  public Field<String> field1() {
     return Freelancer.FREELANCER.FREELANCER_ID;
   }
 
@@ -183,7 +183,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public Long component1() {
+  public String component1() {
     return getFreelancerId();
   }
 
@@ -228,7 +228,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public Long value1() {
+  public String value1() {
     return getFreelancerId();
   }
 
@@ -273,7 +273,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public FreelancerRecord value1(Long value) {
+  public FreelancerRecord value1(String value) {
     setFreelancerId(value);
     return this;
   }
@@ -328,7 +328,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
 
   @Override
   public FreelancerRecord values(
-      Long value1,
+      String value1,
       String value2,
       String value3,
       String value4,
@@ -360,7 +360,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
 
   /** Create a detached, initialised FreelancerRecord */
   public FreelancerRecord(
-      Long freelancerId,
+      String freelancerId,
       String name,
       String phoneNumber,
       String email,
