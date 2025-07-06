@@ -4,17 +4,16 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function8;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -46,11 +45,20 @@ public class Notification extends TableImpl<NotificationRecord> {
 
   /** The column <code>SION.notification.notification_id</code>. */
   public final TableField<NotificationRecord, Long> NOTIFICATION_ID =
-      createField(DSL.name("notification_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("notification_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
   /** The column <code>SION.notification.notification_type</code>. */
   public final TableField<NotificationRecord, String> NOTIFICATION_TYPE =
       createField(DSL.name("notification_type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+  /** The column <code>SION.notification.linked_content_id</code>. */
+  public final TableField<NotificationRecord, String> LINKED_CONTENT_ID =
+      createField(
+          DSL.name("linked_content_id"),
+          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
   /** The column <code>SION.notification.message</code>. */
   public final TableField<NotificationRecord, String> MESSAGE =
@@ -70,6 +78,16 @@ public class Notification extends TableImpl<NotificationRecord> {
   public final TableField<NotificationRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
+  /** The column <code>SION.notification.updated_at</code>. */
+  public final TableField<NotificationRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
           SQLDataType.LOCALDATETIME(0)
               .nullable(false)
               .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
@@ -113,22 +131,13 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   @Override
-  public UniqueKey<NotificationRecord> getPrimaryKey() {
-    return Keys.KEY_NOTIFICATION_PRIMARY;
+  public Identity<NotificationRecord, Long> getIdentity() {
+    return (Identity<NotificationRecord, Long>) super.getIdentity();
   }
 
   @Override
-  public List<ForeignKey<NotificationRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER);
-  }
-
-  private transient Member _member;
-
-  /** Get the implicit join path to the <code>SION.member</code> table. */
-  public Member member() {
-    if (_member == null) _member = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
-
-    return _member;
+  public UniqueKey<NotificationRecord> getPrimaryKey() {
+    return Keys.KEY_NOTIFICATION_PRIMARY;
   }
 
   @Override
@@ -165,21 +174,24 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row6 type methods
+  // Row8 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row6<Long, String, String, Byte, LocalDateTime, String> fieldsRow() {
-    return (Row6) super.fieldsRow();
+  public Row8<Long, String, String, String, Byte, LocalDateTime, LocalDateTime, String>
+      fieldsRow() {
+    return (Row8) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function6<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
+              ? super String,
               ? super Byte,
+              ? super LocalDateTime,
               ? super LocalDateTime,
               ? super String,
               ? extends U>
@@ -190,11 +202,13 @@ public class Notification extends TableImpl<NotificationRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function6<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
+              ? super String,
               ? super Byte,
+              ? super LocalDateTime,
               ? super LocalDateTime,
               ? super String,
               ? extends U>

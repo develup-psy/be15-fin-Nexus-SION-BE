@@ -425,14 +425,6 @@ public class Keys {
           Keys.KEY_MEMBER_PRIMARY,
           new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
           true);
-  public static final ForeignKey<NotificationRecord, MemberRecord> FK_NOTIFICATION_MEMBER =
-      Internal.createForeignKey(
-          Notification.NOTIFICATION,
-          DSL.name("FK_NOTIFICATION_MEMBER"),
-          new TableField[] {Notification.NOTIFICATION.RECEIVER_ID},
-          Keys.KEY_MEMBER_PRIMARY,
-          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-          true);
   public static final ForeignKey<ProjectRecord, ClientCompanyRecord>
       FK_CLIENT_COMPANY_TO_PROJECT_1 =
           Internal.createForeignKey(
