@@ -6,5 +6,6 @@ import com.nexus.sion.feature.member.query.dto.response.FreelancerListResponse;
 
 public interface FreelancerQueryService {
   PageResponse<FreelancerListResponse> getFreelancers(int page, int size);
+
   FreelancerDetailResponse getFreelancerDetail(String freelancerId);
 }

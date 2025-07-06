@@ -1,9 +1,9 @@
 package com.nexus.sion.feature.member.query.service;
 
-import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.FreelancerListResponse;
 import com.nexus.sion.feature.member.query.repository.FreelancerQueryRepository;
 
