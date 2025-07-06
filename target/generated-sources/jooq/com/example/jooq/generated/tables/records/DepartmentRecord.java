@@ -20,32 +20,32 @@ public class DepartmentRecord extends UpdatableRecordImpl<DepartmentRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.department.department_name</code>. */
+  /** Setter for <code>sion.department.department_name</code>. */
   public void setDepartmentName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.department.department_name</code>. */
+  /** Getter for <code>sion.department.department_name</code>. */
   public String getDepartmentName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.department.create_at</code>. */
+  /** Setter for <code>sion.department.create_at</code>. */
   public void setCreateAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.department.create_at</code>. */
+  /** Getter for <code>sion.department.create_at</code>. */
   public LocalDateTime getCreateAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>SION.department.updated_at</code>. */
+  /** Setter for <code>sion.department.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.department.updated_at</code>. */
+  /** Getter for <code>sion.department.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }

@@ -72,7 +72,7 @@ import com.example.jooq.generated.tables.records.TrainingRecommendationRecord;
 import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
 import com.example.jooq.generated.tables.records.UserTrainingHistoryRecord;
 
-/** A class modelling foreign key relationships and constraints of tables in SION. */
+/** A class modelling foreign key relationships and constraints of tables in sion. */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Keys {
 

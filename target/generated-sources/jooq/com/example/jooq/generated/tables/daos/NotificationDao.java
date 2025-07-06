@@ -79,6 +79,21 @@ public class NotificationDao
   }
 
   /**
+   * Fetch records that have <code>linked_content_id BETWEEN lowerInclusive
+   * AND upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchRangeOfLinkedContentId(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Notification.NOTIFICATION.LINKED_CONTENT_ID, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>linked_content_id IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchByLinkedContentId(
+      String... values) {
+    return fetch(Notification.NOTIFICATION.LINKED_CONTENT_ID, values);
+  }
+
+  /**
    * Fetch records that have <code>message BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */

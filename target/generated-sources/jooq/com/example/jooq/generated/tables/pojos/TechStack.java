@@ -30,32 +30,32 @@ public class TechStack implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return this.techStackName;
   }
 
-  /** Setter for <code>SION.tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String techStackName) {
     this.techStackName = techStackName;
   }
 
-  /** Getter for <code>SION.tech_stack.created_at</code>. */
+  /** Getter for <code>sion.tech_stack.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.tech_stack.created_at</code>. */
+  /** Setter for <code>sion.tech_stack.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.tech_stack.updated_at</code>. */
+  /** Getter for <code>sion.tech_stack.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.tech_stack.updated_at</code>. */
+  /** Setter for <code>sion.tech_stack.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

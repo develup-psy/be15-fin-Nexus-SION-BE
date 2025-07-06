@@ -14,6 +14,7 @@ public class Notification implements Serializable {
 
   private Long notificationId;
   private String notificationType;
+  private String linkedContentId;
   private String message;
   private Byte isRead;
   private LocalDateTime createdAt;
@@ -24,6 +25,7 @@ public class Notification implements Serializable {
   public Notification(Notification value) {
     this.notificationId = value.notificationId;
     this.notificationType = value.notificationType;
+    this.linkedContentId = value.linkedContentId;
     this.message = value.message;
     this.isRead = value.isRead;
     this.createdAt = value.createdAt;
@@ -33,74 +35,86 @@ public class Notification implements Serializable {
   public Notification(
       Long notificationId,
       String notificationType,
+      String linkedContentId,
       String message,
       Byte isRead,
       LocalDateTime createdAt,
       String receiverId) {
     this.notificationId = notificationId;
     this.notificationType = notificationType;
+    this.linkedContentId = linkedContentId;
     this.message = message;
     this.isRead = isRead;
     this.createdAt = createdAt;
     this.receiverId = receiverId;
   }
 
-  /** Getter for <code>SION.notification.notification_id</code>. */
+  /** Getter for <code>sion.notification.notification_id</code>. */
   public Long getNotificationId() {
     return this.notificationId;
   }
 
-  /** Setter for <code>SION.notification.notification_id</code>. */
+  /** Setter for <code>sion.notification.notification_id</code>. */
   public void setNotificationId(Long notificationId) {
     this.notificationId = notificationId;
   }
 
-  /** Getter for <code>SION.notification.notification_type</code>. */
+  /** Getter for <code>sion.notification.notification_type</code>. */
   public String getNotificationType() {
     return this.notificationType;
   }
 
-  /** Setter for <code>SION.notification.notification_type</code>. */
+  /** Setter for <code>sion.notification.notification_type</code>. */
   public void setNotificationType(String notificationType) {
     this.notificationType = notificationType;
   }
 
-  /** Getter for <code>SION.notification.message</code>. */
+  /** Getter for <code>sion.notification.linked_content_id</code>. */
+  public String getLinkedContentId() {
+    return this.linkedContentId;
+  }
+
+  /** Setter for <code>sion.notification.linked_content_id</code>. */
+  public void setLinkedContentId(String linkedContentId) {
+    this.linkedContentId = linkedContentId;
+  }
+
+  /** Getter for <code>sion.notification.message</code>. */
   public String getMessage() {
     return this.message;
   }
 
-  /** Setter for <code>SION.notification.message</code>. */
+  /** Setter for <code>sion.notification.message</code>. */
   public void setMessage(String message) {
     this.message = message;
   }
 
-  /** Getter for <code>SION.notification.is_read</code>. */
+  /** Getter for <code>sion.notification.is_read</code>. */
   public Byte getIsRead() {
     return this.isRead;
   }
 
-  /** Setter for <code>SION.notification.is_read</code>. */
+  /** Setter for <code>sion.notification.is_read</code>. */
   public void setIsRead(Byte isRead) {
     this.isRead = isRead;
   }
 
-  /** Getter for <code>SION.notification.created_at</code>. */
+  /** Getter for <code>sion.notification.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.notification.created_at</code>. */
+  /** Setter for <code>sion.notification.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.notification.receiver_id</code>. */
+  /** Getter for <code>sion.notification.receiver_id</code>. */
   public String getReceiverId() {
     return this.receiverId;
   }
 
-  /** Setter for <code>SION.notification.receiver_id</code>. */
+  /** Setter for <code>sion.notification.receiver_id</code>. */
   public void setReceiverId(String receiverId) {
     this.receiverId = receiverId;
   }
@@ -117,6 +131,9 @@ public class Notification implements Serializable {
     if (this.notificationType == null) {
       if (other.notificationType != null) return false;
     } else if (!this.notificationType.equals(other.notificationType)) return false;
+    if (this.linkedContentId == null) {
+      if (other.linkedContentId != null) return false;
+    } else if (!this.linkedContentId.equals(other.linkedContentId)) return false;
     if (this.message == null) {
       if (other.message != null) return false;
     } else if (!this.message.equals(other.message)) return false;
@@ -139,6 +156,8 @@ public class Notification implements Serializable {
     result = prime * result + ((this.notificationId == null) ? 0 : this.notificationId.hashCode());
     result =
         prime * result + ((this.notificationType == null) ? 0 : this.notificationType.hashCode());
+    result =
+        prime * result + ((this.linkedContentId == null) ? 0 : this.linkedContentId.hashCode());
     result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
     result = prime * result + ((this.isRead == null) ? 0 : this.isRead.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -152,6 +171,7 @@ public class Notification implements Serializable {
 
     sb.append(notificationId);
     sb.append(", ").append(notificationType);
+    sb.append(", ").append(linkedContentId);
     sb.append(", ").append(message);
     sb.append(", ").append(isRead);
     sb.append(", ").append(createdAt);

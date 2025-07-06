@@ -19,7 +19,7 @@ public class DefaultCatalog extends CatalogImpl {
   /** The reference instance of <code>DEFAULT_CATALOG</code> */
   public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
-  /** The schema <code>SION</code>. */
+  /** The schema <code>sion</code>. */
   public final Sion SION = Sion.SION;
 
   /** No further instances allowed */

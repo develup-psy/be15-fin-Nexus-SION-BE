@@ -45,62 +45,62 @@ public class DeveloperTechStack implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.developer_tech_stack_id</code>. */
+  /** Getter for <code>sion.developer_tech_stack.developer_tech_stack_id</code>. */
   public Long getDeveloperTechStackId() {
     return this.developerTechStackId;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.developer_tech_stack_id</code>. */
+  /** Setter for <code>sion.developer_tech_stack.developer_tech_stack_id</code>. */
   public void setDeveloperTechStackId(Long developerTechStackId) {
     this.developerTechStackId = developerTechStackId;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.tech_stack_total_scores</code>. */
+  /** Getter for <code>sion.developer_tech_stack.tech_stack_total_scores</code>. */
   public Integer getTechStackTotalScores() {
     return this.techStackTotalScores;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.tech_stack_total_scores</code>. */
+  /** Setter for <code>sion.developer_tech_stack.tech_stack_total_scores</code>. */
   public void setTechStackTotalScores(Integer techStackTotalScores) {
     this.techStackTotalScores = techStackTotalScores;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.employee_identification_number</code>. */
+  /** Getter for <code>sion.developer_tech_stack.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.employee_identification_number</code>. */
+  /** Setter for <code>sion.developer_tech_stack.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.developer_tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return this.techStackName;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.developer_tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String techStackName) {
     this.techStackName = techStackName;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.created_at</code>. */
+  /** Getter for <code>sion.developer_tech_stack.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.created_at</code>. */
+  /** Setter for <code>sion.developer_tech_stack.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.developer_tech_stack.updated_at</code>. */
+  /** Getter for <code>sion.developer_tech_stack.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.developer_tech_stack.updated_at</code>. */
+  /** Setter for <code>sion.developer_tech_stack.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

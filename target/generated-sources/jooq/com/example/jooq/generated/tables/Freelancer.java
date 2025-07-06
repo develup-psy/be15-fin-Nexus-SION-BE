@@ -34,7 +34,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.freelancer</code> */
+  /** The reference instance of <code>sion.freelancer</code> */
   public static final Freelancer FREELANCER = new Freelancer();
 
   /** The class holding records for this type */
@@ -43,23 +43,23 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
     return FreelancerRecord.class;
   }
 
-  /** The column <code>SION.freelancer.freelancer_id</code>. */
+  /** The column <code>sion.freelancer.freelancer_id</code>. */
   public final TableField<FreelancerRecord, Long> FREELANCER_ID =
       createField(DSL.name("freelancer_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.freelancer.name</code>. */
+  /** The column <code>sion.freelancer.name</code>. */
   public final TableField<FreelancerRecord, String> NAME =
       createField(DSL.name("name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.freelancer.phone_number</code>. */
+  /** The column <code>sion.freelancer.phone_number</code>. */
   public final TableField<FreelancerRecord, String> PHONE_NUMBER =
       createField(DSL.name("phone_number"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
-  /** The column <code>SION.freelancer.email</code>. */
+  /** The column <code>sion.freelancer.email</code>. */
   public final TableField<FreelancerRecord, String> EMAIL =
       createField(DSL.name("email"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
-  /** The column <code>SION.freelancer.career_years</code>. */
+  /** The column <code>sion.freelancer.career_years</code>. */
   public final TableField<FreelancerRecord, Integer> CAREER_YEARS =
       createField(
           DSL.name("career_years"),
@@ -67,11 +67,11 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
           this,
           "");
 
-  /** The column <code>SION.freelancer.resume_url</code>. */
+  /** The column <code>sion.freelancer.resume_url</code>. */
   public final TableField<FreelancerRecord, String> RESUME_URL =
       createField(DSL.name("resume_url"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-  /** The column <code>SION.freelancer.created_at</code>. */
+  /** The column <code>sion.freelancer.created_at</code>. */
   public final TableField<FreelancerRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -81,7 +81,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
           this,
           "");
 
-  /** The column <code>SION.freelancer.profile_image_url</code>. */
+  /** The column <code>sion.freelancer.profile_image_url</code>. */
   public final TableField<FreelancerRecord, String> PROFILE_IMAGE_URL =
       createField(
           DSL.name("profile_image_url"),
@@ -89,7 +89,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
           this,
           "");
 
-  /** The column <code>SION.freelancer.birthday</code>. */
+  /** The column <code>sion.freelancer.birthday</code>. */
   public final TableField<FreelancerRecord, LocalDate> BIRTHDAY =
       createField(
           DSL.name("birthday"),
@@ -105,17 +105,17 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.freelancer</code> table reference */
+  /** Create an aliased <code>sion.freelancer</code> table reference */
   public Freelancer(String alias) {
     this(DSL.name(alias), FREELANCER);
   }
 
-  /** Create an aliased <code>SION.freelancer</code> table reference */
+  /** Create an aliased <code>sion.freelancer</code> table reference */
   public Freelancer(Name alias) {
     this(alias, FREELANCER);
   }
 
-  /** Create a <code>SION.freelancer</code> table reference */
+  /** Create a <code>sion.freelancer</code> table reference */
   public Freelancer() {
     this(DSL.name("freelancer"), null);
   }

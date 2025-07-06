@@ -49,72 +49,72 @@ public class Certificate implements Serializable {
     this.score = score;
   }
 
-  /** Getter for <code>SION.certificate.certificate_name</code>. */
+  /** Getter for <code>sion.certificate.certificate_name</code>. */
   public String getCertificateName() {
     return this.certificateName;
   }
 
-  /** Setter for <code>SION.certificate.certificate_name</code>. */
+  /** Setter for <code>sion.certificate.certificate_name</code>. */
   public void setCertificateName(String certificateName) {
     this.certificateName = certificateName;
   }
 
-  /** Getter for <code>SION.certificate.issuing_organization_id</code>. */
+  /** Getter for <code>sion.certificate.issuing_organization_id</code>. */
   public LocalDateTime getIssuingOrganizationId() {
     return this.issuingOrganizationId;
   }
 
-  /** Setter for <code>SION.certificate.issuing_organization_id</code>. */
+  /** Setter for <code>sion.certificate.issuing_organization_id</code>. */
   public void setIssuingOrganizationId(LocalDateTime issuingOrganizationId) {
     this.issuingOrganizationId = issuingOrganizationId;
   }
 
-  /** Getter for <code>SION.certificate.issue_date</code>. */
+  /** Getter for <code>sion.certificate.issue_date</code>. */
   public LocalDateTime getIssueDate() {
     return this.issueDate;
   }
 
-  /** Setter for <code>SION.certificate.issue_date</code>. */
+  /** Setter for <code>sion.certificate.issue_date</code>. */
   public void setIssueDate(LocalDateTime issueDate) {
     this.issueDate = issueDate;
   }
 
-  /** Getter for <code>SION.certificate.expiry_date</code>. */
+  /** Getter for <code>sion.certificate.expiry_date</code>. */
   public LocalDateTime getExpiryDate() {
     return this.expiryDate;
   }
 
-  /** Setter for <code>SION.certificate.expiry_date</code>. */
+  /** Setter for <code>sion.certificate.expiry_date</code>. */
   public void setExpiryDate(LocalDateTime expiryDate) {
     this.expiryDate = expiryDate;
   }
 
-  /** Getter for <code>SION.certificate.created_at</code>. */
+  /** Getter for <code>sion.certificate.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.certificate.created_at</code>. */
+  /** Setter for <code>sion.certificate.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.certificate.updated_at</code>. */
+  /** Getter for <code>sion.certificate.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.certificate.updated_at</code>. */
+  /** Setter for <code>sion.certificate.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.certificate.score</code>. */
+  /** Getter for <code>sion.certificate.score</code>. */
   public Integer getScore() {
     return this.score;
   }
 
-  /** Setter for <code>SION.certificate.score</code>. */
+  /** Setter for <code>sion.certificate.score</code>. */
   public void setScore(Integer score) {
     this.score = score;
   }

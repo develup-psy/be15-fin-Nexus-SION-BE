@@ -45,62 +45,62 @@ public class UserCertificateHistory implements Serializable {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.user_certificate_history.user_certificate_history_id</code>. */
+  /** Getter for <code>sion.user_certificate_history.user_certificate_history_id</code>. */
   public Long getUserCertificateHistoryId() {
     return this.userCertificateHistoryId;
   }
 
-  /** Setter for <code>SION.user_certificate_history.user_certificate_history_id</code>. */
+  /** Setter for <code>sion.user_certificate_history.user_certificate_history_id</code>. */
   public void setUserCertificateHistoryId(Long userCertificateHistoryId) {
     this.userCertificateHistoryId = userCertificateHistoryId;
   }
 
-  /** Getter for <code>SION.user_certificate_history.created_at</code>. */
+  /** Getter for <code>sion.user_certificate_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.user_certificate_history.created_at</code>. */
+  /** Setter for <code>sion.user_certificate_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.user_certificate_history.updated_at</code>. */
+  /** Getter for <code>sion.user_certificate_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.user_certificate_history.updated_at</code>. */
+  /** Setter for <code>sion.user_certificate_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.user_certificate_history.updated_by</code>. */
+  /** Getter for <code>sion.user_certificate_history.updated_by</code>. */
   public String getUpdatedBy() {
     return this.updatedBy;
   }
 
-  /** Setter for <code>SION.user_certificate_history.updated_by</code>. */
+  /** Setter for <code>sion.user_certificate_history.updated_by</code>. */
   public void setUpdatedBy(String updatedBy) {
     this.updatedBy = updatedBy;
   }
 
-  /** Getter for <code>SION.user_certificate_history.certificate_name</code>. */
+  /** Getter for <code>sion.user_certificate_history.certificate_name</code>. */
   public String getCertificateName() {
     return this.certificateName;
   }
 
-  /** Setter for <code>SION.user_certificate_history.certificate_name</code>. */
+  /** Setter for <code>sion.user_certificate_history.certificate_name</code>. */
   public void setCertificateName(String certificateName) {
     this.certificateName = certificateName;
   }
 
-  /** Getter for <code>SION.user_certificate_history.employee_identification_number</code>. */
+  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.user_certificate_history.employee_identification_number</code>. */
+  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }

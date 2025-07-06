@@ -10,11 +10,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function7;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -35,7 +35,7 @@ public class Notification extends TableImpl<NotificationRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.notification</code> */
+  /** The reference instance of <code>sion.notification</code> */
   public static final Notification NOTIFICATION = new Notification();
 
   /** The class holding records for this type */
@@ -44,19 +44,27 @@ public class Notification extends TableImpl<NotificationRecord> {
     return NotificationRecord.class;
   }
 
-  /** The column <code>SION.notification.notification_id</code>. */
+  /** The column <code>sion.notification.notification_id</code>. */
   public final TableField<NotificationRecord, Long> NOTIFICATION_ID =
       createField(DSL.name("notification_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.notification.notification_type</code>. */
+  /** The column <code>sion.notification.notification_type</code>. */
   public final TableField<NotificationRecord, String> NOTIFICATION_TYPE =
       createField(DSL.name("notification_type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
-  /** The column <code>SION.notification.message</code>. */
+  /** The column <code>sion.notification.linked_content_id</code>. */
+  public final TableField<NotificationRecord, String> LINKED_CONTENT_ID =
+      createField(
+          DSL.name("linked_content_id"),
+          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
+
+  /** The column <code>sion.notification.message</code>. */
   public final TableField<NotificationRecord, String> MESSAGE =
       createField(DSL.name("message"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>SION.notification.is_read</code>. */
+  /** The column <code>sion.notification.is_read</code>. */
   public final TableField<NotificationRecord, Byte> IS_READ =
       createField(
           DSL.name("is_read"),
@@ -66,7 +74,7 @@ public class Notification extends TableImpl<NotificationRecord> {
           this,
           "");
 
-  /** The column <code>SION.notification.created_at</code>. */
+  /** The column <code>sion.notification.created_at</code>. */
   public final TableField<NotificationRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -76,7 +84,7 @@ public class Notification extends TableImpl<NotificationRecord> {
           this,
           "");
 
-  /** The column <code>SION.notification.receiver_id</code>. */
+  /** The column <code>sion.notification.receiver_id</code>. */
   public final TableField<NotificationRecord, String> RECEIVER_ID =
       createField(DSL.name("receiver_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
@@ -88,17 +96,17 @@ public class Notification extends TableImpl<NotificationRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.notification</code> table reference */
+  /** Create an aliased <code>sion.notification</code> table reference */
   public Notification(String alias) {
     this(DSL.name(alias), NOTIFICATION);
   }
 
-  /** Create an aliased <code>SION.notification</code> table reference */
+  /** Create an aliased <code>sion.notification</code> table reference */
   public Notification(Name alias) {
     this(alias, NOTIFICATION);
   }
 
-  /** Create a <code>SION.notification</code> table reference */
+  /** Create a <code>sion.notification</code> table reference */
   public Notification() {
     this(DSL.name("notification"), null);
   }
@@ -124,7 +132,7 @@ public class Notification extends TableImpl<NotificationRecord> {
 
   private transient Member _member;
 
-  /** Get the implicit join path to the <code>SION.member</code> table. */
+  /** Get the implicit join path to the <code>sion.member</code> table. */
   public Member member() {
     if (_member == null) _member = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
 
@@ -165,18 +173,19 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row6 type methods
+  // Row7 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row6<Long, String, String, Byte, LocalDateTime, String> fieldsRow() {
-    return (Row6) super.fieldsRow();
+  public Row7<Long, String, String, String, Byte, LocalDateTime, String> fieldsRow() {
+    return (Row7) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function6<
+      Function7<
               ? super Long,
+              ? super String,
               ? super String,
               ? super String,
               ? super Byte,
@@ -190,8 +199,9 @@ public class Notification extends TableImpl<NotificationRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function6<
+      Function7<
               ? super Long,
+              ? super String,
               ? super String,
               ? super String,
               ? super Byte,

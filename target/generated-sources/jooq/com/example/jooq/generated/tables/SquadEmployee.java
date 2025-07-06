@@ -12,7 +12,6 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function9;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -37,7 +36,7 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.squad_employee</code> */
+  /** The reference instance of <code>sion.squad_employee</code> */
   public static final SquadEmployee SQUAD_EMPLOYEE = new SquadEmployee();
 
   /** The class holding records for this type */
@@ -46,19 +45,15 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
     return SquadEmployeeRecord.class;
   }
 
-  /** The column <code>SION.squad_employee.squad_employee_id</code>. */
+  /** The column <code>sion.squad_employee.squad_employee_id</code>. */
   public final TableField<SquadEmployeeRecord, Long> SQUAD_EMPLOYEE_ID =
-      createField(
-          DSL.name("squad_employee_id"),
-          SQLDataType.BIGINT.nullable(false).identity(true),
-          this,
-          "");
+      createField(DSL.name("squad_employee_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.squad_employee.assigned_date</code>. */
+  /** The column <code>sion.squad_employee.assigned_date</code>. */
   public final TableField<SquadEmployeeRecord, LocalDate> ASSIGNED_DATE =
       createField(DSL.name("assigned_date"), SQLDataType.LOCALDATE.nullable(false), this, "");
 
-  /** The column <code>SION.squad_employee.employee_identification_number</code>. */
+  /** The column <code>sion.squad_employee.employee_identification_number</code>. */
   public final TableField<SquadEmployeeRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
           DSL.name("employee_identification_number"),
@@ -66,11 +61,11 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad_employee.project_and_job_id</code>. */
+  /** The column <code>sion.squad_employee.project_and_job_id</code>. */
   public final TableField<SquadEmployeeRecord, Long> PROJECT_AND_JOB_ID =
       createField(DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>SION.squad_employee.is_leader</code>. */
+  /** The column <code>sion.squad_employee.is_leader</code>. */
   public final TableField<SquadEmployeeRecord, Byte> IS_LEADER =
       createField(
           DSL.name("is_leader"),
@@ -80,7 +75,7 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad_employee.created_at</code>. */
+  /** The column <code>sion.squad_employee.created_at</code>. */
   public final TableField<SquadEmployeeRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -90,7 +85,7 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad_employee.updated_at</code>. */
+  /** The column <code>sion.squad_employee.updated_at</code>. */
   public final TableField<SquadEmployeeRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -100,11 +95,11 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad_employee.squad_code</code>. */
+  /** The column <code>sion.squad_employee.squad_code</code>. */
   public final TableField<SquadEmployeeRecord, String> SQUAD_CODE =
       createField(DSL.name("squad_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.squad_employee.total_skill_score</code>. */
+  /** The column <code>sion.squad_employee.total_skill_score</code>. */
   public final TableField<SquadEmployeeRecord, Integer> TOTAL_SKILL_SCORE =
       createField(
           DSL.name("total_skill_score"),
@@ -120,17 +115,17 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.squad_employee</code> table reference */
+  /** Create an aliased <code>sion.squad_employee</code> table reference */
   public SquadEmployee(String alias) {
     this(DSL.name(alias), SQUAD_EMPLOYEE);
   }
 
-  /** Create an aliased <code>SION.squad_employee</code> table reference */
+  /** Create an aliased <code>sion.squad_employee</code> table reference */
   public SquadEmployee(Name alias) {
     this(alias, SQUAD_EMPLOYEE);
   }
 
-  /** Create a <code>SION.squad_employee</code> table reference */
+  /** Create a <code>sion.squad_employee</code> table reference */
   public SquadEmployee() {
     this(DSL.name("squad_employee"), null);
   }
@@ -142,11 +137,6 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
   @Override
   public Schema getSchema() {
     return aliased() ? null : Sion.SION;
-  }
-
-  @Override
-  public Identity<SquadEmployeeRecord, Long> getIdentity() {
-    return (Identity<SquadEmployeeRecord, Long>) super.getIdentity();
   }
 
   @Override
@@ -166,14 +156,14 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
   private transient ProjectAndJob _projectAndJob;
   private transient Squad _squad;
 
-  /** Get the implicit join path to the <code>SION.member</code> table. */
+  /** Get the implicit join path to the <code>sion.member</code> table. */
   public Member member() {
     if (_member == null) _member = new Member(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
 
     return _member;
   }
 
-  /** Get the implicit join path to the <code>SION.project_and_job</code> table. */
+  /** Get the implicit join path to the <code>sion.project_and_job</code> table. */
   public ProjectAndJob projectAndJob() {
     if (_projectAndJob == null)
       _projectAndJob = new ProjectAndJob(this, Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1);
@@ -181,7 +171,7 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
     return _projectAndJob;
   }
 
-  /** Get the implicit join path to the <code>SION.squad</code> table. */
+  /** Get the implicit join path to the <code>sion.squad</code> table. */
   public Squad squad() {
     if (_squad == null) _squad = new Squad(this, Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
 

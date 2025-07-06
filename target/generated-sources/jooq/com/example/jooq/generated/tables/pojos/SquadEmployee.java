@@ -58,92 +58,92 @@ public class SquadEmployee implements Serializable {
     this.totalSkillScore = totalSkillScore;
   }
 
-  /** Getter for <code>SION.squad_employee.squad_employee_id</code>. */
+  /** Getter for <code>sion.squad_employee.squad_employee_id</code>. */
   public Long getSquadEmployeeId() {
     return this.squadEmployeeId;
   }
 
-  /** Setter for <code>SION.squad_employee.squad_employee_id</code>. */
+  /** Setter for <code>sion.squad_employee.squad_employee_id</code>. */
   public void setSquadEmployeeId(Long squadEmployeeId) {
     this.squadEmployeeId = squadEmployeeId;
   }
 
-  /** Getter for <code>SION.squad_employee.assigned_date</code>. */
+  /** Getter for <code>sion.squad_employee.assigned_date</code>. */
   public LocalDate getAssignedDate() {
     return this.assignedDate;
   }
 
-  /** Setter for <code>SION.squad_employee.assigned_date</code>. */
+  /** Setter for <code>sion.squad_employee.assigned_date</code>. */
   public void setAssignedDate(LocalDate assignedDate) {
     this.assignedDate = assignedDate;
   }
 
-  /** Getter for <code>SION.squad_employee.employee_identification_number</code>. */
+  /** Getter for <code>sion.squad_employee.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.squad_employee.employee_identification_number</code>. */
+  /** Setter for <code>sion.squad_employee.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.squad_employee.project_and_job_id</code>. */
+  /** Getter for <code>sion.squad_employee.project_and_job_id</code>. */
   public Long getProjectAndJobId() {
     return this.projectAndJobId;
   }
 
-  /** Setter for <code>SION.squad_employee.project_and_job_id</code>. */
+  /** Setter for <code>sion.squad_employee.project_and_job_id</code>. */
   public void setProjectAndJobId(Long projectAndJobId) {
     this.projectAndJobId = projectAndJobId;
   }
 
-  /** Getter for <code>SION.squad_employee.is_leader</code>. */
+  /** Getter for <code>sion.squad_employee.is_leader</code>. */
   public Byte getIsLeader() {
     return this.isLeader;
   }
 
-  /** Setter for <code>SION.squad_employee.is_leader</code>. */
+  /** Setter for <code>sion.squad_employee.is_leader</code>. */
   public void setIsLeader(Byte isLeader) {
     this.isLeader = isLeader;
   }
 
-  /** Getter for <code>SION.squad_employee.created_at</code>. */
+  /** Getter for <code>sion.squad_employee.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.squad_employee.created_at</code>. */
+  /** Setter for <code>sion.squad_employee.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.squad_employee.updated_at</code>. */
+  /** Getter for <code>sion.squad_employee.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.squad_employee.updated_at</code>. */
+  /** Setter for <code>sion.squad_employee.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.squad_employee.squad_code</code>. */
+  /** Getter for <code>sion.squad_employee.squad_code</code>. */
   public String getSquadCode() {
     return this.squadCode;
   }
 
-  /** Setter for <code>SION.squad_employee.squad_code</code>. */
+  /** Setter for <code>sion.squad_employee.squad_code</code>. */
   public void setSquadCode(String squadCode) {
     this.squadCode = squadCode;
   }
 
-  /** Getter for <code>SION.squad_employee.total_skill_score</code>. */
+  /** Getter for <code>sion.squad_employee.total_skill_score</code>. */
   public Integer getTotalSkillScore() {
     return this.totalSkillScore;
   }
 
-  /** Setter for <code>SION.squad_employee.total_skill_score</code>. */
+  /** Setter for <code>sion.squad_employee.total_skill_score</code>. */
   public void setTotalSkillScore(Integer totalSkillScore) {
     this.totalSkillScore = totalSkillScore;
   }
