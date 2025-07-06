@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
@@ -50,5 +51,21 @@ public class FreelancerQueryRepository {
         Optional.ofNullable(dsl.selectCount().from(FREELANCER).fetchOne(0, Long.class)).orElse(0L);
 
     return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  public FreelancerDetailResponse getFreelancerDetail(String freelancerId) {
+    return dsl.select(
+                    FREELANCER.FREELANCER_ID,
+                    FREELANCER.NAME,
+                    FREELANCER.PHONE_NUMBER,
+                    FREELANCER.EMAIL,
+                    FREELANCER.CAREER_YEARS,
+                    FREELANCER.RESUME_URL,
+                    FREELANCER.PROFILE_IMAGE_URL,
+                    FREELANCER.BIRTHDAY
+            )
+            .from(FREELANCER)
+            .where(FREELANCER.FREELANCER_ID.eq(freelancerId))
+            .fetchOneInto(FreelancerDetailResponse.class);
   }
 }
