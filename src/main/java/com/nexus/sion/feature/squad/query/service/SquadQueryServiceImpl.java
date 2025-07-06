@@ -67,8 +67,7 @@ public class SquadQueryServiceImpl implements SquadQueryService {
   }
 
   private boolean isProjectComplete(Project project) {
-    return project.getStatus() == Project.ProjectStatus.COMPLETE
-        || project.getStatus() == Project.ProjectStatus.INCOMPLETE;
+    return project.getStatus() == Project.ProjectStatus.COMPLETE;
   }
 
   private SquadDetailResponse getConfirmedSquadIfExistsOrThrow(String projectCode) {
