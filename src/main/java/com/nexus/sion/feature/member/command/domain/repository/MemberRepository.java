@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, String> {
@@ -16,4 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
   Optional<Member> findByEmployeeIdentificationNumberAndDeletedAtIsNull(
       String employeeIdentificationNumber);
+
+  boolean existsByEmployeeIdentificationNumberAndRole(String id, MemberRole role);
 }
