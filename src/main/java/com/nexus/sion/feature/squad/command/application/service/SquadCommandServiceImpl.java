@@ -267,4 +267,19 @@ public class SquadCommandServiceImpl implements SquadCommandService {
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
   }
+
+  @Override
+  @Transactional
+  public void confirmSquad(String squadCode) {
+    // 1. 스쿼드 조회 및 확정 처리
+    Squad squad =
+        squadCommandRepository
+            .findBySquadCode(squadCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+    squad.confirm(); // isActive = true
+
+    // 2. 프로젝트 상태를 IN_PROGRESS로 변경
+    projectCommandService.updateProjectStatus(
+        squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+  }
 }

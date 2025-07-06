@@ -54,4 +54,8 @@ public class Squad extends BaseTimeEntity {
     if (estimatedCost != null) this.estimatedCost = estimatedCost;
     if (estimatedDuration != null) this.estimatedDuration = estimatedDuration;
   }
+
+  public void confirm() {
+    this.isActive = true;
+  }
 }

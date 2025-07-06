@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -16,6 +17,7 @@ public class SquadCommentCommandService {
 
   private final SquadCommentRepository squadCommentRepository;
 
+  @Transactional
   public void registerComment(String squadCode, SquadCommentRegisterRequest request) {
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
