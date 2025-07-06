@@ -1,10 +1,8 @@
 package com.nexus.sion.feature.member.query.controller;
 
+import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
@@ -25,5 +23,12 @@ public class FreelancerQueryController {
       @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
     PageResponse<FreelancerListResponse> result = freelancerQueryService.getFreelancers(page, size);
     return ResponseEntity.ok(ApiResponse.success(result));
+  }
+
+  @GetMapping("/{freelancerId}")
+  public ResponseEntity<ApiResponse<FreelancerDetailResponse>> getFreelancerDetail(
+          @PathVariable String freelancerId) {
+    FreelancerDetailResponse detail = freelancerQueryService.getFreelancerDetail(freelancerId);
+    return ResponseEntity.ok(ApiResponse.success(detail));
   }
 }
