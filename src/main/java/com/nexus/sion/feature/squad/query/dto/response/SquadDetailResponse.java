@@ -1,62 +1,43 @@
 package com.nexus.sion.feature.squad.query.dto.response;
 
+import com.example.jooq.generated.enums.SquadOriginType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 @Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public final class SquadDetailResponse {
-  private String squadCode;
-  private String squadName;
-  private String originType;
-  private String estimatedPeriod;
-  private String estimatedCost;
-  private SummaryInfo summary;
-  private List<String> techStacks;
-  private List<MemberInfo> members; // 구성원 정보
-  private List<CostBreakdown> costDetails;
-  private String recommendationReason;
-  private List<CommentResponse> comments;
-  private String description;
+public class SquadDetailResponse {
+    private String squadCode;
+    private String title;
+    private String recommendationReason;
+    private int totalMemberCount;
+    private Map<String, Integer> memberCountByJob;
+    private Map<String, Integer> gradeCount;
+    private List<String> techStacks;
+    private int estimatedDuration;
+    private int totalCost;
+    private List<MemberDetail> members;
+    private String description;
+    private SquadOriginType origin;
+    private Boolean isActive;
 
-  @Getter
-  @AllArgsConstructor
-  public static class MemberInfo {
-    private String memberId;
-    private boolean isLeader; // 리더 여부
-    private String imageUrl; // 프로필 사진 URL
-    private String job; // 직무
-    private String name; // 이름
-    private BigDecimal productivity;
-  }
-
-  @Getter
-  @AllArgsConstructor
-  public static class CostBreakdown {
-    private String name; // 구성원 이름
-    private String job; // 직무
-    private String grade; // 등급
-    private String cost; // 단가 (예: ₩2,000,000)
-  }
-
-  @Getter
-  @AllArgsConstructor
-  public static class SummaryInfo {
-    private Map<String, Long> jobCounts;
-    private Map<String, Long> gradeCounts;
-  }
-
-  @Getter
-  @AllArgsConstructor
-  public static class CommentResponse {
-    private Long id;
-    private String employeeIdentificationNumber;
-    private String content;
-    private LocalDateTime createdAt;
-  }
+    @Getter
+    @Builder
+    public static class MemberDetail {
+        private String name;
+        private String job;
+        private String grade;
+        private int monthlyUnitPrice;
+        private String memberId;
+        private BigDecimal productivity;
+    }
 }
