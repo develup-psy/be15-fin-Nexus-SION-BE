@@ -41,11 +41,11 @@ public class SquadCommandController {
   }
 
   @PostMapping("/recommendation")
-  public ResponseEntity<ApiResponse<Void>> recommendSquad(
+  public ResponseEntity<ApiResponse<SquadRecommendationResponse>> recommendSquad(
       @RequestBody @Valid SquadRecommendationRequest request) {
 
-    squadCommandService.recommendSquad(request);
-    return ResponseEntity.ok(ApiResponse.success(null));
+    SquadRecommendationResponse result = squadCommandService.recommendSquad(request);
+    return ResponseEntity.ok(ApiResponse.success(result));
   }
 
   @PatchMapping("/{squadCode}/confirm")

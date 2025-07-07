@@ -159,7 +159,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   }
 
   @Override
-  public void recommendSquad(SquadRecommendationRequest request) {
+  public SquadRecommendationResponse recommendSquad(SquadRecommendationRequest request) {
     String projectId = request.getProjectId();
     RecommendationCriteria criteria = request.getCriteria();
 
@@ -266,6 +266,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .toList();
 
     squadEmployeeCommandRepository.saveAll(squadEmployees);
+    return SquadRecommendationResponse.builder().squadCode(squadCode).build();
   }
 
   @Override
