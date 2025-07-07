@@ -10,6 +10,7 @@ import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
 import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.FreelancerListResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,20 @@ public class FreelancerQueryRepository {
         Optional.ofNullable(dsl.selectCount().from(FREELANCER).fetchOne(0, Long.class)).orElse(0L);
 
     return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  public FreelancerDetailResponse getFreelancerDetail(String freelancerId) {
+    return dsl.select(
+            FREELANCER.FREELANCER_ID,
+            FREELANCER.NAME,
+            FREELANCER.PHONE_NUMBER,
+            FREELANCER.EMAIL,
+            FREELANCER.CAREER_YEARS,
+            FREELANCER.RESUME_URL,
+            FREELANCER.PROFILE_IMAGE_URL,
+            FREELANCER.BIRTHDAY)
+        .from(FREELANCER)
+        .where(FREELANCER.FREELANCER_ID.eq(freelancerId))
+        .fetchOneInto(FreelancerDetailResponse.class);
   }
 }
