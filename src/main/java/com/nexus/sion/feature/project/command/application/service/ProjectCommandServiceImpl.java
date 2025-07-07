@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
@@ -77,7 +78,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   }
 
   @Override
-  public void updateProject(ProjectRegisterRequest request) {
+  public void updateProject(ProjectUpdateRequest request) {
     Project project =
         projectCommandRepository
             .findById(request.getProjectCode())
@@ -90,15 +91,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStartDate(request.getStartDate());
     project.setExpectedEndDate(request.getExpectedEndDate());
     project.setNumberOfMembers(request.getNumberOfMembers());
-    project.setClientCode(request.getClientCode());
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
+
     projectCommandRepository.save(project);
-
-    var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
-    projectAndJobs.forEach(job -> jobAndTechStackRepository.deleteByProjectJobId(job.getId()));
-    projectAndJobRepository.deleteByProjectCode(request.getProjectCode());
-
-    saveJobsAndTechStacks(request);
   }
 
   private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
