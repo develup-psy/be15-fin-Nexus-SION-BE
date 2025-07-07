@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.notification.domain.aggregate;
+package com.nexus.sion.feature.notification.command.domain.aggregate;
 
 public enum NotificationType {
 

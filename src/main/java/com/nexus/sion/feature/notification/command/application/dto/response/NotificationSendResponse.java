@@ -1,6 +1,6 @@
-package com.nexus.sion.feature.notification.command.dto.response;
+package com.nexus.sion.feature.notification.command.application.dto.response;
 
-import com.nexus.sion.feature.notification.domain.aggregate.NotificationType;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
 
