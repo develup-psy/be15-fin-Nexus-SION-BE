@@ -19,8 +19,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
   Optional<Member> findByEmployeeIdentificationNumberAndDeletedAtIsNull(
       String employeeIdentificationNumber);
 
-  @Query("SELECT m.employeeName FROM Member m WHERE m.employeeIdentificationNumber = :employeeIdentificationNumber")
+  @Query(
+      "SELECT m.employeeName FROM Member m WHERE m.employeeIdentificationNumber = :employeeIdentificationNumber")
   Optional<String> findEmployeeNameByEmployeeIdentificationNumber(
-          @Param("employeeIdentificationNumber") String employeeIdentificationNumber
-  );
+      @Param("employeeIdentificationNumber") String employeeIdentificationNumber);
 }
