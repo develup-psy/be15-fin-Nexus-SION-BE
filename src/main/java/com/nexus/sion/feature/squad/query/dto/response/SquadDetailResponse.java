@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.query.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -21,14 +22,17 @@ public final class SquadDetailResponse {
   private List<CostBreakdown> costDetails;
   private String recommendationReason;
   private List<CommentResponse> comments;
+  private String description;
 
   @Getter
   @AllArgsConstructor
   public static class MemberInfo {
+    private String memberId;
     private boolean isLeader; // 리더 여부
     private String imageUrl; // 프로필 사진 URL
     private String job; // 직무
     private String name; // 이름
+    private BigDecimal productivity;
   }
 
   @Getter
