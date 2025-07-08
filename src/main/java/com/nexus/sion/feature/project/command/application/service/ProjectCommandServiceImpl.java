@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +37,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final JobAndTechStackRepository jobAndTechStackRepository;
   private final ProjectAnalysisService projectAnalysisService;
   private final ProjectRepository projectRepository;
+  private final NotificationCommandService notificationCommandService;
+  private final SquadCommandRepository squadCommandRepository;
+  private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -147,10 +155,43 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
+
+      notifySquadEmployeesToUploadTask(projectCode);
+
     } else {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
+  }
+
+  public void notifySquadEmployeesToUploadTask(String projectCode) {
+    String activeSquadCode = findActiveSquadCode(projectCode);
+
+    List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
+
+    squadEmployees.forEach(employee ->
+            sendTaskUploadRequestNotification(employee, projectCode)
+    );
+  }
+
+  private String findActiveSquadCode(String projectCode) {
+    return squadCommandRepository.findByProjectCodeAndActiveIsTrue(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
+            .getSquadCode();
+  }
+
+  private List<SquadEmployee> findSquadEmployees(String squadCode) {
+    return squadEmployeeCommandRepository.findBySquadCode(squadCode);
+  }
+
+  private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
+    String employeeId = employee.getEmployeeIdentificationNumber();
+    notificationCommandService.createAndSendNotification(
+            null,
+            employeeId,
+            NotificationType.TASK_UPLOAD_REQUEST,
+            projectCode
+    );
   }
 
   @Override
