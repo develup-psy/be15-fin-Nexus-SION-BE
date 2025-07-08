@@ -1,7 +1,8 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
-
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
@@ -26,7 +27,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
     Certificate certificate =
         certificateRepository
             .findById(request.getCertificateName())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 자격증입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
     UserCertificateHistory history =
         UserCertificateHistory.builder()
