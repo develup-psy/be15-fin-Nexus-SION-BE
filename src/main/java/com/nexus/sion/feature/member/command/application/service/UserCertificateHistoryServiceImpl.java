@@ -31,7 +31,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
 
     UserCertificateHistory history =
         UserCertificateHistory.builder()
-            .certificate(certificate.getCertificateName())
+            .certificateName(certificate.getCertificateName())
             .employeeIdentificationNumber(employeeId)
             .certificateStatus(CertificateStatus.PENDING)
             .pdfFileUrl(request.getPdfFileUrl())
