@@ -1,11 +1,13 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.CertificateStatus;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.CertificateStatus;
+
+import lombok.*;
 
 @Entity
 @Table(name = "user_certificate_history")
@@ -43,5 +45,5 @@ public class UserCertificateHistory {
   private String employeeIdentificationNumber;
 
   @Column(name = "certificate_name", length = 30, nullable = false)
-  private String  certificate;
+  private String certificate;
 }
