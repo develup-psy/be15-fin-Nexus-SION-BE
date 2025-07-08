@@ -174,7 +174,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private String findActiveSquadCode(String projectCode) {
     return squadCommandRepository
-        .findByProjectCodeAndActiveIsTrue(projectCode)
+        .findByProjectCodeAndIsActiveIsTrue(projectCode)
         .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
         .getSquadCode();
   }

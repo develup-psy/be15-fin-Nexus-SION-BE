@@ -3,6 +3,7 @@ package com.nexus.sion.feature.notification.command.infrastructure.repository;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -15,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SseEmitterRepository {
 
-  private final Map<String, SseEmitter> emitterMap;
-  private final Map<String, Object> eventCache;
+  private final Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
+  private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
 
   public SseEmitter save(String emitterId, SseEmitter emitter) {
     emitterMap.put(emitterId, emitter);

@@ -15,7 +15,7 @@ public interface SquadCommandRepository extends JpaRepository<Squad, String> {
 
   List<Squad> findByProjectCode(String projectCode);
 
-  Optional<Squad> findByProjectCodeAndActiveIsTrue(String projectCode);
+  Optional<Squad> findByProjectCodeAndIsActiveIsTrue(String projectCode);
 
   boolean existsByTitleAndProjectCode(String title, String projectCode);
 
