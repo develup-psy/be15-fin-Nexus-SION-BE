@@ -144,7 +144,7 @@ class ProjectQueryServiceImplTest {
             "₩5,000,000",
             techStacks,
             members,
-                "WAITING");
+            "WAITING");
 
     when(repository.getProjectDetail(projectCode)).thenReturn(mockResponse);
 

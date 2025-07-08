@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadCommentRegisterRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
@@ -17,11 +18,14 @@ class SquadCommentCommandServiceTest {
 
   private SquadCommentRepository squadCommentRepository;
   private SquadCommentCommandService squadCommentCommandService;
+  private NotificationCommandService notificationCommandService;
 
   @BeforeEach
   void setUp() {
     squadCommentRepository = mock(SquadCommentRepository.class);
-    squadCommentCommandService = new SquadCommentCommandService(squadCommentRepository);
+    notificationCommandService = mock(NotificationCommandService.class);
+    squadCommentCommandService =
+        new SquadCommentCommandService(squadCommentRepository, notificationCommandService);
   }
 
   @Test
@@ -29,10 +33,10 @@ class SquadCommentCommandServiceTest {
   void registerComment_success() {
     // given
     String squadCode = "ha_1_1_1";
-    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("EMM001", "테스트 코멘트입니다.");
+    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("테스트 코멘트입니다.");
 
     // when
-    squadCommentCommandService.registerComment(squadCode, request);
+    squadCommentCommandService.registerComment(squadCode, request, "EMM001");
 
     // then
     verify(squadCommentRepository, times(1)).save(any(SquadComment.class));
@@ -42,11 +46,12 @@ class SquadCommentCommandServiceTest {
   @DisplayName("내용이 null이면 예외가 발생한다")
   void registerComment_fail_whenContentIsNull() {
     // given
-    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("EMM001", null);
+    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest(null);
 
     // when & then
     String squadCode = "ha_1_1_1";
-    assertThatThrownBy(() -> squadCommentCommandService.registerComment(squadCode, request))
+    assertThatThrownBy(
+            () -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
         .isInstanceOf(BusinessException.class)
         .hasMessageContaining(ErrorCode.COMMENT_CONTENT_EMPTY.getMessage());
 

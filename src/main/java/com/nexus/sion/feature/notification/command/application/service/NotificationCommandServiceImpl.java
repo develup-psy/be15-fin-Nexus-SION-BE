@@ -36,28 +36,28 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   @Override
   @Transactional
   public void createAndSendNotification(
-      String senderId,
-      String receiverId,
-      String message,
-      NotificationType type,
-      String linkedContentId) {
+      String senderId, String receiverId, NotificationType type, String linkedContentId) {
+
+    String senderName =
+        memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(senderId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+
+    String message = type.generateMessage(senderName);
+
+    log.info(message); // todo : 주석 제거
 
     Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)
-            .message(message)
+            .message(type.getMessage())
             .notificationType(type)
             .linkedContentId(linkedContentId)
             .build();
 
     Notification saved = notificationRepository.save(notification);
     Long id = saved.getNotificationId();
-
-    String senderName =
-        memberRepository
-            .findEmployeeNameByEmployeeIdentificationNumber(senderId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     /* Query DTO와 구조 같아야 함 */
     /* TODO :  쿼리쪽 응답 response dto 로 대체 */
