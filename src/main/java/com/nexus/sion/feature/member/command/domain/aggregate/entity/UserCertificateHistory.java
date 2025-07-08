@@ -45,5 +45,5 @@ public class UserCertificateHistory {
   private String employeeIdentificationNumber;
 
   @Column(name = "certificate_name", length = 30, nullable = false)
-  private String certificate;
+  private String certificateName;
 }
