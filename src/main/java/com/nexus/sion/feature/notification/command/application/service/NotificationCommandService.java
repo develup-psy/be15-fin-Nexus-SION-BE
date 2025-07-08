@@ -8,7 +8,6 @@ public interface NotificationCommandService {
   void createAndSendNotification(
       String senderId,
       String receiverId,
-      String message,
       NotificationType type,
       String linkedContentId);
 
