@@ -32,6 +32,7 @@ public enum NotificationType {
   private final String message;
 
   public String generateMessage(String username) {
-    return this.message.replace("{username}", username);
+    String safeUsername = username != null ? username : "";
+    return this.message.replace("{username}", safeUsername);
   }
 }
