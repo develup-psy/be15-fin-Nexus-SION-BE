@@ -36,22 +36,18 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   @Override
   @Transactional
   public void createAndSendNotification(
-      String senderId,
-      String receiverId,
-      NotificationType type,
-      String linkedContentId) {
+      String senderId, String receiverId, NotificationType type, String linkedContentId) {
 
+    String senderName =
+        memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(senderId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
-      String senderName =
-              memberRepository
-                      .findEmployeeNameByEmployeeIdentificationNumber(senderId)
-                      .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+    String message = type.generateMessage(senderName);
 
-      String message = type.generateMessage(senderName);
+    log.info(message); // todo : 주석 제거
 
-      log.info(message); // todo : 주석 제거
-
-      Notification notification =
+    Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)

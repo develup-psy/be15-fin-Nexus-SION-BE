@@ -3,13 +3,13 @@ package com.nexus.sion.feature.squad.command.application.service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadCommentRegisterRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
@@ -24,7 +24,8 @@ class SquadCommentCommandServiceTest {
   void setUp() {
     squadCommentRepository = mock(SquadCommentRepository.class);
     notificationCommandService = mock(NotificationCommandService.class);
-    squadCommentCommandService = new SquadCommentCommandService(squadCommentRepository, notificationCommandService);
+    squadCommentCommandService =
+        new SquadCommentCommandService(squadCommentRepository, notificationCommandService);
   }
 
   @Test
@@ -49,7 +50,8 @@ class SquadCommentCommandServiceTest {
 
     // when & then
     String squadCode = "ha_1_1_1";
-    assertThatThrownBy(() -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
+    assertThatThrownBy(
+            () -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
         .isInstanceOf(BusinessException.class)
         .hasMessageContaining(ErrorCode.COMMENT_CONTENT_EMPTY.getMessage());
 

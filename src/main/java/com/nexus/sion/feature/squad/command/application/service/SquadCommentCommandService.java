@@ -1,11 +1,11 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
-import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadCommentRegisterRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
@@ -20,7 +20,8 @@ public class SquadCommentCommandService {
   private final NotificationCommandService notificationCommandService;
 
   @Transactional
-  public void registerComment(String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber) {
+  public void registerComment(
+      String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber) {
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
     }
@@ -33,7 +34,6 @@ public class SquadCommentCommandService {
             .build();
 
     squadCommentRepository.save(comment);
-
   }
 
   @org.springframework.transaction.annotation.Transactional

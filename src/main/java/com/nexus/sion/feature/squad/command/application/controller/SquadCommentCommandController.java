@@ -21,10 +21,12 @@ public class SquadCommentCommandController {
 
   @PostMapping("/{squadCode}/comments")
   public ResponseEntity<Void> register(
-          @AuthenticationPrincipal UserDetails userDetails,
-      @PathVariable String squadCode, @RequestBody @Valid SquadCommentRegisterRequest request) {
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String squadCode,
+      @RequestBody @Valid SquadCommentRegisterRequest request) {
 
-    squadCommentCommandService.registerComment(squadCode, request, userDetails.getUsername()); // 👈 squadCode 따로 전달
+    squadCommentCommandService.registerComment(
+        squadCode, request, userDetails.getUsername()); // 👈 squadCode 따로 전달
     return ResponseEntity.ok().build();
   }
 

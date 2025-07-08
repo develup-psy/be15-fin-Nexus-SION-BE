@@ -5,23 +5,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
-import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
-import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
-import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
-import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -169,15 +169,14 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
     List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
 
-    squadEmployees.forEach(employee ->
-            sendTaskUploadRequestNotification(employee, projectCode)
-    );
+    squadEmployees.forEach(employee -> sendTaskUploadRequestNotification(employee, projectCode));
   }
 
   private String findActiveSquadCode(String projectCode) {
-    return squadCommandRepository.findByProjectCodeAndActiveIsTrue(projectCode)
-            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
-            .getSquadCode();
+    return squadCommandRepository
+        .findByProjectCodeAndActiveIsTrue(projectCode)
+        .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
+        .getSquadCode();
   }
 
   private List<SquadEmployee> findSquadEmployees(String squadCode) {
@@ -187,11 +186,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-            null,
-            employeeId,
-            NotificationType.TASK_UPLOAD_REQUEST,
-            projectCode
-    );
+        null, employeeId, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
   }
 
   @Override
