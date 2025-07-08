@@ -18,7 +18,9 @@ public class Notification implements Serializable {
   private String message;
   private Byte isRead;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
   private String receiverId;
+  private String senderId;
 
   public Notification() {}
 
@@ -29,7 +31,9 @@ public class Notification implements Serializable {
     this.message = value.message;
     this.isRead = value.isRead;
     this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
     this.receiverId = value.receiverId;
+    this.senderId = value.senderId;
   }
 
   public Notification(
@@ -39,14 +43,18 @@ public class Notification implements Serializable {
       String message,
       Byte isRead,
       LocalDateTime createdAt,
-      String receiverId) {
+      LocalDateTime updatedAt,
+      String receiverId,
+      String senderId) {
     this.notificationId = notificationId;
     this.notificationType = notificationType;
     this.linkedContentId = linkedContentId;
     this.message = message;
     this.isRead = isRead;
     this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
     this.receiverId = receiverId;
+    this.senderId = senderId;
   }
 
   /** Getter for <code>sion.notification.notification_id</code>. */
@@ -109,6 +117,16 @@ public class Notification implements Serializable {
     this.createdAt = createdAt;
   }
 
+  /** Getter for <code>sion.notification.updated_at</code>. */
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  /** Setter for <code>sion.notification.updated_at</code>. */
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
   /** Getter for <code>sion.notification.receiver_id</code>. */
   public String getReceiverId() {
     return this.receiverId;
@@ -117,6 +135,16 @@ public class Notification implements Serializable {
   /** Setter for <code>sion.notification.receiver_id</code>. */
   public void setReceiverId(String receiverId) {
     this.receiverId = receiverId;
+  }
+
+  /** Getter for <code>sion.notification.sender_id</code>. */
+  public String getSenderId() {
+    return this.senderId;
+  }
+
+  /** Setter for <code>sion.notification.sender_id</code>. */
+  public void setSenderId(String senderId) {
+    this.senderId = senderId;
   }
 
   @Override
@@ -143,9 +171,15 @@ public class Notification implements Serializable {
     if (this.createdAt == null) {
       if (other.createdAt != null) return false;
     } else if (!this.createdAt.equals(other.createdAt)) return false;
+    if (this.updatedAt == null) {
+      if (other.updatedAt != null) return false;
+    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
     if (this.receiverId == null) {
       if (other.receiverId != null) return false;
     } else if (!this.receiverId.equals(other.receiverId)) return false;
+    if (this.senderId == null) {
+      if (other.senderId != null) return false;
+    } else if (!this.senderId.equals(other.senderId)) return false;
     return true;
   }
 
@@ -161,7 +195,9 @@ public class Notification implements Serializable {
     result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
     result = prime * result + ((this.isRead == null) ? 0 : this.isRead.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     result = prime * result + ((this.receiverId == null) ? 0 : this.receiverId.hashCode());
+    result = prime * result + ((this.senderId == null) ? 0 : this.senderId.hashCode());
     return result;
   }
 
@@ -175,7 +211,9 @@ public class Notification implements Serializable {
     sb.append(", ").append(message);
     sb.append(", ").append(isRead);
     sb.append(", ").append(createdAt);
+    sb.append(", ").append(updatedAt);
     sb.append(", ").append(receiverId);
+    sb.append(", ").append(senderId);
 
     sb.append(")");
     return sb.toString();

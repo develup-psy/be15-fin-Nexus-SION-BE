@@ -15,6 +15,7 @@ import com.example.jooq.generated.tables.ClientCompany;
 import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperProjectWork;
 import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
+import com.example.jooq.generated.tables.DeveloperProjectWorkHistoryTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -45,6 +46,7 @@ import com.example.jooq.generated.tables.records.CertificateRecord;
 import com.example.jooq.generated.tables.records.ClientCompanyRecord;
 import com.example.jooq.generated.tables.records.DepartmentRecord;
 import com.example.jooq.generated.tables.records.DeveloperProjectWorkHistoryRecord;
+import com.example.jooq.generated.tables.records.DeveloperProjectWorkHistoryTechStackRecord;
 import com.example.jooq.generated.tables.records.DeveloperProjectWorkRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackRecord;
@@ -124,6 +126,16 @@ public class Keys {
               new TableField[] {
                 DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY
                     .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              true);
+  public static final UniqueKey<DeveloperProjectWorkHistoryTechStackRecord>
+      KEY_DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_PRIMARY =
+          Internal.createUniqueKey(
+              DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
+              DSL.name("KEY_developer_project_work_history_tech_stack_PRIMARY"),
+              new TableField[] {
+                DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK
+                    .DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_ID
               },
               true);
   public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY =
@@ -336,6 +348,22 @@ public class Keys {
                 DeveloperProjectWork.DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID
               },
               true);
+  public static final ForeignKey<
+          DeveloperProjectWorkHistoryTechStackRecord, DeveloperProjectWorkHistoryRecord>
+      FK_DPWH_TS_DPWH =
+          Internal.createForeignKey(
+              DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
+              DSL.name("FK_DPWH_TS_DPWH"),
+              new TableField[] {
+                DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK
+                    .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              Keys.KEY_DEVELOPER_PROJECT_WORK_HISTORY_PRIMARY,
+              new TableField[] {
+                DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY
+                    .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              true);
   public static final ForeignKey<DeveloperTechStackRecord, MemberRecord>
       FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1 =
           Internal.createForeignKey(
@@ -430,6 +458,14 @@ public class Keys {
           Notification.NOTIFICATION,
           DSL.name("FK_NOTIFICATION_MEMBER"),
           new TableField[] {Notification.NOTIFICATION.RECEIVER_ID},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<NotificationRecord, MemberRecord> FK_NOTIFICATION_MEMBER_2 =
+      Internal.createForeignKey(
+          Notification.NOTIFICATION,
+          DSL.name("FK_NOTIFICATION_MEMBER_2"),
+          new TableField[] {Notification.NOTIFICATION.SENDER_ID},
           Keys.KEY_MEMBER_PRIMARY,
           new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
           true);

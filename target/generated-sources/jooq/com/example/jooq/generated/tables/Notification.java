@@ -10,11 +10,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.Function9;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -46,7 +47,8 @@ public class Notification extends TableImpl<NotificationRecord> {
 
   /** The column <code>sion.notification.notification_id</code>. */
   public final TableField<NotificationRecord, Long> NOTIFICATION_ID =
-      createField(DSL.name("notification_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("notification_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
   /** The column <code>sion.notification.notification_type</code>. */
   public final TableField<NotificationRecord, String> NOTIFICATION_TYPE =
@@ -84,9 +86,27 @@ public class Notification extends TableImpl<NotificationRecord> {
           this,
           "");
 
+  /** The column <code>sion.notification.updated_at</code>. */
+  public final TableField<NotificationRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
   /** The column <code>sion.notification.receiver_id</code>. */
   public final TableField<NotificationRecord, String> RECEIVER_ID =
       createField(DSL.name("receiver_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+
+  /** The column <code>sion.notification.sender_id</code>. */
+  public final TableField<NotificationRecord, String> SENDER_ID =
+      createField(
+          DSL.name("sender_id"),
+          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
   private Notification(Name alias, Table<NotificationRecord> aliased) {
     this(alias, aliased, null);
@@ -121,22 +141,43 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   @Override
+  public Identity<NotificationRecord, Long> getIdentity() {
+    return (Identity<NotificationRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<NotificationRecord> getPrimaryKey() {
     return Keys.KEY_NOTIFICATION_PRIMARY;
   }
 
   @Override
   public List<ForeignKey<NotificationRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER);
+    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER, Keys.FK_NOTIFICATION_MEMBER_2);
   }
 
-  private transient Member _member;
+  private transient Member _fkNotificationMember;
+  private transient Member _fkNotificationMember_2;
 
-  /** Get the implicit join path to the <code>sion.member</code> table. */
-  public Member member() {
-    if (_member == null) _member = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
+  /**
+   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
+   * FK_NOTIFICATION_MEMBER</code> key.
+   */
+  public Member fkNotificationMember() {
+    if (_fkNotificationMember == null)
+      _fkNotificationMember = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
 
-    return _member;
+    return _fkNotificationMember;
+  }
+
+  /**
+   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
+   * FK_NOTIFICATION_MEMBER_2</code> key.
+   */
+  public Member fkNotificationMember_2() {
+    if (_fkNotificationMember_2 == null)
+      _fkNotificationMember_2 = new Member(this, Keys.FK_NOTIFICATION_MEMBER_2);
+
+    return _fkNotificationMember_2;
   }
 
   @Override
@@ -173,23 +214,26 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row7 type methods
+  // Row9 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row7<Long, String, String, String, Byte, LocalDateTime, String> fieldsRow() {
-    return (Row7) super.fieldsRow();
+  public Row9<Long, String, String, String, Byte, LocalDateTime, LocalDateTime, String, String>
+      fieldsRow() {
+    return (Row9) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function7<
+      Function9<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super Byte,
               ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {
@@ -199,13 +243,15 @@ public class Notification extends TableImpl<NotificationRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function7<
+      Function9<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super Byte,
               ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {

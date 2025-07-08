@@ -138,6 +138,21 @@ public class NotificationDao
   }
 
   /**
+   * Fetch records that have <code>updated_at BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchRangeOfUpdatedAt(
+      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    return fetchRange(Notification.NOTIFICATION.UPDATED_AT, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>updated_at IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchByUpdatedAt(
+      LocalDateTime... values) {
+    return fetch(Notification.NOTIFICATION.UPDATED_AT, values);
+  }
+
+  /**
    * Fetch records that have <code>receiver_id BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
@@ -150,5 +165,20 @@ public class NotificationDao
   public List<com.example.jooq.generated.tables.pojos.Notification> fetchByReceiverId(
       String... values) {
     return fetch(Notification.NOTIFICATION.RECEIVER_ID, values);
+  }
+
+  /**
+   * Fetch records that have <code>sender_id BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchRangeOfSenderId(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Notification.NOTIFICATION.SENDER_ID, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>sender_id IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Notification> fetchBySenderId(
+      String... values) {
+    return fetch(Notification.NOTIFICATION.SENDER_ID, values);
   }
 }
