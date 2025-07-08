@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.query.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.*;
@@ -13,7 +14,7 @@ public class UserCertificateHistoryResponse {
   private Long userCertificateHistoryId;
   private String certificateName;
   private String issuingOrganization;
-  private LocalDateTime issueDate;
+  private LocalDate issueDate;
   private String pdfFileUrl;
   private String certificateStatus;
   private String rejectedReason;
