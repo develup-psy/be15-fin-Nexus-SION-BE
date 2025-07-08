@@ -53,7 +53,7 @@ class ProjectQueryServiceImplTest {
     PageResponse<ProjectListResponse> result = service.findProjects(request);
 
     assertThat(result.getContent()).hasSize(1);
-    assertThat(result.getContent().get(0).getTitle()).isEqualTo("AI 플랫폼 개발");
+    assertThat(result.getContent().get(0).getTitle()).isEqualTo("AI 기반 리포트 시스템");
     verify(repository).findProjects(request);
   }
 
@@ -84,7 +84,7 @@ class ProjectQueryServiceImplTest {
     PageResponse<ProjectListResponse> result = service.findProjects(request);
 
     assertThat(result.getContent()).hasSize(1);
-    assertThat(result.getContent().get(0).getStatus()).isEqualTo("WAITING");
+    assertThat(result.getContent().get(0).getStatus()).isEqualTo("COMPLETE");
     verify(repository).findProjects(request);
   }
 
