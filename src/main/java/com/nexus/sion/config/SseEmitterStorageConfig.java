@@ -9,8 +9,14 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Configuration
 public class SseEmitterStorageConfig {
+
   @Bean
   public Map<String, SseEmitter> sseEmitters() {
+    return new ConcurrentHashMap<>();
+  }
+
+  @Bean
+  public Map<String, Object> sseEventCache() {
     return new ConcurrentHashMap<>();
   }
 }

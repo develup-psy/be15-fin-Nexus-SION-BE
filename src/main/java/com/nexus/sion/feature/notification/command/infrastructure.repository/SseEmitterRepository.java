@@ -3,18 +3,23 @@ package com.nexus.sion.feature.notification.command.infrastructure.repository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static java.util.stream.Collectors.toMap;
+
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class SseEmitterRepository {
 
-  private final Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
-  private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
+  private final Map<String, SseEmitter> emitterMap;
+  private final Map<String, Object> eventCache;
 
   public SseEmitter save(String emitterId, SseEmitter emitter) {
     emitterMap.put(emitterId, emitter);
@@ -27,14 +32,9 @@ public class SseEmitterRepository {
   }
 
   public Map<String, SseEmitter> findAllEmittersStartWithId(String employeeIdentificationNumber) {
-    Map<String, SseEmitter> result = new HashMap<>();
-    emitterMap.forEach(
-        (key, emitter) -> {
-          if (key.startsWith(employeeIdentificationNumber)) {
-            result.put(key, emitter);
-          }
-        });
-    return result;
+    return emitterMap.entrySet().stream()
+            .filter(entry -> entry.getKey().startsWith(employeeIdentificationNumber))
+            .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
   public void saveEventCache(String emitterId, Object event) {
@@ -42,13 +42,8 @@ public class SseEmitterRepository {
   }
 
   public Map<String, Object> findAllEventCacheStartWithId(String employeeIdentificationNumber) {
-    Map<String, Object> result = new HashMap<>();
-    eventCache.forEach(
-        (key, event) -> {
-          if (key.startsWith(employeeIdentificationNumber)) {
-            result.put(key, event);
-          }
-        });
-    return result;
+    return eventCache.entrySet().stream()
+            .filter(entry -> entry.getKey().startsWith(employeeIdentificationNumber))
+            .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 }
