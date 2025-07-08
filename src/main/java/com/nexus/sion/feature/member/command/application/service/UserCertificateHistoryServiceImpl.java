@@ -1,10 +1,11 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
+
 import org.springframework.stereotype.Service;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Certificate;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.UserCertificateHistory;
@@ -27,7 +28,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
     Certificate certificate =
         certificateRepository
             .findById(request.getCertificateName())
-                .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
     UserCertificateHistory history =
         UserCertificateHistory.builder()
