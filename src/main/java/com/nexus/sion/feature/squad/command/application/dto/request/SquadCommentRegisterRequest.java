@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SquadCommentRegisterRequest {
-
-  @NotBlank private String employeeIdentificationNumber;
-
   @NotBlank
   @Size(max = 500)
   private String content;

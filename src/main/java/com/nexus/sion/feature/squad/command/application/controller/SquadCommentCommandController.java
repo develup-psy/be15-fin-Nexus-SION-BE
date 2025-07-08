@@ -3,6 +3,8 @@ package com.nexus.sion.feature.squad.command.application.controller;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadCommentRegisterRequest;
@@ -19,8 +21,10 @@ public class SquadCommentCommandController {
 
   @PostMapping("/{squadCode}/comments")
   public ResponseEntity<Void> register(
+          @AuthenticationPrincipal UserDetails userDetails,
       @PathVariable String squadCode, @RequestBody @Valid SquadCommentRegisterRequest request) {
-    squadCommentCommandService.registerComment(squadCode, request); // 👈 squadCode 따로 전달
+
+    squadCommentCommandService.registerComment(squadCode, request, userDetails.getUsername()); // 👈 squadCode 따로 전달
     return ResponseEntity.ok().build();
   }
 

@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.service;
 
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class SquadCommentCommandService {
 
   private final SquadCommentRepository squadCommentRepository;
+  private final NotificationCommandService notificationCommandService;
 
   @Transactional
-  public void registerComment(String squadCode, SquadCommentRegisterRequest request) {
+  public void registerComment(String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber) {
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
     }
@@ -26,11 +28,12 @@ public class SquadCommentCommandService {
     SquadComment comment =
         SquadComment.builder()
             .squadCode(squadCode)
-            .employeeIdentificationNumber(request.getEmployeeIdentificationNumber())
+            .employeeIdentificationNumber(employeeIdentificationNumber)
             .content(request.getContent())
             .build();
 
     squadCommentRepository.save(comment);
+
   }
 
   @org.springframework.transaction.annotation.Transactional
