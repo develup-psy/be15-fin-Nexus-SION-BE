@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -213,7 +214,8 @@ class MemberQueryServiceImplTest {
               "employeeName",
               "asc",
               1,
-              10);
+              10,
+                  new ArrayList<>(List.of("INSIDER")));
 
       baseCondition = MEMBER.ROLE.isNotNull(); // 단순한 조건으로 설정
       baseSortField = MEMBER.EMPLOYEE_NAME.asc();
@@ -224,7 +226,15 @@ class MemberQueryServiceImplTest {
     void givenStatusOnly_whenSearch_thenReturnsFiltered() {
       // given
       List<MemberSquadListResponse> mockResults =
-          List.of(new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java"));
+          List.of(new MemberSquadListResponse(
+                  "EMP001",
+                  "홍길동",
+                  "S",
+                  "AVAILABLE",
+                  "Java",
+                  0,
+                  null
+          ));
 
       // when
     }
@@ -246,7 +256,14 @@ class MemberQueryServiceImplTest {
     void givenValidFilters_whenSearch_thenReturnsPagedResult() {
       // given
       List<MemberSquadListResponse> mockResults =
-          List.of(new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java"));
+          List.of(new MemberSquadListResponse(
+                  "EMP001",
+                  "홍길동",
+                  "S",
+                  "AVAILABLE",
+                  "Java",
+                  0,
+                  null));
 
       when(memberConditionBuilder.build(baseQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
@@ -279,14 +296,32 @@ class MemberQueryServiceImplTest {
     void givenNoFilter_whenSearch_thenReturnsAllMembers() {
       // given
       MemberListQuery noFilterQuery =
-          new MemberListQuery(null, null, null, null, "employeeName", "asc", 1, 10);
+          new MemberListQuery(
+                  null,
+                  null,
+                  null,
+                  null,
+                  "employeeName",
+                  "asc",
+                  1,
+                  10,
+                  List.of("INSIDER")
+          );
 
       when(memberConditionBuilder.build(noFilterQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
           .thenAnswer(invocation -> baseSortField);
 
       List<MemberSquadListResponse> results =
-          List.of(new MemberSquadListResponse("EMP001", "홍길동", null, "AVAILABLE", "Spring"));
+          List.of(new MemberSquadListResponse(
+                  "EMP001",
+                  "홍길동",
+                  null,
+                  "AVAILABLE",
+                  "Spring",
+                  0,
+                  null
+          ));
 
       when(memberQueryRepository.countMembers(baseCondition)).thenReturn(1L);
       when(memberQueryRepository.findAllSquadMembers(noFilterQuery, baseCondition, baseSortField))
@@ -314,7 +349,16 @@ class MemberQueryServiceImplTest {
     void givenInvalidSortBy_whenSearch_thenThrowsException() {
       // given
       MemberListQuery badSortQuery =
-          new MemberListQuery(null, null, null, null, "invalidField", "asc", 1, 10);
+          new MemberListQuery(
+                  null,
+                  null,
+                  null,
+                  null,
+                  "invalidField",
+                  "asc",
+                  1,
+                  10,
+                  List.of("INSIDER"));
 
       when(sortFieldSelector.select(eq("invalidField"), eq("asc")))
           .thenThrow(new BusinessException(ErrorCode.INVALID_SORT_COLUMN));
