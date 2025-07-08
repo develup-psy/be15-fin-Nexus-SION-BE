@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.command.application.controller;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,10 @@ public class UserCertificateHistoryController {
   /* 개발자의 자격증 등록 */
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> registerUserCertificate(
-      @PathVariable String employeeId, @RequestBody @Valid UserCertificateHistoryRequest request) {
+          @PathVariable String employeeId,
+          @RequestBody @Valid UserCertificateHistoryRequest request
+  ) {
     userCertificateHistoryService.registerUserCertificate(employeeId, request);
-    return ResponseEntity.ok(ApiResponse.success(null));
+    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 }
