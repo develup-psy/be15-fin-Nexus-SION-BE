@@ -21,6 +21,7 @@ public class CertificateCommandServiceImpl implements CertificateCommandService 
     Certificate certificate =
         Certificate.builder()
             .certificateName(request.getCertificateName())
+            .issuingOrganization(request.getIssuingOrganization())
             .score(request.getScore())
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
