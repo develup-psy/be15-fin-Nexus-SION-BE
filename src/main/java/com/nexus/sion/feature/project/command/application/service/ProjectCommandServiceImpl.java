@@ -197,7 +197,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Transactional
   @Override
-  public void analyzeProject(String projectId, MultipartFile multipartFile) {
+  public void analyzeProject(
+      String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
     Project project =
         projectRepository
             .findById(projectId)
@@ -207,13 +208,20 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectRepository.save(project);
 
     projectAnalysisService
-        .analyzeProject(projectId, multipartFile)
+        .analyzeProject(projectId, multipartFile, employeeIdentificationNumber)
         .exceptionally(
             ex -> {
               log.error("FP 분석 실패", ex);
               project.setAnalysisStatus(Project.AnalysisStatus.FAILED);
               projectRepository.save(project);
+              // 분석 실패 알림
+              notifyFPAnalysisFailure(employeeIdentificationNumber, projectId);
               return null;
             });
+  }
+
+  private void notifyFPAnalysisFailure(String managerId, String projectId) {
+    notificationCommandService.createAndSendNotification(
+        null, managerId, NotificationType.FP_ANALYSIS_FAILURE, projectId);
   }
 }
