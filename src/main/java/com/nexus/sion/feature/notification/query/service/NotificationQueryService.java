@@ -25,6 +25,9 @@ public class NotificationQueryService {
         notificationQueryRepository.selectNotifications(page, size, memberId);
     long totalElements = notificationQueryRepository.countTotalNotifications(memberId);
 
-    return PageResponse.fromJooq(response, totalElements, page, size);
+    // TODO : JOOQ pojo랑 notification dto랑 매칭
+
+//    return PageResponse.fromJooq(response, totalElements, page, size);
+    return null;
   }
 }
