@@ -12,7 +12,10 @@ public enum NotificationType {
   TASK_UPLOAD_REQUEST("프로젝트가 종료되었습니다. 진행하신 업무 결과물을 업로드해주세요."),
 
   /** FP 분석 완료 알림 */
-  FP_ANALYSIS_COMPLETE("FP 분석이 완료되었습니다."),
+  FP_ANALYSIS_COMPLETE("FP 분석이 완료되었습니다. 결과를 확인해주세요."),
+
+  /** FP 분석 실패 알림 */
+  FP_ANALYSIS_FAILURE("FP 분석 처리에 실패하였습니다. 다시 시도해주세요."),
 
   /** 스쿼드 댓글 알림 */
   SQUAD_COMMENT("{username}님이 스쿼드에 댓글을 작성했습니다."),

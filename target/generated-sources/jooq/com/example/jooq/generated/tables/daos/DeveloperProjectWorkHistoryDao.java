@@ -93,6 +93,24 @@ public class DeveloperProjectWorkHistoryDao
   }
 
   /**
+   * Fetch records that have <code>function_name BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory>
+      fetchRangeOfFunctionName(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_NAME,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>function_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory>
+      fetchByFunctionName(String... values) {
+    return fetch(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_NAME, values);
+  }
+
+  /**
    * Fetch records that have <code>function_description BETWEEN lowerInclusive
    * AND upperInclusive</code>
    */
@@ -109,25 +127,6 @@ public class DeveloperProjectWorkHistoryDao
       fetchByFunctionDescription(String... values) {
     return fetch(
         DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_DESCRIPTION, values);
-  }
-
-  /**
-   * Fetch records that have <code>tech_stack_name BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory>
-      fetchRangeOfTechStackName(String lowerInclusive, String upperInclusive) {
-    return fetchRange(
-        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.TECH_STACK_NAME,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>tech_stack_name IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory>
-      fetchByTechStackName(String... values) {
-    return fetch(
-        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.TECH_STACK_NAME, values);
   }
 
   /**
@@ -191,6 +190,42 @@ public class DeveloperProjectWorkHistoryDao
     return fetch(
         DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_ID,
         values);
+  }
+
+  /**
+   * Fetch records that have <code>det BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchRangeOfDet(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>det IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchByDet(
+      Integer... values) {
+    return fetch(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET, values);
+  }
+
+  /**
+   * Fetch records that have <code>ftr BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchRangeOfFtr(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>ftr IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchByFtr(
+      Integer... values) {
+    return fetch(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR, values);
   }
 
   /**

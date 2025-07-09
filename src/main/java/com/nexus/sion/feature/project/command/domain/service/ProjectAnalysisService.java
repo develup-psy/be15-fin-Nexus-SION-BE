@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectAnalysisResult;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -46,12 +48,14 @@ public class ProjectAnalysisService {
   private final ProjectFpSummaryRepository projectFpSummaryRepository;
   private final ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
   private final ProjectRepository projectRepository;
+  private final NotificationCommandService notificationCommandService;
 
   @Value("${ai.fp-infer-url}")
   private String fpInferUrl;
 
   @Async
-  public CompletableFuture<Void> analyzeProject(String projectId, MultipartFile multipartFile) {
+  public CompletableFuture<Void> analyzeProject(
+      String projectId, MultipartFile multipartFile, String managerId) {
     File tempFile = null;
     try {
       tempFile = File.createTempFile("input_", ".pdf");
@@ -117,7 +121,9 @@ public class ProjectAnalysisService {
               .findById(projectId)
               .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
       project.setAnalysisStatus(Project.AnalysisStatus.COMPLETE);
-      projectRepository.save(project);
+      Project savedProject = projectRepository.save(project);
+
+      notifyFPAnalysisSuccess(managerId, projectId);
 
       return CompletableFuture.completedFuture(null);
 
@@ -132,5 +138,11 @@ public class ProjectAnalysisService {
         }
       }
     }
+  }
+
+  private void notifyFPAnalysisSuccess(String managerId, String projectId) {
+
+    notificationCommandService.createAndSendNotification(
+        null, managerId, NotificationType.FP_ANALYSIS_COMPLETE, projectId);
   }
 }
