@@ -17,11 +17,6 @@ public class CertificateQueryServiceImpl implements CertificateQueryService {
 
   @Override
   public List<CertificateResponse> getAllCertificates() {
-    return certificateRepository.findAll().stream()
-        .map(
-            cert ->
-                new CertificateResponse(
-                    cert.getCertificateName(), cert.getScore(), cert.getIssuingOrganization()))
-        .toList();
+    return certificateRepository.findAllAsResponse();
   }
 }
