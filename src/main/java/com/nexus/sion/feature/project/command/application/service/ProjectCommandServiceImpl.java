@@ -16,6 +16,9 @@ import com.nexus.sion.feature.project.command.application.dto.response.ProjectRe
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final JobAndTechStackRepository jobAndTechStackRepository;
   private final ProjectAnalysisService projectAnalysisService;
   private final ProjectRepository projectRepository;
+  private final DeveloperProjectWorkRepository developerProjectWorkRepository;
+  private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -77,6 +82,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   }
 
   @Override
+  @Transactional
   public void updateProject(ProjectRegisterRequest request) {
     Project project =
         projectCommandRepository
@@ -92,6 +98,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setNumberOfMembers(request.getNumberOfMembers());
     project.setClientCode(request.getClientCode());
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
+
     projectCommandRepository.save(project);
 
     var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
@@ -152,6 +159,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
+      createDeveloperWorkRecords(projectCode);
     } else {
       project.setActualEndDate(null);
     }
@@ -184,5 +192,31 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
               projectRepository.save(project);
               return null;
             });
+  }
+
+  private void createDeveloperWorkRecords(String projectCode) {
+    // 1. 프로젝트 직무 조회
+    List<ProjectAndJob> jobs = projectAndJobRepository.findByProjectCode(projectCode);
+
+    for (ProjectAndJob job : jobs) {
+      // 2. 각 직무에 할당된 개발자 목록 조회
+      List<String> developerEmpIds = fetchDevelopersForJob(job.getId()); // 사번 목록
+
+      for (String empId : developerEmpIds) {
+        DeveloperProjectWork work =
+            DeveloperProjectWork.builder()
+                .employeeIdentificationNumber(empId)
+                .projectCode(projectCode)
+                .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
+                .build();
+        developerProjectWorkRepository.save(work);
+      }
+    }
+  }
+
+  private List<String> fetchDevelopersForJob(Long projectJobId) {
+    return squadEmployeeCommandRepository.findByProjectAndJobId(projectJobId).stream()
+        .map(SquadEmployee::getEmployeeIdentificationNumber)
+        .toList();
   }
 }

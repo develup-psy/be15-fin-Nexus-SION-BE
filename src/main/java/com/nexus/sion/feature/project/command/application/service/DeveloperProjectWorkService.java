@@ -1,11 +1,11 @@
 package com.nexus.sion.feature.project.command.application.service;
 
-import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryRequestDto;
+import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryAddRequestDto;
 
 public interface DeveloperProjectWorkService {
-  Long requestWork(WorkHistoryRequestDto dto);
-
   void approve(Long id, String adminId);
 
   void reject(Long id, String adminId);
+
+  void addHistories(Long workId, WorkHistoryAddRequestDto dto);
 }

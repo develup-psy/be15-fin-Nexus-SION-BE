@@ -1,27 +1,26 @@
 package com.nexus.sion.feature.project.command.application.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
-import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryRequestDto;
+import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryAddRequestDto;
 import com.nexus.sion.feature.project.command.application.service.DeveloperProjectWorkService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v2/dev-project-works")
+@RequestMapping("/api/v1/dev-project-works")
 @RequiredArgsConstructor
-public class DeveloperProjectWorkController {
+public class DeveloperProjectWorkCommandController {
 
   private final DeveloperProjectWorkService developerProjectWorkService;
 
-  @PostMapping
-  public ResponseEntity<ApiResponse<Long>> createWorkHistory(
-      @RequestBody WorkHistoryRequestDto dto) {
-    Long id = developerProjectWorkService.requestWork(dto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(id));
+  @PutMapping("/{workId}/histories")
+  public ResponseEntity<ApiResponse<Void>> addHistories(
+      @PathVariable Long workId, @RequestBody WorkHistoryAddRequestDto requestDto) {
+    developerProjectWorkService.addHistories(workId, requestDto);
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @PutMapping("/{id}/approve")
