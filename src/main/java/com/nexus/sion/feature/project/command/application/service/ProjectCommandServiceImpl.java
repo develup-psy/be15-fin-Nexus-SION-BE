@@ -214,7 +214,17 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
               project.setAnalysisStatus(Project.AnalysisStatus.FAILED);
               projectRepository.save(project);
               // 분석 실패 알림
+              notifyFPAnalysisFailure(employeeIdentificationNumber, projectId);
               return null;
             });
+  }
+
+  private void notifyFPAnalysisFailure(String managerId, String projectId) {
+    notificationCommandService.createAndSendNotification(
+            null,
+            managerId,
+            NotificationType.FP_ANALYSIS_FAILURE,
+            projectId
+    );
   }
 }
