@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CertificateRequest {
+public class CertificateCreateRequest {
 
   @NotBlank(message = "자격증명은 필수입니다.")
   private String certificateName;
