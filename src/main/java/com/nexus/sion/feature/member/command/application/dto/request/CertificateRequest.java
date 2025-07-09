@@ -13,6 +13,9 @@ public class CertificateRequest {
   @NotBlank(message = "자격증명은 필수입니다.")
   private String certificateName;
 
+  @NotBlank(message = "발급기관은 필수입니다.")
+  private String issuingOrganization;
+
   @NotNull(message = "점수는 필수 항목입니다.")
   private int score;
 }
