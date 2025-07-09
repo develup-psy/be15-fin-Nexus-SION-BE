@@ -15,6 +15,7 @@ import com.example.jooq.generated.tables.ClientCompany;
 import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperProjectWork;
 import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
+import com.example.jooq.generated.tables.DeveloperProjectWorkHistoryTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -45,6 +46,7 @@ import com.example.jooq.generated.tables.records.CertificateRecord;
 import com.example.jooq.generated.tables.records.ClientCompanyRecord;
 import com.example.jooq.generated.tables.records.DepartmentRecord;
 import com.example.jooq.generated.tables.records.DeveloperProjectWorkHistoryRecord;
+import com.example.jooq.generated.tables.records.DeveloperProjectWorkHistoryTechStackRecord;
 import com.example.jooq.generated.tables.records.DeveloperProjectWorkRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackHistoryRecord;
 import com.example.jooq.generated.tables.records.DeveloperTechStackRecord;
@@ -124,6 +126,16 @@ public class Keys {
               new TableField[] {
                 DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY
                     .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              true);
+  public static final UniqueKey<DeveloperProjectWorkHistoryTechStackRecord>
+      KEY_DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_PRIMARY =
+          Internal.createUniqueKey(
+              DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
+              DSL.name("KEY_developer_project_work_history_tech_stack_PRIMARY"),
+              new TableField[] {
+                DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK
+                    .DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_ID
               },
               true);
   public static final UniqueKey<DeveloperTechStackRecord> KEY_DEVELOPER_TECH_STACK_PRIMARY =
@@ -336,6 +348,34 @@ public class Keys {
                 DeveloperProjectWork.DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID
               },
               true);
+  public static final ForeignKey<
+          DeveloperProjectWorkHistoryTechStackRecord, DeveloperProjectWorkHistoryRecord>
+      FK_DPWH_TS_DPWH =
+          Internal.createForeignKey(
+              DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
+              DSL.name("FK_DPWH_TS_DPWH"),
+              new TableField[] {
+                DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK
+                    .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              Keys.KEY_DEVELOPER_PROJECT_WORK_HISTORY_PRIMARY,
+              new TableField[] {
+                DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY
+                    .DEVELOPER_PROJECT_WORK_HISTORY_ID
+              },
+              true);
+  public static final ForeignKey<DeveloperProjectWorkHistoryTechStackRecord, TechStackRecord>
+      FK_DPWH_TS_TECH_STACK =
+          Internal.createForeignKey(
+              DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
+              DSL.name("FK_DPWH_TS_TECH_STACK"),
+              new TableField[] {
+                DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK
+                    .TECH_STACK_NAME
+              },
+              Keys.KEY_TECH_STACK_PRIMARY,
+              new TableField[] {TechStack.TECH_STACK.TECH_STACK_NAME},
+              true);
   public static final ForeignKey<DeveloperTechStackRecord, MemberRecord>
       FK_DEVELOPER_TO_DEVELOPER_TECH_STACK_1 =
           Internal.createForeignKey(
@@ -422,6 +462,22 @@ public class Keys {
           MemberScoreHistory.MEMBER_SCORE_HISTORY,
           DSL.name("FK_MSH_MEMBER"),
           new TableField[] {MemberScoreHistory.MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<NotificationRecord, MemberRecord> FK_NOTIFICATION_MEMBER =
+      Internal.createForeignKey(
+          Notification.NOTIFICATION,
+          DSL.name("FK_NOTIFICATION_MEMBER"),
+          new TableField[] {Notification.NOTIFICATION.RECEIVER_ID},
+          Keys.KEY_MEMBER_PRIMARY,
+          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
+          true);
+  public static final ForeignKey<NotificationRecord, MemberRecord> FK_NOTIFICATION_MEMBER_2 =
+      Internal.createForeignKey(
+          Notification.NOTIFICATION,
+          DSL.name("FK_NOTIFICATION_MEMBER_2"),
+          new TableField[] {Notification.NOTIFICATION.SENDER_ID},
           Keys.KEY_MEMBER_PRIMARY,
           new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
           true);
@@ -576,28 +632,19 @@ public class Keys {
               new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
               true);
   public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord>
-      FK_CERTIFICATE_TO_USER_CERTIFICATE_HISTORY_1 =
+      FK_USER_CERT_HISTORY_TO_CERTIFICATE =
           Internal.createForeignKey(
               UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_certificate_TO_user_certificate_history_1"),
+              DSL.name("FK_user_cert_history_to_certificate"),
               new TableField[] {UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME},
               Keys.KEY_CERTIFICATE_PRIMARY,
               new TableField[] {Certificate.CERTIFICATE.CERTIFICATE_NAME},
               true);
   public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_1 =
+      FK_USER_CERT_HISTORY_TO_MEMBER =
           Internal.createForeignKey(
               UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_developer_TO_user_certificate_history_1"),
-              new TableField[] {UserCertificateHistory.USER_CERTIFICATE_HISTORY.UPDATED_BY},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserCertificateHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_CERTIFICATE_HISTORY_2 =
-          Internal.createForeignKey(
-              UserCertificateHistory.USER_CERTIFICATE_HISTORY,
-              DSL.name("FK_developer_TO_user_certificate_history_2"),
+              DSL.name("FK_user_cert_history_to_member"),
               new TableField[] {
                 UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER
               },

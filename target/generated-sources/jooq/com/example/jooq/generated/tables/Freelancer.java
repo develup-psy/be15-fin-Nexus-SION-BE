@@ -44,8 +44,8 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
   }
 
   /** The column <code>SION.freelancer.freelancer_id</code>. */
-  public final TableField<FreelancerRecord, Long> FREELANCER_ID =
-      createField(DSL.name("freelancer_id"), SQLDataType.BIGINT.nullable(false), this, "");
+  public final TableField<FreelancerRecord, String> FREELANCER_ID =
+      createField(DSL.name("freelancer_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   /** The column <code>SION.freelancer.name</code>. */
   public final TableField<FreelancerRecord, String> NAME =
@@ -172,7 +172,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
   // -------------------------------------------------------------------------
 
   @Override
-  public Row9<Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
+  public Row9<String, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
       fieldsRow() {
     return (Row9) super.fieldsRow();
   }
@@ -180,7 +180,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
       Function9<
-              ? super Long,
+              ? super String,
               ? super String,
               ? super String,
               ? super String,
@@ -198,7 +198,7 @@ public class Freelancer extends TableImpl<FreelancerRecord> {
   public <U> SelectField<U> mapping(
       Class<U> toType,
       Function9<
-              ? super Long,
+              ? super String,
               ? super String,
               ? super String,
               ? super String,

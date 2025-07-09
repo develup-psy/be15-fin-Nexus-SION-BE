@@ -16,6 +16,7 @@ import com.example.jooq.generated.tables.ClientCompany;
 import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperProjectWork;
 import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
+import com.example.jooq.generated.tables.DeveloperProjectWorkHistoryTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -70,6 +71,10 @@ public class Sion extends SchemaImpl {
   /** The table <code>SION.developer_project_work_history</code>. */
   public final DeveloperProjectWorkHistory DEVELOPER_PROJECT_WORK_HISTORY =
       DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY;
+
+  /** The table <code>SION.developer_project_work_history_tech_stack</code>. */
+  public final DeveloperProjectWorkHistoryTechStack DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK =
+      DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK;
 
   /** The table <code>SION.developer_tech_stack</code>. */
   public final DeveloperTechStack DEVELOPER_TECH_STACK = DeveloperTechStack.DEVELOPER_TECH_STACK;
@@ -170,6 +175,7 @@ public class Sion extends SchemaImpl {
         Department.DEPARTMENT,
         DeveloperProjectWork.DEVELOPER_PROJECT_WORK,
         DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY,
+        DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK,
         DeveloperTechStack.DEVELOPER_TECH_STACK,
         DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY,
         Domain.DOMAIN,

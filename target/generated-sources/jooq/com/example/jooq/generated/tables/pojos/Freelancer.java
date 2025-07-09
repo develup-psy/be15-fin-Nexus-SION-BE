@@ -13,7 +13,7 @@ public class Freelancer implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private Long freelancerId;
+  private String freelancerId;
   private String name;
   private String phoneNumber;
   private String email;
@@ -38,7 +38,7 @@ public class Freelancer implements Serializable {
   }
 
   public Freelancer(
-      Long freelancerId,
+      String freelancerId,
       String name,
       String phoneNumber,
       String email,
@@ -59,12 +59,12 @@ public class Freelancer implements Serializable {
   }
 
   /** Getter for <code>SION.freelancer.freelancer_id</code>. */
-  public Long getFreelancerId() {
+  public String getFreelancerId() {
     return this.freelancerId;
   }
 
   /** Setter for <code>SION.freelancer.freelancer_id</code>. */
-  public void setFreelancerId(Long freelancerId) {
+  public void setFreelancerId(String freelancerId) {
     this.freelancerId = freelancerId;
   }
 

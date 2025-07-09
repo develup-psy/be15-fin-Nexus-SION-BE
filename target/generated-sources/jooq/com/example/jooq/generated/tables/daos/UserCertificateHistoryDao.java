@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import com.example.jooq.generated.enums.UserCertificateHistoryCertificateStatus;
 import com.example.jooq.generated.tables.UserCertificateHistory;
 import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
 
@@ -84,6 +85,78 @@ public class UserCertificateHistoryDao
   }
 
   /**
+   * Fetch records that have <code>issue_date BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchRangeOfIssueDate(
+      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.ISSUE_DATE, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>issue_date IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchByIssueDate(
+      LocalDateTime... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.ISSUE_DATE, values);
+  }
+
+  /**
+   * Fetch records that have <code>pdf_file_url BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchRangeOfPdfFileUrl(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.PDF_FILE_URL,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>pdf_file_url IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchByPdfFileUrl(
+      String... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.PDF_FILE_URL, values);
+  }
+
+  /**
+   * Fetch records that have <code>certificate_status BETWEEN lowerInclusive
+   * AND upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchRangeOfCertificateStatus(
+          UserCertificateHistoryCertificateStatus lowerInclusive,
+          UserCertificateHistoryCertificateStatus upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_STATUS,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>certificate_status IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchByCertificateStatus(UserCertificateHistoryCertificateStatus... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_STATUS, values);
+  }
+
+  /**
+   * Fetch records that have <code>rejected_reason BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchRangeOfRejectedReason(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.REJECTED_REASON,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>rejected_reason IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchByRejectedReason(
+      String... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.REJECTED_REASON, values);
+  }
+
+  /**
    * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
@@ -116,40 +189,6 @@ public class UserCertificateHistoryDao
   }
 
   /**
-   * Fetch records that have <code>updated_by BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchRangeOfUpdatedBy(
-      String lowerInclusive, String upperInclusive) {
-    return fetchRange(
-        UserCertificateHistory.USER_CERTIFICATE_HISTORY.UPDATED_BY, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>updated_by IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory> fetchByUpdatedBy(
-      String... values) {
-    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.UPDATED_BY, values);
-  }
-
-  /**
-   * Fetch records that have <code>certificate_name BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
-      fetchRangeOfCertificateName(String lowerInclusive, String upperInclusive) {
-    return fetchRange(
-        UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>certificate_name IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
-      fetchByCertificateName(String... values) {
-    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME, values);
-  }
-
-  /**
    * Fetch records that have <code>employee_identification_number BETWEEN
    * lowerInclusive AND upperInclusive</code>
    */
@@ -169,5 +208,23 @@ public class UserCertificateHistoryDao
       fetchByEmployeeIdentificationNumber(String... values) {
     return fetch(
         UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER, values);
+  }
+
+  /**
+   * Fetch records that have <code>certificate_name BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchRangeOfCertificateName(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>certificate_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchByCertificateName(String... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME, values);
   }
 }
