@@ -2,6 +2,8 @@ package com.nexus.sion.feature.project.command.application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,9 +53,10 @@ public class ProjectCommandController {
 
   @PostMapping("/{projectCode}/analyze")
   public ResponseEntity<Void> analyzeProject(
+          @AuthenticationPrincipal UserDetails userDetails,
       @PathVariable String projectCode, @RequestParam("file") MultipartFile multipartFile) {
 
-    projectCommandService.analyzeProject(projectCode, multipartFile);
+    projectCommandService.analyzeProject(projectCode, multipartFile, userDetails.getUsername());
     return ResponseEntity.accepted().build();
   }
 }

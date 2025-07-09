@@ -20,5 +20,5 @@ public interface ProjectCommandService {
 
   Map<String, Long> findProjectAndJobIdMap(String projectId);
 
-  void analyzeProject(String projectId, MultipartFile multipartFile);
+  void analyzeProject(String projectId, MultipartFile multipartFile, String employeeIdentificationNumber);
 }
