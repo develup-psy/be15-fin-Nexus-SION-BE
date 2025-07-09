@@ -87,38 +87,45 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         employeeIdentificationNumber + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis();
     SseEmitter emitter = sseEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-
-      emitter.onCompletion(() -> {
+    emitter.onCompletion(
+        () -> {
           sseEmitterRepository.deleteById(emitterId);
           System.out.println("onCompletion - emitter 삭제: " + emitterId);
-      });
+        });
 
-      emitter.onTimeout(() -> {
+    emitter.onTimeout(
+        () -> {
           sseEmitterRepository.deleteById(emitterId);
           System.out.println("onTimeout - emitter 삭제: " + emitterId);
-      });
+        });
 
-      emitter.onError((e) -> {
+    emitter.onError(
+        (e) -> {
           sseEmitterRepository.deleteById(emitterId);
           System.out.println("onError - emitter 삭제: " + emitterId);
-      });
+        });
 
     sendToClient(
-        emitterId, emitter, "initial-connect", "알림 서버 연결 성공. [memberId = " + employeeIdentificationNumber + "]");
+        emitterId,
+        emitter,
+        "initial-connect",
+        "알림 서버 연결 성공. [memberId = " + employeeIdentificationNumber + "]");
 
-      // ping 이벤트 30초마다 보내기
-      scheduler.scheduleAtFixedRate(() -> {
+    // ping 이벤트 30초마다 보내기
+    scheduler.scheduleAtFixedRate(
+        () -> {
           try {
-              emitter.send(SseEmitter.event()
-                      .name("ping")
-                      .data("ping"));
+            emitter.send(SseEmitter.event().name("ping").data("ping"));
           } catch (IOException e) {
-              sseEmitterRepository.deleteById(emitterId);
-              System.out.println("ping 전송 실패 - emitter 삭제: " + emitterId);
+            sseEmitterRepository.deleteById(emitterId);
+            System.out.println("ping 전송 실패 - emitter 삭제: " + emitterId);
           }
-      }, 30, 30, TimeUnit.SECONDS);
+        },
+        30,
+        30,
+        TimeUnit.SECONDS);
 
-      // 기존 last event 복구 로직
+    // 기존 last event 복구 로직
     if (!lastEventId.isEmpty()) {
       Map<String, Object> events =
           sseEmitterRepository.findAllEventCacheStartWithId(employeeIdentificationNumber);
@@ -161,10 +168,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
   private void sendToClient(String emitterId, SseEmitter emitter, String name, Object data) {
     try {
-      emitter.send(SseEmitter.event()
-              .id(emitterId)
-              .name(name)
-              .data(data));
+      emitter.send(SseEmitter.event().id(emitterId).name(name).data(data));
     } catch (IOException e) {
       sseEmitterRepository.deleteById(emitterId);
       log.error("SSE 연결 오류: emitterId={}, error={}", emitterId, e.getMessage());
