@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.nexus.sion.feature.notification.command.domain.repository.SseEmitterRepository;
+import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
 import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
 import jakarta.transaction.Transactional;
 
