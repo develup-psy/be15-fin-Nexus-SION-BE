@@ -112,9 +112,10 @@ public class DeveloperProjectWorkQueryRepository {
     // 최종 WorkRequestQueryDto 매핑
     return records.stream()
         .collect(
-            Collectors.groupingBy(r -> r.get(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID),
-                    LinkedHashMap::new,
-                    Collectors.toList()))
+            Collectors.groupingBy(
+                r -> r.get(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID),
+                LinkedHashMap::new,
+                Collectors.toList()))
         .entrySet()
         .stream()
         .map(

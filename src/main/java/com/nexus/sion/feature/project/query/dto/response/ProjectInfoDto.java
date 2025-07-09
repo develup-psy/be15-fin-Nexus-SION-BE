@@ -1,10 +1,10 @@
 // ProjectInfoDto.java
 package com.nexus.sion.feature.project.query.dto.response;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
