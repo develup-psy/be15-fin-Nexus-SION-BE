@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.project.query.dto.response;
 
 import com.example.jooq.generated.enums.ProjectAnalysisStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
