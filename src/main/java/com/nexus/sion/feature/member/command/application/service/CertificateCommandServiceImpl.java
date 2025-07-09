@@ -37,22 +37,21 @@ public class CertificateCommandServiceImpl implements CertificateCommandService 
   @Transactional
   @Override
   public void updateCertificate(String certificateName, CertificateUpdateRequest request) {
-    Certificate certificate =
-        certificateRepository
-            .findById(certificateName)
-            .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
-
+    Certificate certificate = findCertificateByName(certificateName);
     certificate.update(request.getScore(), request.getIssuingOrganization());
   }
 
   @Transactional
   @Override
   public void deleteCertificate(String certificateName) {
-    Certificate certificate =
-        certificateRepository
+    Certificate certificate = findCertificateByName(certificateName);
+    certificateRepository.delete(certificate);
+  }
+
+  // 중복 제거를 위한 private 메서드 추출
+  private Certificate findCertificateByName(String certificateName) {
+    return certificateRepository
             .findById(certificateName)
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
-
-    certificateRepository.delete(certificate);
   }
 }
