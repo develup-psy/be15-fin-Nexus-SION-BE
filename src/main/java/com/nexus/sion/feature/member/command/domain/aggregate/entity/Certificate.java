@@ -29,4 +29,12 @@ public class Certificate {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt = LocalDateTime.now();
+
+  public void update(int score, String issuingOrganization) {
+    this.score = score;
+    this.issuingOrganization = issuingOrganization;
+    this.updatedAt = LocalDateTime.now();
+  }
 }
+
+
