@@ -8,7 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
+import com.nexus.sion.feature.notification.command.domain.repository.SseEmitterRepository;
+import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
 import jakarta.transaction.Transactional;
 
 import org.springframework.scheduling.annotation.Async;
@@ -65,19 +66,19 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
     /* Query DTO와 구조 같아야 함 */
     /* TODO :  쿼리쪽 응답 response dto 로 대체 */
-    Map<String, Object> payload =
-        Map.of(
-            "notificationId", id,
-            "senderId", senderId,
-            "senderName", senderName,
-            "receiverId", receiverId,
-            "message", message,
-            "notificationType", type,
-            "linkedContentId", linkedContentId,
-            "isRead", false,
-            "createdAt", LocalDateTime.now());
+    NotificationDTO notificationDTO =
+            NotificationDTO.builder()
+                    .notificationId(id)
+                    .senderId(senderId)
+                    .senderName(senderName)
+                    .receiverId(receiverId)
+                    .message(message)
+                    .notificationType(type)
+                    .isRead(false)
+                    .createdAt(LocalDateTime.now())
+                    .build();
 
-    send(receiverId, payload);
+    send(receiverId, notificationDTO);
   }
 
   @Override
@@ -120,7 +121,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
       // 기존 last event 복구 로직
     if (!lastEventId.isEmpty()) {
-      Map<String, Object> events =
+      Map<String, NotificationDTO> events =
           sseEmitterRepository.findAllEventCacheStartWithId(employeeIdentificationNumber);
       events.entrySet().stream()
           .filter(
@@ -149,7 +150,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   }
 
   @Async
-  public void send(String employeeIdentificationNumber, Object data) {
+  public void send(String employeeIdentificationNumber, NotificationDTO data) {
     Map<String, SseEmitter> emitters =
         sseEmitterRepository.findAllEmittersStartWithId(employeeIdentificationNumber);
     emitters.forEach(
