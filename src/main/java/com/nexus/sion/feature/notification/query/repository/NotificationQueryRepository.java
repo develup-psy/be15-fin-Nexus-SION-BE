@@ -30,10 +30,11 @@ public class NotificationQueryRepository {
   }
 
   public long countTotalNotifications(String employeeIdentificationNumber) {
-    return Optional.ofNullable(dsl.selectCount()
-                    .from(NOTIFICATION)
-                    .where(NOTIFICATION.RECEIVER_ID.eq(employeeIdentificationNumber))
-                    .fetchOne(0, Long.class))
+    return Optional.ofNullable(
+            dsl.selectCount()
+                .from(NOTIFICATION)
+                .where(NOTIFICATION.RECEIVER_ID.eq(employeeIdentificationNumber))
+                .fetchOne(0, Long.class))
         .orElse(0L);
   }
 }
