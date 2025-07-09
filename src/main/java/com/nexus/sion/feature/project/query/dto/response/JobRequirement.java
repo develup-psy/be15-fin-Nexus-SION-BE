@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobRequirement {
-  private String jobName;
-  private int requiredCount;
+    private String jobName;
+    private int requiredCount;
+    private Long projectJobAndId;
 }

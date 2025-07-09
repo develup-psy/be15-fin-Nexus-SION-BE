@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.scheduling.annotation.Async;
@@ -20,7 +21,6 @@ import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.notification.command.domain.aggregate.Notification;
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.notification.command.domain.repository.NotificationRepository;
-import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -20,7 +20,8 @@
     <select id="findJobRequirements" resultType="com.nexus.sion.feature.project.query.dto.response.JobRequirement">
         SELECT
                 j.name AS jobName,
-                paj.required_number AS requiredCount
+                paj.required_number AS requiredCount,
+                paj.project_and_job_id as projectJobAndId
           FROM project_and_job paj
           JOIN job j ON paj.job_name = j.name
         WHERE paj.project_code = #{projectCode}
