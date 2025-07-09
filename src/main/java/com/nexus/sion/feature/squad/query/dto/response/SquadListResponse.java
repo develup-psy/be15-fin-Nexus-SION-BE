@@ -10,7 +10,7 @@ import lombok.Getter;
 public class SquadListResponse {
   private String squadCode;
   private String squadName;
-  private String originType;
+  private boolean aiRecommended;
   private List<MemberInfo> members;
   private String estimatedPeriod;
   private String estimatedCost;

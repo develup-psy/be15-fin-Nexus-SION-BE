@@ -109,7 +109,8 @@ public class ProjectQueryRepository {
                       months,
                       String.valueOf(record.get(PROJECT.STATUS)),
                       record.get(PROJECT.DOMAIN_NAME),
-                      record.get(PROJECT.NUMBER_OF_MEMBERS));
+                      record.get(PROJECT.NUMBER_OF_MEMBERS),
+                      record.get(PROJECT.ANALYSIS_STATUS));
                 })
             .collect(Collectors.toList());
 

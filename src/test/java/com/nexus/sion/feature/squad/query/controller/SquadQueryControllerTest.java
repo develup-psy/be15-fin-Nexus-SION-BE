@@ -77,7 +77,7 @@ class SquadQueryControllerTest {
 
     PageResponse<SquadListResponse> response = PageResponse.fromJooq(List.of(squad), 10, 5, 1);
 
-    when(squadQueryService.findSquadsOrConfirmed(any(SquadListRequest.class))).thenReturn(response);
+    when(squadQueryService.getSquads(any(SquadListRequest.class))).thenReturn(response);
     mockMvc
         .perform(
             get("/api/v1/squads/project/{projectCode}", projectCode)

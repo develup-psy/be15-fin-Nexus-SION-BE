@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -41,11 +42,11 @@ public class SquadCommandController {
   }
 
   @PostMapping("/recommendation")
-  public ResponseEntity<ApiResponse<Void>> recommendSquad(
+  public ResponseEntity<ApiResponse<SquadRecommendationResponse>> recommendSquad(
       @RequestBody @Valid SquadRecommendationRequest request) {
 
-    squadCommandService.recommendSquad(request);
-    return ResponseEntity.ok(ApiResponse.success(null));
+    SquadRecommendationResponse result = squadCommandService.recommendSquad(request);
+    return ResponseEntity.ok(ApiResponse.success(result));
   }
 
   @PatchMapping("/{squadCode}/confirm")
