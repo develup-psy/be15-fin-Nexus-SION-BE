@@ -53,7 +53,7 @@ class ProjectQueryServiceImplTest {
     PageResponse<ProjectListResponse> result = service.findProjects(request);
 
     assertThat(result.getContent()).hasSize(1);
-    assertThat(result.getContent().get(0).getTitle()).isEqualTo("AI 플랫폼 개발");
+    assertThat(result.getContent().get(0).getTitle()).isEqualTo("AI 기반 리포트 시스템");
     verify(repository).findProjects(request);
   }
 
@@ -84,7 +84,7 @@ class ProjectQueryServiceImplTest {
     PageResponse<ProjectListResponse> result = service.findProjects(request);
 
     assertThat(result.getContent()).hasSize(1);
-    assertThat(result.getContent().get(0).getStatus()).isEqualTo("WAITING");
+    assertThat(result.getContent().get(0).getStatus()).isEqualTo("COMPLETE");
     verify(repository).findProjects(request);
   }
 
@@ -130,9 +130,9 @@ class ProjectQueryServiceImplTest {
     List<ProjectDetailResponse.SquadMemberInfo> members =
         List.of(
             new ProjectDetailResponse.SquadMemberInfo(
-                true, "https://img.com/leader.jpg", "홍길동", "백엔드"),
+                1, "https://img.com/leader.jpg", "홍길동", "백엔드"),
             new ProjectDetailResponse.SquadMemberInfo(
-                false, "https://img.com/user.jpg", "이몽룡", "프론트엔드"));
+                0, "https://img.com/user.jpg", "이몽룡", "프론트엔드"));
 
     ProjectDetailResponse mockResponse =
         new ProjectDetailResponse(
@@ -143,7 +143,8 @@ class ProjectQueryServiceImplTest {
             "2025-01-01 ~ 2025-03-01",
             "₩5,000,000",
             techStacks,
-            members);
+            members,
+            "WAITING");
 
     when(repository.getProjectDetail(projectCode)).thenReturn(mockResponse);
 
@@ -153,7 +154,7 @@ class ProjectQueryServiceImplTest {
     assertThat(result.getDomainName()).isEqualTo("인공지능");
     assertThat(result.getTechStacks()).contains("Java");
     assertThat(result.getMembers()).hasSize(2);
-    assertThat(result.getMembers().get(0).isLeader()).isTrue();
+    assertThat(result.getMembers().get(0).getIsLeader()).isEqualTo(1);
 
     verify(repository).getProjectDetail(projectCode);
   }

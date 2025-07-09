@@ -11,13 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
-import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +37,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final JobAndTechStackRepository jobAndTechStackRepository;
   private final ProjectAnalysisService projectAnalysisService;
   private final ProjectRepository projectRepository;
-  private final DeveloperProjectWorkRepository developerProjectWorkRepository;
+  private final NotificationCommandService notificationCommandService;
+  private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
   @Override
@@ -82,8 +86,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   }
 
   @Override
-  @Transactional
-  public void updateProject(ProjectRegisterRequest request) {
+  public void updateProject(ProjectUpdateRequest request) {
     Project project =
         projectCommandRepository
             .findById(request.getProjectCode())
@@ -96,16 +99,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStartDate(request.getStartDate());
     project.setExpectedEndDate(request.getExpectedEndDate());
     project.setNumberOfMembers(request.getNumberOfMembers());
-    project.setClientCode(request.getClientCode());
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
 
     projectCommandRepository.save(project);
-
-    var projectAndJobs = projectAndJobRepository.findByProjectCode(request.getProjectCode());
-    projectAndJobs.forEach(job -> jobAndTechStackRepository.deleteByProjectJobId(job.getId()));
-    projectAndJobRepository.deleteByProjectCode(request.getProjectCode());
-
-    saveJobsAndTechStacks(request);
   }
 
   private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
@@ -159,11 +155,38 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
-      createDeveloperWorkRecords(projectCode);
+
+      notifySquadEmployeesToUploadTask(projectCode);
+
     } else {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
+  }
+
+  public void notifySquadEmployeesToUploadTask(String projectCode) {
+    String activeSquadCode = findActiveSquadCode(projectCode);
+
+    List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
+
+    squadEmployees.forEach(employee -> sendTaskUploadRequestNotification(employee, projectCode));
+  }
+
+  private String findActiveSquadCode(String projectCode) {
+    return squadCommandRepository
+        .findByProjectCodeAndIsActiveIsTrue(projectCode)
+        .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
+        .getSquadCode();
+  }
+
+  private List<SquadEmployee> findSquadEmployees(String squadCode) {
+    return squadEmployeeCommandRepository.findBySquadCode(squadCode);
+  }
+
+  private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
+    String employeeId = employee.getEmployeeIdentificationNumber();
+    notificationCommandService.createAndSendNotification(
+        null, employeeId, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
   }
 
   @Override
@@ -174,7 +197,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Transactional
   @Override
-  public void analyzeProject(String projectId, MultipartFile multipartFile) {
+  public void analyzeProject(
+      String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
     Project project =
         projectRepository
             .findById(projectId)
@@ -184,39 +208,20 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectRepository.save(project);
 
     projectAnalysisService
-        .analyzeProject(projectId, multipartFile)
+        .analyzeProject(projectId, multipartFile, employeeIdentificationNumber)
         .exceptionally(
             ex -> {
               log.error("FP 분석 실패", ex);
               project.setAnalysisStatus(Project.AnalysisStatus.FAILED);
               projectRepository.save(project);
+              // 분석 실패 알림
+              notifyFPAnalysisFailure(employeeIdentificationNumber, projectId);
               return null;
             });
   }
 
-  private void createDeveloperWorkRecords(String projectCode) {
-    // 1. 프로젝트 직무 조회
-    List<ProjectAndJob> jobs = projectAndJobRepository.findByProjectCode(projectCode);
-
-    for (ProjectAndJob job : jobs) {
-      // 2. 각 직무에 할당된 개발자 목록 조회
-      List<String> developerEmpIds = fetchDevelopersForJob(job.getId()); // 사번 목록
-
-      for (String empId : developerEmpIds) {
-        DeveloperProjectWork work =
-            DeveloperProjectWork.builder()
-                .employeeIdentificationNumber(empId)
-                .projectCode(projectCode)
-                .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
-                .build();
-        developerProjectWorkRepository.save(work);
-      }
-    }
-  }
-
-  private List<String> fetchDevelopersForJob(Long projectJobId) {
-    return squadEmployeeCommandRepository.findByProjectAndJobId(projectJobId).stream()
-        .map(SquadEmployee::getEmployeeIdentificationNumber)
-        .toList();
+  private void notifyFPAnalysisFailure(String managerId, String projectId) {
+    notificationCommandService.createAndSendNotification(
+        null, managerId, NotificationType.FP_ANALYSIS_FAILURE, projectId);
   }
 }

@@ -36,114 +36,114 @@ import com.example.jooq.generated.tables.TrainingRecommendation;
 import com.example.jooq.generated.tables.UserCertificateHistory;
 import com.example.jooq.generated.tables.UserTrainingHistory;
 
-/** Convenience access to all tables in sion. */
+/** Convenience access to all tables in SION. */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Tables {
 
-  /** The table <code>sion.ai_feedback</code>. */
+  /** The table <code>SION.ai_feedback</code>. */
   public static final AiFeedback AI_FEEDBACK = AiFeedback.AI_FEEDBACK;
 
-  /** The table <code>sion.certificate</code>. */
+  /** The table <code>SION.certificate</code>. */
   public static final Certificate CERTIFICATE = Certificate.CERTIFICATE;
 
-  /** The table <code>sion.client_company</code>. */
+  /** The table <code>SION.client_company</code>. */
   public static final ClientCompany CLIENT_COMPANY = ClientCompany.CLIENT_COMPANY;
 
-  /** The table <code>sion.department</code>. */
+  /** The table <code>SION.department</code>. */
   public static final Department DEPARTMENT = Department.DEPARTMENT;
 
-  /** The table <code>sion.developer_project_work</code>. */
+  /** The table <code>SION.developer_project_work</code>. */
   public static final DeveloperProjectWork DEVELOPER_PROJECT_WORK =
       DeveloperProjectWork.DEVELOPER_PROJECT_WORK;
 
-  /** The table <code>sion.developer_project_work_history</code>. */
+  /** The table <code>SION.developer_project_work_history</code>. */
   public static final DeveloperProjectWorkHistory DEVELOPER_PROJECT_WORK_HISTORY =
       DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY;
 
-  /** The table <code>sion.developer_project_work_history_tech_stack</code>. */
+  /** The table <code>SION.developer_project_work_history_tech_stack</code>. */
   public static final DeveloperProjectWorkHistoryTechStack
       DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK =
           DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK;
 
-  /** The table <code>sion.developer_tech_stack</code>. */
+  /** The table <code>SION.developer_tech_stack</code>. */
   public static final DeveloperTechStack DEVELOPER_TECH_STACK =
       DeveloperTechStack.DEVELOPER_TECH_STACK;
 
-  /** The table <code>sion.developer_tech_stack_history</code>. */
+  /** The table <code>SION.developer_tech_stack_history</code>. */
   public static final DeveloperTechStackHistory DEVELOPER_TECH_STACK_HISTORY =
       DeveloperTechStackHistory.DEVELOPER_TECH_STACK_HISTORY;
 
-  /** The table <code>sion.domain</code>. */
+  /** The table <code>SION.domain</code>. */
   public static final Domain DOMAIN = Domain.DOMAIN;
 
-  /** The table <code>sion.freelancer</code>. */
+  /** The table <code>SION.freelancer</code>. */
   public static final Freelancer FREELANCER = Freelancer.FREELANCER;
 
-  /** The table <code>sion.grade</code>. */
+  /** The table <code>SION.grade</code>. */
   public static final Grade GRADE = Grade.GRADE;
 
-  /** The table <code>sion.initial_score</code>. */
+  /** The table <code>SION.initial_score</code>. */
   public static final InitialScore INITIAL_SCORE = InitialScore.INITIAL_SCORE;
 
-  /** The table <code>sion.job</code>. */
+  /** The table <code>SION.job</code>. */
   public static final Job JOB = Job.JOB;
 
-  /** The table <code>sion.job_and_tech_stack</code>. */
+  /** The table <code>SION.job_and_tech_stack</code>. */
   public static final JobAndTechStack JOB_AND_TECH_STACK = JobAndTechStack.JOB_AND_TECH_STACK;
 
-  /** The table <code>sion.member</code>. */
+  /** The table <code>SION.member</code>. */
   public static final Member MEMBER = Member.MEMBER;
 
-  /** The table <code>sion.member_score_history</code>. */
+  /** The table <code>SION.member_score_history</code>. */
   public static final MemberScoreHistory MEMBER_SCORE_HISTORY =
       MemberScoreHistory.MEMBER_SCORE_HISTORY;
 
-  /** The table <code>sion.notification</code>. */
+  /** The table <code>SION.notification</code>. */
   public static final Notification NOTIFICATION = Notification.NOTIFICATION;
 
-  /** The table <code>sion.position</code>. */
+  /** The table <code>SION.position</code>. */
   public static final Position POSITION = Position.POSITION;
 
-  /** The table <code>sion.project</code>. */
+  /** The table <code>SION.project</code>. */
   public static final Project PROJECT = Project.PROJECT;
 
-  /** The table <code>sion.project_and_job</code>. */
+  /** The table <code>SION.project_and_job</code>. */
   public static final ProjectAndJob PROJECT_AND_JOB = ProjectAndJob.PROJECT_AND_JOB;
 
-  /** The table <code>sion.project_evaluation</code>. */
+  /** The table <code>SION.project_evaluation</code>. */
   public static final ProjectEvaluation PROJECT_EVALUATION = ProjectEvaluation.PROJECT_EVALUATION;
 
-  /** The table <code>sion.project_fp_summary</code>. */
+  /** The table <code>SION.project_fp_summary</code>. */
   public static final ProjectFpSummary PROJECT_FP_SUMMARY = ProjectFpSummary.PROJECT_FP_SUMMARY;
 
-  /** The table <code>sion.project_function_estimate</code>. */
+  /** The table <code>SION.project_function_estimate</code>. */
   public static final ProjectFunctionEstimate PROJECT_FUNCTION_ESTIMATE =
       ProjectFunctionEstimate.PROJECT_FUNCTION_ESTIMATE;
 
-  /** The table <code>sion.squad</code>. */
+  /** The table <code>SION.squad</code>. */
   public static final Squad SQUAD = Squad.SQUAD;
 
-  /** The table <code>sion.squad_comment</code>. */
+  /** The table <code>SION.squad_comment</code>. */
   public static final SquadComment SQUAD_COMMENT = SquadComment.SQUAD_COMMENT;
 
-  /** The table <code>sion.squad_employee</code>. */
+  /** The table <code>SION.squad_employee</code>. */
   public static final SquadEmployee SQUAD_EMPLOYEE = SquadEmployee.SQUAD_EMPLOYEE;
 
-  /** The table <code>sion.tech_stack</code>. */
+  /** The table <code>SION.tech_stack</code>. */
   public static final TechStack TECH_STACK = TechStack.TECH_STACK;
 
-  /** The table <code>sion.training_program</code>. */
+  /** The table <code>SION.training_program</code>. */
   public static final TrainingProgram TRAINING_PROGRAM = TrainingProgram.TRAINING_PROGRAM;
 
-  /** The table <code>sion.training_recommendation</code>. */
+  /** The table <code>SION.training_recommendation</code>. */
   public static final TrainingRecommendation TRAINING_RECOMMENDATION =
       TrainingRecommendation.TRAINING_RECOMMENDATION;
 
-  /** The table <code>sion.user_certificate_history</code>. */
+  /** The table <code>SION.user_certificate_history</code>. */
   public static final UserCertificateHistory USER_CERTIFICATE_HISTORY =
       UserCertificateHistory.USER_CERTIFICATE_HISTORY;
 
-  /** The table <code>sion.user_training_history</code>. */
+  /** The table <code>SION.user_training_history</code>. */
   public static final UserTrainingHistory USER_TRAINING_HISTORY =
       UserTrainingHistory.USER_TRAINING_HISTORY;
 }

@@ -19,10 +19,10 @@ public class DeveloperProjectWorkHistory implements Serializable {
   private String functionName;
   private String functionDescription;
   private DeveloperProjectWorkHistoryFunctionType functionType;
-  private Integer det;
-  private Integer ftr;
   private DeveloperProjectWorkHistoryComplexity complexity;
   private Long developerProjectWorkId;
+  private Integer det;
+  private Integer ftr;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -33,10 +33,10 @@ public class DeveloperProjectWorkHistory implements Serializable {
     this.functionName = value.functionName;
     this.functionDescription = value.functionDescription;
     this.functionType = value.functionType;
-    this.det = value.det;
-    this.ftr = value.ftr;
     this.complexity = value.complexity;
     this.developerProjectWorkId = value.developerProjectWorkId;
+    this.det = value.det;
+    this.ftr = value.ftr;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
   }
@@ -46,124 +46,124 @@ public class DeveloperProjectWorkHistory implements Serializable {
       String functionName,
       String functionDescription,
       DeveloperProjectWorkHistoryFunctionType functionType,
-      Integer det,
-      Integer ftr,
       DeveloperProjectWorkHistoryComplexity complexity,
       Long developerProjectWorkId,
+      Integer det,
+      Integer ftr,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.developerProjectWorkHistoryId = developerProjectWorkHistoryId;
     this.functionName = functionName;
     this.functionDescription = functionDescription;
     this.functionType = functionType;
-    this.det = det;
-    this.ftr = ftr;
     this.complexity = complexity;
     this.developerProjectWorkId = developerProjectWorkId;
+    this.det = det;
+    this.ftr = ftr;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
   /**
-   * Getter for <code>sion.developer_project_work_history.developer_project_work_history_id</code>.
+   * Getter for <code>SION.developer_project_work_history.developer_project_work_history_id</code>.
    */
   public Long getDeveloperProjectWorkHistoryId() {
     return this.developerProjectWorkHistoryId;
   }
 
   /**
-   * Setter for <code>sion.developer_project_work_history.developer_project_work_history_id</code>.
+   * Setter for <code>SION.developer_project_work_history.developer_project_work_history_id</code>.
    */
   public void setDeveloperProjectWorkHistoryId(Long developerProjectWorkHistoryId) {
     this.developerProjectWorkHistoryId = developerProjectWorkHistoryId;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_name</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_name</code>. */
   public String getFunctionName() {
     return this.functionName;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_name</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_name</code>. */
   public void setFunctionName(String functionName) {
     this.functionName = functionName;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_description</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_description</code>. */
   public String getFunctionDescription() {
     return this.functionDescription;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_description</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_description</code>. */
   public void setFunctionDescription(String functionDescription) {
     this.functionDescription = functionDescription;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_type</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_type</code>. */
   public DeveloperProjectWorkHistoryFunctionType getFunctionType() {
     return this.functionType;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_type</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_type</code>. */
   public void setFunctionType(DeveloperProjectWorkHistoryFunctionType functionType) {
     this.functionType = functionType;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.det</code>. */
-  public Integer getDet() {
-    return this.det;
-  }
-
-  /** Setter for <code>sion.developer_project_work_history.det</code>. */
-  public void setDet(Integer det) {
-    this.det = det;
-  }
-
-  /** Getter for <code>sion.developer_project_work_history.ftr</code>. */
-  public Integer getFtr() {
-    return this.ftr;
-  }
-
-  /** Setter for <code>sion.developer_project_work_history.ftr</code>. */
-  public void setFtr(Integer ftr) {
-    this.ftr = ftr;
-  }
-
-  /** Getter for <code>sion.developer_project_work_history.complexity</code>. */
+  /** Getter for <code>SION.developer_project_work_history.complexity</code>. */
   public DeveloperProjectWorkHistoryComplexity getComplexity() {
     return this.complexity;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.complexity</code>. */
+  /** Setter for <code>SION.developer_project_work_history.complexity</code>. */
   public void setComplexity(DeveloperProjectWorkHistoryComplexity complexity) {
     this.complexity = complexity;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.developer_project_work_id</code>. */
+  /** Getter for <code>SION.developer_project_work_history.developer_project_work_id</code>. */
   public Long getDeveloperProjectWorkId() {
     return this.developerProjectWorkId;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.developer_project_work_id</code>. */
+  /** Setter for <code>SION.developer_project_work_history.developer_project_work_id</code>. */
   public void setDeveloperProjectWorkId(Long developerProjectWorkId) {
     this.developerProjectWorkId = developerProjectWorkId;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.created_at</code>. */
+  /** Getter for <code>SION.developer_project_work_history.det</code>. */
+  public Integer getDet() {
+    return this.det;
+  }
+
+  /** Setter for <code>SION.developer_project_work_history.det</code>. */
+  public void setDet(Integer det) {
+    this.det = det;
+  }
+
+  /** Getter for <code>SION.developer_project_work_history.ftr</code>. */
+  public Integer getFtr() {
+    return this.ftr;
+  }
+
+  /** Setter for <code>SION.developer_project_work_history.ftr</code>. */
+  public void setFtr(Integer ftr) {
+    this.ftr = ftr;
+  }
+
+  /** Getter for <code>SION.developer_project_work_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.created_at</code>. */
+  /** Setter for <code>SION.developer_project_work_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.updated_at</code>. */
+  /** Getter for <code>SION.developer_project_work_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.developer_project_work_history.updated_at</code>. */
+  /** Setter for <code>SION.developer_project_work_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
@@ -187,18 +187,18 @@ public class DeveloperProjectWorkHistory implements Serializable {
     if (this.functionType == null) {
       if (other.functionType != null) return false;
     } else if (!this.functionType.equals(other.functionType)) return false;
-    if (this.det == null) {
-      if (other.det != null) return false;
-    } else if (!this.det.equals(other.det)) return false;
-    if (this.ftr == null) {
-      if (other.ftr != null) return false;
-    } else if (!this.ftr.equals(other.ftr)) return false;
     if (this.complexity == null) {
       if (other.complexity != null) return false;
     } else if (!this.complexity.equals(other.complexity)) return false;
     if (this.developerProjectWorkId == null) {
       if (other.developerProjectWorkId != null) return false;
     } else if (!this.developerProjectWorkId.equals(other.developerProjectWorkId)) return false;
+    if (this.det == null) {
+      if (other.det != null) return false;
+    } else if (!this.det.equals(other.det)) return false;
+    if (this.ftr == null) {
+      if (other.ftr != null) return false;
+    } else if (!this.ftr.equals(other.ftr)) return false;
     if (this.createdAt == null) {
       if (other.createdAt != null) return false;
     } else if (!this.createdAt.equals(other.createdAt)) return false;
@@ -222,12 +222,12 @@ public class DeveloperProjectWorkHistory implements Serializable {
         prime * result
             + ((this.functionDescription == null) ? 0 : this.functionDescription.hashCode());
     result = prime * result + ((this.functionType == null) ? 0 : this.functionType.hashCode());
-    result = prime * result + ((this.det == null) ? 0 : this.det.hashCode());
-    result = prime * result + ((this.ftr == null) ? 0 : this.ftr.hashCode());
     result = prime * result + ((this.complexity == null) ? 0 : this.complexity.hashCode());
     result =
         prime * result
             + ((this.developerProjectWorkId == null) ? 0 : this.developerProjectWorkId.hashCode());
+    result = prime * result + ((this.det == null) ? 0 : this.det.hashCode());
+    result = prime * result + ((this.ftr == null) ? 0 : this.ftr.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     return result;
@@ -241,10 +241,10 @@ public class DeveloperProjectWorkHistory implements Serializable {
     sb.append(", ").append(functionName);
     sb.append(", ").append(functionDescription);
     sb.append(", ").append(functionType);
-    sb.append(", ").append(det);
-    sb.append(", ").append(ftr);
     sb.append(", ").append(complexity);
     sb.append(", ").append(developerProjectWorkId);
+    sb.append(", ").append(det);
+    sb.append(", ").append(ftr);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);
 

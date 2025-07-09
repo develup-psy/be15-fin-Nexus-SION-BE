@@ -65,50 +65,17 @@ public class CertificateDao
   }
 
   /**
-   * Fetch records that have <code>issuing_organization_id BETWEEN
-   * lowerInclusive AND upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.Certificate>
-      fetchRangeOfIssuingOrganizationId(
-          LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-    return fetchRange(
-        Certificate.CERTIFICATE.ISSUING_ORGANIZATION_ID, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>issuing_organization_id IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByIssuingOrganizationId(
-      LocalDateTime... values) {
-    return fetch(Certificate.CERTIFICATE.ISSUING_ORGANIZATION_ID, values);
-  }
-
-  /**
-   * Fetch records that have <code>issue_date BETWEEN lowerInclusive AND
+   * Fetch records that have <code>score BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfIssueDate(
-      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-    return fetchRange(Certificate.CERTIFICATE.ISSUE_DATE, lowerInclusive, upperInclusive);
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfScore(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(Certificate.CERTIFICATE.SCORE, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>issue_date IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByIssueDate(
-      LocalDateTime... values) {
-    return fetch(Certificate.CERTIFICATE.ISSUE_DATE, values);
-  }
-
-  /**
-   * Fetch records that have <code>expiry_date BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfExpiryDate(
-      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-    return fetchRange(Certificate.CERTIFICATE.EXPIRY_DATE, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>expiry_date IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByExpiryDate(
-      LocalDateTime... values) {
-    return fetch(Certificate.CERTIFICATE.EXPIRY_DATE, values);
+  /** Fetch records that have <code>score IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByScore(Integer... values) {
+    return fetch(Certificate.CERTIFICATE.SCORE, values);
   }
 
   /**
@@ -142,16 +109,17 @@ public class CertificateDao
   }
 
   /**
-   * Fetch records that have <code>score BETWEEN lowerInclusive AND
-   * upperInclusive</code>
+   * Fetch records that have <code>issuing_organization BETWEEN lowerInclusive
+   * AND upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfScore(
-      Integer lowerInclusive, Integer upperInclusive) {
-    return fetchRange(Certificate.CERTIFICATE.SCORE, lowerInclusive, upperInclusive);
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchRangeOfIssuingOrganization(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(Certificate.CERTIFICATE.ISSUING_ORGANIZATION, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>score IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByScore(Integer... values) {
-    return fetch(Certificate.CERTIFICATE.SCORE, values);
+  /** Fetch records that have <code>issuing_organization IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Certificate> fetchByIssuingOrganization(
+      String... values) {
+    return fetch(Certificate.CERTIFICATE.ISSUING_ORGANIZATION, values);
   }
 }

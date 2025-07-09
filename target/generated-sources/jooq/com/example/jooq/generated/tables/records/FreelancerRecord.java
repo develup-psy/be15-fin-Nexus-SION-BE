@@ -18,96 +18,96 @@ import com.example.jooq.generated.tables.Freelancer;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
     implements Record9<
-        Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate> {
+        String, String, String, String, Integer, String, LocalDateTime, String, LocalDate> {
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.freelancer.freelancer_id</code>. */
-  public void setFreelancerId(Long value) {
+  /** Setter for <code>SION.freelancer.freelancer_id</code>. */
+  public void setFreelancerId(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.freelancer.freelancer_id</code>. */
-  public Long getFreelancerId() {
-    return (Long) get(0);
+  /** Getter for <code>SION.freelancer.freelancer_id</code>. */
+  public String getFreelancerId() {
+    return (String) get(0);
   }
 
-  /** Setter for <code>sion.freelancer.name</code>. */
+  /** Setter for <code>SION.freelancer.name</code>. */
   public void setName(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.freelancer.name</code>. */
+  /** Getter for <code>SION.freelancer.name</code>. */
   public String getName() {
     return (String) get(1);
   }
 
-  /** Setter for <code>sion.freelancer.phone_number</code>. */
+  /** Setter for <code>SION.freelancer.phone_number</code>. */
   public void setPhoneNumber(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.freelancer.phone_number</code>. */
+  /** Getter for <code>SION.freelancer.phone_number</code>. */
   public String getPhoneNumber() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.freelancer.email</code>. */
+  /** Setter for <code>SION.freelancer.email</code>. */
   public void setEmail(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.freelancer.email</code>. */
+  /** Getter for <code>SION.freelancer.email</code>. */
   public String getEmail() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.freelancer.career_years</code>. */
+  /** Setter for <code>SION.freelancer.career_years</code>. */
   public void setCareerYears(Integer value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.freelancer.career_years</code>. */
+  /** Getter for <code>SION.freelancer.career_years</code>. */
   public Integer getCareerYears() {
     return (Integer) get(4);
   }
 
-  /** Setter for <code>sion.freelancer.resume_url</code>. */
+  /** Setter for <code>SION.freelancer.resume_url</code>. */
   public void setResumeUrl(String value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.freelancer.resume_url</code>. */
+  /** Getter for <code>SION.freelancer.resume_url</code>. */
   public String getResumeUrl() {
     return (String) get(5);
   }
 
-  /** Setter for <code>sion.freelancer.created_at</code>. */
+  /** Setter for <code>SION.freelancer.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>sion.freelancer.created_at</code>. */
+  /** Getter for <code>SION.freelancer.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>sion.freelancer.profile_image_url</code>. */
+  /** Setter for <code>SION.freelancer.profile_image_url</code>. */
   public void setProfileImageUrl(String value) {
     set(7, value);
   }
 
-  /** Getter for <code>sion.freelancer.profile_image_url</code>. */
+  /** Getter for <code>SION.freelancer.profile_image_url</code>. */
   public String getProfileImageUrl() {
     return (String) get(7);
   }
 
-  /** Setter for <code>sion.freelancer.birthday</code>. */
+  /** Setter for <code>SION.freelancer.birthday</code>. */
   public void setBirthday(LocalDate value) {
     set(8, value);
   }
 
-  /** Getter for <code>sion.freelancer.birthday</code>. */
+  /** Getter for <code>SION.freelancer.birthday</code>. */
   public LocalDate getBirthday() {
     return (LocalDate) get(8);
   }
@@ -117,7 +117,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   // -------------------------------------------------------------------------
 
   @Override
-  public Record1<Long> key() {
+  public Record1<String> key() {
     return (Record1) super.key();
   }
 
@@ -126,19 +126,19 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   // -------------------------------------------------------------------------
 
   @Override
-  public Row9<Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
+  public Row9<String, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
       fieldsRow() {
     return (Row9) super.fieldsRow();
   }
 
   @Override
-  public Row9<Long, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
+  public Row9<String, String, String, String, Integer, String, LocalDateTime, String, LocalDate>
       valuesRow() {
     return (Row9) super.valuesRow();
   }
 
   @Override
-  public Field<Long> field1() {
+  public Field<String> field1() {
     return Freelancer.FREELANCER.FREELANCER_ID;
   }
 
@@ -183,7 +183,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public Long component1() {
+  public String component1() {
     return getFreelancerId();
   }
 
@@ -228,7 +228,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public Long value1() {
+  public String value1() {
     return getFreelancerId();
   }
 
@@ -273,7 +273,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
   }
 
   @Override
-  public FreelancerRecord value1(Long value) {
+  public FreelancerRecord value1(String value) {
     setFreelancerId(value);
     return this;
   }
@@ -328,7 +328,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
 
   @Override
   public FreelancerRecord values(
-      Long value1,
+      String value1,
       String value2,
       String value3,
       String value4,
@@ -360,7 +360,7 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
 
   /** Create a detached, initialised FreelancerRecord */
   public FreelancerRecord(
-      Long freelancerId,
+      String freelancerId,
       String name,
       String phoneNumber,
       String email,

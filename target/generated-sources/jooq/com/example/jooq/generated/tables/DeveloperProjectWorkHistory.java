@@ -38,7 +38,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.developer_project_work_history</code> */
+  /** The reference instance of <code>SION.developer_project_work_history</code> */
   public static final DeveloperProjectWorkHistory DEVELOPER_PROJECT_WORK_HISTORY =
       new DeveloperProjectWorkHistory();
 
@@ -49,7 +49,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
   }
 
   /**
-   * The column <code>sion.developer_project_work_history.developer_project_work_history_id</code>.
+   * The column <code>SION.developer_project_work_history.developer_project_work_history_id</code>.
    */
   public final TableField<DeveloperProjectWorkHistoryRecord, Long>
       DEVELOPER_PROJECT_WORK_HISTORY_ID =
@@ -59,21 +59,15 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               this,
               "");
 
-  /** The column <code>sion.developer_project_work_history.function_name</code>. */
+  /** The column <code>SION.developer_project_work_history.function_name</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, String> FUNCTION_NAME =
-      createField(
-          DSL.name("function_name"),
-          SQLDataType.VARCHAR(100)
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("'0'"), SQLDataType.VARCHAR)),
-          this,
-          "");
+      createField(DSL.name("function_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>sion.developer_project_work_history.function_description</code>. */
+  /** The column <code>SION.developer_project_work_history.function_description</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, String> FUNCTION_DESCRIPTION =
       createField(DSL.name("function_description"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>sion.developer_project_work_history.function_type</code>. */
+  /** The column <code>SION.developer_project_work_history.function_type</code>. */
   public final TableField<
           DeveloperProjectWorkHistoryRecord, DeveloperProjectWorkHistoryFunctionType>
       FUNCTION_TYPE =
@@ -87,27 +81,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               this,
               "");
 
-  /** The column <code>sion.developer_project_work_history.det</code>. */
-  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> DET =
-      createField(
-          DSL.name("det"),
-          SQLDataType.INTEGER
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)),
-          this,
-          "");
-
-  /** The column <code>sion.developer_project_work_history.ftr</code>. */
-  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> FTR =
-      createField(
-          DSL.name("ftr"),
-          SQLDataType.INTEGER
-              .nullable(false)
-              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)),
-          this,
-          "");
-
-  /** The column <code>sion.developer_project_work_history.complexity</code>. */
+  /** The column <code>SION.developer_project_work_history.complexity</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, DeveloperProjectWorkHistoryComplexity>
       COMPLEXITY =
           createField(
@@ -119,12 +93,20 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               this,
               "");
 
-  /** The column <code>sion.developer_project_work_history.developer_project_work_id</code>. */
+  /** The column <code>SION.developer_project_work_history.developer_project_work_id</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, Long> DEVELOPER_PROJECT_WORK_ID =
       createField(
           DSL.name("developer_project_work_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>sion.developer_project_work_history.created_at</code>. */
+  /** The column <code>SION.developer_project_work_history.det</code>. */
+  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> DET =
+      createField(DSL.name("det"), SQLDataType.INTEGER.nullable(false), this, "");
+
+  /** The column <code>SION.developer_project_work_history.ftr</code>. */
+  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> FTR =
+      createField(DSL.name("ftr"), SQLDataType.INTEGER.nullable(false), this, "");
+
+  /** The column <code>SION.developer_project_work_history.created_at</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -134,7 +116,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
           this,
           "");
 
-  /** The column <code>sion.developer_project_work_history.updated_at</code>. */
+  /** The column <code>SION.developer_project_work_history.updated_at</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -154,17 +136,17 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.developer_project_work_history</code> table reference */
+  /** Create an aliased <code>SION.developer_project_work_history</code> table reference */
   public DeveloperProjectWorkHistory(String alias) {
     this(DSL.name(alias), DEVELOPER_PROJECT_WORK_HISTORY);
   }
 
-  /** Create an aliased <code>sion.developer_project_work_history</code> table reference */
+  /** Create an aliased <code>SION.developer_project_work_history</code> table reference */
   public DeveloperProjectWorkHistory(Name alias) {
     this(alias, DEVELOPER_PROJECT_WORK_HISTORY);
   }
 
-  /** Create a <code>sion.developer_project_work_history</code> table reference */
+  /** Create a <code>SION.developer_project_work_history</code> table reference */
   public DeveloperProjectWorkHistory() {
     this(DSL.name("developer_project_work_history"), null);
   }
@@ -196,7 +178,7 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
 
   private transient DeveloperProjectWork _developerProjectWork;
 
-  /** Get the implicit join path to the <code>sion.developer_project_work</code> table. */
+  /** Get the implicit join path to the <code>SION.developer_project_work</code> table. */
   public DeveloperProjectWork developerProjectWork() {
     if (_developerProjectWork == null)
       _developerProjectWork = new DeveloperProjectWork(this, Keys.FK_DPWH_DPWORK);
@@ -247,10 +229,10 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
-          Integer,
-          Integer,
           DeveloperProjectWorkHistoryComplexity,
           Long,
+          Integer,
+          Integer,
           LocalDateTime,
           LocalDateTime>
       fieldsRow() {
@@ -264,10 +246,10 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               ? super String,
               ? super String,
               ? super DeveloperProjectWorkHistoryFunctionType,
-              ? super Integer,
-              ? super Integer,
               ? super DeveloperProjectWorkHistoryComplexity,
               ? super Long,
+              ? super Integer,
+              ? super Integer,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? extends U>
@@ -283,10 +265,10 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               ? super String,
               ? super String,
               ? super DeveloperProjectWorkHistoryFunctionType,
-              ? super Integer,
-              ? super Integer,
               ? super DeveloperProjectWorkHistoryComplexity,
               ? super Long,
+              ? super Integer,
+              ? super Integer,
               ? super LocalDateTime,
               ? super LocalDateTime,
               ? extends U>

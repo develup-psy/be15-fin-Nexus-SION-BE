@@ -13,110 +13,82 @@ public class Certificate implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private String certificateName;
-  private LocalDateTime issuingOrganizationId;
-  private LocalDateTime issueDate;
-  private LocalDateTime expiryDate;
+  private Integer score;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private Integer score;
+  private String issuingOrganization;
 
   public Certificate() {}
 
   public Certificate(Certificate value) {
     this.certificateName = value.certificateName;
-    this.issuingOrganizationId = value.issuingOrganizationId;
-    this.issueDate = value.issueDate;
-    this.expiryDate = value.expiryDate;
+    this.score = value.score;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
-    this.score = value.score;
+    this.issuingOrganization = value.issuingOrganization;
   }
 
   public Certificate(
       String certificateName,
-      LocalDateTime issuingOrganizationId,
-      LocalDateTime issueDate,
-      LocalDateTime expiryDate,
+      Integer score,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
-      Integer score) {
+      String issuingOrganization) {
     this.certificateName = certificateName;
-    this.issuingOrganizationId = issuingOrganizationId;
-    this.issueDate = issueDate;
-    this.expiryDate = expiryDate;
+    this.score = score;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.score = score;
+    this.issuingOrganization = issuingOrganization;
   }
 
-  /** Getter for <code>sion.certificate.certificate_name</code>. */
+  /** Getter for <code>SION.certificate.certificate_name</code>. */
   public String getCertificateName() {
     return this.certificateName;
   }
 
-  /** Setter for <code>sion.certificate.certificate_name</code>. */
+  /** Setter for <code>SION.certificate.certificate_name</code>. */
   public void setCertificateName(String certificateName) {
     this.certificateName = certificateName;
   }
 
-  /** Getter for <code>sion.certificate.issuing_organization_id</code>. */
-  public LocalDateTime getIssuingOrganizationId() {
-    return this.issuingOrganizationId;
-  }
-
-  /** Setter for <code>sion.certificate.issuing_organization_id</code>. */
-  public void setIssuingOrganizationId(LocalDateTime issuingOrganizationId) {
-    this.issuingOrganizationId = issuingOrganizationId;
-  }
-
-  /** Getter for <code>sion.certificate.issue_date</code>. */
-  public LocalDateTime getIssueDate() {
-    return this.issueDate;
-  }
-
-  /** Setter for <code>sion.certificate.issue_date</code>. */
-  public void setIssueDate(LocalDateTime issueDate) {
-    this.issueDate = issueDate;
-  }
-
-  /** Getter for <code>sion.certificate.expiry_date</code>. */
-  public LocalDateTime getExpiryDate() {
-    return this.expiryDate;
-  }
-
-  /** Setter for <code>sion.certificate.expiry_date</code>. */
-  public void setExpiryDate(LocalDateTime expiryDate) {
-    this.expiryDate = expiryDate;
-  }
-
-  /** Getter for <code>sion.certificate.created_at</code>. */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
-
-  /** Setter for <code>sion.certificate.created_at</code>. */
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  /** Getter for <code>sion.certificate.updated_at</code>. */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  /** Setter for <code>sion.certificate.updated_at</code>. */
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-  /** Getter for <code>sion.certificate.score</code>. */
+  /** Getter for <code>SION.certificate.score</code>. */
   public Integer getScore() {
     return this.score;
   }
 
-  /** Setter for <code>sion.certificate.score</code>. */
+  /** Setter for <code>SION.certificate.score</code>. */
   public void setScore(Integer score) {
     this.score = score;
+  }
+
+  /** Getter for <code>SION.certificate.created_at</code>. */
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
+  }
+
+  /** Setter for <code>SION.certificate.created_at</code>. */
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  /** Getter for <code>SION.certificate.updated_at</code>. */
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  /** Setter for <code>SION.certificate.updated_at</code>. */
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  /** Getter for <code>SION.certificate.issuing_organization</code>. */
+  public String getIssuingOrganization() {
+    return this.issuingOrganization;
+  }
+
+  /** Setter for <code>SION.certificate.issuing_organization</code>. */
+  public void setIssuingOrganization(String issuingOrganization) {
+    this.issuingOrganization = issuingOrganization;
   }
 
   @Override
@@ -128,24 +100,18 @@ public class Certificate implements Serializable {
     if (this.certificateName == null) {
       if (other.certificateName != null) return false;
     } else if (!this.certificateName.equals(other.certificateName)) return false;
-    if (this.issuingOrganizationId == null) {
-      if (other.issuingOrganizationId != null) return false;
-    } else if (!this.issuingOrganizationId.equals(other.issuingOrganizationId)) return false;
-    if (this.issueDate == null) {
-      if (other.issueDate != null) return false;
-    } else if (!this.issueDate.equals(other.issueDate)) return false;
-    if (this.expiryDate == null) {
-      if (other.expiryDate != null) return false;
-    } else if (!this.expiryDate.equals(other.expiryDate)) return false;
+    if (this.score == null) {
+      if (other.score != null) return false;
+    } else if (!this.score.equals(other.score)) return false;
     if (this.createdAt == null) {
       if (other.createdAt != null) return false;
     } else if (!this.createdAt.equals(other.createdAt)) return false;
     if (this.updatedAt == null) {
       if (other.updatedAt != null) return false;
     } else if (!this.updatedAt.equals(other.updatedAt)) return false;
-    if (this.score == null) {
-      if (other.score != null) return false;
-    } else if (!this.score.equals(other.score)) return false;
+    if (this.issuingOrganization == null) {
+      if (other.issuingOrganization != null) return false;
+    } else if (!this.issuingOrganization.equals(other.issuingOrganization)) return false;
     return true;
   }
 
@@ -155,14 +121,12 @@ public class Certificate implements Serializable {
     int result = 1;
     result =
         prime * result + ((this.certificateName == null) ? 0 : this.certificateName.hashCode());
-    result =
-        prime * result
-            + ((this.issuingOrganizationId == null) ? 0 : this.issuingOrganizationId.hashCode());
-    result = prime * result + ((this.issueDate == null) ? 0 : this.issueDate.hashCode());
-    result = prime * result + ((this.expiryDate == null) ? 0 : this.expiryDate.hashCode());
+    result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
-    result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
+    result =
+        prime * result
+            + ((this.issuingOrganization == null) ? 0 : this.issuingOrganization.hashCode());
     return result;
   }
 
@@ -171,12 +135,10 @@ public class Certificate implements Serializable {
     StringBuilder sb = new StringBuilder("Certificate (");
 
     sb.append(certificateName);
-    sb.append(", ").append(issuingOrganizationId);
-    sb.append(", ").append(issueDate);
-    sb.append(", ").append(expiryDate);
+    sb.append(", ").append(score);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);
-    sb.append(", ").append(score);
+    sb.append(", ").append(issuingOrganization);
 
     sb.append(")");
     return sb.toString();

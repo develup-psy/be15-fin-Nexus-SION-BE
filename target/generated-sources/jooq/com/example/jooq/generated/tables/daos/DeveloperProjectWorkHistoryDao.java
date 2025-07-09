@@ -229,6 +229,42 @@ public class DeveloperProjectWorkHistoryDao
   }
 
   /**
+   * Fetch records that have <code>det BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchRangeOfDet(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>det IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchByDet(
+      Integer... values) {
+    return fetch(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET, values);
+  }
+
+  /**
+   * Fetch records that have <code>ftr BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchRangeOfFtr(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>ftr IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWorkHistory> fetchByFtr(
+      Integer... values) {
+    return fetch(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR, values);
+  }
+
+  /**
    * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */

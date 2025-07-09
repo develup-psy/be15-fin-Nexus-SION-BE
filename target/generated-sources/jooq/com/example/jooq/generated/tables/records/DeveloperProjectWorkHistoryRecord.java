@@ -24,115 +24,115 @@ public class DeveloperProjectWorkHistoryRecord
         String,
         String,
         DeveloperProjectWorkHistoryFunctionType,
-        Integer,
-        Integer,
         DeveloperProjectWorkHistoryComplexity,
         Long,
+        Integer,
+        Integer,
         LocalDateTime,
         LocalDateTime> {
 
   private static final long serialVersionUID = 1L;
 
   /**
-   * Setter for <code>sion.developer_project_work_history.developer_project_work_history_id</code>.
+   * Setter for <code>SION.developer_project_work_history.developer_project_work_history_id</code>.
    */
   public void setDeveloperProjectWorkHistoryId(Long value) {
     set(0, value);
   }
 
   /**
-   * Getter for <code>sion.developer_project_work_history.developer_project_work_history_id</code>.
+   * Getter for <code>SION.developer_project_work_history.developer_project_work_history_id</code>.
    */
   public Long getDeveloperProjectWorkHistoryId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_name</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_name</code>. */
   public void setFunctionName(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_name</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_name</code>. */
   public String getFunctionName() {
     return (String) get(1);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_description</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_description</code>. */
   public void setFunctionDescription(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_description</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_description</code>. */
   public String getFunctionDescription() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.function_type</code>. */
+  /** Setter for <code>SION.developer_project_work_history.function_type</code>. */
   public void setFunctionType(DeveloperProjectWorkHistoryFunctionType value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.function_type</code>. */
+  /** Getter for <code>SION.developer_project_work_history.function_type</code>. */
   public DeveloperProjectWorkHistoryFunctionType getFunctionType() {
     return (DeveloperProjectWorkHistoryFunctionType) get(3);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.det</code>. */
-  public void setDet(Integer value) {
+  /** Setter for <code>SION.developer_project_work_history.complexity</code>. */
+  public void setComplexity(DeveloperProjectWorkHistoryComplexity value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.det</code>. */
-  public Integer getDet() {
-    return (Integer) get(4);
+  /** Getter for <code>SION.developer_project_work_history.complexity</code>. */
+  public DeveloperProjectWorkHistoryComplexity getComplexity() {
+    return (DeveloperProjectWorkHistoryComplexity) get(4);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.ftr</code>. */
-  public void setFtr(Integer value) {
+  /** Setter for <code>SION.developer_project_work_history.developer_project_work_id</code>. */
+  public void setDeveloperProjectWorkId(Long value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.ftr</code>. */
-  public Integer getFtr() {
-    return (Integer) get(5);
+  /** Getter for <code>SION.developer_project_work_history.developer_project_work_id</code>. */
+  public Long getDeveloperProjectWorkId() {
+    return (Long) get(5);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.complexity</code>. */
-  public void setComplexity(DeveloperProjectWorkHistoryComplexity value) {
+  /** Setter for <code>SION.developer_project_work_history.det</code>. */
+  public void setDet(Integer value) {
     set(6, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.complexity</code>. */
-  public DeveloperProjectWorkHistoryComplexity getComplexity() {
-    return (DeveloperProjectWorkHistoryComplexity) get(6);
+  /** Getter for <code>SION.developer_project_work_history.det</code>. */
+  public Integer getDet() {
+    return (Integer) get(6);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.developer_project_work_id</code>. */
-  public void setDeveloperProjectWorkId(Long value) {
+  /** Setter for <code>SION.developer_project_work_history.ftr</code>. */
+  public void setFtr(Integer value) {
     set(7, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.developer_project_work_id</code>. */
-  public Long getDeveloperProjectWorkId() {
-    return (Long) get(7);
+  /** Getter for <code>SION.developer_project_work_history.ftr</code>. */
+  public Integer getFtr() {
+    return (Integer) get(7);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.created_at</code>. */
+  /** Setter for <code>SION.developer_project_work_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(8, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.created_at</code>. */
+  /** Getter for <code>SION.developer_project_work_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(8);
   }
 
-  /** Setter for <code>sion.developer_project_work_history.updated_at</code>. */
+  /** Setter for <code>SION.developer_project_work_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(9, value);
   }
 
-  /** Getter for <code>sion.developer_project_work_history.updated_at</code>. */
+  /** Getter for <code>SION.developer_project_work_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(9);
   }
@@ -156,10 +156,10 @@ public class DeveloperProjectWorkHistoryRecord
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
-          Integer,
-          Integer,
           DeveloperProjectWorkHistoryComplexity,
           Long,
+          Integer,
+          Integer,
           LocalDateTime,
           LocalDateTime>
       fieldsRow() {
@@ -172,10 +172,10 @@ public class DeveloperProjectWorkHistoryRecord
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
-          Integer,
-          Integer,
           DeveloperProjectWorkHistoryComplexity,
           Long,
+          Integer,
+          Integer,
           LocalDateTime,
           LocalDateTime>
       valuesRow() {
@@ -204,23 +204,23 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public Field<Integer> field5() {
-    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET;
-  }
-
-  @Override
-  public Field<Integer> field6() {
-    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR;
-  }
-
-  @Override
-  public Field<DeveloperProjectWorkHistoryComplexity> field7() {
+  public Field<DeveloperProjectWorkHistoryComplexity> field5() {
     return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.COMPLEXITY;
   }
 
   @Override
-  public Field<Long> field8() {
+  public Field<Long> field6() {
     return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_ID;
+  }
+
+  @Override
+  public Field<Integer> field7() {
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET;
+  }
+
+  @Override
+  public Field<Integer> field8() {
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR;
   }
 
   @Override
@@ -254,23 +254,23 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public Integer component5() {
-    return getDet();
-  }
-
-  @Override
-  public Integer component6() {
-    return getFtr();
-  }
-
-  @Override
-  public DeveloperProjectWorkHistoryComplexity component7() {
+  public DeveloperProjectWorkHistoryComplexity component5() {
     return getComplexity();
   }
 
   @Override
-  public Long component8() {
+  public Long component6() {
     return getDeveloperProjectWorkId();
+  }
+
+  @Override
+  public Integer component7() {
+    return getDet();
+  }
+
+  @Override
+  public Integer component8() {
+    return getFtr();
   }
 
   @Override
@@ -304,23 +304,23 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public Integer value5() {
-    return getDet();
-  }
-
-  @Override
-  public Integer value6() {
-    return getFtr();
-  }
-
-  @Override
-  public DeveloperProjectWorkHistoryComplexity value7() {
+  public DeveloperProjectWorkHistoryComplexity value5() {
     return getComplexity();
   }
 
   @Override
-  public Long value8() {
+  public Long value6() {
     return getDeveloperProjectWorkId();
+  }
+
+  @Override
+  public Integer value7() {
+    return getDet();
+  }
+
+  @Override
+  public Integer value8() {
+    return getFtr();
   }
 
   @Override
@@ -358,26 +358,26 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public DeveloperProjectWorkHistoryRecord value5(Integer value) {
-    setDet(value);
-    return this;
-  }
-
-  @Override
-  public DeveloperProjectWorkHistoryRecord value6(Integer value) {
-    setFtr(value);
-    return this;
-  }
-
-  @Override
-  public DeveloperProjectWorkHistoryRecord value7(DeveloperProjectWorkHistoryComplexity value) {
+  public DeveloperProjectWorkHistoryRecord value5(DeveloperProjectWorkHistoryComplexity value) {
     setComplexity(value);
     return this;
   }
 
   @Override
-  public DeveloperProjectWorkHistoryRecord value8(Long value) {
+  public DeveloperProjectWorkHistoryRecord value6(Long value) {
     setDeveloperProjectWorkId(value);
+    return this;
+  }
+
+  @Override
+  public DeveloperProjectWorkHistoryRecord value7(Integer value) {
+    setDet(value);
+    return this;
+  }
+
+  @Override
+  public DeveloperProjectWorkHistoryRecord value8(Integer value) {
+    setFtr(value);
     return this;
   }
 
@@ -399,10 +399,10 @@ public class DeveloperProjectWorkHistoryRecord
       String value2,
       String value3,
       DeveloperProjectWorkHistoryFunctionType value4,
-      Integer value5,
-      Integer value6,
-      DeveloperProjectWorkHistoryComplexity value7,
-      Long value8,
+      DeveloperProjectWorkHistoryComplexity value5,
+      Long value6,
+      Integer value7,
+      Integer value8,
       LocalDateTime value9,
       LocalDateTime value10) {
     value1(value1);
@@ -433,10 +433,10 @@ public class DeveloperProjectWorkHistoryRecord
       String functionName,
       String functionDescription,
       DeveloperProjectWorkHistoryFunctionType functionType,
-      Integer det,
-      Integer ftr,
       DeveloperProjectWorkHistoryComplexity complexity,
       Long developerProjectWorkId,
+      Integer det,
+      Integer ftr,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     super(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY);
@@ -445,10 +445,10 @@ public class DeveloperProjectWorkHistoryRecord
     setFunctionName(functionName);
     setFunctionDescription(functionDescription);
     setFunctionType(functionType);
-    setDet(det);
-    setFtr(ftr);
     setComplexity(complexity);
     setDeveloperProjectWorkId(developerProjectWorkId);
+    setDet(det);
+    setFtr(ftr);
     setCreatedAt(createdAt);
     setUpdatedAt(updatedAt);
     resetChangedOnNotNull();
@@ -464,10 +464,10 @@ public class DeveloperProjectWorkHistoryRecord
       setFunctionName(value.getFunctionName());
       setFunctionDescription(value.getFunctionDescription());
       setFunctionType(value.getFunctionType());
-      setDet(value.getDet());
-      setFtr(value.getFtr());
       setComplexity(value.getComplexity());
       setDeveloperProjectWorkId(value.getDeveloperProjectWorkId());
+      setDet(value.getDet());
+      setFtr(value.getFtr());
       setCreatedAt(value.getCreatedAt());
       setUpdatedAt(value.getUpdatedAt());
       resetChangedOnNotNull();
