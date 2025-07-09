@@ -71,7 +71,7 @@ public class DeveloperProjectWork extends TableImpl<DeveloperProjectWorkRecord> 
       APPROVAL_STATUS =
           createField(
               DSL.name("approval_status"),
-              SQLDataType.VARCHAR(8)
+              SQLDataType.VARCHAR(13)
                   .nullable(false)
                   .defaultValue(DSL.field(DSL.raw("'PENDING'"), SQLDataType.VARCHAR))
                   .asEnumDataType(

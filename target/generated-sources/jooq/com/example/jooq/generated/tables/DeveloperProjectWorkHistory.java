@@ -10,12 +10,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function10;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -59,13 +59,19 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               this,
               "");
 
+  /** The column <code>sion.developer_project_work_history.function_name</code>. */
+  public final TableField<DeveloperProjectWorkHistoryRecord, String> FUNCTION_NAME =
+      createField(
+          DSL.name("function_name"),
+          SQLDataType.VARCHAR(100)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("'0'"), SQLDataType.VARCHAR)),
+          this,
+          "");
+
   /** The column <code>sion.developer_project_work_history.function_description</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, String> FUNCTION_DESCRIPTION =
       createField(DSL.name("function_description"), SQLDataType.CLOB.nullable(false), this, "");
-
-  /** The column <code>sion.developer_project_work_history.tech_stack_name</code>. */
-  public final TableField<DeveloperProjectWorkHistoryRecord, String> TECH_STACK_NAME =
-      createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   /** The column <code>sion.developer_project_work_history.function_type</code>. */
   public final TableField<
@@ -81,13 +87,33 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
               this,
               "");
 
+  /** The column <code>sion.developer_project_work_history.det</code>. */
+  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> DET =
+      createField(
+          DSL.name("det"),
+          SQLDataType.INTEGER
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)),
+          this,
+          "");
+
+  /** The column <code>sion.developer_project_work_history.ftr</code>. */
+  public final TableField<DeveloperProjectWorkHistoryRecord, Integer> FTR =
+      createField(
+          DSL.name("ftr"),
+          SQLDataType.INTEGER
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)),
+          this,
+          "");
+
   /** The column <code>sion.developer_project_work_history.complexity</code>. */
   public final TableField<DeveloperProjectWorkHistoryRecord, DeveloperProjectWorkHistoryComplexity>
       COMPLEXITY =
           createField(
               DSL.name("complexity"),
               SQLDataType.VARCHAR(7)
-                  .nullable(false)
+                  .defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR))
                   .asEnumDataType(
                       com.example.jooq.generated.enums.DeveloperProjectWorkHistoryComplexity.class),
               this,
@@ -212,30 +238,34 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
   }
 
   // -------------------------------------------------------------------------
-  // Row8 type methods
+  // Row10 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row8<
+  public Row10<
           Long,
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
+          Integer,
+          Integer,
           DeveloperProjectWorkHistoryComplexity,
           Long,
           LocalDateTime,
           LocalDateTime>
       fieldsRow() {
-    return (Row8) super.fieldsRow();
+    return (Row10) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function8<
+      Function10<
               ? super Long,
               ? super String,
               ? super String,
               ? super DeveloperProjectWorkHistoryFunctionType,
+              ? super Integer,
+              ? super Integer,
               ? super DeveloperProjectWorkHistoryComplexity,
               ? super Long,
               ? super LocalDateTime,
@@ -248,11 +278,13 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function8<
+      Function10<
               ? super Long,
               ? super String,
               ? super String,
               ? super DeveloperProjectWorkHistoryFunctionType,
+              ? super Integer,
+              ? super Integer,
               ? super DeveloperProjectWorkHistoryComplexity,
               ? super Long,
               ? super LocalDateTime,

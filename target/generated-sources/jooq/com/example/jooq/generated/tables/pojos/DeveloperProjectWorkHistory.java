@@ -16,9 +16,11 @@ public class DeveloperProjectWorkHistory implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Long developerProjectWorkHistoryId;
+  private String functionName;
   private String functionDescription;
-  private String techStackName;
   private DeveloperProjectWorkHistoryFunctionType functionType;
+  private Integer det;
+  private Integer ftr;
   private DeveloperProjectWorkHistoryComplexity complexity;
   private Long developerProjectWorkId;
   private LocalDateTime createdAt;
@@ -28,9 +30,11 @@ public class DeveloperProjectWorkHistory implements Serializable {
 
   public DeveloperProjectWorkHistory(DeveloperProjectWorkHistory value) {
     this.developerProjectWorkHistoryId = value.developerProjectWorkHistoryId;
+    this.functionName = value.functionName;
     this.functionDescription = value.functionDescription;
-    this.techStackName = value.techStackName;
     this.functionType = value.functionType;
+    this.det = value.det;
+    this.ftr = value.ftr;
     this.complexity = value.complexity;
     this.developerProjectWorkId = value.developerProjectWorkId;
     this.createdAt = value.createdAt;
@@ -39,17 +43,21 @@ public class DeveloperProjectWorkHistory implements Serializable {
 
   public DeveloperProjectWorkHistory(
       Long developerProjectWorkHistoryId,
+      String functionName,
       String functionDescription,
-      String techStackName,
       DeveloperProjectWorkHistoryFunctionType functionType,
+      Integer det,
+      Integer ftr,
       DeveloperProjectWorkHistoryComplexity complexity,
       Long developerProjectWorkId,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.developerProjectWorkHistoryId = developerProjectWorkHistoryId;
+    this.functionName = functionName;
     this.functionDescription = functionDescription;
-    this.techStackName = techStackName;
     this.functionType = functionType;
+    this.det = det;
+    this.ftr = ftr;
     this.complexity = complexity;
     this.developerProjectWorkId = developerProjectWorkId;
     this.createdAt = createdAt;
@@ -70,6 +78,16 @@ public class DeveloperProjectWorkHistory implements Serializable {
     this.developerProjectWorkHistoryId = developerProjectWorkHistoryId;
   }
 
+  /** Getter for <code>sion.developer_project_work_history.function_name</code>. */
+  public String getFunctionName() {
+    return this.functionName;
+  }
+
+  /** Setter for <code>sion.developer_project_work_history.function_name</code>. */
+  public void setFunctionName(String functionName) {
+    this.functionName = functionName;
+  }
+
   /** Getter for <code>sion.developer_project_work_history.function_description</code>. */
   public String getFunctionDescription() {
     return this.functionDescription;
@@ -80,16 +98,6 @@ public class DeveloperProjectWorkHistory implements Serializable {
     this.functionDescription = functionDescription;
   }
 
-  /** Getter for <code>sion.developer_project_work_history.tech_stack_name</code>. */
-  public String getTechStackName() {
-    return this.techStackName;
-  }
-
-  /** Setter for <code>sion.developer_project_work_history.tech_stack_name</code>. */
-  public void setTechStackName(String techStackName) {
-    this.techStackName = techStackName;
-  }
-
   /** Getter for <code>sion.developer_project_work_history.function_type</code>. */
   public DeveloperProjectWorkHistoryFunctionType getFunctionType() {
     return this.functionType;
@@ -98,6 +106,26 @@ public class DeveloperProjectWorkHistory implements Serializable {
   /** Setter for <code>sion.developer_project_work_history.function_type</code>. */
   public void setFunctionType(DeveloperProjectWorkHistoryFunctionType functionType) {
     this.functionType = functionType;
+  }
+
+  /** Getter for <code>sion.developer_project_work_history.det</code>. */
+  public Integer getDet() {
+    return this.det;
+  }
+
+  /** Setter for <code>sion.developer_project_work_history.det</code>. */
+  public void setDet(Integer det) {
+    this.det = det;
+  }
+
+  /** Getter for <code>sion.developer_project_work_history.ftr</code>. */
+  public Integer getFtr() {
+    return this.ftr;
+  }
+
+  /** Setter for <code>sion.developer_project_work_history.ftr</code>. */
+  public void setFtr(Integer ftr) {
+    this.ftr = ftr;
   }
 
   /** Getter for <code>sion.developer_project_work_history.complexity</code>. */
@@ -150,15 +178,21 @@ public class DeveloperProjectWorkHistory implements Serializable {
       if (other.developerProjectWorkHistoryId != null) return false;
     } else if (!this.developerProjectWorkHistoryId.equals(other.developerProjectWorkHistoryId))
       return false;
+    if (this.functionName == null) {
+      if (other.functionName != null) return false;
+    } else if (!this.functionName.equals(other.functionName)) return false;
     if (this.functionDescription == null) {
       if (other.functionDescription != null) return false;
     } else if (!this.functionDescription.equals(other.functionDescription)) return false;
-    if (this.techStackName == null) {
-      if (other.techStackName != null) return false;
-    } else if (!this.techStackName.equals(other.techStackName)) return false;
     if (this.functionType == null) {
       if (other.functionType != null) return false;
     } else if (!this.functionType.equals(other.functionType)) return false;
+    if (this.det == null) {
+      if (other.det != null) return false;
+    } else if (!this.det.equals(other.det)) return false;
+    if (this.ftr == null) {
+      if (other.ftr != null) return false;
+    } else if (!this.ftr.equals(other.ftr)) return false;
     if (this.complexity == null) {
       if (other.complexity != null) return false;
     } else if (!this.complexity.equals(other.complexity)) return false;
@@ -183,11 +217,13 @@ public class DeveloperProjectWorkHistory implements Serializable {
             + ((this.developerProjectWorkHistoryId == null)
                 ? 0
                 : this.developerProjectWorkHistoryId.hashCode());
+    result = prime * result + ((this.functionName == null) ? 0 : this.functionName.hashCode());
     result =
         prime * result
             + ((this.functionDescription == null) ? 0 : this.functionDescription.hashCode());
-    result = prime * result + ((this.techStackName == null) ? 0 : this.techStackName.hashCode());
     result = prime * result + ((this.functionType == null) ? 0 : this.functionType.hashCode());
+    result = prime * result + ((this.det == null) ? 0 : this.det.hashCode());
+    result = prime * result + ((this.ftr == null) ? 0 : this.ftr.hashCode());
     result = prime * result + ((this.complexity == null) ? 0 : this.complexity.hashCode());
     result =
         prime * result
@@ -202,9 +238,11 @@ public class DeveloperProjectWorkHistory implements Serializable {
     StringBuilder sb = new StringBuilder("DeveloperProjectWorkHistory (");
 
     sb.append(developerProjectWorkHistoryId);
+    sb.append(", ").append(functionName);
     sb.append(", ").append(functionDescription);
-    sb.append(", ").append(techStackName);
     sb.append(", ").append(functionType);
+    sb.append(", ").append(det);
+    sb.append(", ").append(ftr);
     sb.append(", ").append(complexity);
     sb.append(", ").append(developerProjectWorkId);
     sb.append(", ").append(createdAt);
