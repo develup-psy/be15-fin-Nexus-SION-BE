@@ -3,7 +3,6 @@ package com.nexus.sion.feature.project.command.domain.aggregate;
 import jakarta.persistence.*;
 
 import com.nexus.sion.common.domain.BaseTimeEntity;
-import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryItemDto;
 
 import lombok.*;
 
@@ -11,6 +10,8 @@ import lombok.*;
 @Table(name = "developer_project_work_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class DeveloperProjectWorkHistory extends BaseTimeEntity {
 
   @Id
@@ -18,46 +19,28 @@ public class DeveloperProjectWorkHistory extends BaseTimeEntity {
   @Column(name = "developer_project_work_history_id")
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "developer_project_work_id", nullable = false)
-  private DeveloperProjectWork developerProjectWork;
+  @Column(name = "function_name", nullable = false, length = 100)
+  private String functionName;
 
   @Column(name = "function_description", nullable = false, columnDefinition = "TEXT")
   private String functionDescription;
-
-  @Column(name = "tech_stack_name", nullable = false)
-  private String techStackName;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "function_type", nullable = false)
   private FunctionType functionType;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "complexity", nullable = false)
+  @Column(name = "complexity")
   private Complexity complexity;
 
-  public DeveloperProjectWorkHistory(
-      String functionDescription,
-      String techStackName,
-      FunctionType functionType,
-      Complexity complexity) {
-    this.functionDescription = functionDescription;
-    this.techStackName = techStackName;
-    this.functionType = functionType;
-    this.complexity = complexity;
-  }
+  @Column(name = "developer_project_work_id", nullable = false)
+  private Long developerProjectWorkId;
 
-  public DeveloperProjectWorkHistory(DeveloperProjectWork work, WorkHistoryItemDto dto) {
-    this.developerProjectWork = work;
-    this.functionDescription = dto.getFunctionDescription();
-    this.techStackName = dto.getTechStackName();
-    this.functionType = FunctionType.valueOf(dto.getFunctionType());
-    this.complexity = Complexity.valueOf(dto.getComplexity());
-  }
+  @Column(name = "det", nullable = false)
+  private Integer det;
 
-  public void setDeveloperProjectWork(DeveloperProjectWork work) {
-    this.developerProjectWork = work;
-  }
+  @Column(name = "ftr", nullable = false)
+  private Integer ftr;
 
   public enum FunctionType {
     EI,
@@ -65,7 +48,6 @@ public class DeveloperProjectWorkHistory extends BaseTimeEntity {
     EQ,
     ILF,
     EIF
-    // 기능 유형: EI(입력), EO(출력), EQ(조회), ILF(내부파일), EIF(외부파일)
   }
 
   public enum Complexity {

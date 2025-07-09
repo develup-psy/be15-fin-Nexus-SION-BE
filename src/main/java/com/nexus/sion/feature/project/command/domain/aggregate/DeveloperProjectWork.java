@@ -1,8 +1,6 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -14,6 +12,8 @@ import lombok.*;
 @Table(name = "developer_project_work")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class DeveloperProjectWork extends BaseTimeEntity {
 
   @Id
@@ -37,18 +37,17 @@ public class DeveloperProjectWork extends BaseTimeEntity {
   @Column(name = "approved_at")
   private LocalDateTime approvedAt;
 
-  @OneToMany(mappedBy = "developerProjectWork", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<DeveloperProjectWorkHistory> histories = new ArrayList<>();
-
   public DeveloperProjectWork(String employeeIdentificationNumber, String projectCode) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
     this.projectCode = projectCode;
-    this.approvalStatus = ApprovalStatus.PENDING;
+    this.approvalStatus = ApprovalStatus.NOT_REQUESTED;
   }
 
-  public void addHistory(DeveloperProjectWorkHistory history) {
-    histories.add(history);
-    history.setDeveloperProjectWork(this);
+  public DeveloperProjectWork(
+      String employeeIdentificationNumber, String projectCode, ApprovalStatus approvalStatus) {
+    this.employeeIdentificationNumber = employeeIdentificationNumber;
+    this.projectCode = projectCode;
+    this.approvalStatus = approvalStatus != null ? approvalStatus : ApprovalStatus.PENDING;
   }
 
   public void approve(String adminId) {
@@ -64,8 +63,13 @@ public class DeveloperProjectWork extends BaseTimeEntity {
   }
 
   public enum ApprovalStatus {
+    NOT_REQUESTED,
     PENDING,
     APPROVED,
     REJECTED
+  }
+
+  public void setApprovalStatus(ApprovalStatus status) {
+    this.approvalStatus = status;
   }
 }
