@@ -3,6 +3,7 @@ package com.nexus.sion.feature.notification.command.application.controller;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -16,6 +17,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.file.AccessDeniedException;
+
+import org.springframework.security.core.Authentication;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +33,13 @@ public class NotificationCommandController {
   public ResponseEntity<SseEmitter> subscribe(
       @AuthenticationPrincipal UserDetails userDetails,
       @RequestHeader(value = "Last-Event-Id", required = false, defaultValue = "")
-          String lastEventId) {
+          String lastEventId) throws AccessDeniedException {
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || !auth.isAuthenticated()) {
+      throw new AccessDeniedException("인증되지 않음");
+    }
+
     return ResponseEntity.ok(
         notificationCommandService.subscribe(userDetails.getUsername(), lastEventId));
   }

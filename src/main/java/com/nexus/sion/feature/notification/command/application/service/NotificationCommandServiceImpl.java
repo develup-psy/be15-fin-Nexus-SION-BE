@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import jakarta.transaction.Transactional;
 
@@ -30,6 +33,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   private final NotificationRepository notificationRepository;
   private final SseEmitterRepository sseEmitterRepository;
   private final MemberRepository memberRepository;
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
   private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 1시간
 
@@ -83,13 +87,38 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         employeeIdentificationNumber + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis();
     SseEmitter emitter = sseEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-    emitter.onCompletion(() -> sseEmitterRepository.deleteById(emitterId));
-    emitter.onTimeout(() -> sseEmitterRepository.deleteById(emitterId));
-    emitter.onError((e) -> sseEmitterRepository.deleteById(emitterId));
+
+      emitter.onCompletion(() -> {
+          sseEmitterRepository.deleteById(emitterId);
+          System.out.println("onCompletion - emitter 삭제: " + emitterId);
+      });
+
+      emitter.onTimeout(() -> {
+          sseEmitterRepository.deleteById(emitterId);
+          System.out.println("onTimeout - emitter 삭제: " + emitterId);
+      });
+
+      emitter.onError((e) -> {
+          sseEmitterRepository.deleteById(emitterId);
+          System.out.println("onError - emitter 삭제: " + emitterId);
+      });
 
     sendToClient(
-        emitterId, emitter, "알림 서버 연결 성공. [memberId = " + employeeIdentificationNumber + "]");
+        emitterId, emitter, "initial-connect", "알림 서버 연결 성공. [memberId = " + employeeIdentificationNumber + "]");
 
+      // ping 이벤트 30초마다 보내기
+      scheduler.scheduleAtFixedRate(() -> {
+          try {
+              emitter.send(SseEmitter.event()
+                      .name("ping")
+                      .data("ping"));
+          } catch (IOException e) {
+              sseEmitterRepository.deleteById(emitterId);
+              System.out.println("ping 전송 실패 - emitter 삭제: " + emitterId);
+          }
+      }, 30, 30, TimeUnit.SECONDS);
+
+      // 기존 last event 복구 로직
     if (!lastEventId.isEmpty()) {
       Map<String, Object> events =
           sseEmitterRepository.findAllEventCacheStartWithId(employeeIdentificationNumber);
@@ -113,7 +142,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
                   return false; // 파싱 실패한 경우도 무시
                 }
               })
-          .forEach(entry -> sendToClient(entry.getKey(), emitter, entry.getValue()));
+          .forEach(entry -> sendToClient(entry.getKey(), emitter, "sse", entry.getValue()));
     }
 
     return emitter;
@@ -126,13 +155,16 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     emitters.forEach(
         (emitterId, emitter) -> {
           sseEmitterRepository.saveEventCache(emitterId, data);
-          sendToClient(emitterId, emitter, data);
+          sendToClient(emitterId, emitter, "sse", data);
         });
   }
 
-  private void sendToClient(String emitterId, SseEmitter emitter, Object data) {
+  private void sendToClient(String emitterId, SseEmitter emitter, String name, Object data) {
     try {
-      emitter.send(SseEmitter.event().id(emitterId).name("sse").data(data));
+      emitter.send(SseEmitter.event()
+              .id(emitterId)
+              .name(name)
+              .data(data));
     } catch (IOException e) {
       sseEmitterRepository.deleteById(emitterId);
       log.error("SSE 연결 오류: emitterId={}, error={}", emitterId, e.getMessage());
