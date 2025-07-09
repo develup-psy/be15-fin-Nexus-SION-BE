@@ -71,7 +71,7 @@ public class DeveloperProjectWork extends TableImpl<DeveloperProjectWorkRecord> 
       APPROVAL_STATUS =
           createField(
               DSL.name("approval_status"),
-              SQLDataType.VARCHAR(8)
+              SQLDataType.VARCHAR(13)
                   .nullable(false)
                   .defaultValue(DSL.field(DSL.raw("'PENDING'"), SQLDataType.VARCHAR))
                   .asEnumDataType(
@@ -81,7 +81,11 @@ public class DeveloperProjectWork extends TableImpl<DeveloperProjectWorkRecord> 
 
   /** The column <code>SION.developer_project_work.approved_by</code>. */
   public final TableField<DeveloperProjectWorkRecord, String> APPROVED_BY =
-      createField(DSL.name("approved_by"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+      createField(
+          DSL.name("approved_by"),
+          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
 
   /** The column <code>SION.developer_project_work.approved_at</code>. */
   public final TableField<DeveloperProjectWorkRecord, LocalDateTime> APPROVED_AT =

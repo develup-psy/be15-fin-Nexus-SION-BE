@@ -9,6 +9,7 @@ import com.example.jooq.generated.tables.ClientCompany;
 import com.example.jooq.generated.tables.Department;
 import com.example.jooq.generated.tables.DeveloperProjectWork;
 import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
+import com.example.jooq.generated.tables.DeveloperProjectWorkHistoryTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStack;
 import com.example.jooq.generated.tables.DeveloperTechStackHistory;
 import com.example.jooq.generated.tables.Domain;
@@ -58,6 +59,11 @@ public class Tables {
   /** The table <code>SION.developer_project_work_history</code>. */
   public static final DeveloperProjectWorkHistory DEVELOPER_PROJECT_WORK_HISTORY =
       DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY;
+
+  /** The table <code>SION.developer_project_work_history_tech_stack</code>. */
+  public static final DeveloperProjectWorkHistoryTechStack
+      DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK =
+          DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK;
 
   /** The table <code>SION.developer_tech_stack</code>. */
   public static final DeveloperTechStack DEVELOPER_TECH_STACK =

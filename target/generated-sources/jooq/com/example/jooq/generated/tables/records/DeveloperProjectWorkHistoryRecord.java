@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record8;
-import org.jooq.Row8;
+import org.jooq.Record10;
+import org.jooq.Row10;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import com.example.jooq.generated.enums.DeveloperProjectWorkHistoryComplexity;
@@ -19,13 +19,15 @@ import com.example.jooq.generated.tables.DeveloperProjectWorkHistory;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class DeveloperProjectWorkHistoryRecord
     extends UpdatableRecordImpl<DeveloperProjectWorkHistoryRecord>
-    implements Record8<
+    implements Record10<
         Long,
         String,
         String,
         DeveloperProjectWorkHistoryFunctionType,
         DeveloperProjectWorkHistoryComplexity,
         Long,
+        Integer,
+        Integer,
         LocalDateTime,
         LocalDateTime> {
 
@@ -45,23 +47,23 @@ public class DeveloperProjectWorkHistoryRecord
     return (Long) get(0);
   }
 
+  /** Setter for <code>SION.developer_project_work_history.function_name</code>. */
+  public void setFunctionName(String value) {
+    set(1, value);
+  }
+
+  /** Getter for <code>SION.developer_project_work_history.function_name</code>. */
+  public String getFunctionName() {
+    return (String) get(1);
+  }
+
   /** Setter for <code>SION.developer_project_work_history.function_description</code>. */
   public void setFunctionDescription(String value) {
-    set(1, value);
+    set(2, value);
   }
 
   /** Getter for <code>SION.developer_project_work_history.function_description</code>. */
   public String getFunctionDescription() {
-    return (String) get(1);
-  }
-
-  /** Setter for <code>SION.developer_project_work_history.tech_stack_name</code>. */
-  public void setTechStackName(String value) {
-    set(2, value);
-  }
-
-  /** Getter for <code>SION.developer_project_work_history.tech_stack_name</code>. */
-  public String getTechStackName() {
     return (String) get(2);
   }
 
@@ -95,24 +97,44 @@ public class DeveloperProjectWorkHistoryRecord
     return (Long) get(5);
   }
 
+  /** Setter for <code>SION.developer_project_work_history.det</code>. */
+  public void setDet(Integer value) {
+    set(6, value);
+  }
+
+  /** Getter for <code>SION.developer_project_work_history.det</code>. */
+  public Integer getDet() {
+    return (Integer) get(6);
+  }
+
+  /** Setter for <code>SION.developer_project_work_history.ftr</code>. */
+  public void setFtr(Integer value) {
+    set(7, value);
+  }
+
+  /** Getter for <code>SION.developer_project_work_history.ftr</code>. */
+  public Integer getFtr() {
+    return (Integer) get(7);
+  }
+
   /** Setter for <code>SION.developer_project_work_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
-    set(6, value);
+    set(8, value);
   }
 
   /** Getter for <code>SION.developer_project_work_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
-    return (LocalDateTime) get(6);
+    return (LocalDateTime) get(8);
   }
 
   /** Setter for <code>SION.developer_project_work_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
-    set(7, value);
+    set(9, value);
   }
 
   /** Getter for <code>SION.developer_project_work_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
-    return (LocalDateTime) get(7);
+    return (LocalDateTime) get(9);
   }
 
   // -------------------------------------------------------------------------
@@ -125,35 +147,39 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   // -------------------------------------------------------------------------
-  // Record8 type implementation
+  // Record10 type implementation
   // -------------------------------------------------------------------------
 
   @Override
-  public Row8<
+  public Row10<
           Long,
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
           DeveloperProjectWorkHistoryComplexity,
           Long,
+          Integer,
+          Integer,
           LocalDateTime,
           LocalDateTime>
       fieldsRow() {
-    return (Row8) super.fieldsRow();
+    return (Row10) super.fieldsRow();
   }
 
   @Override
-  public Row8<
+  public Row10<
           Long,
           String,
           String,
           DeveloperProjectWorkHistoryFunctionType,
           DeveloperProjectWorkHistoryComplexity,
           Long,
+          Integer,
+          Integer,
           LocalDateTime,
           LocalDateTime>
       valuesRow() {
-    return (Row8) super.valuesRow();
+    return (Row10) super.valuesRow();
   }
 
   @Override
@@ -164,12 +190,12 @@ public class DeveloperProjectWorkHistoryRecord
 
   @Override
   public Field<String> field2() {
-    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_DESCRIPTION;
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_NAME;
   }
 
   @Override
   public Field<String> field3() {
-    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.TECH_STACK_NAME;
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_DESCRIPTION;
   }
 
   @Override
@@ -188,12 +214,22 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public Field<LocalDateTime> field7() {
+  public Field<Integer> field7() {
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.DET;
+  }
+
+  @Override
+  public Field<Integer> field8() {
+    return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.FTR;
+  }
+
+  @Override
+  public Field<LocalDateTime> field9() {
     return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.CREATED_AT;
   }
 
   @Override
-  public Field<LocalDateTime> field8() {
+  public Field<LocalDateTime> field10() {
     return DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY.UPDATED_AT;
   }
 
@@ -204,12 +240,12 @@ public class DeveloperProjectWorkHistoryRecord
 
   @Override
   public String component2() {
-    return getFunctionDescription();
+    return getFunctionName();
   }
 
   @Override
   public String component3() {
-    return getTechStackName();
+    return getFunctionDescription();
   }
 
   @Override
@@ -228,12 +264,22 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public LocalDateTime component7() {
+  public Integer component7() {
+    return getDet();
+  }
+
+  @Override
+  public Integer component8() {
+    return getFtr();
+  }
+
+  @Override
+  public LocalDateTime component9() {
     return getCreatedAt();
   }
 
   @Override
-  public LocalDateTime component8() {
+  public LocalDateTime component10() {
     return getUpdatedAt();
   }
 
@@ -244,12 +290,12 @@ public class DeveloperProjectWorkHistoryRecord
 
   @Override
   public String value2() {
-    return getFunctionDescription();
+    return getFunctionName();
   }
 
   @Override
   public String value3() {
-    return getTechStackName();
+    return getFunctionDescription();
   }
 
   @Override
@@ -268,12 +314,22 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public LocalDateTime value7() {
+  public Integer value7() {
+    return getDet();
+  }
+
+  @Override
+  public Integer value8() {
+    return getFtr();
+  }
+
+  @Override
+  public LocalDateTime value9() {
     return getCreatedAt();
   }
 
   @Override
-  public LocalDateTime value8() {
+  public LocalDateTime value10() {
     return getUpdatedAt();
   }
 
@@ -285,13 +341,13 @@ public class DeveloperProjectWorkHistoryRecord
 
   @Override
   public DeveloperProjectWorkHistoryRecord value2(String value) {
-    setFunctionDescription(value);
+    setFunctionName(value);
     return this;
   }
 
   @Override
   public DeveloperProjectWorkHistoryRecord value3(String value) {
-    setTechStackName(value);
+    setFunctionDescription(value);
     return this;
   }
 
@@ -314,13 +370,25 @@ public class DeveloperProjectWorkHistoryRecord
   }
 
   @Override
-  public DeveloperProjectWorkHistoryRecord value7(LocalDateTime value) {
+  public DeveloperProjectWorkHistoryRecord value7(Integer value) {
+    setDet(value);
+    return this;
+  }
+
+  @Override
+  public DeveloperProjectWorkHistoryRecord value8(Integer value) {
+    setFtr(value);
+    return this;
+  }
+
+  @Override
+  public DeveloperProjectWorkHistoryRecord value9(LocalDateTime value) {
     setCreatedAt(value);
     return this;
   }
 
   @Override
-  public DeveloperProjectWorkHistoryRecord value8(LocalDateTime value) {
+  public DeveloperProjectWorkHistoryRecord value10(LocalDateTime value) {
     setUpdatedAt(value);
     return this;
   }
@@ -333,8 +401,10 @@ public class DeveloperProjectWorkHistoryRecord
       DeveloperProjectWorkHistoryFunctionType value4,
       DeveloperProjectWorkHistoryComplexity value5,
       Long value6,
-      LocalDateTime value7,
-      LocalDateTime value8) {
+      Integer value7,
+      Integer value8,
+      LocalDateTime value9,
+      LocalDateTime value10) {
     value1(value1);
     value2(value2);
     value3(value3);
@@ -343,6 +413,8 @@ public class DeveloperProjectWorkHistoryRecord
     value6(value6);
     value7(value7);
     value8(value8);
+    value9(value9);
+    value10(value10);
     return this;
   }
 
@@ -358,21 +430,25 @@ public class DeveloperProjectWorkHistoryRecord
   /** Create a detached, initialised DeveloperProjectWorkHistoryRecord */
   public DeveloperProjectWorkHistoryRecord(
       Long developerProjectWorkHistoryId,
+      String functionName,
       String functionDescription,
-      String techStackName,
       DeveloperProjectWorkHistoryFunctionType functionType,
       DeveloperProjectWorkHistoryComplexity complexity,
       Long developerProjectWorkId,
+      Integer det,
+      Integer ftr,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     super(DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY);
 
     setDeveloperProjectWorkHistoryId(developerProjectWorkHistoryId);
+    setFunctionName(functionName);
     setFunctionDescription(functionDescription);
-    setTechStackName(techStackName);
     setFunctionType(functionType);
     setComplexity(complexity);
     setDeveloperProjectWorkId(developerProjectWorkId);
+    setDet(det);
+    setFtr(ftr);
     setCreatedAt(createdAt);
     setUpdatedAt(updatedAt);
     resetChangedOnNotNull();
@@ -385,11 +461,13 @@ public class DeveloperProjectWorkHistoryRecord
 
     if (value != null) {
       setDeveloperProjectWorkHistoryId(value.getDeveloperProjectWorkHistoryId());
+      setFunctionName(value.getFunctionName());
       setFunctionDescription(value.getFunctionDescription());
-      setTechStackName(value.getTechStackName());
       setFunctionType(value.getFunctionType());
       setComplexity(value.getComplexity());
       setDeveloperProjectWorkId(value.getDeveloperProjectWorkId());
+      setDet(value.getDet());
+      setFtr(value.getFtr());
       setCreatedAt(value.getCreatedAt());
       setUpdatedAt(value.getUpdatedAt());
       resetChangedOnNotNull();

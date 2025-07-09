@@ -4,16 +4,18 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -98,6 +100,14 @@ public class Notification extends TableImpl<NotificationRecord> {
   public final TableField<NotificationRecord, String> RECEIVER_ID =
       createField(DSL.name("receiver_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
+  /** The column <code>SION.notification.sender_id</code>. */
+  public final TableField<NotificationRecord, String> SENDER_ID =
+      createField(
+          DSL.name("sender_id"),
+          SQLDataType.VARCHAR(30).defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.VARCHAR)),
+          this,
+          "");
+
   private Notification(Name alias, Table<NotificationRecord> aliased) {
     this(alias, aliased, null);
   }
@@ -141,6 +151,36 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   @Override
+  public List<ForeignKey<NotificationRecord, ?>> getReferences() {
+    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER, Keys.FK_NOTIFICATION_MEMBER_2);
+  }
+
+  private transient Member _fkNotificationMember;
+  private transient Member _fkNotificationMember_2;
+
+  /**
+   * Get the implicit join path to the <code>SION.member</code> table, via the <code>
+   * FK_NOTIFICATION_MEMBER</code> key.
+   */
+  public Member fkNotificationMember() {
+    if (_fkNotificationMember == null)
+      _fkNotificationMember = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
+
+    return _fkNotificationMember;
+  }
+
+  /**
+   * Get the implicit join path to the <code>SION.member</code> table, via the <code>
+   * FK_NOTIFICATION_MEMBER_2</code> key.
+   */
+  public Member fkNotificationMember_2() {
+    if (_fkNotificationMember_2 == null)
+      _fkNotificationMember_2 = new Member(this, Keys.FK_NOTIFICATION_MEMBER_2);
+
+    return _fkNotificationMember_2;
+  }
+
+  @Override
   public Notification as(String alias) {
     return new Notification(DSL.name(alias), this);
   }
@@ -174,18 +214,18 @@ public class Notification extends TableImpl<NotificationRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row8 type methods
+  // Row9 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row8<Long, String, String, String, Byte, LocalDateTime, LocalDateTime, String>
+  public Row9<Long, String, String, String, Byte, LocalDateTime, LocalDateTime, String, String>
       fieldsRow() {
-    return (Row8) super.fieldsRow();
+    return (Row9) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function8<
+      Function9<
               ? super Long,
               ? super String,
               ? super String,
@@ -193,6 +233,7 @@ public class Notification extends TableImpl<NotificationRecord> {
               ? super Byte,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {
@@ -202,7 +243,7 @@ public class Notification extends TableImpl<NotificationRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function8<
+      Function9<
               ? super Long,
               ? super String,
               ? super String,
@@ -210,6 +251,7 @@ public class Notification extends TableImpl<NotificationRecord> {
               ? super Byte,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {
