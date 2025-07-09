@@ -36,5 +36,3 @@ public class Certificate {
     this.updatedAt = LocalDateTime.now();
   }
 }
-
-
