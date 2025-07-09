@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
-import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -25,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectAnalysisResult;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -54,7 +54,8 @@ public class ProjectAnalysisService {
   private String fpInferUrl;
 
   @Async
-  public CompletableFuture<Void> analyzeProject(String projectId, MultipartFile multipartFile, String managerId) {
+  public CompletableFuture<Void> analyzeProject(
+      String projectId, MultipartFile multipartFile, String managerId) {
     File tempFile = null;
     try {
       tempFile = File.createTempFile("input_", ".pdf");
@@ -142,10 +143,6 @@ public class ProjectAnalysisService {
   private void notifyFPAnalysisSuccess(String managerId, String projectId) {
 
     notificationCommandService.createAndSendNotification(
-            null,
-            managerId,
-            NotificationType.FP_ANALYSIS_COMPLETE,
-            projectId
-    );
+        null, managerId, NotificationType.FP_ANALYSIS_COMPLETE, projectId);
   }
 }

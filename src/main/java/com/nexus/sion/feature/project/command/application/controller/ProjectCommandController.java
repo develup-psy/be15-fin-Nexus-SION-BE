@@ -53,8 +53,9 @@ public class ProjectCommandController {
 
   @PostMapping("/{projectCode}/analyze")
   public ResponseEntity<Void> analyzeProject(
-          @AuthenticationPrincipal UserDetails userDetails,
-      @PathVariable String projectCode, @RequestParam("file") MultipartFile multipartFile) {
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String projectCode,
+      @RequestParam("file") MultipartFile multipartFile) {
 
     projectCommandService.analyzeProject(projectCode, multipartFile, userDetails.getUsername());
     return ResponseEntity.accepted().build();

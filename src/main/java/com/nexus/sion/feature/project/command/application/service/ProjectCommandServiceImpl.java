@@ -197,7 +197,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Transactional
   @Override
-  public void analyzeProject(String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
+  public void analyzeProject(
+      String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
     Project project =
         projectRepository
             .findById(projectId)
@@ -221,10 +222,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private void notifyFPAnalysisFailure(String managerId, String projectId) {
     notificationCommandService.createAndSendNotification(
-            null,
-            managerId,
-            NotificationType.FP_ANALYSIS_FAILURE,
-            projectId
-    );
+        null, managerId, NotificationType.FP_ANALYSIS_FAILURE, projectId);
   }
 }
