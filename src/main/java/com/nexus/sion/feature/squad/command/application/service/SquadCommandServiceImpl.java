@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -171,9 +172,12 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     Map<String, Integer> requiredCountByRole =
         squadQueryService.findRequiredMemberCountByRoles(projectId);
 
+    // 추천 기준에 따라 Top N 필터링
+    Map<String, List<DeveloperSummary>> filteredCandidates = filterTopNByCriteria(candidates, criteria);
+
     // 조합 생성
     List<Map<String, List<DeveloperSummary>>> combinations =
-        squadCombinationGenerator.generate(candidates, requiredCountByRole);
+        squadCombinationGenerator.generate(filteredCandidates, requiredCountByRole);
 
     if (combinations.isEmpty()) {
       throw new IllegalStateException("생성 가능한 스쿼드 조합이 없습니다.");
@@ -283,4 +287,27 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     projectCommandService.updateProjectStatus(
         squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
   }
+
+  private Map<String, List<DeveloperSummary>> filterTopNByCriteria(
+          Map<String, List<DeveloperSummary>> candidates,
+          RecommendationCriteria criteria
+  ) {
+    double topRatio;
+    switch (criteria) {
+      case TECH_STACK, DOMAIN_MATCH -> topRatio = 0.3;
+      case COST_OPTIMIZED, TIME_OPTIMIZED, BALANCED -> topRatio = 0.6;
+      default -> topRatio = 1.0;
+    }
+
+    return candidates.entrySet().stream()
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> {
+                      List<DeveloperSummary> sorted = entry.getValue();
+                      int topN = (int) Math.ceil(sorted.size() * topRatio);
+                      return sorted.subList(0, Math.min(topN, sorted.size()));
+                    }
+            ));
+  }
+
 }

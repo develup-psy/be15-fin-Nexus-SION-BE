@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
