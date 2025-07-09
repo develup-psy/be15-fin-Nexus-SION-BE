@@ -2,6 +2,7 @@ package com.nexus.sion.feature.notification.command.application.controller;
 
 import java.nio.file.AccessDeniedException;
 
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -42,5 +43,18 @@ public class NotificationCommandController {
 
     return ResponseEntity.ok(
         notificationCommandService.subscribe(userDetails.getUsername(), lastEventId));
+  }
+
+  /* 테스트용 메소드, 알림 전송 로직 추가할 때 아래 보고 추가하심 됩니다 */
+  @GetMapping("/send")
+  public ResponseEntity<String> sendTestNotification(
+      @AuthenticationPrincipal UserDetails userDetails) {
+
+    notificationCommandService.createAndSendNotification(
+        userDetails.getUsername(),
+        "0120250001",
+        NotificationType.CERTIFICATION_APPROVAL_REQUEST,
+        "123L");
+    return ResponseEntity.ok("알림 전송 완료");
   }
 }

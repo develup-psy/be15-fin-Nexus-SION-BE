@@ -19,7 +19,7 @@ public class NotificationQueryRepository {
 
   public List<Notification> selectNotifications(
       int page, int size, String employeeIdentificationNumber) {
-    int offset = (page - 1) * size;
+    int offset = Math.max(page, 0) * size;
 
     return dsl.selectFrom(NOTIFICATION)
         .where(NOTIFICATION.RECEIVER_ID.eq(employeeIdentificationNumber))
@@ -30,7 +30,10 @@ public class NotificationQueryRepository {
   }
 
   public long countTotalNotifications(String employeeIdentificationNumber) {
-    return Optional.ofNullable(dsl.selectCount().from(NOTIFICATION).fetchOne(0, Long.class))
+    return Optional.ofNullable(dsl.selectCount()
+                    .from(NOTIFICATION)
+                    .where(NOTIFICATION.RECEIVER_ID.eq(employeeIdentificationNumber))
+                    .fetchOne(0, Long.class))
         .orElse(0L);
   }
 }
