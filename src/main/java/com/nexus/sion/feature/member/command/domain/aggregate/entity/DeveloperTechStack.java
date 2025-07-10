@@ -1,9 +1,8 @@
 package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 import com.nexus.sion.common.domain.BaseTimeEntity;
-import jakarta.persistence.*;
 
 import lombok.*;
 

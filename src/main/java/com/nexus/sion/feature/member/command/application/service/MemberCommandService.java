@@ -17,10 +17,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberAddRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.MemberUpdateRequest;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.InitialScore;
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.*;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
@@ -43,6 +40,8 @@ public class MemberCommandService {
   private final DeveloperTechStackRepository developerTechStackRepository;
   private final InitialScoreRepository initialScoreRepository;
   private final GradeRepository gradeRepository;
+  private final MemberScoreHistoryRepository memberScoreHistoryRepository;
+  private final DeveloperTechStackHistoryRepository developerTechStackHistoryRepository;
 
   @Transactional
   public void registerUser(MemberCreateRequest request) {
@@ -112,13 +111,9 @@ public class MemberCommandService {
 
       // 생일 값 검증
       LocalDate birthday = request.birthday();
-      if (birthday == null) {
-        throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
-      }
-      if (birthday.isAfter(LocalDate.now())) {
-        throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
-      }
-      if (birthday.isBefore(LocalDate.of(1900, 1, 1))) {
+      if (birthday == null
+          || birthday.isAfter(LocalDate.now())
+          || birthday.isBefore(LocalDate.of(1900, 1, 1))) {
         throw new BusinessException(ErrorCode.INVALID_BIRTHDAY);
       }
 
@@ -132,15 +127,7 @@ public class MemberCommandService {
 
       int totalScore = initialScore * techStackCount;
 
-      List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
-
-      GradeCode gradeCode =
-          grades.stream()
-              .filter(g -> g.getScoreThreshold() > 0) // 유효한 기준이 있는 등급만 대상으로 함
-              .filter(g -> totalScore >= g.getScoreThreshold())
-              .map(Grade::getGradeCode)
-              .findFirst()
-              .orElse(GradeCode.B); // 아무 기준도 통과하지 못하면 기본값 B
+      GradeCode gradeCode = calculateGradeByScore(totalScore);
 
       // 생년월일 기반 임의 password 발급
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
@@ -170,21 +157,44 @@ public class MemberCommandService {
 
       memberRepository.save(member);
 
-      // 기술스택 저장
+      // 기술스택 저장 및 developer_tech_stack_history 기록
+      int totalTechStackScore = 0;
       if (request.techStackNames() != null) {
-        List<DeveloperTechStack> techStacks =
-            request.techStackNames().stream()
-                .map(
-                    stack ->
-                        DeveloperTechStack.builder()
-                            .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
-                            .techStackName(stack)
-                            .totalScore(initialScore)
-                            .build())
-                .collect(Collectors.toList());
+        List<DeveloperTechStack> techStacks = new ArrayList<>();
+        List<DeveloperTechStackHistory> historyList = new ArrayList<>();
 
-        developerTechStackRepository.saveAll(techStacks);
+        for (String stackName : request.techStackNames()) {
+          DeveloperTechStack techStack =
+              DeveloperTechStack.builder()
+                  .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+                  .techStackName(stackName)
+                  .totalScore(initialScore)
+                  .build();
+
+          developerTechStackRepository.save(techStack);
+
+          DeveloperTechStackHistory history =
+              DeveloperTechStackHistory.builder()
+                  .developerTechStackId(techStack.getId())
+                  .addedScore(initialScore)
+                  .projectCode(null)
+                  .build();
+
+          developerTechStackHistoryRepository.save(history);
+
+          totalTechStackScore += initialScore;
+        }
       }
+
+      // member_score_history 저장
+      MemberScoreHistory scoreHistory =
+          MemberScoreHistory.builder()
+              .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
+              .totalTechStackScores(totalTechStackScore)
+              .totalCertificateScores(0)
+              .build();
+
+      memberScoreHistoryRepository.save(scoreHistory);
     }
   }
 
@@ -311,5 +321,16 @@ public class MemberCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     member.updateStatus(status);
+  }
+
+  private GradeCode calculateGradeByScore(int totalScore) {
+    List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
+
+    return grades.stream()
+        .filter(g -> g.getScoreThreshold() > 0)
+        .filter(g -> totalScore >= g.getScoreThreshold())
+        .map(Grade::getGradeCode)
+        .findFirst()
+        .orElse(GradeCode.B);
   }
 }

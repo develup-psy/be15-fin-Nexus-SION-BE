@@ -25,8 +25,7 @@ public class SquadCommentCommandController {
       @PathVariable String squadCode,
       @RequestBody @Valid SquadCommentRegisterRequest request) {
 
-    squadCommentCommandService.registerComment(
-        squadCode, request, userDetails.getUsername());
+    squadCommentCommandService.registerComment(squadCode, request, userDetails.getUsername());
     return ResponseEntity.ok().build();
   }
 

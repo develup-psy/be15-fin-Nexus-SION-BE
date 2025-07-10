@@ -6,5 +6,5 @@ import com.nexus.sion.feature.project.command.domain.aggregate.ProjectFunctionEs
 
 public interface ProjectFunctionEstimateRepository
     extends JpaRepository<ProjectFunctionEstimate, Long> {
-    void deleteByProjectFpSummaryId(Long id);
+  void deleteByProjectFpSummaryId(Long id);
 }
