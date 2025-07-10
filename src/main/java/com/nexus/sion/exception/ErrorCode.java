@@ -94,7 +94,6 @@ public enum ErrorCode {
 
   // notification
   NOTIFICATION_NOT_FOUND("90001", "해당 알림이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
-
   ;
   private final String code;
   private final String message;

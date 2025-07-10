@@ -156,19 +156,21 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     return null;
   }
 
-    @Transactional
-    @Override
-    public Void readNotification(String employeeIdentificationNumber, Long notificationId) {
-        Notification notification = notificationRepository
-                .findByReceiverIdAndNotificationId(employeeIdentificationNumber, notificationId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND)); // 예외는 상황에 맞게!
+  @Transactional
+  @Override
+  public Void readNotification(String employeeIdentificationNumber, Long notificationId) {
+    Notification notification =
+        notificationRepository
+            .findByReceiverIdAndNotificationId(employeeIdentificationNumber, notificationId)
+            .orElseThrow(
+                () -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND)); // 예외는 상황에 맞게!
 
-        notification.setHasRead();
-        notificationRepository.save(notification);
-        return null;
-    }
+    notification.setHasRead();
+    notificationRepository.save(notification);
+    return null;
+  }
 
-    @Async
+  @Async
   public void send(String employeeIdentificationNumber, NotificationDTO data) {
     Map<String, SseEmitter> emitters =
         sseEmitterRepository.findAllEmittersStartWithId(employeeIdentificationNumber);
