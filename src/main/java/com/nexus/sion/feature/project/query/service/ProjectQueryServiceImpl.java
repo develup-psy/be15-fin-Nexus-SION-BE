@@ -45,4 +45,17 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
     response.setJobRequirements(requirements);
     return response;
   }
+
+  @Override
+  public ProjectDetailResponse findProjectDetailByMemberIdAndProjectCode(
+      String employeeId, String projectCode) {
+    return projectQueryRepository.findProjectDetailByMemberIdAndProjectCode(
+        employeeId, projectCode);
+  }
+
+  @Override
+  public PageResponse<ProjectListResponse> findProjectListByMemberId(
+      String employeeId, int page, int size) {
+    return projectQueryRepository.findProjectListByMemberId(employeeId, page, size);
+  }
 }

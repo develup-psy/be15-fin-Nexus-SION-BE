@@ -41,4 +41,18 @@ public class ProjectQueryController {
     ProjectForSquadResponse result = projectQueryService.getProjectInfoForSquad(projectCode);
     return ApiResponse.success(result);
   }
+
+  @GetMapping("/member/{employeeId}/details/{projectCode}")
+  public ApiResponse<ProjectDetailResponse> getProjectDetailForMember(
+      @PathVariable String employeeId, @PathVariable String projectCode) {
+    return ApiResponse.success(
+        projectQueryService.findProjectDetailByMemberIdAndProjectCode(employeeId, projectCode));
+  }
+
+  @GetMapping("/member/{employeeId}/list")
+  public ApiResponse<PageResponse<ProjectListResponse>> getProjectListByMember(
+      @PathVariable String employeeId, @RequestParam int page, @RequestParam int size) {
+    return ApiResponse.success(
+        projectQueryService.findProjectListByMemberId(employeeId, page, size));
+  }
 }
