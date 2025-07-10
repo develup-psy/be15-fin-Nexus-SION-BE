@@ -2,6 +2,8 @@ package com.nexus.sion.feature.project.query.dto.response;
 
 import java.util.List;
 
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +19,7 @@ public class ProjectDetailResponse {
   private List<String> techStacks;
   private List<SquadMemberInfo> members;
   private String status;
+  private ProjectAnalysisStatus analysisStatus;
 
   @Getter
   @AllArgsConstructor
