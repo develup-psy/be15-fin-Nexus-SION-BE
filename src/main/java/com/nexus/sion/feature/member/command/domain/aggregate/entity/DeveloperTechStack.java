@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
 import java.time.LocalDateTime;
 
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -13,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DeveloperTechStack {
+public class DeveloperTechStack extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +29,4 @@ public class DeveloperTechStack {
 
   @Column(name = "tech_stack_name", nullable = false, length = 30)
   private String techStackName;
-
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
 }
