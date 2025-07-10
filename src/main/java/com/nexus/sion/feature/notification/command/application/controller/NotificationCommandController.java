@@ -52,4 +52,16 @@ public class NotificationCommandController {
             )
     );
   }
+
+  @PatchMapping(value = "/reads/{id}")
+  public ResponseEntity<ApiResponse<Void>> readAllNotification(
+          @AuthenticationPrincipal UserDetails userDetails,
+          @ModelAttribute Long id
+  ) {
+    return ResponseEntity.ok(
+            ApiResponse.success(
+                    notificationCommandService.readNotification(userDetails.getUsername(), id)
+            )
+    );
+  }
 }

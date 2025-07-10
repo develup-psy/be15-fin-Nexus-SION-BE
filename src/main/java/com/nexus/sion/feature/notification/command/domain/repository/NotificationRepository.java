@@ -9,10 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.nexus.sion.feature.notification.command.domain.aggregate.Notification;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Notification n SET n.isRead = 1 WHERE n.receiverId = :receiverId")
     void markAllAsRead(@Param("receiverId") String employeeIdentificationNumber);
+
+    Optional<Notification> findByReceiverIdAndNotificationId(String receiverId, Long notificationId);
 }
