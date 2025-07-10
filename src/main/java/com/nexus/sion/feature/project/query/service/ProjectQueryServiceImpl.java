@@ -56,6 +56,7 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
   public PageResponse<ProjectListResponse> findProjectListByMemberId(
       String employeeId, int page, int size) {
     return projectQueryRepository.findProjectListByMemberId(employeeId, page, size);
+  }
 
   public PageResponse<ProjectListResponse> getProjectsByEmployeeId(
       String employeeId, List<String> statuses, int page, int size) {

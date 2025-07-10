@@ -39,7 +39,7 @@ public class Member extends TableImpl<MemberRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.member</code> */
+  /** The reference instance of <code>SION.member</code> */
   public static final Member MEMBER = new Member();
 
   /** The class holding records for this type */
@@ -48,7 +48,7 @@ public class Member extends TableImpl<MemberRecord> {
     return MemberRecord.class;
   }
 
-  /** The column <code>sion.member.employee_identification_number</code>. */
+  /** The column <code>SION.member.employee_identification_number</code>. */
   public final TableField<MemberRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
           DSL.name("employee_identification_number"),
@@ -56,15 +56,15 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.employee_name</code>. */
+  /** The column <code>SION.member.employee_name</code>. */
   public final TableField<MemberRecord, String> EMPLOYEE_NAME =
       createField(DSL.name("employee_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.member.password</code>. */
+  /** The column <code>SION.member.password</code>. */
   public final TableField<MemberRecord, String> PASSWORD =
       createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-  /** The column <code>sion.member.profile_image_url</code>. */
+  /** The column <code>SION.member.profile_image_url</code>. */
   public final TableField<MemberRecord, String> PROFILE_IMAGE_URL =
       createField(
           DSL.name("profile_image_url"),
@@ -72,11 +72,11 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.phone_number</code>. */
+  /** The column <code>SION.member.phone_number</code>. */
   public final TableField<MemberRecord, String> PHONE_NUMBER =
       createField(DSL.name("phone_number"), SQLDataType.VARCHAR(11).nullable(false), this, "");
 
-  /** The column <code>sion.member.position_name</code>. */
+  /** The column <code>SION.member.position_name</code>. */
   public final TableField<MemberRecord, String> POSITION_NAME =
       createField(
           DSL.name("position_name"),
@@ -84,7 +84,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.department_name</code>. */
+  /** The column <code>SION.member.department_name</code>. */
   public final TableField<MemberRecord, String> DEPARTMENT_NAME =
       createField(
           DSL.name("department_name"),
@@ -92,7 +92,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.birthday</code>. */
+  /** The column <code>SION.member.birthday</code>. */
   public final TableField<MemberRecord, LocalDate> BIRTHDAY =
       createField(
           DSL.name("birthday"),
@@ -100,7 +100,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.joined_at</code>. */
+  /** The column <code>SION.member.joined_at</code>. */
   public final TableField<MemberRecord, LocalDate> JOINED_AT =
       createField(
           DSL.name("joined_at"),
@@ -108,11 +108,11 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.email</code>. */
+  /** The column <code>SION.member.email</code>. */
   public final TableField<MemberRecord, String> EMAIL =
       createField(DSL.name("email"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.member.career_years</code>. */
+  /** The column <code>SION.member.career_years</code>. */
   public final TableField<MemberRecord, Integer> CAREER_YEARS =
       createField(
           DSL.name("career_years"),
@@ -120,7 +120,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.salary</code>. */
+  /** The column <code>SION.member.salary</code>. */
   public final TableField<MemberRecord, Long> SALARY =
       createField(
           DSL.name("salary"),
@@ -128,7 +128,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.status</code>. */
+  /** The column <code>SION.member.status</code>. */
   public final TableField<MemberRecord, MemberStatus> STATUS =
       createField(
           DSL.name("status"),
@@ -138,7 +138,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.grade_code</code>. */
+  /** The column <code>SION.member.grade_code</code>. */
   public final TableField<MemberRecord, MemberGradeCode> GRADE_CODE =
       createField(
           DSL.name("grade_code"),
@@ -148,7 +148,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.created_at</code>. */
+  /** The column <code>SION.member.created_at</code>. */
   public final TableField<MemberRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -158,7 +158,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.updated_at</code>. */
+  /** The column <code>SION.member.updated_at</code>. */
   public final TableField<MemberRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -168,7 +168,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.deleted_at</code>. */
+  /** The column <code>SION.member.deleted_at</code>. */
   public final TableField<MemberRecord, LocalDateTime> DELETED_AT =
       createField(
           DSL.name("deleted_at"),
@@ -177,7 +177,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.role</code>. */
+  /** The column <code>SION.member.role</code>. */
   public final TableField<MemberRecord, MemberRole> ROLE =
       createField(
           DSL.name("role"),
@@ -187,7 +187,7 @@ public class Member extends TableImpl<MemberRecord> {
           this,
           "");
 
-  /** The column <code>sion.member.total_score</code>. */
+  /** The column <code>SION.member.total_score</code>. */
   public final TableField<MemberRecord, Integer> TOTAL_SCORE =
       createField(
           DSL.name("total_score"),
@@ -203,17 +203,17 @@ public class Member extends TableImpl<MemberRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.member</code> table reference */
+  /** Create an aliased <code>SION.member</code> table reference */
   public Member(String alias) {
     this(DSL.name(alias), MEMBER);
   }
 
-  /** Create an aliased <code>sion.member</code> table reference */
+  /** Create an aliased <code>SION.member</code> table reference */
   public Member(Name alias) {
     this(alias, MEMBER);
   }
 
-  /** Create a <code>sion.member</code> table reference */
+  /** Create a <code>SION.member</code> table reference */
   public Member() {
     this(DSL.name("member"), null);
   }
@@ -242,21 +242,21 @@ public class Member extends TableImpl<MemberRecord> {
   private transient Department _department;
   private transient Grade _grade;
 
-  /** Get the implicit join path to the <code>sion.position</code> table. */
+  /** Get the implicit join path to the <code>SION.position</code> table. */
   public Position position() {
     if (_position == null) _position = new Position(this, Keys.FK_POSITION_TO_MEMBER_1);
 
     return _position;
   }
 
-  /** Get the implicit join path to the <code>sion.department</code> table. */
+  /** Get the implicit join path to the <code>SION.department</code> table. */
   public Department department() {
     if (_department == null) _department = new Department(this, Keys.FK_DEPARTMENT_TO_MEMBER_1);
 
     return _department;
   }
 
-  /** Get the implicit join path to the <code>sion.grade</code> table. */
+  /** Get the implicit join path to the <code>SION.grade</code> table. */
   public Grade grade() {
     if (_grade == null) _grade = new Grade(this, Keys.FK_GRADE_TO_DEVELOPER_1);
 

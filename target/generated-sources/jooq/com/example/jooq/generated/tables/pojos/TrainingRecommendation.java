@@ -45,62 +45,62 @@ public class TrainingRecommendation implements Serializable {
     this.isCompleted = isCompleted;
   }
 
-  /** Getter for <code>sion.training_recommendation.training_recommendation_id</code>. */
+  /** Getter for <code>SION.training_recommendation.training_recommendation_id</code>. */
   public Long getTrainingRecommendationId() {
     return this.trainingRecommendationId;
   }
 
-  /** Setter for <code>sion.training_recommendation.training_recommendation_id</code>. */
+  /** Setter for <code>SION.training_recommendation.training_recommendation_id</code>. */
   public void setTrainingRecommendationId(Long trainingRecommendationId) {
     this.trainingRecommendationId = trainingRecommendationId;
   }
 
-  /** Getter for <code>sion.training_recommendation.employee_identification_number</code>. */
+  /** Getter for <code>SION.training_recommendation.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>sion.training_recommendation.employee_identification_number</code>. */
+  /** Setter for <code>SION.training_recommendation.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>sion.training_recommendation.training_name</code>. */
+  /** Getter for <code>SION.training_recommendation.training_name</code>. */
   public String getTrainingName() {
     return this.trainingName;
   }
 
-  /** Setter for <code>sion.training_recommendation.training_name</code>. */
+  /** Setter for <code>SION.training_recommendation.training_name</code>. */
   public void setTrainingName(String trainingName) {
     this.trainingName = trainingName;
   }
 
-  /** Getter for <code>sion.training_recommendation.recommendation_reason</code>. */
+  /** Getter for <code>SION.training_recommendation.recommendation_reason</code>. */
   public String getRecommendationReason() {
     return this.recommendationReason;
   }
 
-  /** Setter for <code>sion.training_recommendation.recommendation_reason</code>. */
+  /** Setter for <code>SION.training_recommendation.recommendation_reason</code>. */
   public void setRecommendationReason(String recommendationReason) {
     this.recommendationReason = recommendationReason;
   }
 
-  /** Getter for <code>sion.training_recommendation.recommended_at</code>. */
+  /** Getter for <code>SION.training_recommendation.recommended_at</code>. */
   public LocalDateTime getRecommendedAt() {
     return this.recommendedAt;
   }
 
-  /** Setter for <code>sion.training_recommendation.recommended_at</code>. */
+  /** Setter for <code>SION.training_recommendation.recommended_at</code>. */
   public void setRecommendedAt(LocalDateTime recommendedAt) {
     this.recommendedAt = recommendedAt;
   }
 
-  /** Getter for <code>sion.training_recommendation.is_completed</code>. */
+  /** Getter for <code>SION.training_recommendation.is_completed</code>. */
   public Byte getIsCompleted() {
     return this.isCompleted;
   }
 
-  /** Setter for <code>sion.training_recommendation.is_completed</code>. */
+  /** Setter for <code>SION.training_recommendation.is_completed</code>. */
   public void setIsCompleted(Byte isCompleted) {
     this.isCompleted = isCompleted;
   }

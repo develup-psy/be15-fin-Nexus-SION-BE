@@ -5,8 +5,6 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.MemberScoreHistory.MEMBER_SCORE_HISTORY;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 import com.example.jooq.generated.enums.GradeGradeCode;
 import com.example.jooq.generated.enums.MemberGradeCode;
 import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
@@ -26,7 +24,7 @@ public class MemberGradeScheduler {
   private final DSLContext dsl;
   private final NotificationCommandService notificationCommandService;
 
-  @Scheduled(cron = "0 0 3 * * *") // 매일 새벽 3시 실행
+  @Scheduled(cron = "0 0 3 1 * *")  // 매일 새벽 3시 실행
   public void updateDeveloperGrades() {
     // 1. 최신 점수 가져오기
     List<MemberScoreHistoryRecord> latestScores =
@@ -116,7 +114,7 @@ public class MemberGradeScheduler {
               .execute();
     }
 
-    log.info("✅ 개발자 등급 산정 스케줄러 완료 - 대상: {}명", size);
+    log.info("개발자 등급 산정 스케줄러 완료 - 대상: {}명", size);
   }
 
   private record ScoredMember(String employeeId, int totalScore) {}

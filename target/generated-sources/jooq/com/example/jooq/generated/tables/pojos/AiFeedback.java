@@ -43,52 +43,52 @@ public class AiFeedback implements Serializable {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.ai_feedback.ai_feedback_id</code>. */
+  /** Getter for <code>SION.ai_feedback.ai_feedback_id</code>. */
   public Long getAiFeedbackId() {
     return this.aiFeedbackId;
   }
 
-  /** Setter for <code>sion.ai_feedback.ai_feedback_id</code>. */
+  /** Setter for <code>SION.ai_feedback.ai_feedback_id</code>. */
   public void setAiFeedbackId(Long aiFeedbackId) {
     this.aiFeedbackId = aiFeedbackId;
   }
 
-  /** Getter for <code>sion.ai_feedback.feedback_type</code>. */
+  /** Getter for <code>SION.ai_feedback.feedback_type</code>. */
   public AiFeedbackFeedbackType getFeedbackType() {
     return this.feedbackType;
   }
 
-  /** Setter for <code>sion.ai_feedback.feedback_type</code>. */
+  /** Setter for <code>SION.ai_feedback.feedback_type</code>. */
   public void setFeedbackType(AiFeedbackFeedbackType feedbackType) {
     this.feedbackType = feedbackType;
   }
 
-  /** Getter for <code>sion.ai_feedback.target_id</code>. */
+  /** Getter for <code>SION.ai_feedback.target_id</code>. */
   public String getTargetId() {
     return this.targetId;
   }
 
-  /** Setter for <code>sion.ai_feedback.target_id</code>. */
+  /** Setter for <code>SION.ai_feedback.target_id</code>. */
   public void setTargetId(String targetId) {
     this.targetId = targetId;
   }
 
-  /** Getter for <code>sion.ai_feedback.feedback_text</code>. */
+  /** Getter for <code>SION.ai_feedback.feedback_text</code>. */
   public String getFeedbackText() {
     return this.feedbackText;
   }
 
-  /** Setter for <code>sion.ai_feedback.feedback_text</code>. */
+  /** Setter for <code>SION.ai_feedback.feedback_text</code>. */
   public void setFeedbackText(String feedbackText) {
     this.feedbackText = feedbackText;
   }
 
-  /** Getter for <code>sion.ai_feedback.created_at</code>. */
+  /** Getter for <code>SION.ai_feedback.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.ai_feedback.created_at</code>. */
+  /** Setter for <code>SION.ai_feedback.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }

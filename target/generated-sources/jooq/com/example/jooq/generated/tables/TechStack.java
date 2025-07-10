@@ -33,7 +33,7 @@ public class TechStack extends TableImpl<TechStackRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.tech_stack</code> */
+  /** The reference instance of <code>SION.tech_stack</code> */
   public static final TechStack TECH_STACK = new TechStack();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class TechStack extends TableImpl<TechStackRecord> {
     return TechStackRecord.class;
   }
 
-  /** The column <code>sion.tech_stack.tech_stack_name</code>. */
+  /** The column <code>SION.tech_stack.tech_stack_name</code>. */
   public final TableField<TechStackRecord, String> TECH_STACK_NAME =
       createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.tech_stack.created_at</code>. */
+  /** The column <code>SION.tech_stack.created_at</code>. */
   public final TableField<TechStackRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -56,7 +56,7 @@ public class TechStack extends TableImpl<TechStackRecord> {
           this,
           "");
 
-  /** The column <code>sion.tech_stack.updated_at</code>. */
+  /** The column <code>SION.tech_stack.updated_at</code>. */
   public final TableField<TechStackRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -74,17 +74,17 @@ public class TechStack extends TableImpl<TechStackRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.tech_stack</code> table reference */
+  /** Create an aliased <code>SION.tech_stack</code> table reference */
   public TechStack(String alias) {
     this(DSL.name(alias), TECH_STACK);
   }
 
-  /** Create an aliased <code>sion.tech_stack</code> table reference */
+  /** Create an aliased <code>SION.tech_stack</code> table reference */
   public TechStack(Name alias) {
     this(alias, TECH_STACK);
   }
 
-  /** Create a <code>sion.tech_stack</code> table reference */
+  /** Create a <code>SION.tech_stack</code> table reference */
   public TechStack() {
     this(DSL.name("tech_stack"), null);
   }

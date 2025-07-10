@@ -20,62 +20,62 @@ public class DeveloperTechStackRecord extends UpdatableRecordImpl<DeveloperTechS
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.developer_tech_stack.developer_tech_stack_id</code>. */
+  /** Setter for <code>SION.developer_tech_stack.developer_tech_stack_id</code>. */
   public void setDeveloperTechStackId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.developer_tech_stack_id</code>. */
+  /** Getter for <code>SION.developer_tech_stack.developer_tech_stack_id</code>. */
   public Long getDeveloperTechStackId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.developer_tech_stack.tech_stack_total_scores</code>. */
+  /** Setter for <code>SION.developer_tech_stack.tech_stack_total_scores</code>. */
   public void setTechStackTotalScores(Integer value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.tech_stack_total_scores</code>. */
+  /** Getter for <code>SION.developer_tech_stack.tech_stack_total_scores</code>. */
   public Integer getTechStackTotalScores() {
     return (Integer) get(1);
   }
 
-  /** Setter for <code>sion.developer_tech_stack.employee_identification_number</code>. */
+  /** Setter for <code>SION.developer_tech_stack.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.employee_identification_number</code>. */
+  /** Getter for <code>SION.developer_tech_stack.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.developer_tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>SION.developer_tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>SION.developer_tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.developer_tech_stack.created_at</code>. */
+  /** Setter for <code>SION.developer_tech_stack.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.created_at</code>. */
+  /** Getter for <code>SION.developer_tech_stack.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(4);
   }
 
-  /** Setter for <code>sion.developer_tech_stack.updated_at</code>. */
+  /** Setter for <code>SION.developer_tech_stack.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.developer_tech_stack.updated_at</code>. */
+  /** Getter for <code>SION.developer_tech_stack.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(5);
   }

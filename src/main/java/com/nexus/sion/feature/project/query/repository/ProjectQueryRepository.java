@@ -262,24 +262,24 @@ public class ProjectQueryRepository {
 
   public ProjectDetailResponse findProjectDetailByMemberIdAndProjectCode(
       String employeeId, String projectCode) {
-    // 해당 사원이 해당 프로젝트에 참여했는지 확인
-    boolean exists =
-        dsl.selectOne()
-            .from(SQUAD_EMPLOYEE)
-            .join(PROJECT_AND_JOB)
-            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
-            .and(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
-            .fetchOptional()
-            .isPresent();
+      // 해당 사원이 해당 프로젝트에 참여했는지 확인
+      boolean exists =
+              dsl.selectOne()
+                      .from(SQUAD_EMPLOYEE)
+                      .join(PROJECT_AND_JOB)
+                      .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+                      .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+                      .and(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
+                      .fetchOptional()
+                      .isPresent();
 
-    if (!exists) {
-      throw new BusinessException(ErrorCode.PROJECT_NOT_FOUND); // 또는 권한 없음 에러
-    }
+      if (!exists) {
+          throw new BusinessException(ErrorCode.PROJECT_NOT_FOUND); // 또는 권한 없음 에러
+      }
 
-    // 기존 상세조회 재활용
-    return getProjectDetail(projectCode);
-
+      // 기존 상세조회 재활용
+      return getProjectDetail(projectCode);
+  }
   public ProjectInfoDto findProjectInfoByWorkId(Long workId) {
     Record record = dsl
             .select(

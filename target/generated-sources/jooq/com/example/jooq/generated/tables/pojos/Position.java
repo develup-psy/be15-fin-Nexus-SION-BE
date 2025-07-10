@@ -30,32 +30,32 @@ public class Position implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.position.position_name</code>. */
+  /** Getter for <code>SION.position.position_name</code>. */
   public String getPositionName() {
     return this.positionName;
   }
 
-  /** Setter for <code>sion.position.position_name</code>. */
+  /** Setter for <code>SION.position.position_name</code>. */
   public void setPositionName(String positionName) {
     this.positionName = positionName;
   }
 
-  /** Getter for <code>sion.position.create_at</code>. */
+  /** Getter for <code>SION.position.create_at</code>. */
   public LocalDateTime getCreateAt() {
     return this.createAt;
   }
 
-  /** Setter for <code>sion.position.create_at</code>. */
+  /** Setter for <code>SION.position.create_at</code>. */
   public void setCreateAt(LocalDateTime createAt) {
     this.createAt = createAt;
   }
 
-  /** Getter for <code>sion.position.updated_at</code>. */
+  /** Getter for <code>SION.position.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.position.updated_at</code>. */
+  /** Setter for <code>SION.position.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

@@ -20,32 +20,32 @@ public class DomainRecord extends UpdatableRecordImpl<DomainRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.domain.name</code>. */
+  /** Setter for <code>SION.domain.name</code>. */
   public void setName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.domain.name</code>. */
+  /** Getter for <code>SION.domain.name</code>. */
   public String getName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>sion.domain.created_at</code>. */
+  /** Setter for <code>SION.domain.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.domain.created_at</code>. */
+  /** Getter for <code>SION.domain.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>sion.domain.updated_at</code>. */
+  /** Setter for <code>SION.domain.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.domain.updated_at</code>. */
+  /** Getter for <code>SION.domain.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }

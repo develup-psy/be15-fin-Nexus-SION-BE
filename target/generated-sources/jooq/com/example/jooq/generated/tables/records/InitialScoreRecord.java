@@ -20,62 +20,62 @@ public class InitialScoreRecord extends UpdatableRecordImpl<InitialScoreRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.initial_score.id</code>. */
+  /** Setter for <code>SION.initial_score.id</code>. */
   public void setId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.initial_score.id</code>. */
+  /** Getter for <code>SION.initial_score.id</code>. */
   public Long getId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.initial_score.min_years</code>. */
+  /** Setter for <code>SION.initial_score.min_years</code>. */
   public void setMinYears(Integer value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.initial_score.min_years</code>. */
+  /** Getter for <code>SION.initial_score.min_years</code>. */
   public Integer getMinYears() {
     return (Integer) get(1);
   }
 
-  /** Setter for <code>sion.initial_score.max_years</code>. */
+  /** Setter for <code>SION.initial_score.max_years</code>. */
   public void setMaxYears(Integer value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.initial_score.max_years</code>. */
+  /** Getter for <code>SION.initial_score.max_years</code>. */
   public Integer getMaxYears() {
     return (Integer) get(2);
   }
 
-  /** Setter for <code>sion.initial_score.score</code>. */
+  /** Setter for <code>SION.initial_score.score</code>. */
   public void setScore(Integer value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.initial_score.score</code>. */
+  /** Getter for <code>SION.initial_score.score</code>. */
   public Integer getScore() {
     return (Integer) get(3);
   }
 
-  /** Setter for <code>sion.initial_score.created_at</code>. */
+  /** Setter for <code>SION.initial_score.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.initial_score.created_at</code>. */
+  /** Getter for <code>SION.initial_score.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(4);
   }
 
-  /** Setter for <code>sion.initial_score.updated_at</code>. */
+  /** Setter for <code>SION.initial_score.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.initial_score.updated_at</code>. */
+  /** Getter for <code>SION.initial_score.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(5);
   }
