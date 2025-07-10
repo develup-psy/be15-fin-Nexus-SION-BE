@@ -39,19 +39,16 @@ public class ProjectEvaluationCommandServiceImpl implements ProjectEvaluationCom
 
         DeveloperTechStack existing =
             developerTechStackRepository.findByEmployeeIdentificationNumberAndTechStackName(
-                employeeId, techStackName);
+                employeeId, techStackName).orElse(null);
 
         if (existing != null) {
           existing.setTotalScore(existing.getTotalScore() + score);
-          existing.setUpdatedAt(LocalDateTime.now());
         } else {
           DeveloperTechStack newStack =
               DeveloperTechStack.builder()
                   .employeeIdentificationNumber(employeeId)
                   .techStackName(techStackName)
                   .totalScore(score)
-                  .createdAt(LocalDateTime.now())
-                  .updatedAt(LocalDateTime.now())
                   .build();
           developerTechStackRepository.save(newStack);
         }

@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.command.domain.aggregate.entity;
 
 import java.time.LocalDateTime;
 
+import com.nexus.sion.common.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.RelatedTable;
@@ -14,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class DeveloperTechStackHistory {
+public class DeveloperTechStackHistory extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,22 +25,9 @@ public class DeveloperTechStackHistory {
   @Column(name = "developer_tech_stack_id", nullable = false)
   private Long developerTechStackId;
 
+  @Column(name = "project_code", nullable = false)
+  private String projectCode;
+
   @Column(name = "added_score", nullable = false)
-  private int addedScore;
-
-  @Column(name = "cumulative_score", nullable = false)
-  private int cumulativeScore;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "related_table", nullable = false, length = 30)
-  private RelatedTable relatedTable;
-
-  @Column(name = "related_id", nullable = false)
-  private Long relatedId;
-
-  @Column(name = "created_at", nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  private Integer addedScore;
 }

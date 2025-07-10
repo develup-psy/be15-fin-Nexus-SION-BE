@@ -92,5 +92,6 @@ management:
         include: ["health", "metrics", "prometheus"]
 
 ai:
-  fp-infer-url: http://localhost:8100/fp-infer
+  fp-infer: http://localhost:8100/fp-infer
+  embed-function: http://localhost:8100/fp-embed
 

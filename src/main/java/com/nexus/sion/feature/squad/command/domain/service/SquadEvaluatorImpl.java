@@ -101,7 +101,7 @@ public class SquadEvaluatorImpl {
     return results;
   }
 
-  private static double getEffortRatePerFP(int totalFp) {
+  public static double getEffortRatePerFP(int totalFp) {
     if (totalFp <= 100) return 0.15;
     else if (totalFp <= 300) return 0.125;
     else if (totalFp <= 600) return 0.10;

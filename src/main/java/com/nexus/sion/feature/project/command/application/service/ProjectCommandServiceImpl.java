@@ -41,7 +41,12 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final NotificationCommandService notificationCommandService;
   private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
+
+  private final ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
+  private final ProjectFpSummaryRepository projectFpSummaryRepository;
+
   private final DeveloperProjectWorkRepository developerProjectWorkRepository;
+
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -201,6 +206,12 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void analyzeProject(
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
+    //기존에 project_fp_summary나 project_function_estimate가 있다면 삭제
+    ProjectFpSummary fpSummary = projectFpSummaryRepository.findByProjectCode(projectId).orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
+    projectFpSummaryRepository.deleteByProjectCode(projectId);
+
     Project project =
         projectRepository
             .findById(projectId)
