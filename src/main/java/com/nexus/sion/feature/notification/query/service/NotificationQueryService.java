@@ -31,29 +31,7 @@ public class NotificationQueryService {
     log.info("page" + page);
     log.info("size" + size);
 
-    List<NotificationDTO> notifications =
-        notificationQueryRepository.selectNotifications(page, size, memberId).stream()
-            .map(
-                notification -> {
-                  String senderName =
-                      memberRepository
-                          .findById(notification.getSenderId())
-                          .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND))
-                          .getEmployeeName();
-                  return NotificationDTO.builder()
-                      .notificationId(notification.getNotificationId())
-                      .notificationType(
-                          NotificationType.valueOf(notification.getNotificationType()))
-                      .linkedContentId(notification.getLinkedContentId())
-                      .message(notification.getMessage())
-                      .isRead(notification.getIsRead() == 1)
-                      .createdAt(notification.getCreatedAt())
-                      .receiverId(notification.getReceiverId())
-                      .senderId(notification.getSenderId())
-                      .senderName(senderName)
-                      .build();
-                })
-            .toList();
+    List<NotificationDTO> notifications = notificationQueryRepository.selectNotifications(page, size, memberId);
 
     long totalElements = notificationQueryRepository.countTotalNotifications(memberId);
 
