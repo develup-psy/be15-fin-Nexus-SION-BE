@@ -125,6 +125,6 @@ public class ProjectAnalysisService {
   private void notifyFPAnalysisSuccess(String managerId, String projectId) {
 
     notificationCommandService.createAndSendNotification(
-        null, managerId, NotificationType.FP_ANALYSIS_COMPLETE, projectId);
+        null, managerId, null, NotificationType.FP_ANALYSIS_COMPLETE, projectId);
   }
 }

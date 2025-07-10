@@ -54,6 +54,20 @@ public class ProjectQueryController {
     return ApiResponse.success(result);
   }
 
+  @GetMapping("/member/{employeeId}/details/{projectCode}")
+  public ApiResponse<ProjectDetailResponse> getProjectDetailForMember(
+      @PathVariable String employeeId, @PathVariable String projectCode) {
+    return ApiResponse.success(
+        projectQueryService.findProjectDetailByMemberIdAndProjectCode(employeeId, projectCode));
+  }
+
+  @GetMapping("/member/{employeeId}/list")
+  public ApiResponse<PageResponse<ProjectListResponse>> getProjectListByMember(
+      @PathVariable String employeeId, @RequestParam int page, @RequestParam int size) {
+    return ApiResponse.success(
+        projectQueryService.findProjectListByMemberId(employeeId, page, size));
+  }
+
   // 프로젝트 이름, 코드 조회
   @GetMapping("/{id}/project-info")
   public ResponseEntity<ApiResponse<ProjectInfoDto>> getProjectInfo(@PathVariable Long id) {

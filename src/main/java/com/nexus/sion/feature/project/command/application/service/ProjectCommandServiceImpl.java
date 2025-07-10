@@ -19,6 +19,7 @@ import com.nexus.sion.feature.project.command.application.dto.response.ProjectRe
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
@@ -40,8 +41,12 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final NotificationCommandService notificationCommandService;
   private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
+
   private final ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
   private final ProjectFpSummaryRepository projectFpSummaryRepository;
+
+  private final DeveloperProjectWorkRepository developerProjectWorkRepository;
+
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -159,7 +164,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       project.setActualEndDate(LocalDate.now());
 
       notifySquadEmployeesToUploadTask(projectCode);
-
+      createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
     }
@@ -188,7 +193,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-        null, employeeId, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
+        null, employeeId, null, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
   }
 
   @Override
@@ -230,6 +235,21 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private void notifyFPAnalysisFailure(String managerId, String projectId) {
     notificationCommandService.createAndSendNotification(
-        null, managerId, NotificationType.FP_ANALYSIS_FAILURE, projectId);
+        null, managerId, null, NotificationType.FP_ANALYSIS_FAILURE, projectId);
+  }
+
+  private void createDeveloperProjectWorks(String projectCode) {
+    List<SquadEmployee> employees = squadEmployeeCommandRepository.findByProjectCode(projectCode);
+
+    for (SquadEmployee employee : employees) {
+      DeveloperProjectWork dpw =
+          DeveloperProjectWork.builder()
+              .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
+              .projectCode(projectCode)
+              .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
+              .build();
+
+      developerProjectWorkRepository.save(dpw);
+    }
   }
 }

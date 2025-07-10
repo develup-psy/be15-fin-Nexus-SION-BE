@@ -43,7 +43,8 @@ public enum ErrorCode {
   LAST_MAX_YEARS_SHOULD_BE_NULL("20018", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
   INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20019", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
   INVALID_MEMBER_ROLE("20020", "유효하지 않은 역할 정보입니다", HttpStatus.BAD_REQUEST),
-  CERTIFICATE_NOT_FOUND("80001", "존재하지 않는 자격증입니다.", HttpStatus.NOT_FOUND),
+  CERTIFICATE_NOT_FOUND("20021", "존재하지 않는 자격증입니다.", HttpStatus.NOT_FOUND),
+  USER_CERTIFICATE_NOT_FOUND("20022", "등록된 자격증 신청 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // project
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),
@@ -90,7 +91,10 @@ public enum ErrorCode {
   // developer project work
   WORK_HISTORY_NOT_FOUND("80001", "작업 이력이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   UNAUTHORIZED_APPROVER("80002", "해당 사용자는 관리자 권한이 없습니다.", HttpStatus.FORBIDDEN),
-  NOT_FOUND_DEVELOPER_PROJECT_WORK("80003", "해당 개발자 프로젝트 작업이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+  WORK_NOT_FOUND("80003", "해당 개발자 프로젝트 작업이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+  // notification
+  NOTIFICATION_NOT_FOUND("90001", "해당 알림이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   ;
   private final String code;
   private final String message;

@@ -22,92 +22,92 @@ public class SquadEmployeeRecord extends UpdatableRecordImpl<SquadEmployeeRecord
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.squad_employee.squad_employee_id</code>. */
+  /** Setter for <code>SION.squad_employee.squad_employee_id</code>. */
   public void setSquadEmployeeId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.squad_employee.squad_employee_id</code>. */
+  /** Getter for <code>SION.squad_employee.squad_employee_id</code>. */
   public Long getSquadEmployeeId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.squad_employee.assigned_date</code>. */
+  /** Setter for <code>SION.squad_employee.assigned_date</code>. */
   public void setAssignedDate(LocalDate value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.squad_employee.assigned_date</code>. */
+  /** Getter for <code>SION.squad_employee.assigned_date</code>. */
   public LocalDate getAssignedDate() {
     return (LocalDate) get(1);
   }
 
-  /** Setter for <code>sion.squad_employee.employee_identification_number</code>. */
+  /** Setter for <code>SION.squad_employee.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.squad_employee.employee_identification_number</code>. */
+  /** Getter for <code>SION.squad_employee.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.squad_employee.project_and_job_id</code>. */
+  /** Setter for <code>SION.squad_employee.project_and_job_id</code>. */
   public void setProjectAndJobId(Long value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.squad_employee.project_and_job_id</code>. */
+  /** Getter for <code>SION.squad_employee.project_and_job_id</code>. */
   public Long getProjectAndJobId() {
     return (Long) get(3);
   }
 
-  /** Setter for <code>sion.squad_employee.is_leader</code>. */
+  /** Setter for <code>SION.squad_employee.is_leader</code>. */
   public void setIsLeader(Byte value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.squad_employee.is_leader</code>. */
+  /** Getter for <code>SION.squad_employee.is_leader</code>. */
   public Byte getIsLeader() {
     return (Byte) get(4);
   }
 
-  /** Setter for <code>sion.squad_employee.created_at</code>. */
+  /** Setter for <code>SION.squad_employee.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.squad_employee.created_at</code>. */
+  /** Getter for <code>SION.squad_employee.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(5);
   }
 
-  /** Setter for <code>sion.squad_employee.updated_at</code>. */
+  /** Setter for <code>SION.squad_employee.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>sion.squad_employee.updated_at</code>. */
+  /** Getter for <code>SION.squad_employee.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>sion.squad_employee.squad_code</code>. */
+  /** Setter for <code>SION.squad_employee.squad_code</code>. */
   public void setSquadCode(String value) {
     set(7, value);
   }
 
-  /** Getter for <code>sion.squad_employee.squad_code</code>. */
+  /** Getter for <code>SION.squad_employee.squad_code</code>. */
   public String getSquadCode() {
     return (String) get(7);
   }
 
-  /** Setter for <code>sion.squad_employee.total_skill_score</code>. */
+  /** Setter for <code>SION.squad_employee.total_skill_score</code>. */
   public void setTotalSkillScore(Integer value) {
     set(8, value);
   }
 
-  /** Getter for <code>sion.squad_employee.total_skill_score</code>. */
+  /** Getter for <code>SION.squad_employee.total_skill_score</code>. */
   public Integer getTotalSkillScore() {
     return (Integer) get(8);
   }

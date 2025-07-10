@@ -42,7 +42,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   @Override
   @Transactional
   public void createAndSendNotification(
-      String senderId, String receiverId, NotificationType type, String linkedContentId) {
+      String senderId,
+      String receiverId,
+      String message,
+      NotificationType type,
+      String linkedContentId) {
 
     // null 값 safe 처리
     String senderName =
@@ -52,12 +56,12 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND))
             : "";
 
-    String message = type.generateMessage(senderName);
+    String notificationMessage = message == null ? type.generateMessage(senderName) : message;
     Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)
-            .message(message)
+            .message(notificationMessage)
             .notificationType(type)
             .linkedContentId(linkedContentId)
             .build();
@@ -143,6 +147,33 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     }
 
     return emitter;
+  }
+
+  @Transactional
+  @Override
+  public Void readAllNotification(String employeeIdentificationNumber) {
+    notificationRepository.markAllAsRead(employeeIdentificationNumber);
+    return null;
+  }
+
+  @Transactional
+  @Override
+  public Void readNotification(String employeeIdentificationNumber, Long notificationId) {
+    Notification notification =
+        notificationRepository
+            .findByReceiverIdAndNotificationId(employeeIdentificationNumber, notificationId)
+            .orElseThrow(
+                () -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND));
+
+    notification.setHasRead();
+    notificationRepository.save(notification);
+    return null;
+  }
+
+  @Transactional
+  @Override
+  public void sendSquadShareNotification(String senderId, String receiverId, String squadCode) {
+    createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode);
   }
 
   @Async

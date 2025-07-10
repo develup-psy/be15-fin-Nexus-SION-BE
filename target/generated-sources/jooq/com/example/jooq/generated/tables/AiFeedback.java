@@ -35,7 +35,7 @@ public class AiFeedback extends TableImpl<AiFeedbackRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.ai_feedback</code> */
+  /** The reference instance of <code>SION.ai_feedback</code> */
   public static final AiFeedback AI_FEEDBACK = new AiFeedback();
 
   /** The class holding records for this type */
@@ -44,12 +44,12 @@ public class AiFeedback extends TableImpl<AiFeedbackRecord> {
     return AiFeedbackRecord.class;
   }
 
-  /** The column <code>sion.ai_feedback.ai_feedback_id</code>. */
+  /** The column <code>SION.ai_feedback.ai_feedback_id</code>. */
   public final TableField<AiFeedbackRecord, Long> AI_FEEDBACK_ID =
       createField(
           DSL.name("ai_feedback_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>sion.ai_feedback.feedback_type</code>. */
+  /** The column <code>SION.ai_feedback.feedback_type</code>. */
   public final TableField<AiFeedbackRecord, AiFeedbackFeedbackType> FEEDBACK_TYPE =
       createField(
           DSL.name("feedback_type"),
@@ -59,15 +59,15 @@ public class AiFeedback extends TableImpl<AiFeedbackRecord> {
           this,
           "");
 
-  /** The column <code>sion.ai_feedback.target_id</code>. */
+  /** The column <code>SION.ai_feedback.target_id</code>. */
   public final TableField<AiFeedbackRecord, String> TARGET_ID =
       createField(DSL.name("target_id"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.ai_feedback.feedback_text</code>. */
+  /** The column <code>SION.ai_feedback.feedback_text</code>. */
   public final TableField<AiFeedbackRecord, String> FEEDBACK_TEXT =
       createField(DSL.name("feedback_text"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>sion.ai_feedback.created_at</code>. */
+  /** The column <code>SION.ai_feedback.created_at</code>. */
   public final TableField<AiFeedbackRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -84,17 +84,17 @@ public class AiFeedback extends TableImpl<AiFeedbackRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.ai_feedback</code> table reference */
+  /** Create an aliased <code>SION.ai_feedback</code> table reference */
   public AiFeedback(String alias) {
     this(DSL.name(alias), AI_FEEDBACK);
   }
 
-  /** Create an aliased <code>sion.ai_feedback</code> table reference */
+  /** Create an aliased <code>SION.ai_feedback</code> table reference */
   public AiFeedback(Name alias) {
     this(alias, AI_FEEDBACK);
   }
 
-  /** Create a <code>sion.ai_feedback</code> table reference */
+  /** Create a <code>SION.ai_feedback</code> table reference */
   public AiFeedback() {
     this(DSL.name("ai_feedback"), null);
   }

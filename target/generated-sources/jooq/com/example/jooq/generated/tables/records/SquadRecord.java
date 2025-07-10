@@ -33,112 +33,112 @@ public class SquadRecord extends UpdatableRecordImpl<SquadRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.squad.squad_code</code>. */
+  /** Setter for <code>SION.squad.squad_code</code>. */
   public void setSquadCode(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.squad.squad_code</code>. */
+  /** Getter for <code>SION.squad.squad_code</code>. */
   public String getSquadCode() {
     return (String) get(0);
   }
 
-  /** Setter for <code>sion.squad.project_code</code>. */
+  /** Setter for <code>SION.squad.project_code</code>. */
   public void setProjectCode(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.squad.project_code</code>. */
+  /** Getter for <code>SION.squad.project_code</code>. */
   public String getProjectCode() {
     return (String) get(1);
   }
 
-  /** Setter for <code>sion.squad.title</code>. */
+  /** Setter for <code>SION.squad.title</code>. */
   public void setTitle(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.squad.title</code>. */
+  /** Getter for <code>SION.squad.title</code>. */
   public String getTitle() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.squad.description</code>. */
+  /** Setter for <code>SION.squad.description</code>. */
   public void setDescription(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.squad.description</code>. */
+  /** Getter for <code>SION.squad.description</code>. */
   public String getDescription() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.squad.is_active</code>. */
+  /** Setter for <code>SION.squad.is_active</code>. */
   public void setIsActive(Byte value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.squad.is_active</code>. */
+  /** Getter for <code>SION.squad.is_active</code>. */
   public Byte getIsActive() {
     return (Byte) get(4);
   }
 
-  /** Setter for <code>sion.squad.created_at</code>. */
+  /** Setter for <code>SION.squad.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.squad.created_at</code>. */
+  /** Getter for <code>SION.squad.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(5);
   }
 
-  /** Setter for <code>sion.squad.updated_at</code>. */
+  /** Setter for <code>SION.squad.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>sion.squad.updated_at</code>. */
+  /** Getter for <code>SION.squad.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>sion.squad.estimated_duration</code>. */
+  /** Setter for <code>SION.squad.estimated_duration</code>. */
   public void setEstimatedDuration(BigDecimal value) {
     set(7, value);
   }
 
-  /** Getter for <code>sion.squad.estimated_duration</code>. */
+  /** Getter for <code>SION.squad.estimated_duration</code>. */
   public BigDecimal getEstimatedDuration() {
     return (BigDecimal) get(7);
   }
 
-  /** Setter for <code>sion.squad.estimated_cost</code>. */
+  /** Setter for <code>SION.squad.estimated_cost</code>. */
   public void setEstimatedCost(BigDecimal value) {
     set(8, value);
   }
 
-  /** Getter for <code>sion.squad.estimated_cost</code>. */
+  /** Getter for <code>SION.squad.estimated_cost</code>. */
   public BigDecimal getEstimatedCost() {
     return (BigDecimal) get(8);
   }
 
-  /** Setter for <code>sion.squad.origin_type</code>. */
+  /** Setter for <code>SION.squad.origin_type</code>. */
   public void setOriginType(SquadOriginType value) {
     set(9, value);
   }
 
-  /** Getter for <code>sion.squad.origin_type</code>. */
+  /** Getter for <code>SION.squad.origin_type</code>. */
   public SquadOriginType getOriginType() {
     return (SquadOriginType) get(9);
   }
 
-  /** Setter for <code>sion.squad.recommendation_reason</code>. */
+  /** Setter for <code>SION.squad.recommendation_reason</code>. */
   public void setRecommendationReason(String value) {
     set(10, value);
   }
 
-  /** Getter for <code>sion.squad.recommendation_reason</code>. */
+  /** Getter for <code>SION.squad.recommendation_reason</code>. */
   public String getRecommendationReason() {
     return (String) get(10);
   }
