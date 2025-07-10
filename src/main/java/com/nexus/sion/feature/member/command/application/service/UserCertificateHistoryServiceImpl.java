@@ -1,7 +1,9 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.nexus.sion.feature.member.command.application.dto.request.CertificateRejectRequest;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -12,6 +14,7 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.UserCertifi
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.CertificateStatus;
 import com.nexus.sion.feature.member.command.domain.repository.CertificateRepository;
 import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHistoryRepository;
+import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,14 +27,11 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
 
   @Override
   public void registerUserCertificate(String employeeId, UserCertificateHistoryRequest request) {
-    // 자격증명으로 certificate 조회
-    Certificate certificate =
-        certificateRepository
+    Certificate certificate = certificateRepository
             .findById(request.getCertificateName())
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
-    UserCertificateHistory history =
-        UserCertificateHistory.builder()
+    UserCertificateHistory history = UserCertificateHistory.builder()
             .certificateName(certificate.getCertificateName())
             .employeeIdentificationNumber(employeeId)
             .certificateStatus(CertificateStatus.PENDING)
@@ -41,6 +41,32 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
             .updatedAt(LocalDateTime.now())
             .build();
 
+    userCertificateHistoryRepository.save(history);
+  }
+
+  @Override
+  public List<UserCertificateHistoryResponse> getAllCertificates() {
+    return userCertificateHistoryRepository.findAll()
+            .stream()
+            .map(UserCertificateHistoryResponse::fromEntity)
+            .toList();
+  }
+
+  @Override
+  public void approveUserCertificate(Long certificateRequestId) {
+    UserCertificateHistory history = userCertificateHistoryRepository.findById(certificateRequestId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
+
+    history.approve();
+    userCertificateHistoryRepository.save(history);
+  }
+
+  @Override
+  public void rejectUserCertificate(Long certificateRequestId, CertificateRejectRequest rejectedReason) {
+    UserCertificateHistory history = userCertificateHistoryRepository.findById(certificateRequestId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
+
+    history.reject(rejectedReason.getRejectedReason());
     userCertificateHistoryRepository.save(history);
   }
 }
