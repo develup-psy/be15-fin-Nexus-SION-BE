@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.notification.command.application.dto.request.SquadShareNotificationRequest;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,10 +52,21 @@ public class NotificationCommandController {
   }
 
   @PatchMapping(value = "/reads/{id}")
-  public ResponseEntity<ApiResponse<Void>> readAllNotification(
+  public ResponseEntity<ApiResponse<Void>> readNotification(
       @AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
     return ResponseEntity.ok(
         ApiResponse.success(
             notificationCommandService.readNotification(userDetails.getUsername(), id)));
+  }
+
+  @PostMapping(value = "/squad-share")
+  public ResponseEntity<ApiResponse<Void>> shareSquad(
+      @RequestBody SquadShareNotificationRequest request,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    notificationCommandService.sendSquadShareNotification(
+        userDetails.getUsername(), // senderId
+        request.getReceiverId(),
+        request.getSquadCode());
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

@@ -17,4 +17,6 @@ public interface NotificationCommandService {
   Void readAllNotification(String employeeIdentificationNumber);
 
   Void readNotification(String employeeIdentificationNumber, Long notificationId);
+
+  void sendSquadShareNotification(String senderId, String receiverId, String squadCode);
 }
