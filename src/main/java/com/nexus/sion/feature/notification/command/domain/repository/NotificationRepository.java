@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     @Modifying
     @Transactional
-    @Query("UPDATE Notification n SET n.isRead = 1 WHERE n.receiverId = :receiverId")
+    @Query("UPDATE Notification n SET n.isRead = true WHERE n.receiverId = :receiverId")
     void markAllAsRead(@Param("receiverId") String employeeIdentificationNumber);
 
     Optional<Notification> findByReceiverIdAndNotificationId(String receiverId, Long notificationId);
