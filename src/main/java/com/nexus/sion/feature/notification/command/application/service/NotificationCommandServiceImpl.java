@@ -170,7 +170,13 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     return null;
   }
 
-  @Async
+  @Transactional
+  @Override
+  public void sendSquadShareNotification(String senderId, String receiverId, String squadCode) {
+      createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode);
+  }
+
+    @Async
   public void send(String employeeIdentificationNumber, NotificationDTO data) {
     Map<String, SseEmitter> emitters =
         sseEmitterRepository.findAllEmittersStartWithId(employeeIdentificationNumber);
