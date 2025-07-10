@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectForSquadResponse {
-    private String projectCode;
-    private Long budgetLimit;
-    private Double durationLimit;
-    private Double estimatedDuration;
-    private Long estimatedCost;
-    private List<JobRequirement> jobRequirements;
-    private Double totalEffort;
+  private String projectCode;
+  private Long budgetLimit;
+  private Double durationLimit;
+  private Double estimatedDuration;
+  private Long estimatedCost;
+  private List<JobRequirement> jobRequirements;
+  private Double totalEffort;
 
   public void setJobRequirements(List<JobRequirement> requirements) {
     this.jobRequirements = requirements;

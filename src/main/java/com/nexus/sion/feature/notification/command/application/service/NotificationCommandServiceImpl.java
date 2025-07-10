@@ -1,16 +1,15 @@
 package com.nexus.sion.feature.notification.command.application.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
 import jakarta.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -21,6 +20,8 @@ import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.notification.command.domain.aggregate.Notification;
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.notification.command.domain.repository.NotificationRepository;
+import com.nexus.sion.feature.notification.command.infrastructure.repository.SseEmitterRepository;
+import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   private final SseEmitterRepository sseEmitterRepository;
   private final MemberRepository memberRepository;
   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+  private final ModelMapper modelMapper;
 
   private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 1시간
 
@@ -48,36 +50,21 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String message = type.generateMessage(senderName);
-
-    log.info(message); // todo : 주석 제거
-
     Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)
-            .message(type.getMessage())
+            .message(message)
             .notificationType(type)
             .linkedContentId(linkedContentId)
             .build();
 
     Notification saved = notificationRepository.save(notification);
-    Long id = saved.getNotificationId();
 
-    /* Query DTO와 구조 같아야 함 */
-    /* TODO :  쿼리쪽 응답 response dto 로 대체 */
-    Map<String, Object> payload =
-        Map.of(
-            "notificationId", id,
-            "senderId", senderId,
-            "senderName", senderName,
-            "receiverId", receiverId,
-            "message", message,
-            "notificationType", type,
-            "linkedContentId", linkedContentId,
-            "isRead", false,
-            "createdAt", LocalDateTime.now());
+    NotificationDTO dto = modelMapper.map(saved, NotificationDTO.class);
+    dto.setSenderName(senderName); // Entity에 없으니 수동으로
 
-    send(receiverId, payload);
+    send(receiverId, dto);
   }
 
   @Override
@@ -127,7 +114,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
     // 기존 last event 복구 로직
     if (!lastEventId.isEmpty()) {
-      Map<String, Object> events =
+      Map<String, NotificationDTO> events =
           sseEmitterRepository.findAllEventCacheStartWithId(employeeIdentificationNumber);
       events.entrySet().stream()
           .filter(
@@ -156,7 +143,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   }
 
   @Async
-  public void send(String employeeIdentificationNumber, Object data) {
+  public void send(String employeeIdentificationNumber, NotificationDTO data) {
     Map<String, SseEmitter> emitters =
         sseEmitterRepository.findAllEmittersStartWithId(employeeIdentificationNumber);
     emitters.forEach(

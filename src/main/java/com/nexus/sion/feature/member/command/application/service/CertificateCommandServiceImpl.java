@@ -51,7 +51,7 @@ public class CertificateCommandServiceImpl implements CertificateCommandService 
   // 중복 제거를 위한 private 메서드 추출
   private Certificate findCertificateByName(String certificateName) {
     return certificateRepository
-            .findById(certificateName)
-            .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
+        .findById(certificateName)
+        .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
   }
 }
