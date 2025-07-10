@@ -24,6 +24,7 @@ import com.example.jooq.generated.enums.*;
 import com.example.jooq.generated.tables.pojos.Project;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
+import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
 import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -207,7 +208,8 @@ public class ProjectQueryRepository {
                     PROJECT.PROJECT_CODE,
                     PROJECT.TITLE,
                     PROJECT.START_DATE,
-                    DSL.coalesce(PROJECT.ACTUAL_END_DATE, PROJECT.EXPECTED_END_DATE).as("end_date")
+                    DSL.coalesce(PROJECT.ACTUAL_END_DATE, PROJECT.EXPECTED_END_DATE).as("end_date"),
+                    DEVELOPER_PROJECT_WORK.APPROVAL_STATUS
             )
             .from(DEVELOPER_PROJECT_WORK)
             .join(PROJECT)
@@ -223,7 +225,8 @@ public class ProjectQueryRepository {
             record.get(PROJECT.PROJECT_CODE),
             record.get(PROJECT.TITLE),
             record.get(PROJECT.START_DATE),
-            record.get("end_date", LocalDate.class)
+            record.get("end_date", LocalDate.class),
+            record.get(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS, DeveloperProjectWork.ApprovalStatus.class)
     );
   }
 

@@ -29,7 +29,7 @@ public class DeveloperProjectWork extends BaseTimeEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "approval_status", nullable = false)
-  private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
+  private ApprovalStatus approvalStatus = ApprovalStatus.NOT_REQUESTED;
 
   @Column(name = "approved_by")
   private String approvedBy;
