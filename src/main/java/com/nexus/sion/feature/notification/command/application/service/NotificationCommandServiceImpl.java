@@ -45,10 +45,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
       String senderId, String receiverId, NotificationType type, String linkedContentId) {
 
     // null 값 safe 처리
-    String senderName = senderId != null ?
-        memberRepository
-            .findEmployeeNameByEmployeeIdentificationNumber(senderId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND))
+    String senderName =
+        senderId != null
+            ? memberRepository
+                .findEmployeeNameByEmployeeIdentificationNumber(senderId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND))
             : "";
 
     String message = type.generateMessage(senderName);
