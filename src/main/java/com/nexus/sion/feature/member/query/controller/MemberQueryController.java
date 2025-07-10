@@ -1,14 +1,16 @@
 package com.nexus.sion.feature.member.query.controller;
 
-import com.example.jooq.generated.enums.GradeGradeCode;
-import com.example.jooq.generated.enums.MemberStatus;
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.jooq.generated.enums.GradeGradeCode;
+import com.example.jooq.generated.enums.MemberStatus;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
@@ -19,8 +21,6 @@ import com.nexus.sion.feature.member.query.service.MemberQueryService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -71,9 +71,8 @@ public class MemberQueryController {
     List<GradeGradeCode> parsedGrades = null;
     if (request.getGrades() != null && !request.getGrades().isEmpty()) {
       try {
-        parsedGrades = request.getGrades().stream()
-                .map(s -> GradeGradeCode.valueOf(s.toUpperCase()))
-                .toList();
+        parsedGrades =
+            request.getGrades().stream().map(s -> GradeGradeCode.valueOf(s.toUpperCase())).toList();
       } catch (IllegalArgumentException e) {
         throw new BusinessException(ErrorCode.INVALID_GRADE);
       }
@@ -91,7 +90,8 @@ public class MemberQueryController {
     String sortDir = request.getSortDir() != null ? request.getSortDir() : "asc";
 
     // MemberListQuery 생성
-    MemberListQuery query = new MemberListQuery(
+    MemberListQuery query =
+        new MemberListQuery(
             request.getKeyword(),
             parsedStatus,
             parsedGrades,
@@ -100,8 +100,7 @@ public class MemberQueryController {
             sortDir,
             page,
             size,
-            memberRoles
-    );
+            memberRoles);
 
     // 5. 서비스 호출 및 응답
     PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(query);

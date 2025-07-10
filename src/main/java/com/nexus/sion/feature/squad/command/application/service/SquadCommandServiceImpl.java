@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,7 @@ import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
@@ -173,7 +173,8 @@ public class SquadCommandServiceImpl implements SquadCommandService {
         squadQueryService.findRequiredMemberCountByRoles(projectId);
 
     // 추천 기준에 따라 Top N 필터링
-    Map<String, List<DeveloperSummary>> filteredCandidates = filterTopNByCriteria(candidates, criteria);
+    Map<String, List<DeveloperSummary>> filteredCandidates =
+        filterTopNByCriteria(candidates, criteria);
 
     // 조합 생성
     List<Map<String, List<DeveloperSummary>>> combinations =
@@ -289,9 +290,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(
-          Map<String, List<DeveloperSummary>> candidates,
-          RecommendationCriteria criteria
-  ) {
+      Map<String, List<DeveloperSummary>> candidates, RecommendationCriteria criteria) {
     double topRatio;
     switch (criteria) {
       case TECH_STACK, DOMAIN_MATCH -> topRatio = 0.3;
@@ -300,14 +299,13 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     }
 
     return candidates.entrySet().stream()
-            .collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    entry -> {
-                      List<DeveloperSummary> sorted = entry.getValue();
-                      int topN = (int) Math.ceil(sorted.size() * topRatio);
-                      return sorted.subList(0, Math.min(topN, sorted.size()));
-                    }
-            ));
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> {
+                  List<DeveloperSummary> sorted = entry.getValue();
+                  int topN = (int) Math.ceil(sorted.size() * topRatio);
+                  return sorted.subList(0, Math.min(topN, sorted.size()));
+                }));
   }
-
 }
