@@ -41,52 +41,52 @@ public class MemberScoreHistory implements Serializable {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.member_score_history.score_history_id</code>. */
+  /** Getter for <code>SION.member_score_history.score_history_id</code>. */
   public Long getScoreHistoryId() {
     return this.scoreHistoryId;
   }
 
-  /** Setter for <code>sion.member_score_history.score_history_id</code>. */
+  /** Setter for <code>SION.member_score_history.score_history_id</code>. */
   public void setScoreHistoryId(Long scoreHistoryId) {
     this.scoreHistoryId = scoreHistoryId;
   }
 
-  /** Getter for <code>sion.member_score_history.employee_identification_number</code>. */
+  /** Getter for <code>SION.member_score_history.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>sion.member_score_history.employee_identification_number</code>. */
+  /** Setter for <code>SION.member_score_history.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>sion.member_score_history.total_tech_stack_scores</code>. */
+  /** Getter for <code>SION.member_score_history.total_tech_stack_scores</code>. */
   public Integer getTotalTechStackScores() {
     return this.totalTechStackScores;
   }
 
-  /** Setter for <code>sion.member_score_history.total_tech_stack_scores</code>. */
+  /** Setter for <code>SION.member_score_history.total_tech_stack_scores</code>. */
   public void setTotalTechStackScores(Integer totalTechStackScores) {
     this.totalTechStackScores = totalTechStackScores;
   }
 
-  /** Getter for <code>sion.member_score_history.total_certificate_scores</code>. */
+  /** Getter for <code>SION.member_score_history.total_certificate_scores</code>. */
   public Integer getTotalCertificateScores() {
     return this.totalCertificateScores;
   }
 
-  /** Setter for <code>sion.member_score_history.total_certificate_scores</code>. */
+  /** Setter for <code>SION.member_score_history.total_certificate_scores</code>. */
   public void setTotalCertificateScores(Integer totalCertificateScores) {
     this.totalCertificateScores = totalCertificateScores;
   }
 
-  /** Getter for <code>sion.member_score_history.created_at</code>. */
+  /** Getter for <code>SION.member_score_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.member_score_history.created_at</code>. */
+  /** Setter for <code>SION.member_score_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }

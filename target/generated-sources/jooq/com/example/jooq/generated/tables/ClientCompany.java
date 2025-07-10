@@ -35,7 +35,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.client_company</code> */
+  /** The reference instance of <code>SION.client_company</code> */
   public static final ClientCompany CLIENT_COMPANY = new ClientCompany();
 
   /** The class holding records for this type */
@@ -44,15 +44,15 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
     return ClientCompanyRecord.class;
   }
 
-  /** The column <code>sion.client_company.client_code</code>. */
+  /** The column <code>SION.client_company.client_code</code>. */
   public final TableField<ClientCompanyRecord, String> CLIENT_CODE =
       createField(DSL.name("client_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.client_company.company_name</code>. */
+  /** The column <code>SION.client_company.company_name</code>. */
   public final TableField<ClientCompanyRecord, String> COMPANY_NAME =
       createField(DSL.name("company_name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
-  /** The column <code>sion.client_company.created_at</code>. */
+  /** The column <code>SION.client_company.created_at</code>. */
   public final TableField<ClientCompanyRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -62,7 +62,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
           this,
           "");
 
-  /** The column <code>sion.client_company.updated_at</code>. */
+  /** The column <code>SION.client_company.updated_at</code>. */
   public final TableField<ClientCompanyRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -72,7 +72,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
           this,
           "");
 
-  /** The column <code>sion.client_company.contact_person</code>. */
+  /** The column <code>SION.client_company.contact_person</code>. */
   public final TableField<ClientCompanyRecord, String> CONTACT_PERSON =
       createField(
           DSL.name("contact_person"),
@@ -80,7 +80,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
           this,
           "");
 
-  /** The column <code>sion.client_company.email</code>. */
+  /** The column <code>SION.client_company.email</code>. */
   public final TableField<ClientCompanyRecord, String> EMAIL =
       createField(
           DSL.name("email"),
@@ -88,7 +88,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
           this,
           "");
 
-  /** The column <code>sion.client_company.contact_number</code>. */
+  /** The column <code>SION.client_company.contact_number</code>. */
   public final TableField<ClientCompanyRecord, String> CONTACT_NUMBER =
       createField(
           DSL.name("contact_number"),
@@ -96,7 +96,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
           this,
           "");
 
-  /** The column <code>sion.client_company.domain_name</code>. */
+  /** The column <code>SION.client_company.domain_name</code>. */
   public final TableField<ClientCompanyRecord, String> DOMAIN_NAME =
       createField(DSL.name("domain_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
@@ -108,17 +108,17 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.client_company</code> table reference */
+  /** Create an aliased <code>SION.client_company</code> table reference */
   public ClientCompany(String alias) {
     this(DSL.name(alias), CLIENT_COMPANY);
   }
 
-  /** Create an aliased <code>sion.client_company</code> table reference */
+  /** Create an aliased <code>SION.client_company</code> table reference */
   public ClientCompany(Name alias) {
     this(alias, CLIENT_COMPANY);
   }
 
-  /** Create a <code>sion.client_company</code> table reference */
+  /** Create a <code>SION.client_company</code> table reference */
   public ClientCompany() {
     this(DSL.name("client_company"), null);
   }
@@ -149,7 +149,7 @@ public class ClientCompany extends TableImpl<ClientCompanyRecord> {
 
   private transient Domain _domain;
 
-  /** Get the implicit join path to the <code>sion.domain</code> table. */
+  /** Get the implicit join path to the <code>SION.domain</code> table. */
   public Domain domain() {
     if (_domain == null) _domain = new Domain(this, Keys.FK_DOMAIN_TO_CLIENT_COMPANY_1);
 

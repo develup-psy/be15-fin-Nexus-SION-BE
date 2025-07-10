@@ -46,4 +46,31 @@ public class UserCertificateHistory {
 
   @Column(name = "certificate_name", length = 30, nullable = false)
   private String certificateName;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "certificate_name",
+      referencedColumnName = "certificate_name",
+      insertable = false,
+      updatable = false)
+  private Certificate certificate;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "employee_identification_number",
+      referencedColumnName = "employee_identification_number",
+      insertable = false,
+      updatable = false)
+  private Member member;
+
+  public void approve() {
+    this.certificateStatus = CertificateStatus.APPROVED;
+    this.updatedAt = LocalDateTime.now();
+  }
+
+  public void reject(String reason) {
+    this.certificateStatus = CertificateStatus.REJECTED;
+    this.rejectedReason = reason;
+    this.updatedAt = LocalDateTime.now();
+  }
 }

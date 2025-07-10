@@ -188,7 +188,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-        null, employeeId, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
+        null, employeeId, null, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
   }
 
   @Override
@@ -224,7 +224,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   private void notifyFPAnalysisFailure(String managerId, String projectId) {
     notificationCommandService.createAndSendNotification(
-        null, managerId, NotificationType.FP_ANALYSIS_FAILURE, projectId);
+        null, managerId, null, NotificationType.FP_ANALYSIS_FAILURE, projectId);
   }
 
   private void createDeveloperProjectWorks(String projectCode) {

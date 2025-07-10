@@ -24,13 +24,13 @@ public enum NotificationType {
   SQUAD_SHARE("{username}님이 스쿼드를 공유했습니다."),
 
   /** 등급 변경 알림 */
-  GRADE_CHANGE("회원님의 등급이 변경되었습니다."),
+  GRADE_CHANGE("등급이 변경되었습니다."),
 
   /** 프로젝트 업무 승인 요청 알림 */
-  TASK_APPROVAL_REQUEST("프로젝트 업무 업로드가 완료되었습니다. 승인 부탁드립니다."),
+  TASK_APPROVAL_REQUEST("{username}님의 프로젝트 업무 업로드가 완료되었습니다."),
 
   /** 자격증 등록 승인 요청 알림 */
-  CERTIFICATION_APPROVAL_REQUEST("자격증 등록 요청이 들어왔습니다. 승인 부탁드립니다.");
+  CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다.");
 
   private final String message;
 

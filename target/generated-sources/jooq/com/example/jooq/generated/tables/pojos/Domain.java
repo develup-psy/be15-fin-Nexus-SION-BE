@@ -30,32 +30,32 @@ public class Domain implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.domain.name</code>. */
+  /** Getter for <code>SION.domain.name</code>. */
   public String getName() {
     return this.name;
   }
 
-  /** Setter for <code>sion.domain.name</code>. */
+  /** Setter for <code>SION.domain.name</code>. */
   public void setName(String name) {
     this.name = name;
   }
 
-  /** Getter for <code>sion.domain.created_at</code>. */
+  /** Getter for <code>SION.domain.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.domain.created_at</code>. */
+  /** Setter for <code>SION.domain.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.domain.updated_at</code>. */
+  /** Getter for <code>SION.domain.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.domain.updated_at</code>. */
+  /** Setter for <code>SION.domain.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

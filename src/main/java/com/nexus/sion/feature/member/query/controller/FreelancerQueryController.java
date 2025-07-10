@@ -20,7 +20,7 @@ public class FreelancerQueryController {
 
   @GetMapping
   public ResponseEntity<ApiResponse<PageResponse<FreelancerListResponse>>> getFreelancerList(
-      @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     PageResponse<FreelancerListResponse> result = freelancerQueryService.getFreelancers(page, size);
     return ResponseEntity.ok(ApiResponse.success(result));
   }

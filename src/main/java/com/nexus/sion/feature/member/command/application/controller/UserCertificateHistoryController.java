@@ -19,7 +19,7 @@ public class UserCertificateHistoryController {
 
   private final UserCertificateHistoryService userCertificateHistoryService;
 
-  /* 개발자의 자격증 등록 */
+  // 개발자 자격증 등록
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> registerUserCertificate(
       @PathVariable String employeeId, @RequestBody @Valid UserCertificateHistoryRequest request) {

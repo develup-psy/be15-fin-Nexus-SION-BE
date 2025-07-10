@@ -43,7 +43,8 @@ public enum ErrorCode {
   LAST_MAX_YEARS_SHOULD_BE_NULL("20018", "마지막 구간의 maxYears는 null이어야 합니다.", HttpStatus.BAD_REQUEST),
   INTERVAL_YEARS_SHOULD_BE_CONTINUOUS("20019", "구간은 연속되어야 합니다.", HttpStatus.BAD_REQUEST),
   INVALID_MEMBER_ROLE("20020", "유효하지 않은 역할 정보입니다", HttpStatus.BAD_REQUEST),
-  CERTIFICATE_NOT_FOUND("80001", "존재하지 않는 자격증입니다.", HttpStatus.NOT_FOUND),
+  CERTIFICATE_NOT_FOUND("20021", "존재하지 않는 자격증입니다.", HttpStatus.NOT_FOUND),
+  USER_CERTIFICATE_NOT_FOUND("20022", "등록된 자격증 신청 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // project
   PROJECT_CODE_DUPLICATED("30001", "이미 존재하는 프로젝트 코드입니다.", HttpStatus.CONFLICT),

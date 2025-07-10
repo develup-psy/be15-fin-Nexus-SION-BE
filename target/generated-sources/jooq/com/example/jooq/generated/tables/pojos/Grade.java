@@ -18,6 +18,7 @@ public class Grade implements Serializable {
   private GradeGradeCode gradeCode;
   private BigDecimal ratio;
   private BigDecimal productivity;
+  private Integer scoreThreshold;
   private Integer monthlyUnitPrice;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -28,6 +29,7 @@ public class Grade implements Serializable {
     this.gradeCode = value.gradeCode;
     this.ratio = value.ratio;
     this.productivity = value.productivity;
+    this.scoreThreshold = value.scoreThreshold;
     this.monthlyUnitPrice = value.monthlyUnitPrice;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
@@ -37,73 +39,85 @@ public class Grade implements Serializable {
       GradeGradeCode gradeCode,
       BigDecimal ratio,
       BigDecimal productivity,
+      Integer scoreThreshold,
       Integer monthlyUnitPrice,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
     this.gradeCode = gradeCode;
     this.ratio = ratio;
     this.productivity = productivity;
+    this.scoreThreshold = scoreThreshold;
     this.monthlyUnitPrice = monthlyUnitPrice;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.grade.grade_code</code>. */
+  /** Getter for <code>SION.grade.grade_code</code>. */
   public GradeGradeCode getGradeCode() {
     return this.gradeCode;
   }
 
-  /** Setter for <code>sion.grade.grade_code</code>. */
+  /** Setter for <code>SION.grade.grade_code</code>. */
   public void setGradeCode(GradeGradeCode gradeCode) {
     this.gradeCode = gradeCode;
   }
 
-  /** Getter for <code>sion.grade.ratio</code>. */
+  /** Getter for <code>SION.grade.ratio</code>. */
   public BigDecimal getRatio() {
     return this.ratio;
   }
 
-  /** Setter for <code>sion.grade.ratio</code>. */
+  /** Setter for <code>SION.grade.ratio</code>. */
   public void setRatio(BigDecimal ratio) {
     this.ratio = ratio;
   }
 
-  /** Getter for <code>sion.grade.productivity</code>. */
+  /** Getter for <code>SION.grade.productivity</code>. */
   public BigDecimal getProductivity() {
     return this.productivity;
   }
 
-  /** Setter for <code>sion.grade.productivity</code>. */
+  /** Setter for <code>SION.grade.productivity</code>. */
   public void setProductivity(BigDecimal productivity) {
     this.productivity = productivity;
   }
 
-  /** Getter for <code>sion.grade.monthly_unit_price</code>. */
+  /** Getter for <code>SION.grade.score_threshold</code>. */
+  public Integer getScoreThreshold() {
+    return this.scoreThreshold;
+  }
+
+  /** Setter for <code>SION.grade.score_threshold</code>. */
+  public void setScoreThreshold(Integer scoreThreshold) {
+    this.scoreThreshold = scoreThreshold;
+  }
+
+  /** Getter for <code>SION.grade.monthly_unit_price</code>. */
   public Integer getMonthlyUnitPrice() {
     return this.monthlyUnitPrice;
   }
 
-  /** Setter for <code>sion.grade.monthly_unit_price</code>. */
+  /** Setter for <code>SION.grade.monthly_unit_price</code>. */
   public void setMonthlyUnitPrice(Integer monthlyUnitPrice) {
     this.monthlyUnitPrice = monthlyUnitPrice;
   }
 
-  /** Getter for <code>sion.grade.created_at</code>. */
+  /** Getter for <code>SION.grade.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.grade.created_at</code>. */
+  /** Setter for <code>SION.grade.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.grade.updated_at</code>. */
+  /** Getter for <code>SION.grade.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.grade.updated_at</code>. */
+  /** Setter for <code>SION.grade.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
@@ -123,6 +137,9 @@ public class Grade implements Serializable {
     if (this.productivity == null) {
       if (other.productivity != null) return false;
     } else if (!this.productivity.equals(other.productivity)) return false;
+    if (this.scoreThreshold == null) {
+      if (other.scoreThreshold != null) return false;
+    } else if (!this.scoreThreshold.equals(other.scoreThreshold)) return false;
     if (this.monthlyUnitPrice == null) {
       if (other.monthlyUnitPrice != null) return false;
     } else if (!this.monthlyUnitPrice.equals(other.monthlyUnitPrice)) return false;
@@ -142,6 +159,7 @@ public class Grade implements Serializable {
     result = prime * result + ((this.gradeCode == null) ? 0 : this.gradeCode.hashCode());
     result = prime * result + ((this.ratio == null) ? 0 : this.ratio.hashCode());
     result = prime * result + ((this.productivity == null) ? 0 : this.productivity.hashCode());
+    result = prime * result + ((this.scoreThreshold == null) ? 0 : this.scoreThreshold.hashCode());
     result =
         prime * result + ((this.monthlyUnitPrice == null) ? 0 : this.monthlyUnitPrice.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
@@ -156,6 +174,7 @@ public class Grade implements Serializable {
     sb.append(gradeCode);
     sb.append(", ").append(ratio);
     sb.append(", ").append(productivity);
+    sb.append(", ").append(scoreThreshold);
     sb.append(", ").append(monthlyUnitPrice);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);

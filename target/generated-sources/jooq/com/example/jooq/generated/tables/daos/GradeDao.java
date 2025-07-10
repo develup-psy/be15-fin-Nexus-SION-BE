@@ -91,6 +91,21 @@ public class GradeDao
   }
 
   /**
+   * Fetch records that have <code>score_threshold BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchRangeOfScoreThreshold(
+      Integer lowerInclusive, Integer upperInclusive) {
+    return fetchRange(Grade.GRADE.SCORE_THRESHOLD, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>score_threshold IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.Grade> fetchByScoreThreshold(
+      Integer... values) {
+    return fetch(Grade.GRADE.SCORE_THRESHOLD, values);
+  }
+
+  /**
    * Fetch records that have <code>monthly_unit_price BETWEEN lowerInclusive
    * AND upperInclusive</code>
    */
