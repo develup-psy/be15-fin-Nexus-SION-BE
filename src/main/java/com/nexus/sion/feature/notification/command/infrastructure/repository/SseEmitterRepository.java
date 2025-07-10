@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SseEmitterRepository {
 
   private final Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
-  private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
+  private final Map<String, NotificationDTO> eventCache = new ConcurrentHashMap<>();
 
   public SseEmitter save(String emitterId, SseEmitter emitter) {
     emitterMap.put(emitterId, emitter);
@@ -35,11 +37,12 @@ public class SseEmitterRepository {
         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
-  public void saveEventCache(String emitterId, Object event) {
+  public void saveEventCache(String emitterId, NotificationDTO event) {
     eventCache.put(emitterId, event);
   }
 
-  public Map<String, Object> findAllEventCacheStartWithId(String employeeIdentificationNumber) {
+  public Map<String, NotificationDTO> findAllEventCacheStartWithId(
+      String employeeIdentificationNumber) {
     return eventCache.entrySet().stream()
         .filter(entry -> entry.getKey().startsWith(employeeIdentificationNumber))
         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));

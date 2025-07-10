@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -44,7 +45,8 @@ class ProjectQueryServiceImplTest {
             4,
             "COMPLETE",
             "HR시스템",
-            5);
+            5,
+            ProjectAnalysisStatus.COMPLETE);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 10);
 
@@ -75,7 +77,8 @@ class ProjectQueryServiceImplTest {
             3,
             "COMPLETE",
             "웹",
-            5);
+            5,
+            ProjectAnalysisStatus.COMPLETE);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 5);
 
@@ -108,7 +111,8 @@ class ProjectQueryServiceImplTest {
             4,
             "COMPLETE",
             "HR시스템",
-            5);
+            5,
+            ProjectAnalysisStatus.COMPLETE);
 
     PageResponse<ProjectListResponse> mockPage = PageResponse.fromJooq(List.of(project), 1, 0, 5);
 
@@ -144,7 +148,8 @@ class ProjectQueryServiceImplTest {
             "₩5,000,000",
             techStacks,
             members,
-            "WAITING");
+            "WAITING",
+            ProjectAnalysisStatus.COMPLETE);
 
     when(repository.getProjectDetail(projectCode)).thenReturn(mockResponse);
 
