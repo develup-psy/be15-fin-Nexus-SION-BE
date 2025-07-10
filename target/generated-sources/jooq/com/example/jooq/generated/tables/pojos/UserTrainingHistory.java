@@ -45,62 +45,62 @@ public class UserTrainingHistory implements Serializable {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.user_training_history.user_trainig_history_id</code>. */
+  /** Getter for <code>sion.user_training_history.user_trainig_history_id</code>. */
   public Long getUserTrainigHistoryId() {
     return this.userTrainigHistoryId;
   }
 
-  /** Setter for <code>SION.user_training_history.user_trainig_history_id</code>. */
+  /** Setter for <code>sion.user_training_history.user_trainig_history_id</code>. */
   public void setUserTrainigHistoryId(Long userTrainigHistoryId) {
     this.userTrainigHistoryId = userTrainigHistoryId;
   }
 
-  /** Getter for <code>SION.user_training_history.created_at</code>. */
+  /** Getter for <code>sion.user_training_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.user_training_history.created_at</code>. */
+  /** Setter for <code>sion.user_training_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.user_training_history.updated_at</code>. */
+  /** Getter for <code>sion.user_training_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.user_training_history.updated_at</code>. */
+  /** Setter for <code>sion.user_training_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.user_training_history.updated_by</code>. */
+  /** Getter for <code>sion.user_training_history.updated_by</code>. */
   public String getUpdatedBy() {
     return this.updatedBy;
   }
 
-  /** Setter for <code>SION.user_training_history.updated_by</code>. */
+  /** Setter for <code>sion.user_training_history.updated_by</code>. */
   public void setUpdatedBy(String updatedBy) {
     this.updatedBy = updatedBy;
   }
 
-  /** Getter for <code>SION.user_training_history.training_name</code>. */
+  /** Getter for <code>sion.user_training_history.training_name</code>. */
   public String getTrainingName() {
     return this.trainingName;
   }
 
-  /** Setter for <code>SION.user_training_history.training_name</code>. */
+  /** Setter for <code>sion.user_training_history.training_name</code>. */
   public void setTrainingName(String trainingName) {
     this.trainingName = trainingName;
   }
 
-  /** Getter for <code>SION.user_training_history.employee_identification_number</code>. */
+  /** Getter for <code>sion.user_training_history.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.user_training_history.employee_identification_number</code>. */
+  /** Setter for <code>sion.user_training_history.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }

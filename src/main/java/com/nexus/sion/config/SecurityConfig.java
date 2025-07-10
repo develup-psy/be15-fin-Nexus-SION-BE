@@ -53,6 +53,7 @@ public class SecurityConfig {
         // 요청 http method, url 기준으로 인증, 인가 필요 여부 설정
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/api/v1/**").permitAll().anyRequest().authenticated())
+
         // 커스텀 인증 필터(jwt 토큰 필터)
         .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

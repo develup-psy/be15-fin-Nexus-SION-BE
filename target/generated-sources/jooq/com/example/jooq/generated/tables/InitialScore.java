@@ -34,7 +34,7 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.initial_score</code> */
+  /** The reference instance of <code>sion.initial_score</code> */
   public static final InitialScore INITIAL_SCORE = new InitialScore();
 
   /** The class holding records for this type */
@@ -43,15 +43,15 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
     return InitialScoreRecord.class;
   }
 
-  /** The column <code>SION.initial_score.id</code>. */
+  /** The column <code>sion.initial_score.id</code>. */
   public final TableField<InitialScoreRecord, Long> ID =
       createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
-  /** The column <code>SION.initial_score.min_years</code>. */
+  /** The column <code>sion.initial_score.min_years</code>. */
   public final TableField<InitialScoreRecord, Integer> MIN_YEARS =
       createField(DSL.name("min_years"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.initial_score.max_years</code>. */
+  /** The column <code>sion.initial_score.max_years</code>. */
   public final TableField<InitialScoreRecord, Integer> MAX_YEARS =
       createField(
           DSL.name("max_years"),
@@ -59,11 +59,11 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
           this,
           "");
 
-  /** The column <code>SION.initial_score.score</code>. */
+  /** The column <code>sion.initial_score.score</code>. */
   public final TableField<InitialScoreRecord, Integer> SCORE =
       createField(DSL.name("score"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.initial_score.created_at</code>. */
+  /** The column <code>sion.initial_score.created_at</code>. */
   public final TableField<InitialScoreRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -73,7 +73,7 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
           this,
           "");
 
-  /** The column <code>SION.initial_score.updated_at</code>. */
+  /** The column <code>sion.initial_score.updated_at</code>. */
   public final TableField<InitialScoreRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -91,17 +91,17 @@ public class InitialScore extends TableImpl<InitialScoreRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.initial_score</code> table reference */
+  /** Create an aliased <code>sion.initial_score</code> table reference */
   public InitialScore(String alias) {
     this(DSL.name(alias), INITIAL_SCORE);
   }
 
-  /** Create an aliased <code>SION.initial_score</code> table reference */
+  /** Create an aliased <code>sion.initial_score</code> table reference */
   public InitialScore(Name alias) {
     this(alias, INITIAL_SCORE);
   }
 
-  /** Create a <code>SION.initial_score</code> table reference */
+  /** Create a <code>sion.initial_score</code> table reference */
   public InitialScore() {
     this(DSL.name("initial_score"), null);
   }

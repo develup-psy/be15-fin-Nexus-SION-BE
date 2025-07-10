@@ -33,7 +33,7 @@ public class Department extends TableImpl<DepartmentRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.department</code> */
+  /** The reference instance of <code>sion.department</code> */
   public static final Department DEPARTMENT = new Department();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Department extends TableImpl<DepartmentRecord> {
     return DepartmentRecord.class;
   }
 
-  /** The column <code>SION.department.department_name</code>. */
+  /** The column <code>sion.department.department_name</code>. */
   public final TableField<DepartmentRecord, String> DEPARTMENT_NAME =
       createField(DSL.name("department_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>SION.department.create_at</code>. */
+  /** The column <code>sion.department.create_at</code>. */
   public final TableField<DepartmentRecord, LocalDateTime> CREATE_AT =
       createField(
           DSL.name("create_at"),
@@ -56,7 +56,7 @@ public class Department extends TableImpl<DepartmentRecord> {
           this,
           "");
 
-  /** The column <code>SION.department.updated_at</code>. */
+  /** The column <code>sion.department.updated_at</code>. */
   public final TableField<DepartmentRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -73,17 +73,17 @@ public class Department extends TableImpl<DepartmentRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.department</code> table reference */
+  /** Create an aliased <code>sion.department</code> table reference */
   public Department(String alias) {
     this(DSL.name(alias), DEPARTMENT);
   }
 
-  /** Create an aliased <code>SION.department</code> table reference */
+  /** Create an aliased <code>sion.department</code> table reference */
   public Department(Name alias) {
     this(alias, DEPARTMENT);
   }
 
-  /** Create a <code>SION.department</code> table reference */
+  /** Create a <code>sion.department</code> table reference */
   public Department() {
     this(DSL.name("department"), null);
   }

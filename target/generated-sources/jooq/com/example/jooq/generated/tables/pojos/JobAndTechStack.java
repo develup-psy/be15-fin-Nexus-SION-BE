@@ -45,62 +45,62 @@ public class JobAndTechStack implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.job_and_tech_stack_id</code>. */
   public Long getJobAndTechStackId() {
     return this.jobAndTechStackId;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.job_and_tech_stack_id</code>. */
   public void setJobAndTechStackId(Long jobAndTechStackId) {
     this.jobAndTechStackId = jobAndTechStackId;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return this.techStackName;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String techStackName) {
     this.techStackName = techStackName;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.project_and_job_id</code>. */
   public Long getProjectAndJobId() {
     return this.projectAndJobId;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.project_and_job_id</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.project_and_job_id</code>. */
   public void setProjectAndJobId(Long projectAndJobId) {
     this.projectAndJobId = projectAndJobId;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.priority</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.priority</code>. */
   public Integer getPriority() {
     return this.priority;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.priority</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.priority</code>. */
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.created_at</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.created_at</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.job_and_tech_stack.updated_at</code>. */
+  /** Getter for <code>sion.job_and_tech_stack.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.job_and_tech_stack.updated_at</code>. */
+  /** Setter for <code>sion.job_and_tech_stack.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

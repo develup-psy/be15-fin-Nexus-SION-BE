@@ -29,82 +29,82 @@ public class TrainingProgramRecord extends UpdatableRecordImpl<TrainingProgramRe
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.training_program.training_name</code>. */
+  /** Setter for <code>sion.training_program.training_name</code>. */
   public void setTrainingName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.training_program.training_name</code>. */
+  /** Getter for <code>sion.training_program.training_name</code>. */
   public String getTrainingName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.training_program.description</code>. */
+  /** Setter for <code>sion.training_program.description</code>. */
   public void setDescription(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.training_program.description</code>. */
+  /** Getter for <code>sion.training_program.description</code>. */
   public String getDescription() {
     return (String) get(1);
   }
 
-  /** Setter for <code>SION.training_program.training_type</code>. */
+  /** Setter for <code>sion.training_program.training_type</code>. */
   public void setTrainingType(TrainingProgramTrainingType value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.training_program.training_type</code>. */
+  /** Getter for <code>sion.training_program.training_type</code>. */
   public TrainingProgramTrainingType getTrainingType() {
     return (TrainingProgramTrainingType) get(2);
   }
 
-  /** Setter for <code>SION.training_program.organizer</code>. */
+  /** Setter for <code>sion.training_program.organizer</code>. */
   public void setOrganizer(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.training_program.organizer</code>. */
+  /** Getter for <code>sion.training_program.organizer</code>. */
   public String getOrganizer() {
     return (String) get(3);
   }
 
-  /** Setter for <code>SION.training_program.started_at</code>. */
+  /** Setter for <code>sion.training_program.started_at</code>. */
   public void setStartedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.training_program.started_at</code>. */
+  /** Getter for <code>sion.training_program.started_at</code>. */
   public LocalDateTime getStartedAt() {
     return (LocalDateTime) get(4);
   }
 
-  /** Setter for <code>SION.training_program.ended_at</code>. */
+  /** Setter for <code>sion.training_program.ended_at</code>. */
   public void setEndedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>SION.training_program.ended_at</code>. */
+  /** Getter for <code>sion.training_program.ended_at</code>. */
   public LocalDateTime getEndedAt() {
     return (LocalDateTime) get(5);
   }
 
-  /** Setter for <code>SION.training_program.created_at</code>. */
+  /** Setter for <code>sion.training_program.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>SION.training_program.created_at</code>. */
+  /** Getter for <code>sion.training_program.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>SION.training_program.updated_at</code>. */
+  /** Setter for <code>sion.training_program.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(7, value);
   }
 
-  /** Getter for <code>SION.training_program.updated_at</code>. */
+  /** Getter for <code>sion.training_program.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(7);
   }

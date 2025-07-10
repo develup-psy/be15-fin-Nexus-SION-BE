@@ -20,52 +20,52 @@ public class MemberScoreHistoryRecord extends UpdatableRecordImpl<MemberScoreHis
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.member_score_history.score_history_id</code>. */
+  /** Setter for <code>sion.member_score_history.score_history_id</code>. */
   public void setScoreHistoryId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.member_score_history.score_history_id</code>. */
+  /** Getter for <code>sion.member_score_history.score_history_id</code>. */
   public Long getScoreHistoryId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>SION.member_score_history.employee_identification_number</code>. */
+  /** Setter for <code>sion.member_score_history.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.member_score_history.employee_identification_number</code>. */
+  /** Getter for <code>sion.member_score_history.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(1);
   }
 
-  /** Setter for <code>SION.member_score_history.total_tech_stack_scores</code>. */
+  /** Setter for <code>sion.member_score_history.total_tech_stack_scores</code>. */
   public void setTotalTechStackScores(Integer value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.member_score_history.total_tech_stack_scores</code>. */
+  /** Getter for <code>sion.member_score_history.total_tech_stack_scores</code>. */
   public Integer getTotalTechStackScores() {
     return (Integer) get(2);
   }
 
-  /** Setter for <code>SION.member_score_history.total_certificate_scores</code>. */
+  /** Setter for <code>sion.member_score_history.total_certificate_scores</code>. */
   public void setTotalCertificateScores(Integer value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.member_score_history.total_certificate_scores</code>. */
+  /** Getter for <code>sion.member_score_history.total_certificate_scores</code>. */
   public Integer getTotalCertificateScores() {
     return (Integer) get(3);
   }
 
-  /** Setter for <code>SION.member_score_history.created_at</code>. */
+  /** Setter for <code>sion.member_score_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.member_score_history.created_at</code>. */
+  /** Getter for <code>sion.member_score_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(4);
   }
