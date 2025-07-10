@@ -29,6 +29,7 @@ public class SquadDetailResponse {
   private String description;
   private SquadOriginType origin;
   private Boolean isActive;
+  private String projectCode;
 
   @Getter
   @Builder
