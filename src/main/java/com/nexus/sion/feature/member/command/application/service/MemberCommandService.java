@@ -132,15 +132,7 @@ public class MemberCommandService {
 
       int totalScore = initialScore * techStackCount;
 
-      List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
-
-      GradeCode gradeCode =
-          grades.stream()
-              .filter(g -> g.getScoreThreshold() > 0) // 유효한 기준이 있는 등급만 대상으로 함
-              .filter(g -> totalScore >= g.getScoreThreshold())
-              .map(Grade::getGradeCode)
-              .findFirst()
-              .orElse(GradeCode.B); // 아무 기준도 통과하지 못하면 기본값 B
+      GradeCode gradeCode = calculateGradeByScore(totalScore);// 아무 기준도 통과하지 못하면 기본값 B
 
       // 생년월일 기반 임의 password 발급
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
@@ -315,5 +307,16 @@ public class MemberCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     member.updateStatus(status);
+  }
+
+  private GradeCode calculateGradeByScore(int totalScore) {
+    List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
+
+    return grades.stream()
+            .filter(g -> g.getScoreThreshold() > 0)
+            .filter(g -> totalScore >= g.getScoreThreshold())
+            .map(Grade::getGradeCode)
+            .findFirst()
+            .orElse(GradeCode.B);
   }
 }
