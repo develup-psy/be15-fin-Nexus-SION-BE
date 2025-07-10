@@ -20,6 +20,7 @@ import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -176,6 +177,7 @@ public class ProjectQueryRepository {
 
     // ✅ 상태 추출 및 반환에 포함
     String status = String.valueOf(project.get(PROJECT.STATUS));
+    ProjectAnalysisStatus analysisStatus = project.get(PROJECT.ANALYSIS_STATUS);
 
     return new ProjectDetailResponse(
         project.get(PROJECT.TITLE),
@@ -186,7 +188,8 @@ public class ProjectQueryRepository {
         budget,
         techStacks,
         members,
-        status // ✅ 여기 포함
+        status,
+        analysisStatus // ✅ 여기 포함
         );
   }
 }
