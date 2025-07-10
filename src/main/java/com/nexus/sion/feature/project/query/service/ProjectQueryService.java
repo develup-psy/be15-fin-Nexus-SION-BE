@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.project.query.service;
 
+import java.util.List;
+
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
 import com.nexus.sion.feature.project.query.dto.response.ProjectDetailResponse;
@@ -12,4 +14,7 @@ public interface ProjectQueryService {
   ProjectDetailResponse getProjectDetail(String projectCode);
 
   ProjectForSquadResponse getProjectInfoForSquad(String projectCode);
+
+  PageResponse<ProjectListResponse> getProjectsByEmployeeId(
+      String employeeId, List<String> statuses, int page, int size);
 }

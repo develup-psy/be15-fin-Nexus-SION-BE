@@ -37,7 +37,7 @@ public class Squad extends TableImpl<SquadRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.squad</code> */
+  /** The reference instance of <code>sion.squad</code> */
   public static final Squad SQUAD = new Squad();
 
   /** The class holding records for this type */
@@ -46,19 +46,19 @@ public class Squad extends TableImpl<SquadRecord> {
     return SquadRecord.class;
   }
 
-  /** The column <code>SION.squad.squad_code</code>. */
+  /** The column <code>sion.squad.squad_code</code>. */
   public final TableField<SquadRecord, String> SQUAD_CODE =
       createField(DSL.name("squad_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.squad.project_code</code>. */
+  /** The column <code>sion.squad.project_code</code>. */
   public final TableField<SquadRecord, String> PROJECT_CODE =
       createField(DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.squad.title</code>. */
+  /** The column <code>sion.squad.title</code>. */
   public final TableField<SquadRecord, String> TITLE =
       createField(DSL.name("title"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.squad.description</code>. */
+  /** The column <code>sion.squad.description</code>. */
   public final TableField<SquadRecord, String> DESCRIPTION =
       createField(
           DSL.name("description"),
@@ -66,11 +66,11 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.is_active</code>. */
+  /** The column <code>sion.squad.is_active</code>. */
   public final TableField<SquadRecord, Byte> IS_ACTIVE =
       createField(DSL.name("is_active"), SQLDataType.TINYINT.nullable(false), this, "");
 
-  /** The column <code>SION.squad.created_at</code>. */
+  /** The column <code>sion.squad.created_at</code>. */
   public final TableField<SquadRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -80,7 +80,7 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.updated_at</code>. */
+  /** The column <code>sion.squad.updated_at</code>. */
   public final TableField<SquadRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -90,7 +90,7 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.estimated_duration</code>. */
+  /** The column <code>sion.squad.estimated_duration</code>. */
   public final TableField<SquadRecord, BigDecimal> ESTIMATED_DURATION =
       createField(
           DSL.name("estimated_duration"),
@@ -98,7 +98,7 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.estimated_cost</code>. */
+  /** The column <code>sion.squad.estimated_cost</code>. */
   public final TableField<SquadRecord, BigDecimal> ESTIMATED_COST =
       createField(
           DSL.name("estimated_cost"),
@@ -106,7 +106,7 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.origin_type</code>. */
+  /** The column <code>sion.squad.origin_type</code>. */
   public final TableField<SquadRecord, SquadOriginType> ORIGIN_TYPE =
       createField(
           DSL.name("origin_type"),
@@ -116,7 +116,7 @@ public class Squad extends TableImpl<SquadRecord> {
           this,
           "");
 
-  /** The column <code>SION.squad.recommendation_reason</code>. */
+  /** The column <code>sion.squad.recommendation_reason</code>. */
   public final TableField<SquadRecord, String> RECOMMENDATION_REASON =
       createField(
           DSL.name("recommendation_reason"),
@@ -132,17 +132,17 @@ public class Squad extends TableImpl<SquadRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.squad</code> table reference */
+  /** Create an aliased <code>sion.squad</code> table reference */
   public Squad(String alias) {
     this(DSL.name(alias), SQUAD);
   }
 
-  /** Create an aliased <code>SION.squad</code> table reference */
+  /** Create an aliased <code>sion.squad</code> table reference */
   public Squad(Name alias) {
     this(alias, SQUAD);
   }
 
-  /** Create a <code>SION.squad</code> table reference */
+  /** Create a <code>sion.squad</code> table reference */
   public Squad() {
     this(DSL.name("squad"), null);
   }
@@ -168,7 +168,7 @@ public class Squad extends TableImpl<SquadRecord> {
 
   private transient Project _project;
 
-  /** Get the implicit join path to the <code>SION.project</code> table. */
+  /** Get the implicit join path to the <code>sion.project</code> table. */
   public Project project() {
     if (_project == null) _project = new Project(this, Keys.FK_PROJECT_TO_SQUAD_1);
 

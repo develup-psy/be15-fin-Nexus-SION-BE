@@ -45,62 +45,62 @@ public class DeveloperTechStackHistory implements Serializable {
     this.developerTechStackId = developerTechStackId;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
   public Long getDeveloperTechStackHistoryId() {
     return this.developerTechStackHistoryId;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.developer_tech_stack_history_id</code>. */
   public void setDeveloperTechStackHistoryId(Long developerTechStackHistoryId) {
     this.developerTechStackHistoryId = developerTechStackHistoryId;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.added_score</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.added_score</code>. */
   public Integer getAddedScore() {
     return this.addedScore;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.added_score</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.added_score</code>. */
   public void setAddedScore(Integer addedScore) {
     this.addedScore = addedScore;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.created_at</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.created_at</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.updated_at</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.updated_at</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.project_code</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.project_code</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
+  /** Getter for <code>sion.developer_tech_stack_history.developer_tech_stack_id</code>. */
   public Long getDeveloperTechStackId() {
     return this.developerTechStackId;
   }
 
-  /** Setter for <code>SION.developer_tech_stack_history.developer_tech_stack_id</code>. */
+  /** Setter for <code>sion.developer_tech_stack_history.developer_tech_stack_id</code>. */
   public void setDeveloperTechStackId(Long developerTechStackId) {
     this.developerTechStackId = developerTechStackId;
   }

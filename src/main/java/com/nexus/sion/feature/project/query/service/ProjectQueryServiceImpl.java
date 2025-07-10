@@ -1,17 +1,16 @@
 package com.nexus.sion.feature.project.query.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
+import com.example.jooq.generated.tables.pojos.Project;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
-import com.nexus.sion.feature.project.query.dto.response.JobRequirement;
-import com.nexus.sion.feature.project.query.dto.response.ProjectDetailResponse;
-import com.nexus.sion.feature.project.query.dto.response.ProjectForSquadResponse;
-import com.nexus.sion.feature.project.query.dto.response.ProjectListResponse;
+import com.nexus.sion.feature.project.query.dto.response.*;
 import com.nexus.sion.feature.project.query.mapper.ProjectQueryMapper;
 import com.nexus.sion.feature.project.query.repository.ProjectQueryRepository;
 
@@ -44,5 +43,43 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
     List<JobRequirement> requirements = projectQueryMapper.findJobRequirements(projectCode);
     response.setJobRequirements(requirements);
     return response;
+  }
+
+  @Override
+  public PageResponse<ProjectListResponse> getProjectsByEmployeeId(
+      String employeeId, List<String> statuses, int page, int size) {
+    List<Project> pojos =
+        projectQueryRepository.findProjectsByEmployeeId(employeeId, statuses, page, size);
+    long totalCount = projectQueryRepository.countProjectsByEmployeeId(employeeId, statuses);
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    List<ProjectListResponse> content =
+        pojos.stream()
+            .map(
+                p ->
+                    ProjectListResponse.builder()
+                        .projectCode(p.getProjectCode())
+                        .title(p.getTitle())
+                        .description(p.getDescription())
+                        .startDate(
+                            p.getStartDate() != null ? p.getStartDate().format(formatter) : null)
+                        .endDate(
+                            p.getExpectedEndDate() != null
+                                ? p.getExpectedEndDate().format(formatter)
+                                : null)
+                        .period(
+                            p.getStartDate() != null && p.getExpectedEndDate() != null
+                                ? (int)
+                                    p.getStartDate().until(p.getExpectedEndDate()).toTotalMonths()
+                                : 0)
+                        .status(p.getStatus() != null ? p.getStatus().name() : null)
+                        .domainName(p.getDomainName())
+                        .hrCount(p.getNumberOfMembers())
+                        .analysisStatus(p.getAnalysisStatus())
+                        .build())
+            .toList();
+
+    return PageResponse.fromJooq(content, totalCount, page, size);
   }
 }

@@ -14,8 +14,6 @@ public enum ProjectStatus implements EnumType {
 
   IN_PROGRESS("IN_PROGRESS"),
 
-  EVALUATION("EVALUATION"),
-
   COMPLETE("COMPLETE"),
 
   INCOMPLETE("INCOMPLETE");

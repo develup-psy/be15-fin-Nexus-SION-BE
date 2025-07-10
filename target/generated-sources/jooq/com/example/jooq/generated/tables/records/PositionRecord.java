@@ -20,32 +20,32 @@ public class PositionRecord extends UpdatableRecordImpl<PositionRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.position.position_name</code>. */
+  /** Setter for <code>sion.position.position_name</code>. */
   public void setPositionName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.position.position_name</code>. */
+  /** Getter for <code>sion.position.position_name</code>. */
   public String getPositionName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.position.create_at</code>. */
+  /** Setter for <code>sion.position.create_at</code>. */
   public void setCreateAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.position.create_at</code>. */
+  /** Getter for <code>sion.position.create_at</code>. */
   public LocalDateTime getCreateAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>SION.position.updated_at</code>. */
+  /** Setter for <code>sion.position.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.position.updated_at</code>. */
+  /** Getter for <code>sion.position.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }

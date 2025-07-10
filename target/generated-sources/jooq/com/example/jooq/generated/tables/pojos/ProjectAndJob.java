@@ -45,62 +45,62 @@ public class ProjectAndJob implements Serializable {
     this.jobName = jobName;
   }
 
-  /** Getter for <code>SION.project_and_job.project_and_job_id</code>. */
+  /** Getter for <code>sion.project_and_job.project_and_job_id</code>. */
   public Long getProjectAndJobId() {
     return this.projectAndJobId;
   }
 
-  /** Setter for <code>SION.project_and_job.project_and_job_id</code>. */
+  /** Setter for <code>sion.project_and_job.project_and_job_id</code>. */
   public void setProjectAndJobId(Long projectAndJobId) {
     this.projectAndJobId = projectAndJobId;
   }
 
-  /** Getter for <code>SION.project_and_job.required_number</code>. */
+  /** Getter for <code>sion.project_and_job.required_number</code>. */
   public Integer getRequiredNumber() {
     return this.requiredNumber;
   }
 
-  /** Setter for <code>SION.project_and_job.required_number</code>. */
+  /** Setter for <code>sion.project_and_job.required_number</code>. */
   public void setRequiredNumber(Integer requiredNumber) {
     this.requiredNumber = requiredNumber;
   }
 
-  /** Getter for <code>SION.project_and_job.created_at</code>. */
+  /** Getter for <code>sion.project_and_job.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.project_and_job.created_at</code>. */
+  /** Setter for <code>sion.project_and_job.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.project_and_job.updated_at</code>. */
+  /** Getter for <code>sion.project_and_job.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.project_and_job.updated_at</code>. */
+  /** Setter for <code>sion.project_and_job.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.project_and_job.project_code</code>. */
+  /** Getter for <code>sion.project_and_job.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>SION.project_and_job.project_code</code>. */
+  /** Setter for <code>sion.project_and_job.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>SION.project_and_job.job_name</code>. */
+  /** Getter for <code>sion.project_and_job.job_name</code>. */
   public String getJobName() {
     return this.jobName;
   }
 
-  /** Setter for <code>SION.project_and_job.job_name</code>. */
+  /** Setter for <code>sion.project_and_job.job_name</code>. */
   public void setJobName(String jobName) {
     this.jobName = jobName;
   }

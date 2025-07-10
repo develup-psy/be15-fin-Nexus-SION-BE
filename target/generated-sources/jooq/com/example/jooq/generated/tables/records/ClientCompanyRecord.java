@@ -21,82 +21,82 @@ public class ClientCompanyRecord extends UpdatableRecordImpl<ClientCompanyRecord
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.client_company.client_code</code>. */
+  /** Setter for <code>sion.client_company.client_code</code>. */
   public void setClientCode(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.client_company.client_code</code>. */
+  /** Getter for <code>sion.client_company.client_code</code>. */
   public String getClientCode() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.client_company.company_name</code>. */
+  /** Setter for <code>sion.client_company.company_name</code>. */
   public void setCompanyName(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.client_company.company_name</code>. */
+  /** Getter for <code>sion.client_company.company_name</code>. */
   public String getCompanyName() {
     return (String) get(1);
   }
 
-  /** Setter for <code>SION.client_company.created_at</code>. */
+  /** Setter for <code>sion.client_company.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.client_company.created_at</code>. */
+  /** Getter for <code>sion.client_company.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(2);
   }
 
-  /** Setter for <code>SION.client_company.updated_at</code>. */
+  /** Setter for <code>sion.client_company.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.client_company.updated_at</code>. */
+  /** Getter for <code>sion.client_company.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(3);
   }
 
-  /** Setter for <code>SION.client_company.contact_person</code>. */
+  /** Setter for <code>sion.client_company.contact_person</code>. */
   public void setContactPerson(String value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.client_company.contact_person</code>. */
+  /** Getter for <code>sion.client_company.contact_person</code>. */
   public String getContactPerson() {
     return (String) get(4);
   }
 
-  /** Setter for <code>SION.client_company.email</code>. */
+  /** Setter for <code>sion.client_company.email</code>. */
   public void setEmail(String value) {
     set(5, value);
   }
 
-  /** Getter for <code>SION.client_company.email</code>. */
+  /** Getter for <code>sion.client_company.email</code>. */
   public String getEmail() {
     return (String) get(5);
   }
 
-  /** Setter for <code>SION.client_company.contact_number</code>. */
+  /** Setter for <code>sion.client_company.contact_number</code>. */
   public void setContactNumber(String value) {
     set(6, value);
   }
 
-  /** Getter for <code>SION.client_company.contact_number</code>. */
+  /** Getter for <code>sion.client_company.contact_number</code>. */
   public String getContactNumber() {
     return (String) get(6);
   }
 
-  /** Setter for <code>SION.client_company.domain_name</code>. */
+  /** Setter for <code>sion.client_company.domain_name</code>. */
   public void setDomainName(String value) {
     set(7, value);
   }
 
-  /** Getter for <code>SION.client_company.domain_name</code>. */
+  /** Getter for <code>sion.client_company.domain_name</code>. */
   public String getDomainName() {
     return (String) get(7);
   }

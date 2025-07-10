@@ -30,32 +30,32 @@ public class Job implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.job.name</code>. */
+  /** Getter for <code>sion.job.name</code>. */
   public String getName() {
     return this.name;
   }
 
-  /** Setter for <code>SION.job.name</code>. */
+  /** Setter for <code>sion.job.name</code>. */
   public void setName(String name) {
     this.name = name;
   }
 
-  /** Getter for <code>SION.job.created_at</code>. */
+  /** Getter for <code>sion.job.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.job.created_at</code>. */
+  /** Setter for <code>sion.job.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.job.updated_at</code>. */
+  /** Getter for <code>sion.job.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.job.updated_at</code>. */
+  /** Setter for <code>sion.job.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
