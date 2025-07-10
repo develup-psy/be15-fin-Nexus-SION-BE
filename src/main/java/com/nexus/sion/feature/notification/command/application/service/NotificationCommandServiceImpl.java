@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import jakarta.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -35,6 +36,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   private final SseEmitterRepository sseEmitterRepository;
   private final MemberRepository memberRepository;
   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+  private final ModelMapper modelMapper;
 
   private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 1시간
 
@@ -48,36 +50,22 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
             .findEmployeeNameByEmployeeIdentificationNumber(senderId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
-    String message = type.generateMessage(senderName);
-
-    log.info(message); // todo : 주석 제거
-
-    Notification notification =
+      String message = type.generateMessage(senderName);
+      Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)
-            .message(type.getMessage())
+            .message(message)
             .notificationType(type)
             .linkedContentId(linkedContentId)
             .build();
 
     Notification saved = notificationRepository.save(notification);
-    Long id = saved.getNotificationId();
 
-    NotificationDTO notificationDTO =
-        NotificationDTO.builder()
-            .notificationId(id)
-            .senderId(senderId)
-            .senderName(senderName)
-            .receiverId(receiverId)
-            .message(message)
-            .notificationType(type)
-            .linkedContentId(linkedContentId)
-            .isRead(false)
-            .createdAt(LocalDateTime.now())
-            .build();
+    NotificationDTO dto = modelMapper.map(saved, NotificationDTO.class);
+    dto.setSenderName(senderName);  // Entity에 없으니 수동으로
 
-    send(receiverId, notificationDTO);
+    send(receiverId, dto);
   }
 
   @Override

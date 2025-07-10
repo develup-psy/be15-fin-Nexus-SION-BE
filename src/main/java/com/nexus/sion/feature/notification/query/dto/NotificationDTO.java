@@ -7,10 +7,12 @@ import com.nexus.sion.feature.notification.command.domain.aggregate.Notification
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@Setter
 public class NotificationDTO {
   Long notificationId;
   NotificationType notificationType;
