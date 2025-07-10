@@ -4,14 +4,12 @@ import java.time.LocalDateTime;
 
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Setter
 public class NotificationDTO {
   Long notificationId;
