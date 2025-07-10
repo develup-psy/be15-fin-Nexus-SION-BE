@@ -52,7 +52,7 @@ public class NotificationCommandController {
   }
 
   @PatchMapping(value = "/reads/{id}")
-  public ResponseEntity<ApiResponse<Void>> readAllNotification(
+  public ResponseEntity<ApiResponse<Void>> readNotification(
       @AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
     return ResponseEntity.ok(
         ApiResponse.success(
