@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, String> {
@@ -23,4 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
       "SELECT m.employeeName FROM Member m WHERE m.employeeIdentificationNumber = :employeeIdentificationNumber")
   Optional<String> findEmployeeNameByEmployeeIdentificationNumber(
       @Param("employeeIdentificationNumber") String employeeIdentificationNumber);
+
+  boolean existsByEmployeeIdentificationNumberAndRole(String adminId, MemberRole memberRole);
 }

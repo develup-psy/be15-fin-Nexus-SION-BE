@@ -27,6 +27,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.DeveloperProjectWorkHistoryComplexity;
 import com.example.jooq.generated.enums.DeveloperProjectWorkHistoryFunctionType;
+import com.example.jooq.generated.enums.ProjectStatus;
+import com.example.jooq.generated.tables.pojos.Project;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -297,5 +299,60 @@ public class ProjectQueryRepository {
         .actualEndDate(record.get("actualEndDate", LocalDate.class))
         .histories(histories)
         .build();
+  }
+
+  public List<Project> findProjectsByEmployeeId(
+      String employeeId, List<String> statuses, int page, int size) {
+    // 기본 조건: 참여 중인 프로젝트 + 삭제되지 않은 프로젝트
+    Condition condition =
+        PROJECT
+            .DELETED_AT
+            .isNull()
+            .and(
+                PROJECT.PROJECT_CODE.in(
+                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                        .from(PROJECT_AND_JOB)
+                        .join(SQUAD_EMPLOYEE)
+                        .on(
+                            PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(
+                                SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                        .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
+
+    // status 필터링
+    if (statuses != null && !statuses.isEmpty()) {
+      condition =
+          condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
+    }
+
+    return dsl.select(PROJECT.fields())
+        .from(PROJECT)
+        .where(condition)
+        .orderBy(PROJECT.START_DATE.desc())
+        .limit(size)
+        .offset(page * size)
+        .fetchInto(Project.class);
+  }
+
+  public long countProjectsByEmployeeId(String employeeId, List<String> statuses) {
+    Condition condition =
+        PROJECT
+            .DELETED_AT
+            .isNull()
+            .and(
+                PROJECT.PROJECT_CODE.in(
+                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                        .from(PROJECT_AND_JOB)
+                        .join(SQUAD_EMPLOYEE)
+                        .on(
+                            PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(
+                                SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                        .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
+
+    if (statuses != null && !statuses.isEmpty()) {
+      condition =
+          condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
+    }
+
+    return dsl.selectCount().from(PROJECT).where(condition).fetchOne(0, Long.class);
   }
 }
