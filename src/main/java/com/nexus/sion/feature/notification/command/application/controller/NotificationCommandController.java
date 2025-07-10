@@ -8,12 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,5 +40,21 @@ public class NotificationCommandController {
 
     return ResponseEntity.ok(
         notificationCommandService.subscribe(userDetails.getUsername(), lastEventId));
+  }
+
+  @PatchMapping(value = "/reads")
+  public ResponseEntity<ApiResponse<Void>> readAllNotification(
+      @AuthenticationPrincipal UserDetails userDetails) {
+    return ResponseEntity.ok(
+        ApiResponse.success(
+            notificationCommandService.readAllNotification(userDetails.getUsername())));
+  }
+
+  @PatchMapping(value = "/reads/{id}")
+  public ResponseEntity<ApiResponse<Void>> readAllNotification(
+      @AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id) {
+    return ResponseEntity.ok(
+        ApiResponse.success(
+            notificationCommandService.readNotification(userDetails.getUsername(), id)));
   }
 }

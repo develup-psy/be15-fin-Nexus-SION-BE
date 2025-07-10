@@ -13,4 +13,8 @@ public interface NotificationCommandService {
       String linkedContentId);
 
   SseEmitter subscribe(String employeeIdentificationNumber, String lastEventId);
+
+  Void readAllNotification(String employeeIdentificationNumber);
+
+  Void readNotification(String employeeIdentificationNumber, Long notificationId);
 }
