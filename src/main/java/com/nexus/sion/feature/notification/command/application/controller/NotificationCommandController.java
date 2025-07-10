@@ -59,7 +59,7 @@ public class NotificationCommandController {
             notificationCommandService.readNotification(userDetails.getUsername(), id)));
   }
 
-  @PostMapping(value = "squad-share")
+  @PostMapping(value = "/squad-share")
   public ResponseEntity<ApiResponse<Void>> shareSquad(
       @RequestBody SquadShareNotificationRequest request,
       @AuthenticationPrincipal UserDetails userDetails) {
