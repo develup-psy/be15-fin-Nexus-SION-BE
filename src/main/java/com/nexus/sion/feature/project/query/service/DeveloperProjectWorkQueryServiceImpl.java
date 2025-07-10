@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
@@ -29,8 +30,17 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
   }
 
   @Override
-  public List<WorkRequestQueryDto> getRequestsByEmployeeId(String employeeId) {
-    return developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
+  public PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(
+      String employeeId, int page, int size) {
+    List<WorkRequestQueryDto> fullList =
+        developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
+
+    int total = fullList.size();
+    int fromIndex = Math.min(page * size, total);
+    int toIndex = Math.min(fromIndex + size, total);
+    List<WorkRequestQueryDto> pagedList = fullList.subList(fromIndex, toIndex);
+
+    return PageResponse.fromJooq(pagedList, total, page, size);
   }
 
   @Override

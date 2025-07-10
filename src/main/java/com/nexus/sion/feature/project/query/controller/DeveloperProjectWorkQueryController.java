@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkRequestQueryDto;
@@ -29,11 +30,13 @@ public class DeveloperProjectWorkQueryController {
   }
 
   @GetMapping("/me")
-  public ResponseEntity<ApiResponse<List<WorkRequestQueryDto>>> getMyRequests(
-      @AuthenticationPrincipal User user) {
+  public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getMyRequests(
+      @AuthenticationPrincipal User user,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     String employeeId = user.getUsername();
-    List<WorkRequestQueryDto> result =
-        developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId);
+    PageResponse<WorkRequestQueryDto> result =
+        developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId, page, size);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 
