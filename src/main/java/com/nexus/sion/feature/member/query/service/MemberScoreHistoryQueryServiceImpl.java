@@ -3,6 +3,8 @@ package com.nexus.sion.feature.member.query.service;
 import java.time.LocalDateTime;
 
 import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.member.query.dto.response.MemberScoreHistoryResponse;
@@ -19,7 +21,9 @@ public class MemberScoreHistoryQueryServiceImpl implements MemberScoreHistoryQue
   @Override
   public MemberScoreHistoryResponse getScoreHistory(String employeeId) {
     var curr = repository.getLatestRecord(employeeId);
-    if (curr == null) return null;
+    if (curr == null) {
+      throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+    }
 
     int currentTech = curr.getTotalTechStackScores();
     int currentCert = curr.getTotalCertificateScores();
