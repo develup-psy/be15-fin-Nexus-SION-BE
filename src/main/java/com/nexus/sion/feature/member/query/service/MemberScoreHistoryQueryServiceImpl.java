@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.query.service;
 
 import java.time.LocalDateTime;
 
+import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.member.query.dto.response.MemberScoreHistoryResponse;
@@ -36,20 +37,19 @@ public class MemberScoreHistoryQueryServiceImpl implements MemberScoreHistoryQue
     LocalDateTime previousTotalScoreDate = null;
 
     if (prevTech != null || prevCert != null) {
-      int tech = previousTechScore != null ? previousTechScore : currentTech;
-      int cert = previousCertScore != null ? previousCertScore : currentCert;
-      previousTotalScore = tech + cert;
-
-      // 둘 중 더 최신 날짜 사용
-      if (prevTech != null && prevCert != null) {
-        previousTotalScoreDate =
-            prevTech.getCreatedAt().isAfter(prevCert.getCreatedAt())
-                ? prevTech.getCreatedAt()
-                : prevCert.getCreatedAt();
-      } else if (prevTech != null) {
-        previousTotalScoreDate = prevTech.getCreatedAt();
-      } else if (prevCert != null) {
-        previousTotalScoreDate = prevCert.getCreatedAt();
+      MemberScoreHistoryRecord latestPrevRecord;
+      if (prevTech == null) {
+        latestPrevRecord = prevCert;
+      } else if (prevCert == null) {
+        latestPrevRecord = prevTech;
+      } else {
+        latestPrevRecord =
+                prevTech.getCreatedAt().isAfter(prevCert.getCreatedAt()) ? prevTech : prevCert;
+      }
+      if (latestPrevRecord != null) {
+        previousTotalScore =
+                latestPrevRecord.getTotalTechStackScores() + latestPrevRecord.getTotalCertificateScores();
+        previousTotalScoreDate = latestPrevRecord.getCreatedAt();
       }
     }
 
