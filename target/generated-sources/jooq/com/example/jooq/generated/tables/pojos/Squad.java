@@ -68,112 +68,112 @@ public class Squad implements Serializable {
     this.recommendationReason = recommendationReason;
   }
 
-  /** Getter for <code>sion.squad.squad_code</code>. */
+  /** Getter for <code>SION.squad.squad_code</code>. */
   public String getSquadCode() {
     return this.squadCode;
   }
 
-  /** Setter for <code>sion.squad.squad_code</code>. */
+  /** Setter for <code>SION.squad.squad_code</code>. */
   public void setSquadCode(String squadCode) {
     this.squadCode = squadCode;
   }
 
-  /** Getter for <code>sion.squad.project_code</code>. */
+  /** Getter for <code>SION.squad.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>sion.squad.project_code</code>. */
+  /** Setter for <code>SION.squad.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>sion.squad.title</code>. */
+  /** Getter for <code>SION.squad.title</code>. */
   public String getTitle() {
     return this.title;
   }
 
-  /** Setter for <code>sion.squad.title</code>. */
+  /** Setter for <code>SION.squad.title</code>. */
   public void setTitle(String title) {
     this.title = title;
   }
 
-  /** Getter for <code>sion.squad.description</code>. */
+  /** Getter for <code>SION.squad.description</code>. */
   public String getDescription() {
     return this.description;
   }
 
-  /** Setter for <code>sion.squad.description</code>. */
+  /** Setter for <code>SION.squad.description</code>. */
   public void setDescription(String description) {
     this.description = description;
   }
 
-  /** Getter for <code>sion.squad.is_active</code>. */
+  /** Getter for <code>SION.squad.is_active</code>. */
   public Byte getIsActive() {
     return this.isActive;
   }
 
-  /** Setter for <code>sion.squad.is_active</code>. */
+  /** Setter for <code>SION.squad.is_active</code>. */
   public void setIsActive(Byte isActive) {
     this.isActive = isActive;
   }
 
-  /** Getter for <code>sion.squad.created_at</code>. */
+  /** Getter for <code>SION.squad.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.squad.created_at</code>. */
+  /** Setter for <code>SION.squad.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.squad.updated_at</code>. */
+  /** Getter for <code>SION.squad.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.squad.updated_at</code>. */
+  /** Setter for <code>SION.squad.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.squad.estimated_duration</code>. */
+  /** Getter for <code>SION.squad.estimated_duration</code>. */
   public BigDecimal getEstimatedDuration() {
     return this.estimatedDuration;
   }
 
-  /** Setter for <code>sion.squad.estimated_duration</code>. */
+  /** Setter for <code>SION.squad.estimated_duration</code>. */
   public void setEstimatedDuration(BigDecimal estimatedDuration) {
     this.estimatedDuration = estimatedDuration;
   }
 
-  /** Getter for <code>sion.squad.estimated_cost</code>. */
+  /** Getter for <code>SION.squad.estimated_cost</code>. */
   public BigDecimal getEstimatedCost() {
     return this.estimatedCost;
   }
 
-  /** Setter for <code>sion.squad.estimated_cost</code>. */
+  /** Setter for <code>SION.squad.estimated_cost</code>. */
   public void setEstimatedCost(BigDecimal estimatedCost) {
     this.estimatedCost = estimatedCost;
   }
 
-  /** Getter for <code>sion.squad.origin_type</code>. */
+  /** Getter for <code>SION.squad.origin_type</code>. */
   public SquadOriginType getOriginType() {
     return this.originType;
   }
 
-  /** Setter for <code>sion.squad.origin_type</code>. */
+  /** Setter for <code>SION.squad.origin_type</code>. */
   public void setOriginType(SquadOriginType originType) {
     this.originType = originType;
   }
 
-  /** Getter for <code>sion.squad.recommendation_reason</code>. */
+  /** Getter for <code>SION.squad.recommendation_reason</code>. */
   public String getRecommendationReason() {
     return this.recommendationReason;
   }
 
-  /** Setter for <code>sion.squad.recommendation_reason</code>. */
+  /** Setter for <code>SION.squad.recommendation_reason</code>. */
   public void setRecommendationReason(String recommendationReason) {
     this.recommendationReason = recommendationReason;
   }

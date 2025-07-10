@@ -20,62 +20,62 @@ public class ProjectAndJobRecord extends UpdatableRecordImpl<ProjectAndJobRecord
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.project_and_job.project_and_job_id</code>. */
+  /** Setter for <code>SION.project_and_job.project_and_job_id</code>. */
   public void setProjectAndJobId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.project_and_job.project_and_job_id</code>. */
+  /** Getter for <code>SION.project_and_job.project_and_job_id</code>. */
   public Long getProjectAndJobId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.project_and_job.required_number</code>. */
+  /** Setter for <code>SION.project_and_job.required_number</code>. */
   public void setRequiredNumber(Integer value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.project_and_job.required_number</code>. */
+  /** Getter for <code>SION.project_and_job.required_number</code>. */
   public Integer getRequiredNumber() {
     return (Integer) get(1);
   }
 
-  /** Setter for <code>sion.project_and_job.created_at</code>. */
+  /** Setter for <code>SION.project_and_job.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.project_and_job.created_at</code>. */
+  /** Getter for <code>SION.project_and_job.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(2);
   }
 
-  /** Setter for <code>sion.project_and_job.updated_at</code>. */
+  /** Setter for <code>SION.project_and_job.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.project_and_job.updated_at</code>. */
+  /** Getter for <code>SION.project_and_job.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(3);
   }
 
-  /** Setter for <code>sion.project_and_job.project_code</code>. */
+  /** Setter for <code>SION.project_and_job.project_code</code>. */
   public void setProjectCode(String value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.project_and_job.project_code</code>. */
+  /** Getter for <code>SION.project_and_job.project_code</code>. */
   public String getProjectCode() {
     return (String) get(4);
   }
 
-  /** Setter for <code>sion.project_and_job.job_name</code>. */
+  /** Setter for <code>SION.project_and_job.job_name</code>. */
   public void setJobName(String value) {
     set(5, value);
   }
 
-  /** Getter for <code>sion.project_and_job.job_name</code>. */
+  /** Getter for <code>SION.project_and_job.job_name</code>. */
   public String getJobName() {
     return (String) get(5);
   }

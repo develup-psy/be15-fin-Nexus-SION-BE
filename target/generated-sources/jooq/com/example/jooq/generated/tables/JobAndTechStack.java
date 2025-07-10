@@ -36,7 +36,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.job_and_tech_stack</code> */
+  /** The reference instance of <code>SION.job_and_tech_stack</code> */
   public static final JobAndTechStack JOB_AND_TECH_STACK = new JobAndTechStack();
 
   /** The class holding records for this type */
@@ -45,7 +45,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
     return JobAndTechStackRecord.class;
   }
 
-  /** The column <code>sion.job_and_tech_stack.job_and_tech_stack_id</code>. */
+  /** The column <code>SION.job_and_tech_stack.job_and_tech_stack_id</code>. */
   public final TableField<JobAndTechStackRecord, Long> JOB_AND_TECH_STACK_ID =
       createField(
           DSL.name("job_and_tech_stack_id"),
@@ -53,15 +53,15 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
           this,
           "");
 
-  /** The column <code>sion.job_and_tech_stack.tech_stack_name</code>. */
+  /** The column <code>SION.job_and_tech_stack.tech_stack_name</code>. */
   public final TableField<JobAndTechStackRecord, String> TECH_STACK_NAME =
       createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.job_and_tech_stack.project_and_job_id</code>. */
+  /** The column <code>SION.job_and_tech_stack.project_and_job_id</code>. */
   public final TableField<JobAndTechStackRecord, Long> PROJECT_AND_JOB_ID =
       createField(DSL.name("project_and_job_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
-  /** The column <code>sion.job_and_tech_stack.priority</code>. */
+  /** The column <code>SION.job_and_tech_stack.priority</code>. */
   public final TableField<JobAndTechStackRecord, Integer> PRIORITY =
       createField(
           DSL.name("priority"),
@@ -69,7 +69,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
           this,
           "");
 
-  /** The column <code>sion.job_and_tech_stack.created_at</code>. */
+  /** The column <code>SION.job_and_tech_stack.created_at</code>. */
   public final TableField<JobAndTechStackRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -79,7 +79,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
           this,
           "");
 
-  /** The column <code>sion.job_and_tech_stack.updated_at</code>. */
+  /** The column <code>SION.job_and_tech_stack.updated_at</code>. */
   public final TableField<JobAndTechStackRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -97,17 +97,17 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.job_and_tech_stack</code> table reference */
+  /** Create an aliased <code>SION.job_and_tech_stack</code> table reference */
   public JobAndTechStack(String alias) {
     this(DSL.name(alias), JOB_AND_TECH_STACK);
   }
 
-  /** Create an aliased <code>sion.job_and_tech_stack</code> table reference */
+  /** Create an aliased <code>SION.job_and_tech_stack</code> table reference */
   public JobAndTechStack(Name alias) {
     this(alias, JOB_AND_TECH_STACK);
   }
 
-  /** Create a <code>sion.job_and_tech_stack</code> table reference */
+  /** Create a <code>SION.job_and_tech_stack</code> table reference */
   public JobAndTechStack() {
     this(DSL.name("job_and_tech_stack"), null);
   }
@@ -142,7 +142,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
   private transient TechStack _techStack;
   private transient ProjectAndJob _projectAndJob;
 
-  /** Get the implicit join path to the <code>sion.tech_stack</code> table. */
+  /** Get the implicit join path to the <code>SION.tech_stack</code> table. */
   public TechStack techStack() {
     if (_techStack == null)
       _techStack = new TechStack(this, Keys.FK_TECH_STACK_TO_JOB_AND_TECH_STACK_1);
@@ -150,7 +150,7 @@ public class JobAndTechStack extends TableImpl<JobAndTechStackRecord> {
     return _techStack;
   }
 
-  /** Get the implicit join path to the <code>sion.project_and_job</code> table. */
+  /** Get the implicit join path to the <code>SION.project_and_job</code> table. */
   public ProjectAndJob projectAndJob() {
     if (_projectAndJob == null)
       _projectAndJob = new ProjectAndJob(this, Keys.FK_PROJECT_AND_JOB_TO_JOB_AND_TECH_STACK_1);
