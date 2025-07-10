@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.query.controller;
 
+import com.nexus.sion.common.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class MemberScoreQueryController {
   private final MemberScoreHistoryQueryService scoreHistoryQueryService;
 
   @GetMapping("/{employeeId}")
-  public ResponseEntity<MemberScoreHistoryResponse> getScoreHistory(
+  public ResponseEntity<ApiResponse<MemberScoreHistoryResponse>> getScoreHistory(
       @PathVariable String employeeId) {
     MemberScoreHistoryResponse response = scoreHistoryQueryService.getScoreHistory(employeeId);
 
@@ -27,6 +28,6 @@ public class MemberScoreQueryController {
       return ResponseEntity.notFound().build();
     }
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.ok(ApiResponse.success(response));
   }
 }
