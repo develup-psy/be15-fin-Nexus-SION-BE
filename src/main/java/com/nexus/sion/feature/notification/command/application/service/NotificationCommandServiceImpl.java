@@ -163,7 +163,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         notificationRepository
             .findByReceiverIdAndNotificationId(employeeIdentificationNumber, notificationId)
             .orElseThrow(
-                () -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND)); // 예외는 상황에 맞게!
+                () -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
     notification.setHasRead();
     notificationRepository.save(notification);
