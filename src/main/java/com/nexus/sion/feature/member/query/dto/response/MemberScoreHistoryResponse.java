@@ -8,6 +8,7 @@ public record MemberScoreHistoryResponse(
         int currentTechScore,
         int currentCertificateScore,
         int currentTotalScore,
+        LocalDateTime currentTotalScoreDate,
 
         Integer previousTechScore,
         LocalDateTime previousTechScoreDate,
