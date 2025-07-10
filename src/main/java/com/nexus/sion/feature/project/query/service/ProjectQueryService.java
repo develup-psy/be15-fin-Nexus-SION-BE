@@ -15,7 +15,6 @@ public interface ProjectQueryService {
 
   ProjectForSquadResponse getProjectInfoForSquad(String projectCode);
 
-
   ProjectDetailResponse findProjectDetailByMemberIdAndProjectCode(
       String employeeId, String projectCode);
 
@@ -24,5 +23,4 @@ public interface ProjectQueryService {
 
   PageResponse<ProjectListResponse> getProjectsByEmployeeId(
       String employeeId, List<String> statuses, int page, int size);
-
 }
