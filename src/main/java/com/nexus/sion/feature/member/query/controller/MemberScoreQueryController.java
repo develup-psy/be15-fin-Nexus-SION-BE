@@ -1,0 +1,31 @@
+package com.nexus.sion.feature.member.query.controller;
+
+import com.nexus.sion.feature.member.query.dto.response.MemberScoreHistoryResponse;
+import com.nexus.sion.feature.member.query.service.MemberScoreHistoryQueryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/member-scores")
+@RequiredArgsConstructor
+public class MemberScoreQueryController {
+
+    private final MemberScoreHistoryQueryService scoreHistoryQueryService;
+
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<MemberScoreHistoryResponse> getScoreHistory(
+            @PathVariable String employeeId
+    ) {
+        MemberScoreHistoryResponse response = scoreHistoryQueryService.getScoreHistory(employeeId);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(response);
+    }
+}
