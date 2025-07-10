@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -17,7 +18,6 @@ import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHi
 import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service

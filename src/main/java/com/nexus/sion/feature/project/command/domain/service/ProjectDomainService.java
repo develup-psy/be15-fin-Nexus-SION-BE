@@ -3,22 +3,22 @@ package com.nexus.sion.feature.project.command.domain.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
-import com.nexus.sion.feature.project.command.domain.aggregate.Project;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
-import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectAnalysisResult;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.aggregate.ProjectFpSummary;
 import com.nexus.sion.feature.project.command.domain.aggregate.ProjectFunctionEstimate;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -35,10 +35,14 @@ public class ProjectDomainService {
 
     double effortPerFP = SquadEvaluatorImpl.getEffortRatePerFP(totalFp);
 
-    Project project = projectRepository.findById(projectCode)
+    Project project =
+        projectRepository
+            .findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    Grade gradeB = gradeRepository.findById(GradeCode.B)
+    Grade gradeB =
+        gradeRepository
+            .findById(GradeCode.B)
             .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_GRADE));
 
     int costPerManMonth = gradeB.getMonthlyUnitPrice();

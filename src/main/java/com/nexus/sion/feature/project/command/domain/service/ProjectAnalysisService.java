@@ -4,24 +4,16 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.nexus.sion.common.fastapi.FastApiClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.nexus.sion.common.fastapi.FastApiClient;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
@@ -51,7 +43,6 @@ public class ProjectAnalysisService {
   private final NotificationCommandService notificationCommandService;
   private final FastApiClient fastApiClient;
 
-
   @Async
   public CompletableFuture<Void> analyzeProject(
       String projectId, MultipartFile multipartFile, String managerId) {
@@ -80,7 +71,7 @@ public class ProjectAnalysisService {
           analysisResult.functions().stream()
               .filter(
                   func -> {
-                      return StringUtils.hasText(func.getFunctionName());
+                    return StringUtils.hasText(func.getFunctionName());
                   })
               .map(
                   func ->

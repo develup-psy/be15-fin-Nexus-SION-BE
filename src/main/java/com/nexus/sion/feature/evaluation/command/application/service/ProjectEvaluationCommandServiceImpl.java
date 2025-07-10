@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.evaluation.command.application.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -38,8 +37,9 @@ public class ProjectEvaluationCommandServiceImpl implements ProjectEvaluationCom
         int score = ts.getScore();
 
         DeveloperTechStack existing =
-            developerTechStackRepository.findByEmployeeIdentificationNumberAndTechStackName(
-                employeeId, techStackName).orElse(null);
+            developerTechStackRepository
+                .findByEmployeeIdentificationNumberAndTechStackName(employeeId, techStackName)
+                .orElse(null);
 
         if (existing != null) {
           existing.setTotalScore(existing.getTotalScore() + score);

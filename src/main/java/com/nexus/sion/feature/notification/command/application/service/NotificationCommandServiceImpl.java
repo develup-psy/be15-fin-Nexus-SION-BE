@@ -162,8 +162,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     Notification notification =
         notificationRepository
             .findByReceiverIdAndNotificationId(employeeIdentificationNumber, notificationId)
-            .orElseThrow(
-                () -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND));
+            .orElseThrow(() -> new BusinessException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
     notification.setHasRead();
     notificationRepository.save(notification);
