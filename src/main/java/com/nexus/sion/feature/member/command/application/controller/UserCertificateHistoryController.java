@@ -1,7 +1,5 @@
 package com.nexus.sion.feature.member.command.application.controller;
 
-import com.nexus.sion.feature.member.query.dto.response.CertificateResponse;
-import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -13,8 +11,6 @@ import com.nexus.sion.feature.member.command.application.dto.request.UserCertifi
 import com.nexus.sion.feature.member.command.application.service.UserCertificateHistoryService;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/members/{employeeId}/certificates")
