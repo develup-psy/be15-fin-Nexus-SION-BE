@@ -2,7 +2,6 @@ package com.nexus.sion.feature.notification.command.application.controller;
 
 import java.nio.file.AccessDeniedException;
 
-import com.nexus.sion.feature.notification.command.application.dto.request.SquadShareNotificationRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.feature.notification.command.application.dto.request.SquadShareNotificationRequest;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -61,14 +61,12 @@ public class NotificationCommandController {
 
   @PostMapping(value = "squad-share")
   public ResponseEntity<ApiResponse<Void>> shareSquad(
-          @RequestBody SquadShareNotificationRequest request,
-          @AuthenticationPrincipal UserDetails userDetails
-  ) {
+      @RequestBody SquadShareNotificationRequest request,
+      @AuthenticationPrincipal UserDetails userDetails) {
     notificationCommandService.sendSquadShareNotification(
-            userDetails.getUsername(),   // senderId
-            request.getReceiverId(),
-            request.getSquadCode()
-    );
+        userDetails.getUsername(), // senderId
+        request.getReceiverId(),
+        request.getSquadCode());
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

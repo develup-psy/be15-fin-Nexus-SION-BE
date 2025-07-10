@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SquadShareNotificationRequest {
-    private String squadCode;
-    private String receiverId;
+  private String squadCode;
+  private String receiverId;
 }
