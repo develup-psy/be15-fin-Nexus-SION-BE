@@ -92,6 +92,9 @@ public enum ErrorCode {
   WORK_HISTORY_NOT_FOUND("80001", "작업 이력이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   UNAUTHORIZED_APPROVER("80002", "해당 사용자는 관리자 권한이 없습니다.", HttpStatus.FORBIDDEN),
   WORK_NOT_FOUND("80003", "해당 개발자 프로젝트 작업이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+
+  // notification
+  NOTIFICATION_NOT_FOUND("90001", "해당 알림이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   ;
   private final String code;
   private final String message;

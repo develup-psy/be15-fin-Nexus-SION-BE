@@ -22,7 +22,7 @@ public class FreelancerQueryRepository {
   private final DSLContext dsl;
 
   public PageResponse<FreelancerListResponse> getFreelancerList(int page, int size) {
-    int offset = (page - 1) * size;
+    int offset = page * size;
 
     List<FreelancerListResponse> content =
         dsl.select(

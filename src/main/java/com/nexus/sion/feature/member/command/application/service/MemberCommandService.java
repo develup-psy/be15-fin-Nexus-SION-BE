@@ -171,9 +171,7 @@ public class MemberCommandService {
                         DeveloperTechStack.builder()
                             .employeeIdentificationNumber(member.getEmployeeIdentificationNumber())
                             .techStackName(stack)
-                            .totalScore(initialScore) // 기본값
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
+                            .totalScore(initialScore)
                             .build())
                 .collect(Collectors.toList());
 
@@ -273,8 +271,6 @@ public class MemberCommandService {
                         .employeeIdentificationNumber(employeeId)
                         .techStackName(name)
                         .totalScore(initialScore)
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
                         .build())
             .toList();
 

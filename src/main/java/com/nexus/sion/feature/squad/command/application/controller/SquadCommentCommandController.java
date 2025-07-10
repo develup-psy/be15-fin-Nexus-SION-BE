@@ -26,7 +26,7 @@ public class SquadCommentCommandController {
       @RequestBody @Valid SquadCommentRegisterRequest request) {
 
     squadCommentCommandService.registerComment(
-        squadCode, request, userDetails.getUsername()); // 👈 squadCode 따로 전달
+        squadCode, request, userDetails.getUsername());
     return ResponseEntity.ok().build();
   }
 

@@ -3,6 +3,15 @@ package com.nexus.sion.feature.project.command.domain.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.squad.command.domain.service.SquadEvaluatorImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.project.command.application.dto.response.FPInferResponse;
@@ -14,17 +23,33 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProjectDomainService {
+
+  private final ProjectRepository projectRepository;
+  private final GradeRepository gradeRepository;
 
   public ProjectAnalysisResult analyze(FPInferResponse result) {
     String projectCode = result.getProjectId();
     int totalFp = result.getTotalFpScore();
 
-    // ⏱️ 예상 기간/예산 계산
-    double effortPerFP = 0.25;
+    double effortPerFP = SquadEvaluatorImpl.getEffortRatePerFP(totalFp);
+
+    Project project = projectRepository.findById(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    Grade gradeB = gradeRepository.findById(GradeCode.B)
+            .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_GRADE));
+
+    int costPerManMonth = gradeB.getMonthlyUnitPrice();
+
+    int numberOfMembers = project.getNumberOfMembers();
+    if (numberOfMembers <= 0) {
+      throw new IllegalStateException("프로젝트 예상 인원이 1명 이상이어야 합니다.");
+    }
+
     double totalEffort = totalFp * effortPerFP;
-    double estimatedDuration = Math.ceil(totalEffort / 2.0);
-    int costPerManMonth = 5_000_000;
+    double estimatedDuration = Math.ceil(totalEffort / numberOfMembers);
     int estimatedCost = (int) (totalEffort * costPerManMonth);
 
     // project_fp_summary 객체 생성
