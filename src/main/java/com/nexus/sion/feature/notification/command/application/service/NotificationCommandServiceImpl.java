@@ -64,8 +64,6 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     Notification saved = notificationRepository.save(notification);
     Long id = saved.getNotificationId();
 
-    /* Query DTO와 구조 같아야 함 */
-    /* TODO :  쿼리쪽 응답 response dto 로 대체 */
     NotificationDTO notificationDTO =
         NotificationDTO.builder()
             .notificationId(id)
@@ -74,6 +72,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
             .receiverId(receiverId)
             .message(message)
             .notificationType(type)
+            .linkedContentId(linkedContentId)
             .isRead(false)
             .createdAt(LocalDateTime.now())
             .build();
