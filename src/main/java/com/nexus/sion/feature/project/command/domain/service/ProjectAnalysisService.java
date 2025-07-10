@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.nexus.sion.common.fastapi.FastApiClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -43,15 +44,13 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class ProjectAnalysisService {
 
-  private final RestTemplate restTemplate;
   private final ProjectDomainService projectDomainService;
   private final ProjectFpSummaryRepository projectFpSummaryRepository;
   private final ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
   private final ProjectRepository projectRepository;
   private final NotificationCommandService notificationCommandService;
+  private final FastApiClient fastApiClient;
 
-  @Value("${ai.fp-infer-url}")
-  private String fpInferUrl;
 
   @Async
   public CompletableFuture<Void> analyzeProject(
@@ -61,16 +60,7 @@ public class ProjectAnalysisService {
       tempFile = File.createTempFile("input_", ".pdf");
       multipartFile.transferTo(tempFile);
 
-      MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-      body.add("project_id", projectId);
-      body.add("file", new FileSystemResource(tempFile));
-
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-      HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
-
-      ResponseEntity<String> response =
-          restTemplate.postForEntity(fpInferUrl, request, String.class);
+      ResponseEntity<String> response = fastApiClient.requestFpInference(projectId, tempFile);
 
       log.info(response.getBody());
 
@@ -81,24 +71,16 @@ public class ProjectAnalysisService {
       ObjectMapper mapper = new ObjectMapper();
       mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
       FPInferResponse result = mapper.readValue(response.getBody(), FPInferResponse.class);
-      log.info("FPInferResponse:{}", result);
 
       ProjectAnalysisResult analysisResult = projectDomainService.analyze(result);
-      log.info("ProjectAnalysisResult.functions:{}", analysisResult.functions());
-      log.info("ProjectAnalysisResult.summary:{}", analysisResult.summary());
 
       ProjectFpSummary savedSummary = projectFpSummaryRepository.save(analysisResult.summary());
-      log.info("[Saved]!! ProjectFpSummary:{}", savedSummary);
 
       List<ProjectFunctionEstimate> updatedFunctions =
           analysisResult.functions().stream()
               .filter(
                   func -> {
-                    boolean hasName = StringUtils.hasText(func.getFunctionName());
-                    if (!hasName) {
-                      log.warn("FP 분석 결과에 function_name이 없는 항목이 있어 저장에서 제외됩니다. 내용: {}", func);
-                    }
-                    return hasName;
+                      return StringUtils.hasText(func.getFunctionName());
                   })
               .map(
                   func ->
