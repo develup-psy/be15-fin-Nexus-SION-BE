@@ -145,7 +145,14 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     return emitter;
   }
 
-  @Async
+  @Transactional
+  @Override
+  public Void readAllNotification(String employeeIdentificationNumber) {
+    notificationRepository.markAllAsRead(employeeIdentificationNumber);
+    return null;
+  }
+
+    @Async
   public void send(String employeeIdentificationNumber, NotificationDTO data) {
     Map<String, SseEmitter> emitters =
         sseEmitterRepository.findAllEmittersStartWithId(employeeIdentificationNumber);

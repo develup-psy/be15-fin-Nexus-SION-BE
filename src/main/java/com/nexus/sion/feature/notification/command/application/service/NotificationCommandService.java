@@ -9,4 +9,6 @@ public interface NotificationCommandService {
       String senderId, String receiverId, String message, NotificationType type, String linkedContentId);
 
   SseEmitter subscribe(String employeeIdentificationNumber, String lastEventId);
+
+  Void readAllNotification(String employeeIdentificationNumber);
 }
