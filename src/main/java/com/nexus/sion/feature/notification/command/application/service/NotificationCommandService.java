@@ -6,7 +6,7 @@ import com.nexus.sion.feature.notification.command.domain.aggregate.Notification
 
 public interface NotificationCommandService {
   void createAndSendNotification(
-      String senderId, String receiverId, NotificationType type, String linkedContentId);
+      String senderId, String receiverId, String message, NotificationType type, String linkedContentId);
 
   SseEmitter subscribe(String employeeIdentificationNumber, String lastEventId);
 }
