@@ -55,6 +55,7 @@ public class MemberScoreHistoryQueryServiceImpl implements MemberScoreHistoryQue
                 currentTech,
                 currentCert,
                 currentTech + currentCert,
+                curr.getCreatedAt(),
 
                 previousTechScore,
                 previousTechScoreDate,
