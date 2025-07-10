@@ -1,5 +1,8 @@
 package com.nexus.sion.feature.project.query.repository;
 
+import static com.example.jooq.generated.Tables.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK;
+import static com.example.jooq.generated.tables.DeveloperProjectWork.DEVELOPER_PROJECT_WORK;
+import static com.example.jooq.generated.tables.DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY;
 import static com.example.jooq.generated.tables.JobAndTechStack.JOB_AND_TECH_STACK;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static com.example.jooq.generated.tables.Project.PROJECT;
@@ -13,14 +16,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.example.jooq.generated.enums.*;
+import com.example.jooq.generated.tables.pojos.Project;
+import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
+import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
 import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
-import com.example.jooq.generated.enums.ProjectAnalysisStatus;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
@@ -191,5 +199,171 @@ public class ProjectQueryRepository {
         status,
         analysisStatus // ✅ 여기 포함
         );
+  }
+
+  public ProjectInfoDto findProjectInfoByWorkId(Long workId) {
+    Record record = dsl
+            .select(
+                    PROJECT.PROJECT_CODE,
+                    PROJECT.TITLE,
+                    PROJECT.START_DATE,
+                    DSL.coalesce(PROJECT.ACTUAL_END_DATE, PROJECT.EXPECTED_END_DATE).as("end_date")
+            )
+            .from(DEVELOPER_PROJECT_WORK)
+            .join(PROJECT)
+            .on(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
+            .where(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID.eq(workId))
+            .fetchOne();
+
+    if (record == null) {
+      throw new BusinessException(ErrorCode.PROJECT_NOT_FOUND);
+    }
+
+    return new ProjectInfoDto(
+            record.get(PROJECT.PROJECT_CODE),
+            record.get(PROJECT.TITLE),
+            record.get(PROJECT.START_DATE),
+            record.get("end_date", LocalDate.class)
+    );
+  }
+
+  public WorkInfoQueryDto findById(Long projectWorkId) {
+    // 1. 프로젝트 이력 기본 정보 조회
+    Record work = dsl
+            .select(
+                    DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
+                    DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    DEVELOPER_PROJECT_WORK.PROJECT_CODE,
+                    PROJECT.TITLE.as("project_title"),
+                    DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
+                    DEVELOPER_PROJECT_WORK.APPROVED_AT,
+                    DEVELOPER_PROJECT_WORK.CREATED_AT,
+                    PROJECT.ACTUAL_END_DATE
+            )
+            .from(DEVELOPER_PROJECT_WORK)
+            .join(PROJECT).on(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
+            .where(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID.eq(projectWorkId))
+            .fetchOne();
+
+    if (work == null) {
+      throw new BusinessException(ErrorCode.WORK_NOT_FOUND);
+    }
+
+    // 2. 기능 히스토리 + 기술스택 목록 조회 (fetchGroups 사용 안 함)
+    Result<? extends Record> records = dsl
+            .select(
+                    DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_HISTORY_ID,
+                    DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_NAME,
+                    DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_DESCRIPTION,
+                    DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_TYPE,
+                    DEVELOPER_PROJECT_WORK_HISTORY.DET,
+                    DEVELOPER_PROJECT_WORK_HISTORY.FTR,
+                    DEVELOPER_PROJECT_WORK_HISTORY.COMPLEXITY,
+                    DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK.TECH_STACK_NAME
+            )
+            .from(DEVELOPER_PROJECT_WORK_HISTORY)
+            .leftJoin(DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK)
+            .on(DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_HISTORY_ID.eq(
+                    DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK.DEVELOPER_PROJECT_WORK_HISTORY_ID))
+            .where(DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_ID.eq(projectWorkId))
+            .fetch();
+
+    Map<Long, List<Record>> grouped = records.stream()
+            .collect(Collectors.groupingBy(
+                    r -> r.get(DEVELOPER_PROJECT_WORK_HISTORY.DEVELOPER_PROJECT_WORK_HISTORY_ID)
+            ));
+
+    List<WorkInfoQueryDto.WorkRequestHistoryDto> histories = grouped.entrySet().stream()
+            .map(entry -> {
+              Record any = entry.getValue().get(0);
+
+              List<String> techStacks = entry.getValue().stream()
+                      .map(r -> r.get(DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK.TECH_STACK_NAME))
+                      .filter(Objects::nonNull)
+                      .distinct()
+                      .collect(Collectors.toList());
+
+              DeveloperProjectWorkHistoryFunctionType functionType =
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_TYPE, DeveloperProjectWorkHistoryFunctionType.class);
+
+              DeveloperProjectWorkHistoryComplexity complexity =
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.COMPLEXITY, DeveloperProjectWorkHistoryComplexity.class);
+
+              return new WorkInfoQueryDto.WorkRequestHistoryDto(
+                      entry.getKey(),
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_NAME),
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.FUNCTION_DESCRIPTION),
+                      techStacks,
+                      functionType != null ? functionType.name() : null,
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.DET),
+                      any.get(DEVELOPER_PROJECT_WORK_HISTORY.FTR),
+                      complexity != null ? complexity.name() : null
+              );
+            })
+            .collect(Collectors.toList());
+
+    DeveloperProjectWorkApprovalStatus approvalStatus =
+            work.get(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS, DeveloperProjectWorkApprovalStatus.class);
+
+    return WorkInfoQueryDto.builder()
+            .workId(work.get(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID))
+            .employeeId(work.get(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .projectCode(work.get(DEVELOPER_PROJECT_WORK.PROJECT_CODE))
+            .projectTitle(work.get("project_title", String.class))
+            .approvalStatus(approvalStatus != null ? approvalStatus.name() : null)
+            .approvedAt(work.get(DEVELOPER_PROJECT_WORK.APPROVED_AT))
+            .createdAt(work.get(DEVELOPER_PROJECT_WORK.CREATED_AT))
+            .actualEndDate(work.get(PROJECT.ACTUAL_END_DATE, LocalDate.class))
+            .histories(histories)
+            .build();
+  }
+
+  public List<Project> findProjectsByEmployeeId(String employeeId, List<String> statuses, int page, int size) {
+    // 기본 조건: 참여 중인 프로젝트 + 삭제되지 않은 프로젝트
+    Condition condition = PROJECT.DELETED_AT.isNull()
+            .and(PROJECT.PROJECT_CODE.in(
+                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                            .from(PROJECT_AND_JOB)
+                            .join(SQUAD_EMPLOYEE)
+                            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+            ));
+
+    // status 필터링
+    if (statuses != null && !statuses.isEmpty()) {
+      condition = condition.and(PROJECT.STATUS.in(
+              statuses.stream().map(ProjectStatus::valueOf).toList()
+      ));
+    }
+
+    return dsl.select(PROJECT.fields())
+            .from(PROJECT)
+            .where(condition)
+            .orderBy(PROJECT.START_DATE.desc())
+            .limit(size)
+            .offset(page * size)
+            .fetchInto(Project.class);
+  }
+
+  public long countProjectsByEmployeeId(String employeeId, List<String> statuses) {
+    Condition condition = PROJECT.DELETED_AT.isNull()
+            .and(PROJECT.PROJECT_CODE.in(
+                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                            .from(PROJECT_AND_JOB)
+                            .join(SQUAD_EMPLOYEE)
+                            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+            ));
+
+    if (statuses != null && !statuses.isEmpty()) {
+      condition = condition.and(PROJECT.STATUS.in(
+              statuses.stream().map(ProjectStatus::valueOf).toList()
+      ));
+    }
+
+    return dsl.selectCount()
+            .from(PROJECT)
+            .where(condition)
+            .fetchOne(0, Long.class);
   }
 }
