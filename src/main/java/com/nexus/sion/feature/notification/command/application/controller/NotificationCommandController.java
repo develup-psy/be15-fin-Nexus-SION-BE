@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
-import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

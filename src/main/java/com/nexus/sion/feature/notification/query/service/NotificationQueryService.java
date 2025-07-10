@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nexus.sion.common.dto.PageResponse;
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
-import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
 import com.nexus.sion.feature.notification.query.repository.NotificationQueryRepository;
 
@@ -31,7 +28,8 @@ public class NotificationQueryService {
     log.info("page" + page);
     log.info("size" + size);
 
-    List<NotificationDTO> notifications = notificationQueryRepository.selectNotifications(page, size, memberId);
+    List<NotificationDTO> notifications =
+        notificationQueryRepository.selectNotifications(page, size, memberId);
 
     long totalElements = notificationQueryRepository.countTotalNotifications(memberId);
 

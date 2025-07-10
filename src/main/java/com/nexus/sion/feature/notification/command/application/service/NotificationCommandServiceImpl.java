@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.notification.command.application.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -50,8 +49,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
             .findEmployeeNameByEmployeeIdentificationNumber(senderId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
-      String message = type.generateMessage(senderName);
-      Notification notification =
+    String message = type.generateMessage(senderName);
+    Notification notification =
         Notification.builder()
             .senderId(senderId)
             .receiverId(receiverId)
@@ -63,7 +62,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     Notification saved = notificationRepository.save(notification);
 
     NotificationDTO dto = modelMapper.map(saved, NotificationDTO.class);
-    dto.setSenderName(senderName);  // Entity에 없으니 수동으로
+    dto.setSenderName(senderName); // Entity에 없으니 수동으로
 
     send(receiverId, dto);
   }
