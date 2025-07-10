@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +19,7 @@ import com.nexus.sion.feature.project.command.application.dto.response.ProjectRe
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
@@ -231,7 +231,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     List<SquadEmployee> employees = squadEmployeeCommandRepository.findByProjectCode(projectCode);
 
     for (SquadEmployee employee : employees) {
-      DeveloperProjectWork dpw = DeveloperProjectWork.builder()
+      DeveloperProjectWork dpw =
+          DeveloperProjectWork.builder()
               .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
               .projectCode(projectCode)
               .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
