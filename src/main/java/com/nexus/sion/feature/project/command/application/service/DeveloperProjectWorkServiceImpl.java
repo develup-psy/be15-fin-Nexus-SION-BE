@@ -65,7 +65,7 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
     DeveloperProjectWork work =
         workRepository
             .findById(workId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_DEVELOPER_PROJECT_WORK));
+            .orElseThrow(() -> new BusinessException(ErrorCode.WORK_NOT_FOUND));
 
     work.setApprovalStatus(DeveloperProjectWork.ApprovalStatus.PENDING);
 
