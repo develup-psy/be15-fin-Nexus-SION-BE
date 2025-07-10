@@ -45,62 +45,62 @@ public class SquadComment implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.squad_comment.comment_id</code>. */
+  /** Getter for <code>SION.squad_comment.comment_id</code>. */
   public Long getCommentId() {
     return this.commentId;
   }
 
-  /** Setter for <code>sion.squad_comment.comment_id</code>. */
+  /** Setter for <code>SION.squad_comment.comment_id</code>. */
   public void setCommentId(Long commentId) {
     this.commentId = commentId;
   }
 
-  /** Getter for <code>sion.squad_comment.squad_code</code>. */
+  /** Getter for <code>SION.squad_comment.squad_code</code>. */
   public String getSquadCode() {
     return this.squadCode;
   }
 
-  /** Setter for <code>sion.squad_comment.squad_code</code>. */
+  /** Setter for <code>SION.squad_comment.squad_code</code>. */
   public void setSquadCode(String squadCode) {
     this.squadCode = squadCode;
   }
 
-  /** Getter for <code>sion.squad_comment.employee_identification_number</code>. */
+  /** Getter for <code>SION.squad_comment.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>sion.squad_comment.employee_identification_number</code>. */
+  /** Setter for <code>SION.squad_comment.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>sion.squad_comment.content</code>. */
+  /** Getter for <code>SION.squad_comment.content</code>. */
   public String getContent() {
     return this.content;
   }
 
-  /** Setter for <code>sion.squad_comment.content</code>. */
+  /** Setter for <code>SION.squad_comment.content</code>. */
   public void setContent(String content) {
     this.content = content;
   }
 
-  /** Getter for <code>sion.squad_comment.created_at</code>. */
+  /** Getter for <code>SION.squad_comment.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>sion.squad_comment.created_at</code>. */
+  /** Setter for <code>SION.squad_comment.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>sion.squad_comment.updated_at</code>. */
+  /** Getter for <code>SION.squad_comment.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.squad_comment.updated_at</code>. */
+  /** Setter for <code>SION.squad_comment.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

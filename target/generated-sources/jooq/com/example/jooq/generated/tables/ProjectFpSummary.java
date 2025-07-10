@@ -37,7 +37,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>sion.project_fp_summary</code> */
+  /** The reference instance of <code>SION.project_fp_summary</code> */
   public static final ProjectFpSummary PROJECT_FP_SUMMARY = new ProjectFpSummary();
 
   /** The class holding records for this type */
@@ -46,7 +46,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
     return ProjectFpSummaryRecord.class;
   }
 
-  /** The column <code>sion.project_fp_summary.project_fp_summary_id</code>. */
+  /** The column <code>SION.project_fp_summary.project_fp_summary_id</code>. */
   public final TableField<ProjectFpSummaryRecord, Long> PROJECT_FP_SUMMARY_ID =
       createField(
           DSL.name("project_fp_summary_id"),
@@ -54,15 +54,15 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
           this,
           "");
 
-  /** The column <code>sion.project_fp_summary.total_fp</code>. */
+  /** The column <code>SION.project_fp_summary.total_fp</code>. */
   public final TableField<ProjectFpSummaryRecord, Integer> TOTAL_FP =
       createField(DSL.name("total_fp"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>sion.project_fp_summary.avg_effort_per_fp</code>. */
+  /** The column <code>SION.project_fp_summary.avg_effort_per_fp</code>. */
   public final TableField<ProjectFpSummaryRecord, Integer> AVG_EFFORT_PER_FP =
       createField(DSL.name("avg_effort_per_fp"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>sion.project_fp_summary.total_effort</code>. */
+  /** The column <code>SION.project_fp_summary.total_effort</code>. */
   public final TableField<ProjectFpSummaryRecord, BigDecimal> TOTAL_EFFORT =
       createField(
           DSL.name("total_effort"),
@@ -70,7 +70,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
           this,
           "");
 
-  /** The column <code>sion.project_fp_summary.estimated_duration</code>. */
+  /** The column <code>SION.project_fp_summary.estimated_duration</code>. */
   public final TableField<ProjectFpSummaryRecord, BigDecimal> ESTIMATED_DURATION =
       createField(
           DSL.name("estimated_duration"),
@@ -78,7 +78,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
           this,
           "");
 
-  /** The column <code>sion.project_fp_summary.estimated_cost</code>. */
+  /** The column <code>SION.project_fp_summary.estimated_cost</code>. */
   public final TableField<ProjectFpSummaryRecord, BigDecimal> ESTIMATED_COST =
       createField(
           DSL.name("estimated_cost"),
@@ -86,7 +86,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
           this,
           "");
 
-  /** The column <code>sion.project_fp_summary.created_at</code>. */
+  /** The column <code>SION.project_fp_summary.created_at</code>. */
   public final TableField<ProjectFpSummaryRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -96,7 +96,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
           this,
           "");
 
-  /** The column <code>sion.project_fp_summary.project_code</code>. */
+  /** The column <code>SION.project_fp_summary.project_code</code>. */
   public final TableField<ProjectFpSummaryRecord, String> PROJECT_CODE =
       createField(DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
@@ -109,17 +109,17 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>sion.project_fp_summary</code> table reference */
+  /** Create an aliased <code>SION.project_fp_summary</code> table reference */
   public ProjectFpSummary(String alias) {
     this(DSL.name(alias), PROJECT_FP_SUMMARY);
   }
 
-  /** Create an aliased <code>sion.project_fp_summary</code> table reference */
+  /** Create an aliased <code>SION.project_fp_summary</code> table reference */
   public ProjectFpSummary(Name alias) {
     this(alias, PROJECT_FP_SUMMARY);
   }
 
-  /** Create a <code>sion.project_fp_summary</code> table reference */
+  /** Create a <code>SION.project_fp_summary</code> table reference */
   public ProjectFpSummary() {
     this(DSL.name("project_fp_summary"), null);
   }
@@ -151,7 +151,7 @@ public class ProjectFpSummary extends TableImpl<ProjectFpSummaryRecord> {
 
   private transient Project _project;
 
-  /** Get the implicit join path to the <code>sion.project</code> table. */
+  /** Get the implicit join path to the <code>SION.project</code> table. */
   public Project project() {
     if (_project == null) _project = new Project(this, Keys.FK_PROJECT_TO_PROJECT_FP_SUMMARY_1);
 

@@ -54,7 +54,6 @@ public class ProjectQueryController {
     return ApiResponse.success(result);
   }
 
-
   @GetMapping("/member/{employeeId}/details/{projectCode}")
   public ApiResponse<ProjectDetailResponse> getProjectDetailForMember(
       @PathVariable String employeeId, @PathVariable String projectCode) {
@@ -67,12 +66,12 @@ public class ProjectQueryController {
       @PathVariable String employeeId, @RequestParam int page, @RequestParam int size) {
     return ApiResponse.success(
         projectQueryService.findProjectListByMemberId(employeeId, page, size));
+  }
 
   // 프로젝트 이름, 코드 조회
   @GetMapping("/{id}/project-info")
   public ResponseEntity<ApiResponse<ProjectInfoDto>> getProjectInfo(@PathVariable Long id) {
     ProjectInfoDto response = developerProjectWorkQueryService.getProjectInfo(id);
     return ResponseEntity.ok(ApiResponse.success(response));
-
   }
 }

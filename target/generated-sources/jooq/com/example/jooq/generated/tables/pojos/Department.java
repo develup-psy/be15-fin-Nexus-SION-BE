@@ -30,32 +30,32 @@ public class Department implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.department.department_name</code>. */
+  /** Getter for <code>SION.department.department_name</code>. */
   public String getDepartmentName() {
     return this.departmentName;
   }
 
-  /** Setter for <code>sion.department.department_name</code>. */
+  /** Setter for <code>SION.department.department_name</code>. */
   public void setDepartmentName(String departmentName) {
     this.departmentName = departmentName;
   }
 
-  /** Getter for <code>sion.department.create_at</code>. */
+  /** Getter for <code>SION.department.create_at</code>. */
   public LocalDateTime getCreateAt() {
     return this.createAt;
   }
 
-  /** Setter for <code>sion.department.create_at</code>. */
+  /** Setter for <code>SION.department.create_at</code>. */
   public void setCreateAt(LocalDateTime createAt) {
     this.createAt = createAt;
   }
 
-  /** Getter for <code>sion.department.updated_at</code>. */
+  /** Getter for <code>SION.department.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>sion.department.updated_at</code>. */
+  /** Setter for <code>SION.department.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

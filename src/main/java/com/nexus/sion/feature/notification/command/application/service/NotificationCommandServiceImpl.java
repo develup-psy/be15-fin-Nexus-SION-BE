@@ -42,7 +42,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   @Override
   @Transactional
   public void createAndSendNotification(
-      String senderId, String receiverId, String message, NotificationType type, String linkedContentId) {
+      String senderId,
+      String receiverId,
+      String message,
+      NotificationType type,
+      String linkedContentId) {
 
     // null 값 safe 처리
     String senderName =
@@ -52,7 +56,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND))
             : "";
 
-    String notificationMessage = message == null? type.generateMessage(senderName) : message;
+    String notificationMessage = message == null ? type.generateMessage(senderName) : message;
     Notification notification =
         Notification.builder()
             .senderId(senderId)

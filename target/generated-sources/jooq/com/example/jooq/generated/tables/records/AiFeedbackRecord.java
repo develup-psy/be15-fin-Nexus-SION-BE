@@ -21,52 +21,52 @@ public class AiFeedbackRecord extends UpdatableRecordImpl<AiFeedbackRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>sion.ai_feedback.ai_feedback_id</code>. */
+  /** Setter for <code>SION.ai_feedback.ai_feedback_id</code>. */
   public void setAiFeedbackId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>sion.ai_feedback.ai_feedback_id</code>. */
+  /** Getter for <code>SION.ai_feedback.ai_feedback_id</code>. */
   public Long getAiFeedbackId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>sion.ai_feedback.feedback_type</code>. */
+  /** Setter for <code>SION.ai_feedback.feedback_type</code>. */
   public void setFeedbackType(AiFeedbackFeedbackType value) {
     set(1, value);
   }
 
-  /** Getter for <code>sion.ai_feedback.feedback_type</code>. */
+  /** Getter for <code>SION.ai_feedback.feedback_type</code>. */
   public AiFeedbackFeedbackType getFeedbackType() {
     return (AiFeedbackFeedbackType) get(1);
   }
 
-  /** Setter for <code>sion.ai_feedback.target_id</code>. */
+  /** Setter for <code>SION.ai_feedback.target_id</code>. */
   public void setTargetId(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>sion.ai_feedback.target_id</code>. */
+  /** Getter for <code>SION.ai_feedback.target_id</code>. */
   public String getTargetId() {
     return (String) get(2);
   }
 
-  /** Setter for <code>sion.ai_feedback.feedback_text</code>. */
+  /** Setter for <code>SION.ai_feedback.feedback_text</code>. */
   public void setFeedbackText(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>sion.ai_feedback.feedback_text</code>. */
+  /** Getter for <code>SION.ai_feedback.feedback_text</code>. */
   public String getFeedbackText() {
     return (String) get(3);
   }
 
-  /** Setter for <code>sion.ai_feedback.created_at</code>. */
+  /** Setter for <code>SION.ai_feedback.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>sion.ai_feedback.created_at</code>. */
+  /** Getter for <code>SION.ai_feedback.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(4);
   }
