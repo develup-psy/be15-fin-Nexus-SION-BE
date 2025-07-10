@@ -201,6 +201,85 @@ public class ProjectQueryRepository {
         );
   }
 
+  public PageResponse<ProjectListResponse> findProjectListByMemberId(
+      String employeeId, int page, int size) {
+    // 1. 해당 사원의 참여 project_code 목록 조회
+    List<String> projectCodes =
+        dsl.selectDistinct(PROJECT_AND_JOB.PROJECT_CODE)
+            .from(SQUAD_EMPLOYEE)
+            .join(PROJECT_AND_JOB)
+            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+            .fetchInto(String.class);
+
+    if (projectCodes.isEmpty()) {
+      return PageResponse.fromJooq(List.of(), 0, page, size);
+    }
+
+    // 2. 전체 개수
+    long totalCount =
+        dsl.selectCount()
+            .from(PROJECT)
+            .where(PROJECT.PROJECT_CODE.in(projectCodes).and(PROJECT.DELETED_AT.isNull()))
+            .fetchOne(0, long.class);
+
+    // 3. 목록 조회
+    List<ProjectListResponse> content =
+        dsl
+            .selectFrom(PROJECT)
+            .where(PROJECT.PROJECT_CODE.in(projectCodes).and(PROJECT.DELETED_AT.isNull()))
+            .orderBy(PROJECT.CREATED_AT.desc())
+            .limit(size)
+            .offset(page * size)
+            .fetch()
+            .stream()
+            .map(
+                record -> {
+                  LocalDate start = record.get(PROJECT.START_DATE);
+                  LocalDate end =
+                      record.get(PROJECT.ACTUAL_END_DATE) != null
+                          ? record.get(PROJECT.ACTUAL_END_DATE)
+                          : record.get(PROJECT.EXPECTED_END_DATE);
+                  int months = (int) ChronoUnit.MONTHS.between(start, end);
+                  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+                  return new ProjectListResponse(
+                      record.get(PROJECT.PROJECT_CODE),
+                      record.get(PROJECT.TITLE),
+                      record.get(PROJECT.DESCRIPTION),
+                      formatter.format(start),
+                      formatter.format(end),
+                      months,
+                      String.valueOf(record.get(PROJECT.STATUS)),
+                      record.get(PROJECT.DOMAIN_NAME),
+                      record.get(PROJECT.NUMBER_OF_MEMBERS),
+                      record.get(PROJECT.ANALYSIS_STATUS));
+                })
+            .collect(Collectors.toList());
+
+    return PageResponse.fromJooq(content, totalCount, page, size);
+  }
+
+  public ProjectDetailResponse findProjectDetailByMemberIdAndProjectCode(
+      String employeeId, String projectCode) {
+    // 해당 사원이 해당 프로젝트에 참여했는지 확인
+    boolean exists =
+        dsl.selectOne()
+            .from(SQUAD_EMPLOYEE)
+            .join(PROJECT_AND_JOB)
+            .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+            .and(PROJECT_AND_JOB.PROJECT_CODE.eq(projectCode))
+            .fetchOptional()
+            .isPresent();
+
+    if (!exists) {
+      throw new BusinessException(ErrorCode.PROJECT_NOT_FOUND); // 또는 권한 없음 에러
+    }
+
+    // 기존 상세조회 재활용
+    return getProjectDetail(projectCode);
+
   public ProjectInfoDto findProjectInfoByWorkId(Long workId) {
     Record record = dsl
             .select(
