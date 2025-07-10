@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.member.command.application.controller;
 
+import com.nexus.sion.feature.member.query.dto.response.CertificateResponse;
+import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,8 @@ import com.nexus.sion.feature.member.command.application.service.UserCertificate
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/members/{employeeId}/certificates")
 @RequiredArgsConstructor
@@ -19,7 +23,7 @@ public class UserCertificateHistoryController {
 
   private final UserCertificateHistoryService userCertificateHistoryService;
 
-  /* 개발자의 자격증 등록 */
+  // 개발자 자격증 등록
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> registerUserCertificate(
       @PathVariable String employeeId, @RequestBody @Valid UserCertificateHistoryRequest request) {
