@@ -17,6 +17,7 @@ import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHi
 import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +27,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
   private final CertificateRepository certificateRepository;
 
   @Override
+  @Transactional
   public void registerUserCertificate(String employeeId, UserCertificateHistoryRequest request) {
     Certificate certificate =
         certificateRepository
@@ -47,6 +49,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
   }
 
   @Override
+  @Transactional
   public List<UserCertificateHistoryResponse> getAllCertificates() {
     return userCertificateHistoryRepository.findAll().stream()
         .map(UserCertificateHistoryResponse::fromEntity)
@@ -54,6 +57,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
   }
 
   @Override
+  @Transactional
   public void approveUserCertificate(Long certificateRequestId) {
     UserCertificateHistory history =
         userCertificateHistoryRepository
@@ -65,6 +69,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
   }
 
   @Override
+  @Transactional
   public void rejectUserCertificate(
       Long certificateRequestId, CertificateRejectRequest rejectedReason) {
     UserCertificateHistory history =
