@@ -45,14 +45,12 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
 
   @Override
   public ProjectInfoDto getProjectInfo(Long workId) {
-    return null;
-//    return projectQueryRepository.findProjectInfoByWorkId(workId);
+    return projectQueryRepository.findProjectInfoByWorkId(workId);
   }
 
   @Override
   public WorkInfoQueryDto getRequestDetailById(Long projectWorkId) {
-    return null;
-//    return projectQueryRepository.findById(projectWorkId);
+    return projectQueryRepository.findById(projectWorkId);
   }
 
   @Override
