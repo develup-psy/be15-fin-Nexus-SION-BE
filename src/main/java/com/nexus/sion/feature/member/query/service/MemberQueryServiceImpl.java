@@ -17,6 +17,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
@@ -103,6 +104,14 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     int offset = page * size;
     List<MemberListResponse> content = memberQueryRepository.searchMembers(keyword, offset, size);
     int total = memberQueryRepository.countSearchMembers(keyword);
+    return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  @Transactional(readOnly = true)
+  public PageResponse<AdminSearchResponse> searchAdmins(String keyword, int page, int size) {
+    int offset = page * size;
+    List<AdminSearchResponse> content = memberQueryRepository.searchAdmins(keyword, offset, size);
+    int total = memberQueryRepository.countSearchAdmins(keyword);
     return PageResponse.fromJooq(content, total, page, size);
   }
 

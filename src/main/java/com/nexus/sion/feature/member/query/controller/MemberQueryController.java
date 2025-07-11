@@ -14,6 +14,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
@@ -44,6 +45,15 @@ public class MemberQueryController {
       @RequestParam(defaultValue = "10") int size) {
     return ResponseEntity.ok(
         ApiResponse.success(memberQueryService.searchMembers(keyword, page, size)));
+  }
+
+  @GetMapping("/search/admins")
+  public ResponseEntity<ApiResponse<PageResponse<AdminSearchResponse>>> searchAdmins(
+      @RequestParam(required = false) String keyword,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+        ApiResponse.success(memberQueryService.searchAdmins(keyword, page, size)));
   }
 
   @GetMapping("/{employeeId}")
