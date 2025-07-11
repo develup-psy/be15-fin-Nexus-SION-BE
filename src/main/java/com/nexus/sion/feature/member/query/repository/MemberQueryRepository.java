@@ -9,6 +9,7 @@ import static org.jooq.impl.SQLDataType.VARCHAR;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
@@ -200,6 +201,45 @@ public class MemberQueryRepository {
                             .containsIgnoreCase(keyword)
                             .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword))))
             .fetchOneInto(Integer.class);
+
+    return count != null ? count : 0;
+  }
+
+
+  public List<AdminSearchResponse> searchAdmins(String keyword, int offset, int limit) {
+    String safeKeyword = Optional.ofNullable(keyword).orElse("").trim();
+    Condition condition = MEMBER.DELETED_AT.isNull()
+            .and(MEMBER.ROLE.eq(MemberRole.ADMIN));
+
+    if (!safeKeyword.isEmpty()) {
+      condition = condition.and(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(safeKeyword));
+    }
+
+    return dsl.select(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.as("employeeId"),
+                    MEMBER.EMPLOYEE_NAME.as("name"))
+            .from(MEMBER)
+            .where(condition)
+            .orderBy(MEMBER.EMPLOYEE_NAME.asc())
+            .offset(offset)
+            .limit(limit)
+            .fetchInto(AdminSearchResponse.class);
+  }
+
+  public int countSearchAdmins(String keyword) {
+    String safeKeyword = Optional.ofNullable(keyword).orElse("").trim();
+    Condition condition = MEMBER.DELETED_AT.isNull()
+            .and(MEMBER.ROLE.eq(MemberRole.ADMIN));
+
+    if (!safeKeyword.isEmpty()) {
+      condition = condition.and(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(safeKeyword));
+    }
+
+    Integer count =
+            dsl.selectCount()
+                    .from(MEMBER)
+                    .where(condition)
+                    .fetchOneInto(Integer.class);
 
     return count != null ? count : 0;
   }

@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.query.controller;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,15 @@ public class MemberQueryController {
       @RequestParam(defaultValue = "10") int size) {
     return ResponseEntity.ok(
         ApiResponse.success(memberQueryService.searchMembers(keyword, page, size)));
+  }
+
+  @GetMapping("/search/admins")
+  public ResponseEntity<ApiResponse<PageResponse<AdminSearchResponse>>> searchAdmins(
+          @RequestParam(required = false) String keyword,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+            ApiResponse.success(memberQueryService.searchAdmins(keyword, page, size)));
   }
 
   @GetMapping("/{employeeId}")

@@ -4,6 +4,7 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -103,6 +104,14 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     int offset = page * size;
     List<MemberListResponse> content = memberQueryRepository.searchMembers(keyword, offset, size);
     int total = memberQueryRepository.countSearchMembers(keyword);
+    return PageResponse.fromJooq(content, total, page, size);
+  }
+
+  @Transactional(readOnly = true)
+  public PageResponse<AdminSearchResponse> searchAdmins(String keyword, int page, int size) {
+    int offset = page * size;
+    List<AdminSearchResponse> content = memberQueryRepository.searchAdmins(keyword, offset, size);
+    int total = memberQueryRepository.countSearchAdmins(keyword);
     return PageResponse.fromJooq(content, total, page, size);
   }
 
