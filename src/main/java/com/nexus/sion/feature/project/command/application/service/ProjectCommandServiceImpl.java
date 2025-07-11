@@ -161,21 +161,11 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
-
-      notifySquadEmployeesToUploadTask(projectCode);
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
-  }
-
-  public void notifySquadEmployeesToUploadTask(String projectCode) {
-    String activeSquadCode = findActiveSquadCode(projectCode);
-
-    List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
-
-    squadEmployees.forEach(employee -> sendTaskUploadRequestNotification(employee, projectCode));
   }
 
   private String findActiveSquadCode(String projectCode) {
@@ -189,11 +179,17 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     return squadEmployeeCommandRepository.findBySquadCode(squadCode);
   }
 
-  private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
+  private void sendTaskUploadRequestNotification(SquadEmployee employee, Long developerProjectWorkId) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-        null, employeeId, null, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
+            null,
+            employeeId,
+            null,
+            NotificationType.TASK_UPLOAD_REQUEST,
+            developerProjectWorkId.toString()
+    );
   }
+
 
   @Override
   public Map<String, Long> findProjectAndJobIdMap(String projectId) {
@@ -245,13 +241,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
     for (SquadEmployee employee : employees) {
       DeveloperProjectWork dpw =
-          DeveloperProjectWork.builder()
-              .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
-              .projectCode(projectCode)
-              .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
-              .build();
+              DeveloperProjectWork.builder()
+                      .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
+                      .projectCode(projectCode)
+                      .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
+                      .build();
 
-      developerProjectWorkRepository.save(dpw);
+      DeveloperProjectWork saved = developerProjectWorkRepository.save(dpw);
+
+      sendTaskUploadRequestNotification(employee, saved.getId());
     }
   }
 }
