@@ -4,6 +4,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 
+import java.util.List;
+
 public interface NotificationCommandService {
   void createAndSendNotification(
       String senderId,
@@ -18,5 +20,5 @@ public interface NotificationCommandService {
 
   Void readNotification(String employeeIdentificationNumber, Long notificationId);
 
-  void sendSquadShareNotification(String senderId, String receiverId, String squadCode);
+  void sendSquadShareNotification(String senderId, List<String> receivers, String squadCode);
 }

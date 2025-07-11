@@ -65,7 +65,7 @@ public class NotificationCommandController {
       @AuthenticationPrincipal UserDetails userDetails) {
     notificationCommandService.sendSquadShareNotification(
         userDetails.getUsername(), // senderId
-        request.getReceiverId(),
+        request.getReceivers(),
         request.getSquadCode());
     return ResponseEntity.ok(ApiResponse.success(null));
   }

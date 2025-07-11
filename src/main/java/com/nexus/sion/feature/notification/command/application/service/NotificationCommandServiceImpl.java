@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.notification.command.application.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -171,8 +172,10 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
   @Transactional
   @Override
-  public void sendSquadShareNotification(String senderId, String receiverId, String squadCode) {
-    createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode);
+  public void sendSquadShareNotification(String senderId, List<String> receivers, String squadCode) {
+    receivers.forEach(receiverId ->
+            createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode)
+    );
   }
 
   @Async
