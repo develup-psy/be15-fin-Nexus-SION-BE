@@ -141,4 +141,20 @@ public class MemberScoreHistoryDao
       LocalDateTime... values) {
     return fetch(MemberScoreHistory.MEMBER_SCORE_HISTORY.CREATED_AT, values);
   }
+
+  /**
+   * Fetch records that have <code>updated_at BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.MemberScoreHistory> fetchRangeOfUpdatedAt(
+      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    return fetchRange(
+        MemberScoreHistory.MEMBER_SCORE_HISTORY.UPDATED_AT, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>updated_at IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.MemberScoreHistory> fetchByUpdatedAt(
+      LocalDateTime... values) {
+    return fetch(MemberScoreHistory.MEMBER_SCORE_HISTORY.UPDATED_AT, values);
+  }
 }

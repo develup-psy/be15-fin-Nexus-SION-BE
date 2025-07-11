@@ -10,11 +10,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -35,7 +36,7 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.member_score_history</code> */
+  /** The reference instance of <code>sion.member_score_history</code> */
   public static final MemberScoreHistory MEMBER_SCORE_HISTORY = new MemberScoreHistory();
 
   /** The class holding records for this type */
@@ -44,11 +45,15 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
     return MemberScoreHistoryRecord.class;
   }
 
-  /** The column <code>SION.member_score_history.score_history_id</code>. */
+  /** The column <code>sion.member_score_history.score_history_id</code>. */
   public final TableField<MemberScoreHistoryRecord, Long> SCORE_HISTORY_ID =
-      createField(DSL.name("score_history_id"), SQLDataType.BIGINT.nullable(false), this, "");
+      createField(
+          DSL.name("score_history_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
+          this,
+          "");
 
-  /** The column <code>SION.member_score_history.employee_identification_number</code>. */
+  /** The column <code>sion.member_score_history.employee_identification_number</code>. */
   public final TableField<MemberScoreHistoryRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
           DSL.name("employee_identification_number"),
@@ -56,7 +61,7 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
           this,
           "");
 
-  /** The column <code>SION.member_score_history.total_tech_stack_scores</code>. */
+  /** The column <code>sion.member_score_history.total_tech_stack_scores</code>. */
   public final TableField<MemberScoreHistoryRecord, Integer> TOTAL_TECH_STACK_SCORES =
       createField(
           DSL.name("total_tech_stack_scores"),
@@ -66,7 +71,7 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
           this,
           "");
 
-  /** The column <code>SION.member_score_history.total_certificate_scores</code>. */
+  /** The column <code>sion.member_score_history.total_certificate_scores</code>. */
   public final TableField<MemberScoreHistoryRecord, Integer> TOTAL_CERTIFICATE_SCORES =
       createField(
           DSL.name("total_certificate_scores"),
@@ -76,10 +81,20 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
           this,
           "");
 
-  /** The column <code>SION.member_score_history.created_at</code>. */
+  /** The column <code>sion.member_score_history.created_at</code>. */
   public final TableField<MemberScoreHistoryRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
+  /** The column <code>sion.member_score_history.updated_at</code>. */
+  public final TableField<MemberScoreHistoryRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
           SQLDataType.LOCALDATETIME(0)
               .nullable(false)
               .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
@@ -95,17 +110,17 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.member_score_history</code> table reference */
+  /** Create an aliased <code>sion.member_score_history</code> table reference */
   public MemberScoreHistory(String alias) {
     this(DSL.name(alias), MEMBER_SCORE_HISTORY);
   }
 
-  /** Create an aliased <code>SION.member_score_history</code> table reference */
+  /** Create an aliased <code>sion.member_score_history</code> table reference */
   public MemberScoreHistory(Name alias) {
     this(alias, MEMBER_SCORE_HISTORY);
   }
 
-  /** Create a <code>SION.member_score_history</code> table reference */
+  /** Create a <code>sion.member_score_history</code> table reference */
   public MemberScoreHistory() {
     this(DSL.name("member_score_history"), null);
   }
@@ -121,6 +136,11 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
   }
 
   @Override
+  public Identity<MemberScoreHistoryRecord, Long> getIdentity() {
+    return (Identity<MemberScoreHistoryRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<MemberScoreHistoryRecord> getPrimaryKey() {
     return Keys.KEY_MEMBER_SCORE_HISTORY_PRIMARY;
   }
@@ -132,7 +152,7 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
 
   private transient Member _member;
 
-  /** Get the implicit join path to the <code>SION.member</code> table. */
+  /** Get the implicit join path to the <code>sion.member</code> table. */
   public Member member() {
     if (_member == null) _member = new Member(this, Keys.FK_MSH_MEMBER);
 
@@ -173,21 +193,22 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row5 type methods
+  // Row6 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row5<Long, String, Integer, Integer, LocalDateTime> fieldsRow() {
-    return (Row5) super.fieldsRow();
+  public Row6<Long, String, Integer, Integer, LocalDateTime, LocalDateTime> fieldsRow() {
+    return (Row6) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function5<
+      Function6<
               ? super Long,
               ? super String,
               ? super Integer,
               ? super Integer,
+              ? super LocalDateTime,
               ? super LocalDateTime,
               ? extends U>
           from) {
@@ -197,11 +218,12 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function5<
+      Function6<
               ? super Long,
               ? super String,
               ? super Integer,
               ? super Integer,
+              ? super LocalDateTime,
               ? super LocalDateTime,
               ? extends U>
           from) {

@@ -33,7 +33,7 @@ public class Position extends TableImpl<PositionRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.position</code> */
+  /** The reference instance of <code>sion.position</code> */
   public static final Position POSITION = new Position();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Position extends TableImpl<PositionRecord> {
     return PositionRecord.class;
   }
 
-  /** The column <code>SION.position.position_name</code>. */
+  /** The column <code>sion.position.position_name</code>. */
   public final TableField<PositionRecord, String> POSITION_NAME =
       createField(DSL.name("position_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>SION.position.create_at</code>. */
+  /** The column <code>sion.position.create_at</code>. */
   public final TableField<PositionRecord, LocalDateTime> CREATE_AT =
       createField(
           DSL.name("create_at"),
@@ -56,7 +56,7 @@ public class Position extends TableImpl<PositionRecord> {
           this,
           "");
 
-  /** The column <code>SION.position.updated_at</code>. */
+  /** The column <code>sion.position.updated_at</code>. */
   public final TableField<PositionRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -73,17 +73,17 @@ public class Position extends TableImpl<PositionRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.position</code> table reference */
+  /** Create an aliased <code>sion.position</code> table reference */
   public Position(String alias) {
     this(DSL.name(alias), POSITION);
   }
 
-  /** Create an aliased <code>SION.position</code> table reference */
+  /** Create an aliased <code>sion.position</code> table reference */
   public Position(Name alias) {
     this(alias, POSITION);
   }
 
-  /** Create a <code>SION.position</code> table reference */
+  /** Create a <code>sion.position</code> table reference */
   public Position() {
     this(DSL.name("position"), null);
   }

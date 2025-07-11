@@ -21,7 +21,7 @@ public class DeveloperProjectWorkHistoryTechStackRecord
 
   /**
    * Setter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
    * </code>.
    */
   public void setDeveloperProjectWorkHistoryTechStackId(Long value) {
@@ -30,7 +30,7 @@ public class DeveloperProjectWorkHistoryTechStackRecord
 
   /**
    * Getter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
    * </code>.
    */
   public Long getDeveloperProjectWorkHistoryTechStackId() {
@@ -39,7 +39,7 @@ public class DeveloperProjectWorkHistoryTechStackRecord
 
   /**
    * Setter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
    */
   public void setDeveloperProjectWorkHistoryId(Long value) {
     set(1, value);
@@ -47,18 +47,18 @@ public class DeveloperProjectWorkHistoryTechStackRecord
 
   /**
    * Getter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
    */
   public Long getDeveloperProjectWorkHistoryId() {
     return (Long) get(1);
   }
 
-  /** Setter for <code>SION.developer_project_work_history_tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.developer_project_work_history_tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.developer_project_work_history_tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.developer_project_work_history_tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return (String) get(2);
   }

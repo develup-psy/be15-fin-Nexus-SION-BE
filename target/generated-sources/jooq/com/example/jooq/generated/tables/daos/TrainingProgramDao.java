@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import com.example.jooq.generated.enums.TrainingProgramTrainingType;
 import com.example.jooq.generated.tables.TrainingProgram;
 import com.example.jooq.generated.tables.records.TrainingProgramRecord;
 
@@ -18,7 +17,7 @@ import com.example.jooq.generated.tables.records.TrainingProgramRecord;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class TrainingProgramDao
     extends DAOImpl<
-        TrainingProgramRecord, com.example.jooq.generated.tables.pojos.TrainingProgram, String> {
+        TrainingProgramRecord, com.example.jooq.generated.tables.pojos.TrainingProgram, Long> {
 
   /** Create a new TrainingProgramDao without any configuration */
   public TrainingProgramDao() {
@@ -36,8 +35,34 @@ public class TrainingProgramDao
   }
 
   @Override
-  public String getId(com.example.jooq.generated.tables.pojos.TrainingProgram object) {
-    return object.getTrainingName();
+  public Long getId(com.example.jooq.generated.tables.pojos.TrainingProgram object) {
+    return object.getTrainingId();
+  }
+
+  /**
+   * Fetch records that have <code>training_id BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfTrainingId(
+      Long lowerInclusive, Long upperInclusive) {
+    return fetchRange(TrainingProgram.TRAINING_PROGRAM.TRAINING_ID, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>training_id IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByTrainingId(
+      Long... values) {
+    return fetch(TrainingProgram.TRAINING_PROGRAM.TRAINING_ID, values);
+  }
+
+  /** Fetch a unique record that has <code>training_id = value</code> */
+  public com.example.jooq.generated.tables.pojos.TrainingProgram fetchOneByTrainingId(Long value) {
+    return fetchOne(TrainingProgram.TRAINING_PROGRAM.TRAINING_ID, value);
+  }
+
+  /** Fetch a unique record that has <code>training_id = value</code> */
+  public Optional<com.example.jooq.generated.tables.pojos.TrainingProgram>
+      fetchOptionalByTrainingId(Long value) {
+    return fetchOptional(TrainingProgram.TRAINING_PROGRAM.TRAINING_ID, value);
   }
 
   /**
@@ -69,79 +94,35 @@ public class TrainingProgramDao
   }
 
   /**
-   * Fetch records that have <code>description BETWEEN lowerInclusive AND
-   * upperInclusive</code>
+   * Fetch records that have <code>training_description BETWEEN lowerInclusive
+   * AND upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfDescription(
-      String lowerInclusive, String upperInclusive) {
-    return fetchRange(TrainingProgram.TRAINING_PROGRAM.DESCRIPTION, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>description IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByDescription(
-      String... values) {
-    return fetch(TrainingProgram.TRAINING_PROGRAM.DESCRIPTION, values);
-  }
-
-  /**
-   * Fetch records that have <code>training_type BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfTrainingType(
-      TrainingProgramTrainingType lowerInclusive, TrainingProgramTrainingType upperInclusive) {
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram>
+      fetchRangeOfTrainingDescription(String lowerInclusive, String upperInclusive) {
     return fetchRange(
-        TrainingProgram.TRAINING_PROGRAM.TRAINING_TYPE, lowerInclusive, upperInclusive);
+        TrainingProgram.TRAINING_PROGRAM.TRAINING_DESCRIPTION, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>training_type IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByTrainingType(
-      TrainingProgramTrainingType... values) {
-    return fetch(TrainingProgram.TRAINING_PROGRAM.TRAINING_TYPE, values);
-  }
-
-  /**
-   * Fetch records that have <code>organizer BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfOrganizer(
-      String lowerInclusive, String upperInclusive) {
-    return fetchRange(TrainingProgram.TRAINING_PROGRAM.ORGANIZER, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>organizer IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByOrganizer(
+  /** Fetch records that have <code>training_description IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByTrainingDescription(
       String... values) {
-    return fetch(TrainingProgram.TRAINING_PROGRAM.ORGANIZER, values);
+    return fetch(TrainingProgram.TRAINING_PROGRAM.TRAINING_DESCRIPTION, values);
   }
 
   /**
-   * Fetch records that have <code>started_at BETWEEN lowerInclusive AND
-   * upperInclusive</code>
+   * Fetch records that have <code>training_category BETWEEN lowerInclusive
+   * AND upperInclusive</code>
    */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfStartedAt(
-      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-    return fetchRange(TrainingProgram.TRAINING_PROGRAM.STARTED_AT, lowerInclusive, upperInclusive);
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfTrainingCategory(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        TrainingProgram.TRAINING_PROGRAM.TRAINING_CATEGORY, lowerInclusive, upperInclusive);
   }
 
-  /** Fetch records that have <code>started_at IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByStartedAt(
-      LocalDateTime... values) {
-    return fetch(TrainingProgram.TRAINING_PROGRAM.STARTED_AT, values);
-  }
-
-  /**
-   * Fetch records that have <code>ended_at BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfEndedAt(
-      LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-    return fetchRange(TrainingProgram.TRAINING_PROGRAM.ENDED_AT, lowerInclusive, upperInclusive);
-  }
-
-  /** Fetch records that have <code>ended_at IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByEndedAt(
-      LocalDateTime... values) {
-    return fetch(TrainingProgram.TRAINING_PROGRAM.ENDED_AT, values);
+  /** Fetch records that have <code>training_category IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByTrainingCategory(
+      String... values) {
+    return fetch(TrainingProgram.TRAINING_PROGRAM.TRAINING_CATEGORY, values);
   }
 
   /**
@@ -172,5 +153,20 @@ public class TrainingProgramDao
   public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByUpdatedAt(
       LocalDateTime... values) {
     return fetch(TrainingProgram.TRAINING_PROGRAM.UPDATED_AT, values);
+  }
+
+  /**
+   * Fetch records that have <code>image_url BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfImageUrl(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(TrainingProgram.TRAINING_PROGRAM.IMAGE_URL, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>image_url IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByImageUrl(
+      String... values) {
+    return fetch(TrainingProgram.TRAINING_PROGRAM.IMAGE_URL, values);
   }
 }

@@ -36,7 +36,7 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.training_recommendation</code> */
+  /** The reference instance of <code>sion.training_recommendation</code> */
   public static final TrainingRecommendation TRAINING_RECOMMENDATION = new TrainingRecommendation();
 
   /** The class holding records for this type */
@@ -45,7 +45,7 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
     return TrainingRecommendationRecord.class;
   }
 
-  /** The column <code>SION.training_recommendation.training_recommendation_id</code>. */
+  /** The column <code>sion.training_recommendation.training_recommendation_id</code>. */
   public final TableField<TrainingRecommendationRecord, Long> TRAINING_RECOMMENDATION_ID =
       createField(
           DSL.name("training_recommendation_id"),
@@ -53,7 +53,7 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
           this,
           "");
 
-  /** The column <code>SION.training_recommendation.employee_identification_number</code>. */
+  /** The column <code>sion.training_recommendation.employee_identification_number</code>. */
   public final TableField<TrainingRecommendationRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
           DSL.name("employee_identification_number"),
@@ -61,15 +61,15 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
           this,
           "");
 
-  /** The column <code>SION.training_recommendation.training_name</code>. */
+  /** The column <code>sion.training_recommendation.training_name</code>. */
   public final TableField<TrainingRecommendationRecord, String> TRAINING_NAME =
       createField(DSL.name("training_name"), SQLDataType.VARCHAR(100).nullable(false), this, "");
 
-  /** The column <code>SION.training_recommendation.recommendation_reason</code>. */
+  /** The column <code>sion.training_recommendation.recommendation_reason</code>. */
   public final TableField<TrainingRecommendationRecord, String> RECOMMENDATION_REASON =
       createField(DSL.name("recommendation_reason"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>SION.training_recommendation.recommended_at</code>. */
+  /** The column <code>sion.training_recommendation.recommended_at</code>. */
   public final TableField<TrainingRecommendationRecord, LocalDateTime> RECOMMENDED_AT =
       createField(
           DSL.name("recommended_at"),
@@ -79,7 +79,7 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
           this,
           "");
 
-  /** The column <code>SION.training_recommendation.is_completed</code>. */
+  /** The column <code>sion.training_recommendation.is_completed</code>. */
   public final TableField<TrainingRecommendationRecord, Byte> IS_COMPLETED =
       createField(
           DSL.name("is_completed"),
@@ -96,17 +96,17 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.training_recommendation</code> table reference */
+  /** Create an aliased <code>sion.training_recommendation</code> table reference */
   public TrainingRecommendation(String alias) {
     this(DSL.name(alias), TRAINING_RECOMMENDATION);
   }
 
-  /** Create an aliased <code>SION.training_recommendation</code> table reference */
+  /** Create an aliased <code>sion.training_recommendation</code> table reference */
   public TrainingRecommendation(Name alias) {
     this(alias, TRAINING_RECOMMENDATION);
   }
 
-  /** Create a <code>SION.training_recommendation</code> table reference */
+  /** Create a <code>sion.training_recommendation</code> table reference */
   public TrainingRecommendation() {
     this(DSL.name("training_recommendation"), null);
   }
@@ -139,14 +139,14 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   private transient Member _member;
   private transient TrainingProgram _trainingProgram;
 
-  /** Get the implicit join path to the <code>SION.member</code> table. */
+  /** Get the implicit join path to the <code>sion.member</code> table. */
   public Member member() {
     if (_member == null) _member = new Member(this, Keys.FK_TR_MEMBER);
 
     return _member;
   }
 
-  /** Get the implicit join path to the <code>SION.training_program</code> table. */
+  /** Get the implicit join path to the <code>sion.training_program</code> table. */
   public TrainingProgram trainingProgram() {
     if (_trainingProgram == null) _trainingProgram = new TrainingProgram(this, Keys.FK_TR_TRAINING);
 

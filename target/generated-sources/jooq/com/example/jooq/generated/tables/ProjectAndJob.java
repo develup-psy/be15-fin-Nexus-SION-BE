@@ -36,7 +36,7 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.project_and_job</code> */
+  /** The reference instance of <code>sion.project_and_job</code> */
   public static final ProjectAndJob PROJECT_AND_JOB = new ProjectAndJob();
 
   /** The class holding records for this type */
@@ -45,7 +45,7 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
     return ProjectAndJobRecord.class;
   }
 
-  /** The column <code>SION.project_and_job.project_and_job_id</code>. */
+  /** The column <code>sion.project_and_job.project_and_job_id</code>. */
   public final TableField<ProjectAndJobRecord, Long> PROJECT_AND_JOB_ID =
       createField(
           DSL.name("project_and_job_id"),
@@ -53,11 +53,11 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
           this,
           "");
 
-  /** The column <code>SION.project_and_job.required_number</code>. */
+  /** The column <code>sion.project_and_job.required_number</code>. */
   public final TableField<ProjectAndJobRecord, Integer> REQUIRED_NUMBER =
       createField(DSL.name("required_number"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.project_and_job.created_at</code>. */
+  /** The column <code>sion.project_and_job.created_at</code>. */
   public final TableField<ProjectAndJobRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -67,7 +67,7 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
           this,
           "");
 
-  /** The column <code>SION.project_and_job.updated_at</code>. */
+  /** The column <code>sion.project_and_job.updated_at</code>. */
   public final TableField<ProjectAndJobRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -77,11 +77,11 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
           this,
           "");
 
-  /** The column <code>SION.project_and_job.project_code</code>. */
+  /** The column <code>sion.project_and_job.project_code</code>. */
   public final TableField<ProjectAndJobRecord, String> PROJECT_CODE =
       createField(DSL.name("project_code"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.project_and_job.job_name</code>. */
+  /** The column <code>sion.project_and_job.job_name</code>. */
   public final TableField<ProjectAndJobRecord, String> JOB_NAME =
       createField(DSL.name("job_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
@@ -93,17 +93,17 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.project_and_job</code> table reference */
+  /** Create an aliased <code>sion.project_and_job</code> table reference */
   public ProjectAndJob(String alias) {
     this(DSL.name(alias), PROJECT_AND_JOB);
   }
 
-  /** Create an aliased <code>SION.project_and_job</code> table reference */
+  /** Create an aliased <code>sion.project_and_job</code> table reference */
   public ProjectAndJob(Name alias) {
     this(alias, PROJECT_AND_JOB);
   }
 
-  /** Create a <code>SION.project_and_job</code> table reference */
+  /** Create a <code>sion.project_and_job</code> table reference */
   public ProjectAndJob() {
     this(DSL.name("project_and_job"), null);
   }
@@ -135,14 +135,14 @@ public class ProjectAndJob extends TableImpl<ProjectAndJobRecord> {
   private transient Project _project;
   private transient Job _job;
 
-  /** Get the implicit join path to the <code>SION.project</code> table. */
+  /** Get the implicit join path to the <code>sion.project</code> table. */
   public Project project() {
     if (_project == null) _project = new Project(this, Keys.FK_PROJECT_TO_PROJECT_AND_JOB_1);
 
     return _project;
   }
 
-  /** Get the implicit join path to the <code>SION.job</code> table. */
+  /** Get the implicit join path to the <code>sion.job</code> table. */
   public Job job() {
     if (_job == null) _job = new Job(this, Keys.FK_JOB_TO_PROJECT_AND_JOB_1);
 

@@ -20,32 +20,32 @@ public class TechStackRecord extends UpdatableRecordImpl<TechStackRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.tech_stack.created_at</code>. */
+  /** Setter for <code>sion.tech_stack.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.tech_stack.created_at</code>. */
+  /** Getter for <code>sion.tech_stack.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(1);
   }
 
-  /** Setter for <code>SION.tech_stack.updated_at</code>. */
+  /** Setter for <code>sion.tech_stack.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.tech_stack.updated_at</code>. */
+  /** Getter for <code>sion.tech_stack.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(2);
   }

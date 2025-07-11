@@ -33,7 +33,7 @@ public class Certificate extends TableImpl<CertificateRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.certificate</code> */
+  /** The reference instance of <code>sion.certificate</code> */
   public static final Certificate CERTIFICATE = new Certificate();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Certificate extends TableImpl<CertificateRecord> {
     return CertificateRecord.class;
   }
 
-  /** The column <code>SION.certificate.certificate_name</code>. */
+  /** The column <code>sion.certificate.certificate_name</code>. */
   public final TableField<CertificateRecord, String> CERTIFICATE_NAME =
       createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.certificate.score</code>. */
+  /** The column <code>sion.certificate.score</code>. */
   public final TableField<CertificateRecord, Integer> SCORE =
       createField(
           DSL.name("score"),
@@ -56,7 +56,7 @@ public class Certificate extends TableImpl<CertificateRecord> {
           this,
           "");
 
-  /** The column <code>SION.certificate.created_at</code>. */
+  /** The column <code>sion.certificate.created_at</code>. */
   public final TableField<CertificateRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -66,7 +66,7 @@ public class Certificate extends TableImpl<CertificateRecord> {
           this,
           "");
 
-  /** The column <code>SION.certificate.updated_at</code>. */
+  /** The column <code>sion.certificate.updated_at</code>. */
   public final TableField<CertificateRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -76,7 +76,7 @@ public class Certificate extends TableImpl<CertificateRecord> {
           this,
           "");
 
-  /** The column <code>SION.certificate.issuing_organization</code>. */
+  /** The column <code>sion.certificate.issuing_organization</code>. */
   public final TableField<CertificateRecord, String> ISSUING_ORGANIZATION =
       createField(
           DSL.name("issuing_organization"),
@@ -92,17 +92,17 @@ public class Certificate extends TableImpl<CertificateRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.certificate</code> table reference */
+  /** Create an aliased <code>sion.certificate</code> table reference */
   public Certificate(String alias) {
     this(DSL.name(alias), CERTIFICATE);
   }
 
-  /** Create an aliased <code>SION.certificate</code> table reference */
+  /** Create an aliased <code>sion.certificate</code> table reference */
   public Certificate(Name alias) {
     this(alias, CERTIFICATE);
   }
 
-  /** Create a <code>SION.certificate</code> table reference */
+  /** Create a <code>sion.certificate</code> table reference */
   public Certificate() {
     this(DSL.name("certificate"), null);
   }

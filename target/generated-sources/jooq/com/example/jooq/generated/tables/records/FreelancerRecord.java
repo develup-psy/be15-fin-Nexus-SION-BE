@@ -22,92 +22,92 @@ public class FreelancerRecord extends UpdatableRecordImpl<FreelancerRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.freelancer.freelancer_id</code>. */
+  /** Setter for <code>sion.freelancer.freelancer_id</code>. */
   public void setFreelancerId(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.freelancer.freelancer_id</code>. */
+  /** Getter for <code>sion.freelancer.freelancer_id</code>. */
   public String getFreelancerId() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.freelancer.name</code>. */
+  /** Setter for <code>sion.freelancer.name</code>. */
   public void setName(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.freelancer.name</code>. */
+  /** Getter for <code>sion.freelancer.name</code>. */
   public String getName() {
     return (String) get(1);
   }
 
-  /** Setter for <code>SION.freelancer.phone_number</code>. */
+  /** Setter for <code>sion.freelancer.phone_number</code>. */
   public void setPhoneNumber(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.freelancer.phone_number</code>. */
+  /** Getter for <code>sion.freelancer.phone_number</code>. */
   public String getPhoneNumber() {
     return (String) get(2);
   }
 
-  /** Setter for <code>SION.freelancer.email</code>. */
+  /** Setter for <code>sion.freelancer.email</code>. */
   public void setEmail(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.freelancer.email</code>. */
+  /** Getter for <code>sion.freelancer.email</code>. */
   public String getEmail() {
     return (String) get(3);
   }
 
-  /** Setter for <code>SION.freelancer.career_years</code>. */
+  /** Setter for <code>sion.freelancer.career_years</code>. */
   public void setCareerYears(Integer value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.freelancer.career_years</code>. */
+  /** Getter for <code>sion.freelancer.career_years</code>. */
   public Integer getCareerYears() {
     return (Integer) get(4);
   }
 
-  /** Setter for <code>SION.freelancer.resume_url</code>. */
+  /** Setter for <code>sion.freelancer.resume_url</code>. */
   public void setResumeUrl(String value) {
     set(5, value);
   }
 
-  /** Getter for <code>SION.freelancer.resume_url</code>. */
+  /** Getter for <code>sion.freelancer.resume_url</code>. */
   public String getResumeUrl() {
     return (String) get(5);
   }
 
-  /** Setter for <code>SION.freelancer.created_at</code>. */
+  /** Setter for <code>sion.freelancer.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>SION.freelancer.created_at</code>. */
+  /** Getter for <code>sion.freelancer.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>SION.freelancer.profile_image_url</code>. */
+  /** Setter for <code>sion.freelancer.profile_image_url</code>. */
   public void setProfileImageUrl(String value) {
     set(7, value);
   }
 
-  /** Getter for <code>SION.freelancer.profile_image_url</code>. */
+  /** Getter for <code>sion.freelancer.profile_image_url</code>. */
   public String getProfileImageUrl() {
     return (String) get(7);
   }
 
-  /** Setter for <code>SION.freelancer.birthday</code>. */
+  /** Setter for <code>sion.freelancer.birthday</code>. */
   public void setBirthday(LocalDate value) {
     set(8, value);
   }
 
-  /** Getter for <code>SION.freelancer.birthday</code>. */
+  /** Getter for <code>sion.freelancer.birthday</code>. */
   public LocalDate getBirthday() {
     return (LocalDate) get(8);
   }

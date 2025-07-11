@@ -61,102 +61,102 @@ public class ProjectEvaluation implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.project_evaluation.project_evaluation_id</code>. */
+  /** Getter for <code>sion.project_evaluation.project_evaluation_id</code>. */
   public Long getProjectEvaluationId() {
     return this.projectEvaluationId;
   }
 
-  /** Setter for <code>SION.project_evaluation.project_evaluation_id</code>. */
+  /** Setter for <code>sion.project_evaluation.project_evaluation_id</code>. */
   public void setProjectEvaluationId(Long projectEvaluationId) {
     this.projectEvaluationId = projectEvaluationId;
   }
 
-  /** Getter for <code>SION.project_evaluation.project_code</code>. */
+  /** Getter for <code>sion.project_evaluation.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>SION.project_evaluation.project_code</code>. */
+  /** Setter for <code>sion.project_evaluation.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>SION.project_evaluation.developer_id</code>. */
+  /** Getter for <code>sion.project_evaluation.developer_id</code>. */
   public Long getDeveloperId() {
     return this.developerId;
   }
 
-  /** Setter for <code>SION.project_evaluation.developer_id</code>. */
+  /** Setter for <code>sion.project_evaluation.developer_id</code>. */
   public void setDeveloperId(Long developerId) {
     this.developerId = developerId;
   }
 
-  /** Getter for <code>SION.project_evaluation.estimator_id</code>. */
+  /** Getter for <code>sion.project_evaluation.estimator_id</code>. */
   public Long getEstimatorId() {
     return this.estimatorId;
   }
 
-  /** Setter for <code>SION.project_evaluation.estimator_id</code>. */
+  /** Setter for <code>sion.project_evaluation.estimator_id</code>. */
   public void setEstimatorId(Long estimatorId) {
     this.estimatorId = estimatorId;
   }
 
-  /** Getter for <code>SION.project_evaluation.tech_fit</code>. */
+  /** Getter for <code>sion.project_evaluation.tech_fit</code>. */
   public Integer getTechFit() {
     return this.techFit;
   }
 
-  /** Setter for <code>SION.project_evaluation.tech_fit</code>. */
+  /** Setter for <code>sion.project_evaluation.tech_fit</code>. */
   public void setTechFit(Integer techFit) {
     this.techFit = techFit;
   }
 
-  /** Getter for <code>SION.project_evaluation.communication</code>. */
+  /** Getter for <code>sion.project_evaluation.communication</code>. */
   public Integer getCommunication() {
     return this.communication;
   }
 
-  /** Setter for <code>SION.project_evaluation.communication</code>. */
+  /** Setter for <code>sion.project_evaluation.communication</code>. */
   public void setCommunication(Integer communication) {
     this.communication = communication;
   }
 
-  /** Getter for <code>SION.project_evaluation.problem_solving</code>. */
+  /** Getter for <code>sion.project_evaluation.problem_solving</code>. */
   public Integer getProblemSolving() {
     return this.problemSolving;
   }
 
-  /** Setter for <code>SION.project_evaluation.problem_solving</code>. */
+  /** Setter for <code>sion.project_evaluation.problem_solving</code>. */
   public void setProblemSolving(Integer problemSolving) {
     this.problemSolving = problemSolving;
   }
 
-  /** Getter for <code>SION.project_evaluation.cooperation_attitude</code>. */
+  /** Getter for <code>sion.project_evaluation.cooperation_attitude</code>. */
   public Integer getCooperationAttitude() {
     return this.cooperationAttitude;
   }
 
-  /** Setter for <code>SION.project_evaluation.cooperation_attitude</code>. */
+  /** Setter for <code>sion.project_evaluation.cooperation_attitude</code>. */
   public void setCooperationAttitude(Integer cooperationAttitude) {
     this.cooperationAttitude = cooperationAttitude;
   }
 
-  /** Getter for <code>SION.project_evaluation.created_at</code>. */
+  /** Getter for <code>sion.project_evaluation.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.project_evaluation.created_at</code>. */
+  /** Setter for <code>sion.project_evaluation.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.project_evaluation.updated_at</code>. */
+  /** Getter for <code>sion.project_evaluation.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.project_evaluation.updated_at</code>. */
+  /** Setter for <code>sion.project_evaluation.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

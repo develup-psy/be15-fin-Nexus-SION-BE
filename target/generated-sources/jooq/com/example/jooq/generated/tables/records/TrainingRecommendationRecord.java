@@ -20,62 +20,62 @@ public class TrainingRecommendationRecord extends UpdatableRecordImpl<TrainingRe
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.training_recommendation.training_recommendation_id</code>. */
+  /** Setter for <code>sion.training_recommendation.training_recommendation_id</code>. */
   public void setTrainingRecommendationId(Long value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.training_recommendation_id</code>. */
+  /** Getter for <code>sion.training_recommendation.training_recommendation_id</code>. */
   public Long getTrainingRecommendationId() {
     return (Long) get(0);
   }
 
-  /** Setter for <code>SION.training_recommendation.employee_identification_number</code>. */
+  /** Setter for <code>sion.training_recommendation.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.employee_identification_number</code>. */
+  /** Getter for <code>sion.training_recommendation.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return (String) get(1);
   }
 
-  /** Setter for <code>SION.training_recommendation.training_name</code>. */
+  /** Setter for <code>sion.training_recommendation.training_name</code>. */
   public void setTrainingName(String value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.training_name</code>. */
+  /** Getter for <code>sion.training_recommendation.training_name</code>. */
   public String getTrainingName() {
     return (String) get(2);
   }
 
-  /** Setter for <code>SION.training_recommendation.recommendation_reason</code>. */
+  /** Setter for <code>sion.training_recommendation.recommendation_reason</code>. */
   public void setRecommendationReason(String value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.recommendation_reason</code>. */
+  /** Getter for <code>sion.training_recommendation.recommendation_reason</code>. */
   public String getRecommendationReason() {
     return (String) get(3);
   }
 
-  /** Setter for <code>SION.training_recommendation.recommended_at</code>. */
+  /** Setter for <code>sion.training_recommendation.recommended_at</code>. */
   public void setRecommendedAt(LocalDateTime value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.recommended_at</code>. */
+  /** Getter for <code>sion.training_recommendation.recommended_at</code>. */
   public LocalDateTime getRecommendedAt() {
     return (LocalDateTime) get(4);
   }
 
-  /** Setter for <code>SION.training_recommendation.is_completed</code>. */
+  /** Setter for <code>sion.training_recommendation.is_completed</code>. */
   public void setIsCompleted(Byte value) {
     set(5, value);
   }
 
-  /** Getter for <code>SION.training_recommendation.is_completed</code>. */
+  /** Getter for <code>sion.training_recommendation.is_completed</code>. */
   public Byte getIsCompleted() {
     return (Byte) get(5);
   }

@@ -57,92 +57,92 @@ public class Notification implements Serializable {
     this.senderId = senderId;
   }
 
-  /** Getter for <code>SION.notification.notification_id</code>. */
+  /** Getter for <code>sion.notification.notification_id</code>. */
   public Long getNotificationId() {
     return this.notificationId;
   }
 
-  /** Setter for <code>SION.notification.notification_id</code>. */
+  /** Setter for <code>sion.notification.notification_id</code>. */
   public void setNotificationId(Long notificationId) {
     this.notificationId = notificationId;
   }
 
-  /** Getter for <code>SION.notification.notification_type</code>. */
+  /** Getter for <code>sion.notification.notification_type</code>. */
   public String getNotificationType() {
     return this.notificationType;
   }
 
-  /** Setter for <code>SION.notification.notification_type</code>. */
+  /** Setter for <code>sion.notification.notification_type</code>. */
   public void setNotificationType(String notificationType) {
     this.notificationType = notificationType;
   }
 
-  /** Getter for <code>SION.notification.linked_content_id</code>. */
+  /** Getter for <code>sion.notification.linked_content_id</code>. */
   public String getLinkedContentId() {
     return this.linkedContentId;
   }
 
-  /** Setter for <code>SION.notification.linked_content_id</code>. */
+  /** Setter for <code>sion.notification.linked_content_id</code>. */
   public void setLinkedContentId(String linkedContentId) {
     this.linkedContentId = linkedContentId;
   }
 
-  /** Getter for <code>SION.notification.message</code>. */
+  /** Getter for <code>sion.notification.message</code>. */
   public String getMessage() {
     return this.message;
   }
 
-  /** Setter for <code>SION.notification.message</code>. */
+  /** Setter for <code>sion.notification.message</code>. */
   public void setMessage(String message) {
     this.message = message;
   }
 
-  /** Getter for <code>SION.notification.is_read</code>. */
+  /** Getter for <code>sion.notification.is_read</code>. */
   public Byte getIsRead() {
     return this.isRead;
   }
 
-  /** Setter for <code>SION.notification.is_read</code>. */
+  /** Setter for <code>sion.notification.is_read</code>. */
   public void setIsRead(Byte isRead) {
     this.isRead = isRead;
   }
 
-  /** Getter for <code>SION.notification.created_at</code>. */
+  /** Getter for <code>sion.notification.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.notification.created_at</code>. */
+  /** Setter for <code>sion.notification.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.notification.updated_at</code>. */
+  /** Getter for <code>sion.notification.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.notification.updated_at</code>. */
+  /** Setter for <code>sion.notification.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.notification.receiver_id</code>. */
+  /** Getter for <code>sion.notification.receiver_id</code>. */
   public String getReceiverId() {
     return this.receiverId;
   }
 
-  /** Setter for <code>SION.notification.receiver_id</code>. */
+  /** Setter for <code>sion.notification.receiver_id</code>. */
   public void setReceiverId(String receiverId) {
     this.receiverId = receiverId;
   }
 
-  /** Getter for <code>SION.notification.sender_id</code>. */
+  /** Getter for <code>sion.notification.sender_id</code>. */
   public String getSenderId() {
     return this.senderId;
   }
 
-  /** Setter for <code>SION.notification.sender_id</code>. */
+  /** Setter for <code>sion.notification.sender_id</code>. */
   public void setSenderId(String senderId) {
     this.senderId = senderId;
   }

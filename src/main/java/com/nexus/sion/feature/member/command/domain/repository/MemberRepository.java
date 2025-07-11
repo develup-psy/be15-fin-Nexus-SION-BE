@@ -28,5 +28,5 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
   boolean existsByEmployeeIdentificationNumberAndRole(String adminId, MemberRole memberRole);
 
-    List<Member> findAllByRole(MemberRole memberRole);
+  List<Member> findAllByRole(MemberRole memberRole);
 }
