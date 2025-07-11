@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.notification.command.application.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -25,6 +26,8 @@ import com.nexus.sion.feature.notification.query.dto.NotificationDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -171,8 +174,41 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
   @Transactional
   @Override
-  public void sendSquadShareNotification(String senderId, String receiverId, String squadCode) {
-    createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode);
+  public void sendSquadShareNotification(
+      String senderId, List<String> receivers, String squadCode) {
+
+      final String senderName =
+              senderId != null
+                      ? memberRepository
+                      .findEmployeeNameByEmployeeIdentificationNumber(senderId)
+                      .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND))
+                      : "";
+
+      final String notificationMessage = NotificationType.SQUAD_SHARE.generateMessage(senderName);
+
+      List<Notification> notificationsToSave =
+              receivers.stream()
+                      .map(
+                              receiverId ->
+                                      Notification.builder()
+                                              .senderId(senderId)
+                                              .receiverId(receiverId)
+                                              .message(notificationMessage)
+                                              .notificationType(NotificationType.SQUAD_SHARE)
+                                              .linkedContentId(squadCode)
+                                              .build())
+                      .toList();
+
+      // 모두 저장
+      List<Notification> savedNotifications = notificationRepository.saveAll(notificationsToSave);
+
+      // SSE emiter 로 send
+      savedNotifications.forEach(
+              notification -> {
+                  NotificationDTO dto = modelMapper.map(notification, NotificationDTO.class);
+                  dto.setSenderName(senderName);
+                  send(notification.getReceiverId(), dto);
+              });
   }
 
   @Async

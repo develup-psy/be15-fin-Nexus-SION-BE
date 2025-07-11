@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.notification.command.application.dto.request;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SquadShareNotificationRequest {
   private String squadCode;
-  private String receiverId;
+  private List<String> receivers;
 }
