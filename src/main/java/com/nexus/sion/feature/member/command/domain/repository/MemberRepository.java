@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.command.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Param;
@@ -26,4 +27,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
       @Param("employeeIdentificationNumber") String employeeIdentificationNumber);
 
   boolean existsByEmployeeIdentificationNumberAndRole(String adminId, MemberRole memberRole);
+
+    List<Member> findAllByRole(MemberRole memberRole);
 }
