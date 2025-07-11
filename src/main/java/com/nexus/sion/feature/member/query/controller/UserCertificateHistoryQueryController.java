@@ -21,7 +21,7 @@ public class UserCertificateHistoryQueryController {
 
   @GetMapping("/me")
   public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>> getMyCertificates(
-      @AuthenticationPrincipal Long memberId) {
+      @AuthenticationPrincipal String memberId) {
     List<UserCertificateHistoryResponse> result =
         userCertificateHistoryQueryService.getMyCertificates(memberId);
     return ResponseEntity.ok(ApiResponse.success(result));

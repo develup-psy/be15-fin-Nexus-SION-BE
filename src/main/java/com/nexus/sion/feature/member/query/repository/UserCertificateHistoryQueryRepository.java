@@ -19,7 +19,7 @@ public class UserCertificateHistoryQueryRepository {
 
   private final DSLContext dsl;
 
-  public List<UserCertificateHistoryResponse> findByMemberId(Long memberId) {
+  public List<UserCertificateHistoryResponse> findByMemberId(String memberId) {
     return dsl.select(
             USER_CERTIFICATE_HISTORY.USER_CERTIFICATE_HISTORY_ID,
             CERTIFICATE.CERTIFICATE_NAME,
@@ -39,10 +39,9 @@ public class UserCertificateHistoryQueryRepository {
         .on(
             USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-        .where(
-            USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
-                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-        .fetch(
+            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(memberId))
+
+            .fetch(
             record ->
                 UserCertificateHistoryResponse.builder()
                     .userCertificateHistoryId(
