@@ -22,7 +22,7 @@ public class DeveloperTechStackHistory extends BaseTimeEntity {
   @Column(name = "developer_tech_stack_id", nullable = false)
   private Long developerTechStackId;
 
-  @Column(name = "project_code", nullable = false)
+  @Column(name = "project_code")
   private String projectCode;
 
   @Column(name = "added_score", nullable = false)
