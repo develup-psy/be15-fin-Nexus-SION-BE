@@ -3,6 +3,7 @@ package com.nexus.sion.feature.member.command.application.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.nexus.sion.common.s3.service.DocumentS3Service;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -25,6 +26,7 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
 
   private final UserCertificateHistoryRepository userCertificateHistoryRepository;
   private final CertificateRepository certificateRepository;
+  private final DocumentS3Service documentS3Service;
 
   @Override
   @Transactional
@@ -34,12 +36,17 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
             .findById(request.getCertificateName())
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
+    String prefix = "certificates";
+    String uploadedUrl = documentS3Service
+            .uploadFile(request.getPdfFileUrl(), prefix)
+            .getUrl();
+
     UserCertificateHistory history =
         UserCertificateHistory.builder()
             .certificateName(certificate.getCertificateName())
             .employeeIdentificationNumber(employeeId)
             .certificateStatus(CertificateStatus.PENDING)
-            .pdfFileUrl(request.getPdfFileUrl())
+                .pdfFileUrl(uploadedUrl)
             .issueDate(request.getIssueDate())
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
