@@ -172,10 +172,12 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
   @Transactional
   @Override
-  public void sendSquadShareNotification(String senderId, List<String> receivers, String squadCode) {
-    receivers.forEach(receiverId ->
-            createAndSendNotification(senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode)
-    );
+  public void sendSquadShareNotification(
+      String senderId, List<String> receivers, String squadCode) {
+    receivers.forEach(
+        receiverId ->
+            createAndSendNotification(
+                senderId, receiverId, null, NotificationType.SQUAD_SHARE, squadCode));
   }
 
   @Async

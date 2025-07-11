@@ -1,10 +1,10 @@
 package com.nexus.sion.feature.notification.command.application.service;
 
+import java.util.List;
+
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
-
-import java.util.List;
 
 public interface NotificationCommandService {
   void createAndSendNotification(
