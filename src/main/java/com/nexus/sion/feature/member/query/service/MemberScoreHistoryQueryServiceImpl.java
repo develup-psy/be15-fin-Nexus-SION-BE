@@ -2,11 +2,11 @@ package com.nexus.sion.feature.member.query.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Service;
+
 import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
-import org.springframework.stereotype.Service;
-
 import com.nexus.sion.feature.member.query.dto.response.MemberScoreHistoryResponse;
 import com.nexus.sion.feature.member.query.repository.MemberScoreQueryRepository;
 
@@ -48,11 +48,12 @@ public class MemberScoreHistoryQueryServiceImpl implements MemberScoreHistoryQue
         latestPrevRecord = prevTech;
       } else {
         latestPrevRecord =
-                prevTech.getCreatedAt().isAfter(prevCert.getCreatedAt()) ? prevTech : prevCert;
+            prevTech.getCreatedAt().isAfter(prevCert.getCreatedAt()) ? prevTech : prevCert;
       }
       if (latestPrevRecord != null) {
         previousTotalScore =
-                latestPrevRecord.getTotalTechStackScores() + latestPrevRecord.getTotalCertificateScores();
+            latestPrevRecord.getTotalTechStackScores()
+                + latestPrevRecord.getTotalCertificateScores();
         previousTotalScoreDate = latestPrevRecord.getCreatedAt();
       }
     }

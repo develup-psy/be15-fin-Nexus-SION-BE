@@ -3,9 +3,10 @@ package com.nexus.sion.feature.member.command.application.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.nexus.sion.common.s3.service.DocumentS3Service;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.nexus.sion.common.s3.service.DocumentS3Service;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.CertificateRejectRequest;
@@ -18,7 +19,6 @@ import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHi
 import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -37,16 +37,14 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
     String prefix = "certificates";
-    String uploadedUrl = documentS3Service
-            .uploadFile(request.getPdfFileUrl(), prefix)
-            .getUrl();
+    String uploadedUrl = documentS3Service.uploadFile(request.getPdfFileUrl(), prefix).getUrl();
 
     UserCertificateHistory history =
         UserCertificateHistory.builder()
             .certificateName(certificate.getCertificateName())
             .employeeIdentificationNumber(employeeId)
             .certificateStatus(CertificateStatus.PENDING)
-                .pdfFileUrl(uploadedUrl)
+            .pdfFileUrl(uploadedUrl)
             .issueDate(request.getIssueDate())
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
