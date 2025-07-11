@@ -46,13 +46,13 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
 
   @Override
   @Transactional
-  public void reject(Long id, String adminId) {
+  public void reject(Long id, String adminId, String reason) {
     validateAdmin(adminId);
     DeveloperProjectWork work =
         workRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
-    work.reject(adminId);
+    work.reject(adminId , reason);
   }
 
   private void validateAdmin(String adminId) {
