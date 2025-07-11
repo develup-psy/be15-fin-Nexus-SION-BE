@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,6 +24,6 @@ public class UserCertificateHistoryRequest {
   @NotNull(message = "취득일자는 필수입니다.")
   private LocalDate issueDate;
 
-  @NotBlank(message = "PDF 파일 URL은 필수입니다.")
-  private String pdfFileUrl;
+  @NotNull(message = "PDF 파일은 필수입니다.")
+  private MultipartFile pdfFileUrl;
 }
