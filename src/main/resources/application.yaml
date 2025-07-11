@@ -94,4 +94,5 @@ management:
 ai:
   fp-infer: http://localhost:8100/fp-infer
   embed-function: http://localhost:8100/fp-embed
+  fp-freelencer-infer: http://localhost:8100/fp-freelancer-infer
 
