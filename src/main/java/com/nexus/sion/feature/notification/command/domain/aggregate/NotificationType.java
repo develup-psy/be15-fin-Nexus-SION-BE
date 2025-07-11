@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum NotificationType {
 
   /** 업무 업로드 요청 알림 */
-  TASK_UPLOAD_REQUEST("프로젝트가 종료되었습니다. 진행하신 업무 결과물을 업로드해주세요."),
+  TASK_UPLOAD_REQUEST("프로젝트가 종료되었습니다. 진행하신 프로젝트의 이력을 등록해주세요."),
 
   /** FP 분석 완료 알림 */
   FP_ANALYSIS_COMPLETE("FP 분석이 완료되었습니다. 결과를 확인해주세요."),
@@ -27,7 +27,7 @@ public enum NotificationType {
   GRADE_CHANGE("등급이 변경되었습니다."),
 
   /** 프로젝트 업무 승인 요청 알림 */
-  TASK_APPROVAL_REQUEST("{username}님의 프로젝트 업무 업로드가 완료되었습니다."),
+  TASK_APPROVAL_REQUEST("{username}님의 프로젝트 이력 등록 요청이 들어왔습니다."),
 
   /** 자격증 등록 승인 요청 알림 */
   CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다.");
