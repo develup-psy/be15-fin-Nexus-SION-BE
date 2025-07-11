@@ -102,192 +102,192 @@ public class Member implements Serializable {
     this.totalScore = totalScore;
   }
 
-  /** Getter for <code>SION.member.employee_identification_number</code>. */
+  /** Getter for <code>sion.member.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.member.employee_identification_number</code>. */
+  /** Setter for <code>sion.member.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.member.employee_name</code>. */
+  /** Getter for <code>sion.member.employee_name</code>. */
   public String getEmployeeName() {
     return this.employeeName;
   }
 
-  /** Setter for <code>SION.member.employee_name</code>. */
+  /** Setter for <code>sion.member.employee_name</code>. */
   public void setEmployeeName(String employeeName) {
     this.employeeName = employeeName;
   }
 
-  /** Getter for <code>SION.member.password</code>. */
+  /** Getter for <code>sion.member.password</code>. */
   public String getPassword() {
     return this.password;
   }
 
-  /** Setter for <code>SION.member.password</code>. */
+  /** Setter for <code>sion.member.password</code>. */
   public void setPassword(String password) {
     this.password = password;
   }
 
-  /** Getter for <code>SION.member.profile_image_url</code>. */
+  /** Getter for <code>sion.member.profile_image_url</code>. */
   public String getProfileImageUrl() {
     return this.profileImageUrl;
   }
 
-  /** Setter for <code>SION.member.profile_image_url</code>. */
+  /** Setter for <code>sion.member.profile_image_url</code>. */
   public void setProfileImageUrl(String profileImageUrl) {
     this.profileImageUrl = profileImageUrl;
   }
 
-  /** Getter for <code>SION.member.phone_number</code>. */
+  /** Getter for <code>sion.member.phone_number</code>. */
   public String getPhoneNumber() {
     return this.phoneNumber;
   }
 
-  /** Setter for <code>SION.member.phone_number</code>. */
+  /** Setter for <code>sion.member.phone_number</code>. */
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
 
-  /** Getter for <code>SION.member.position_name</code>. */
+  /** Getter for <code>sion.member.position_name</code>. */
   public String getPositionName() {
     return this.positionName;
   }
 
-  /** Setter for <code>SION.member.position_name</code>. */
+  /** Setter for <code>sion.member.position_name</code>. */
   public void setPositionName(String positionName) {
     this.positionName = positionName;
   }
 
-  /** Getter for <code>SION.member.department_name</code>. */
+  /** Getter for <code>sion.member.department_name</code>. */
   public String getDepartmentName() {
     return this.departmentName;
   }
 
-  /** Setter for <code>SION.member.department_name</code>. */
+  /** Setter for <code>sion.member.department_name</code>. */
   public void setDepartmentName(String departmentName) {
     this.departmentName = departmentName;
   }
 
-  /** Getter for <code>SION.member.birthday</code>. */
+  /** Getter for <code>sion.member.birthday</code>. */
   public LocalDate getBirthday() {
     return this.birthday;
   }
 
-  /** Setter for <code>SION.member.birthday</code>. */
+  /** Setter for <code>sion.member.birthday</code>. */
   public void setBirthday(LocalDate birthday) {
     this.birthday = birthday;
   }
 
-  /** Getter for <code>SION.member.joined_at</code>. */
+  /** Getter for <code>sion.member.joined_at</code>. */
   public LocalDate getJoinedAt() {
     return this.joinedAt;
   }
 
-  /** Setter for <code>SION.member.joined_at</code>. */
+  /** Setter for <code>sion.member.joined_at</code>. */
   public void setJoinedAt(LocalDate joinedAt) {
     this.joinedAt = joinedAt;
   }
 
-  /** Getter for <code>SION.member.email</code>. */
+  /** Getter for <code>sion.member.email</code>. */
   public String getEmail() {
     return this.email;
   }
 
-  /** Setter for <code>SION.member.email</code>. */
+  /** Setter for <code>sion.member.email</code>. */
   public void setEmail(String email) {
     this.email = email;
   }
 
-  /** Getter for <code>SION.member.career_years</code>. */
+  /** Getter for <code>sion.member.career_years</code>. */
   public Integer getCareerYears() {
     return this.careerYears;
   }
 
-  /** Setter for <code>SION.member.career_years</code>. */
+  /** Setter for <code>sion.member.career_years</code>. */
   public void setCareerYears(Integer careerYears) {
     this.careerYears = careerYears;
   }
 
-  /** Getter for <code>SION.member.salary</code>. */
+  /** Getter for <code>sion.member.salary</code>. */
   public Long getSalary() {
     return this.salary;
   }
 
-  /** Setter for <code>SION.member.salary</code>. */
+  /** Setter for <code>sion.member.salary</code>. */
   public void setSalary(Long salary) {
     this.salary = salary;
   }
 
-  /** Getter for <code>SION.member.status</code>. */
+  /** Getter for <code>sion.member.status</code>. */
   public MemberStatus getStatus() {
     return this.status;
   }
 
-  /** Setter for <code>SION.member.status</code>. */
+  /** Setter for <code>sion.member.status</code>. */
   public void setStatus(MemberStatus status) {
     this.status = status;
   }
 
-  /** Getter for <code>SION.member.grade_code</code>. */
+  /** Getter for <code>sion.member.grade_code</code>. */
   public MemberGradeCode getGradeCode() {
     return this.gradeCode;
   }
 
-  /** Setter for <code>SION.member.grade_code</code>. */
+  /** Setter for <code>sion.member.grade_code</code>. */
   public void setGradeCode(MemberGradeCode gradeCode) {
     this.gradeCode = gradeCode;
   }
 
-  /** Getter for <code>SION.member.created_at</code>. */
+  /** Getter for <code>sion.member.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.member.created_at</code>. */
+  /** Setter for <code>sion.member.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.member.updated_at</code>. */
+  /** Getter for <code>sion.member.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.member.updated_at</code>. */
+  /** Setter for <code>sion.member.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.member.deleted_at</code>. */
+  /** Getter for <code>sion.member.deleted_at</code>. */
   public LocalDateTime getDeletedAt() {
     return this.deletedAt;
   }
 
-  /** Setter for <code>SION.member.deleted_at</code>. */
+  /** Setter for <code>sion.member.deleted_at</code>. */
   public void setDeletedAt(LocalDateTime deletedAt) {
     this.deletedAt = deletedAt;
   }
 
-  /** Getter for <code>SION.member.role</code>. */
+  /** Getter for <code>sion.member.role</code>. */
   public MemberRole getRole() {
     return this.role;
   }
 
-  /** Setter for <code>SION.member.role</code>. */
+  /** Setter for <code>sion.member.role</code>. */
   public void setRole(MemberRole role) {
     this.role = role;
   }
 
-  /** Getter for <code>SION.member.total_score</code>. */
+  /** Getter for <code>sion.member.total_score</code>. */
   public Integer getTotalScore() {
     return this.totalScore;
   }
 
-  /** Setter for <code>SION.member.total_score</code>. */
+  /** Setter for <code>sion.member.total_score</code>. */
   public void setTotalScore(Integer totalScore) {
     this.totalScore = totalScore;
   }

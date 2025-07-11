@@ -35,7 +35,7 @@ public class Grade extends TableImpl<GradeRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.grade</code> */
+  /** The reference instance of <code>sion.grade</code> */
   public static final Grade GRADE = new Grade();
 
   /** The class holding records for this type */
@@ -44,7 +44,7 @@ public class Grade extends TableImpl<GradeRecord> {
     return GradeRecord.class;
   }
 
-  /** The column <code>SION.grade.grade_code</code>. */
+  /** The column <code>sion.grade.grade_code</code>. */
   public final TableField<GradeRecord, GradeGradeCode> GRADE_CODE =
       createField(
           DSL.name("grade_code"),
@@ -54,15 +54,15 @@ public class Grade extends TableImpl<GradeRecord> {
           this,
           "");
 
-  /** The column <code>SION.grade.ratio</code>. */
+  /** The column <code>sion.grade.ratio</code>. */
   public final TableField<GradeRecord, BigDecimal> RATIO =
       createField(DSL.name("ratio"), SQLDataType.DECIMAL(5, 4).nullable(false), this, "");
 
-  /** The column <code>SION.grade.productivity</code>. */
+  /** The column <code>sion.grade.productivity</code>. */
   public final TableField<GradeRecord, BigDecimal> PRODUCTIVITY =
       createField(DSL.name("productivity"), SQLDataType.DECIMAL(10, 4).nullable(false), this, "");
 
-  /** The column <code>SION.grade.score_threshold</code>. */
+  /** The column <code>sion.grade.score_threshold</code>. */
   public final TableField<GradeRecord, Integer> SCORE_THRESHOLD =
       createField(
           DSL.name("score_threshold"),
@@ -72,11 +72,11 @@ public class Grade extends TableImpl<GradeRecord> {
           this,
           "");
 
-  /** The column <code>SION.grade.monthly_unit_price</code>. */
+  /** The column <code>sion.grade.monthly_unit_price</code>. */
   public final TableField<GradeRecord, Integer> MONTHLY_UNIT_PRICE =
       createField(DSL.name("monthly_unit_price"), SQLDataType.INTEGER.nullable(false), this, "");
 
-  /** The column <code>SION.grade.created_at</code>. */
+  /** The column <code>sion.grade.created_at</code>. */
   public final TableField<GradeRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -86,7 +86,7 @@ public class Grade extends TableImpl<GradeRecord> {
           this,
           "");
 
-  /** The column <code>SION.grade.updated_at</code>. */
+  /** The column <code>sion.grade.updated_at</code>. */
   public final TableField<GradeRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -104,17 +104,17 @@ public class Grade extends TableImpl<GradeRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.grade</code> table reference */
+  /** Create an aliased <code>sion.grade</code> table reference */
   public Grade(String alias) {
     this(DSL.name(alias), GRADE);
   }
 
-  /** Create an aliased <code>SION.grade</code> table reference */
+  /** Create an aliased <code>sion.grade</code> table reference */
   public Grade(Name alias) {
     this(alias, GRADE);
   }
 
-  /** Create a <code>SION.grade</code> table reference */
+  /** Create a <code>sion.grade</code> table reference */
   public Grade() {
     this(DSL.name("grade"), null);
   }

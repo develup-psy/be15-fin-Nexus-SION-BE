@@ -52,72 +52,72 @@ public class Grade implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.grade.grade_code</code>. */
+  /** Getter for <code>sion.grade.grade_code</code>. */
   public GradeGradeCode getGradeCode() {
     return this.gradeCode;
   }
 
-  /** Setter for <code>SION.grade.grade_code</code>. */
+  /** Setter for <code>sion.grade.grade_code</code>. */
   public void setGradeCode(GradeGradeCode gradeCode) {
     this.gradeCode = gradeCode;
   }
 
-  /** Getter for <code>SION.grade.ratio</code>. */
+  /** Getter for <code>sion.grade.ratio</code>. */
   public BigDecimal getRatio() {
     return this.ratio;
   }
 
-  /** Setter for <code>SION.grade.ratio</code>. */
+  /** Setter for <code>sion.grade.ratio</code>. */
   public void setRatio(BigDecimal ratio) {
     this.ratio = ratio;
   }
 
-  /** Getter for <code>SION.grade.productivity</code>. */
+  /** Getter for <code>sion.grade.productivity</code>. */
   public BigDecimal getProductivity() {
     return this.productivity;
   }
 
-  /** Setter for <code>SION.grade.productivity</code>. */
+  /** Setter for <code>sion.grade.productivity</code>. */
   public void setProductivity(BigDecimal productivity) {
     this.productivity = productivity;
   }
 
-  /** Getter for <code>SION.grade.score_threshold</code>. */
+  /** Getter for <code>sion.grade.score_threshold</code>. */
   public Integer getScoreThreshold() {
     return this.scoreThreshold;
   }
 
-  /** Setter for <code>SION.grade.score_threshold</code>. */
+  /** Setter for <code>sion.grade.score_threshold</code>. */
   public void setScoreThreshold(Integer scoreThreshold) {
     this.scoreThreshold = scoreThreshold;
   }
 
-  /** Getter for <code>SION.grade.monthly_unit_price</code>. */
+  /** Getter for <code>sion.grade.monthly_unit_price</code>. */
   public Integer getMonthlyUnitPrice() {
     return this.monthlyUnitPrice;
   }
 
-  /** Setter for <code>SION.grade.monthly_unit_price</code>. */
+  /** Setter for <code>sion.grade.monthly_unit_price</code>. */
   public void setMonthlyUnitPrice(Integer monthlyUnitPrice) {
     this.monthlyUnitPrice = monthlyUnitPrice;
   }
 
-  /** Getter for <code>SION.grade.created_at</code>. */
+  /** Getter for <code>sion.grade.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.grade.created_at</code>. */
+  /** Setter for <code>sion.grade.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.grade.updated_at</code>. */
+  /** Getter for <code>sion.grade.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.grade.updated_at</code>. */
+  /** Setter for <code>sion.grade.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

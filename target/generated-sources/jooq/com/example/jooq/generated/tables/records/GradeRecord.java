@@ -23,72 +23,72 @@ public class GradeRecord extends UpdatableRecordImpl<GradeRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.grade.grade_code</code>. */
+  /** Setter for <code>sion.grade.grade_code</code>. */
   public void setGradeCode(GradeGradeCode value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.grade.grade_code</code>. */
+  /** Getter for <code>sion.grade.grade_code</code>. */
   public GradeGradeCode getGradeCode() {
     return (GradeGradeCode) get(0);
   }
 
-  /** Setter for <code>SION.grade.ratio</code>. */
+  /** Setter for <code>sion.grade.ratio</code>. */
   public void setRatio(BigDecimal value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.grade.ratio</code>. */
+  /** Getter for <code>sion.grade.ratio</code>. */
   public BigDecimal getRatio() {
     return (BigDecimal) get(1);
   }
 
-  /** Setter for <code>SION.grade.productivity</code>. */
+  /** Setter for <code>sion.grade.productivity</code>. */
   public void setProductivity(BigDecimal value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.grade.productivity</code>. */
+  /** Getter for <code>sion.grade.productivity</code>. */
   public BigDecimal getProductivity() {
     return (BigDecimal) get(2);
   }
 
-  /** Setter for <code>SION.grade.score_threshold</code>. */
+  /** Setter for <code>sion.grade.score_threshold</code>. */
   public void setScoreThreshold(Integer value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.grade.score_threshold</code>. */
+  /** Getter for <code>sion.grade.score_threshold</code>. */
   public Integer getScoreThreshold() {
     return (Integer) get(3);
   }
 
-  /** Setter for <code>SION.grade.monthly_unit_price</code>. */
+  /** Setter for <code>sion.grade.monthly_unit_price</code>. */
   public void setMonthlyUnitPrice(Integer value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.grade.monthly_unit_price</code>. */
+  /** Getter for <code>sion.grade.monthly_unit_price</code>. */
   public Integer getMonthlyUnitPrice() {
     return (Integer) get(4);
   }
 
-  /** Setter for <code>SION.grade.created_at</code>. */
+  /** Setter for <code>sion.grade.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(5, value);
   }
 
-  /** Getter for <code>SION.grade.created_at</code>. */
+  /** Getter for <code>sion.grade.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(5);
   }
 
-  /** Setter for <code>SION.grade.updated_at</code>. */
+  /** Setter for <code>sion.grade.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(6, value);
   }
 
-  /** Getter for <code>SION.grade.updated_at</code>. */
+  /** Getter for <code>sion.grade.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(6);
   }

@@ -19,6 +19,7 @@ public class DeveloperProjectWork implements Serializable {
   private String projectCode;
   private DeveloperProjectWorkApprovalStatus approvalStatus;
   private String approvedBy;
+  private String rejectedReason;
   private LocalDateTime approvedAt;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
@@ -31,6 +32,7 @@ public class DeveloperProjectWork implements Serializable {
     this.projectCode = value.projectCode;
     this.approvalStatus = value.approvalStatus;
     this.approvedBy = value.approvedBy;
+    this.rejectedReason = value.rejectedReason;
     this.approvedAt = value.approvedAt;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
@@ -42,6 +44,7 @@ public class DeveloperProjectWork implements Serializable {
       String projectCode,
       DeveloperProjectWorkApprovalStatus approvalStatus,
       String approvedBy,
+      String rejectedReason,
       LocalDateTime approvedAt,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
@@ -50,87 +53,98 @@ public class DeveloperProjectWork implements Serializable {
     this.projectCode = projectCode;
     this.approvalStatus = approvalStatus;
     this.approvedBy = approvedBy;
+    this.rejectedReason = rejectedReason;
     this.approvedAt = approvedAt;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>SION.developer_project_work.developer_project_work_id</code>. */
+  /** Getter for <code>sion.developer_project_work.developer_project_work_id</code>. */
   public Long getDeveloperProjectWorkId() {
     return this.developerProjectWorkId;
   }
 
-  /** Setter for <code>SION.developer_project_work.developer_project_work_id</code>. */
+  /** Setter for <code>sion.developer_project_work.developer_project_work_id</code>. */
   public void setDeveloperProjectWorkId(Long developerProjectWorkId) {
     this.developerProjectWorkId = developerProjectWorkId;
   }
 
-  /** Getter for <code>SION.developer_project_work.employee_identification_number</code>. */
+  /** Getter for <code>sion.developer_project_work.employee_identification_number</code>. */
   public String getEmployeeIdentificationNumber() {
     return this.employeeIdentificationNumber;
   }
 
-  /** Setter for <code>SION.developer_project_work.employee_identification_number</code>. */
+  /** Setter for <code>sion.developer_project_work.employee_identification_number</code>. */
   public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>SION.developer_project_work.project_code</code>. */
+  /** Getter for <code>sion.developer_project_work.project_code</code>. */
   public String getProjectCode() {
     return this.projectCode;
   }
 
-  /** Setter for <code>SION.developer_project_work.project_code</code>. */
+  /** Setter for <code>sion.developer_project_work.project_code</code>. */
   public void setProjectCode(String projectCode) {
     this.projectCode = projectCode;
   }
 
-  /** Getter for <code>SION.developer_project_work.approval_status</code>. */
+  /** Getter for <code>sion.developer_project_work.approval_status</code>. */
   public DeveloperProjectWorkApprovalStatus getApprovalStatus() {
     return this.approvalStatus;
   }
 
-  /** Setter for <code>SION.developer_project_work.approval_status</code>. */
+  /** Setter for <code>sion.developer_project_work.approval_status</code>. */
   public void setApprovalStatus(DeveloperProjectWorkApprovalStatus approvalStatus) {
     this.approvalStatus = approvalStatus;
   }
 
-  /** Getter for <code>SION.developer_project_work.approved_by</code>. */
+  /** Getter for <code>sion.developer_project_work.approved_by</code>. */
   public String getApprovedBy() {
     return this.approvedBy;
   }
 
-  /** Setter for <code>SION.developer_project_work.approved_by</code>. */
+  /** Setter for <code>sion.developer_project_work.approved_by</code>. */
   public void setApprovedBy(String approvedBy) {
     this.approvedBy = approvedBy;
   }
 
-  /** Getter for <code>SION.developer_project_work.approved_at</code>. */
+  /** Getter for <code>sion.developer_project_work.rejected_reason</code>. */
+  public String getRejectedReason() {
+    return this.rejectedReason;
+  }
+
+  /** Setter for <code>sion.developer_project_work.rejected_reason</code>. */
+  public void setRejectedReason(String rejectedReason) {
+    this.rejectedReason = rejectedReason;
+  }
+
+  /** Getter for <code>sion.developer_project_work.approved_at</code>. */
   public LocalDateTime getApprovedAt() {
     return this.approvedAt;
   }
 
-  /** Setter for <code>SION.developer_project_work.approved_at</code>. */
+  /** Setter for <code>sion.developer_project_work.approved_at</code>. */
   public void setApprovedAt(LocalDateTime approvedAt) {
     this.approvedAt = approvedAt;
   }
 
-  /** Getter for <code>SION.developer_project_work.created_at</code>. */
+  /** Getter for <code>sion.developer_project_work.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return this.createdAt;
   }
 
-  /** Setter for <code>SION.developer_project_work.created_at</code>. */
+  /** Setter for <code>sion.developer_project_work.created_at</code>. */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
 
-  /** Getter for <code>SION.developer_project_work.updated_at</code>. */
+  /** Getter for <code>sion.developer_project_work.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return this.updatedAt;
   }
 
-  /** Setter for <code>SION.developer_project_work.updated_at</code>. */
+  /** Setter for <code>sion.developer_project_work.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
@@ -157,6 +171,9 @@ public class DeveloperProjectWork implements Serializable {
     if (this.approvedBy == null) {
       if (other.approvedBy != null) return false;
     } else if (!this.approvedBy.equals(other.approvedBy)) return false;
+    if (this.rejectedReason == null) {
+      if (other.rejectedReason != null) return false;
+    } else if (!this.rejectedReason.equals(other.rejectedReason)) return false;
     if (this.approvedAt == null) {
       if (other.approvedAt != null) return false;
     } else if (!this.approvedAt.equals(other.approvedAt)) return false;
@@ -184,6 +201,7 @@ public class DeveloperProjectWork implements Serializable {
     result = prime * result + ((this.projectCode == null) ? 0 : this.projectCode.hashCode());
     result = prime * result + ((this.approvalStatus == null) ? 0 : this.approvalStatus.hashCode());
     result = prime * result + ((this.approvedBy == null) ? 0 : this.approvedBy.hashCode());
+    result = prime * result + ((this.rejectedReason == null) ? 0 : this.rejectedReason.hashCode());
     result = prime * result + ((this.approvedAt == null) ? 0 : this.approvedAt.hashCode());
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
@@ -199,6 +217,7 @@ public class DeveloperProjectWork implements Serializable {
     sb.append(", ").append(projectCode);
     sb.append(", ").append(approvalStatus);
     sb.append(", ").append(approvedBy);
+    sb.append(", ").append(rejectedReason);
     sb.append(", ").append(approvedAt);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);

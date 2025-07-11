@@ -20,52 +20,52 @@ public class CertificateRecord extends UpdatableRecordImpl<CertificateRecord>
 
   private static final long serialVersionUID = 1L;
 
-  /** Setter for <code>SION.certificate.certificate_name</code>. */
+  /** Setter for <code>sion.certificate.certificate_name</code>. */
   public void setCertificateName(String value) {
     set(0, value);
   }
 
-  /** Getter for <code>SION.certificate.certificate_name</code>. */
+  /** Getter for <code>sion.certificate.certificate_name</code>. */
   public String getCertificateName() {
     return (String) get(0);
   }
 
-  /** Setter for <code>SION.certificate.score</code>. */
+  /** Setter for <code>sion.certificate.score</code>. */
   public void setScore(Integer value) {
     set(1, value);
   }
 
-  /** Getter for <code>SION.certificate.score</code>. */
+  /** Getter for <code>sion.certificate.score</code>. */
   public Integer getScore() {
     return (Integer) get(1);
   }
 
-  /** Setter for <code>SION.certificate.created_at</code>. */
+  /** Setter for <code>sion.certificate.created_at</code>. */
   public void setCreatedAt(LocalDateTime value) {
     set(2, value);
   }
 
-  /** Getter for <code>SION.certificate.created_at</code>. */
+  /** Getter for <code>sion.certificate.created_at</code>. */
   public LocalDateTime getCreatedAt() {
     return (LocalDateTime) get(2);
   }
 
-  /** Setter for <code>SION.certificate.updated_at</code>. */
+  /** Setter for <code>sion.certificate.updated_at</code>. */
   public void setUpdatedAt(LocalDateTime value) {
     set(3, value);
   }
 
-  /** Getter for <code>SION.certificate.updated_at</code>. */
+  /** Getter for <code>sion.certificate.updated_at</code>. */
   public LocalDateTime getUpdatedAt() {
     return (LocalDateTime) get(3);
   }
 
-  /** Setter for <code>SION.certificate.issuing_organization</code>. */
+  /** Setter for <code>sion.certificate.issuing_organization</code>. */
   public void setIssuingOrganization(String value) {
     set(4, value);
   }
 
-  /** Getter for <code>SION.certificate.issuing_organization</code>. */
+  /** Getter for <code>sion.certificate.issuing_organization</code>. */
   public String getIssuingOrganization() {
     return (String) get(4);
   }

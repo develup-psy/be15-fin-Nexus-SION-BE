@@ -157,6 +157,24 @@ public class DeveloperProjectWorkDao
   }
 
   /**
+   * Fetch records that have <code>rejected_reason BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWork>
+      fetchRangeOfRejectedReason(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        DeveloperProjectWork.DEVELOPER_PROJECT_WORK.REJECTED_REASON,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>rejected_reason IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.DeveloperProjectWork> fetchByRejectedReason(
+      String... values) {
+    return fetch(DeveloperProjectWork.DEVELOPER_PROJECT_WORK.REJECTED_REASON, values);
+  }
+
+  /**
    * Fetch records that have <code>approved_at BETWEEN lowerInclusive AND
    * upperInclusive</code>
    */

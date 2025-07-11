@@ -40,7 +40,6 @@ import com.example.jooq.generated.tables.TechStack;
 import com.example.jooq.generated.tables.TrainingProgram;
 import com.example.jooq.generated.tables.TrainingRecommendation;
 import com.example.jooq.generated.tables.UserCertificateHistory;
-import com.example.jooq.generated.tables.UserTrainingHistory;
 import com.example.jooq.generated.tables.records.AiFeedbackRecord;
 import com.example.jooq.generated.tables.records.CertificateRecord;
 import com.example.jooq.generated.tables.records.ClientCompanyRecord;
@@ -72,9 +71,8 @@ import com.example.jooq.generated.tables.records.TechStackRecord;
 import com.example.jooq.generated.tables.records.TrainingProgramRecord;
 import com.example.jooq.generated.tables.records.TrainingRecommendationRecord;
 import com.example.jooq.generated.tables.records.UserCertificateHistoryRecord;
-import com.example.jooq.generated.tables.records.UserTrainingHistoryRecord;
 
-/** A class modelling foreign key relationships and constraints of tables in SION. */
+/** A class modelling foreign key relationships and constraints of tables in sion. */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Keys {
 
@@ -272,6 +270,12 @@ public class Keys {
       Internal.createUniqueKey(
           TrainingProgram.TRAINING_PROGRAM,
           DSL.name("KEY_training_program_PRIMARY"),
+          new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_ID},
+          true);
+  public static final UniqueKey<TrainingProgramRecord> KEY_TRAINING_PROGRAM_UK_TRAINING_NAME =
+      Internal.createUniqueKey(
+          TrainingProgram.TRAINING_PROGRAM,
+          DSL.name("KEY_training_program_UK_training_name"),
           new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
           true);
   public static final UniqueKey<TrainingRecommendationRecord> KEY_TRAINING_RECOMMENDATION_PRIMARY =
@@ -289,12 +293,6 @@ public class Keys {
           new TableField[] {
             UserCertificateHistory.USER_CERTIFICATE_HISTORY.USER_CERTIFICATE_HISTORY_ID
           },
-          true);
-  public static final UniqueKey<UserTrainingHistoryRecord> KEY_USER_TRAINING_HISTORY_PRIMARY =
-      Internal.createUniqueKey(
-          UserTrainingHistory.USER_TRAINING_HISTORY,
-          DSL.name("KEY_user_training_history_PRIMARY"),
-          new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.USER_TRAINIG_HISTORY_ID},
           true);
 
   // -------------------------------------------------------------------------
@@ -586,15 +584,6 @@ public class Keys {
           Keys.KEY_SQUAD_PRIMARY,
           new TableField[] {Squad.SQUAD.SQUAD_CODE},
           true);
-  public static final ForeignKey<SquadEmployeeRecord, MemberRecord>
-      FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1 =
-          Internal.createForeignKey(
-              SquadEmployee.SQUAD_EMPLOYEE,
-              DSL.name("FK_developer_TO_squad_employee_1"),
-              new TableField[] {SquadEmployee.SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
   public static final ForeignKey<SquadEmployeeRecord, ProjectAndJobRecord>
       FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1 =
           Internal.createForeignKey(
@@ -628,7 +617,7 @@ public class Keys {
               TrainingRecommendation.TRAINING_RECOMMENDATION,
               DSL.name("FK_TR_TRAINING"),
               new TableField[] {TrainingRecommendation.TRAINING_RECOMMENDATION.TRAINING_NAME},
-              Keys.KEY_TRAINING_PROGRAM_PRIMARY,
+              Keys.KEY_TRAINING_PROGRAM_UK_TRAINING_NAME,
               new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
               true);
   public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord>
@@ -650,34 +639,5 @@ public class Keys {
               },
               Keys.KEY_MEMBER_PRIMARY,
               new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_TRAINING_HISTORY_1 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_developer_TO_user_training_history_1"),
-              new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.UPDATED_BY},
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, MemberRecord>
-      FK_DEVELOPER_TO_USER_TRAINING_HISTORY_2 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_developer_TO_user_training_history_2"),
-              new TableField[] {
-                UserTrainingHistory.USER_TRAINING_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER
-              },
-              Keys.KEY_MEMBER_PRIMARY,
-              new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-              true);
-  public static final ForeignKey<UserTrainingHistoryRecord, TrainingProgramRecord>
-      FK_TRAINING_PROGRAM_TO_USER_TRAINING_HISTORY_1 =
-          Internal.createForeignKey(
-              UserTrainingHistory.USER_TRAINING_HISTORY,
-              DSL.name("FK_training_program_TO_user_training_history_1"),
-              new TableField[] {UserTrainingHistory.USER_TRAINING_HISTORY.TRAINING_NAME},
-              Keys.KEY_TRAINING_PROGRAM_PRIMARY,
-              new TableField[] {TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME},
               true);
 }

@@ -10,6 +10,7 @@ import java.util.function.Function;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function3;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -35,7 +36,7 @@ public class DeveloperProjectWorkHistoryTechStack
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.developer_project_work_history_tech_stack</code> */
+  /** The reference instance of <code>sion.developer_project_work_history_tech_stack</code> */
   public static final DeveloperProjectWorkHistoryTechStack
       DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK = new DeveloperProjectWorkHistoryTechStack();
 
@@ -47,20 +48,20 @@ public class DeveloperProjectWorkHistoryTechStack
 
   /**
    * The column <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
    * </code>.
    */
   public final TableField<DeveloperProjectWorkHistoryTechStackRecord, Long>
       DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_ID =
           createField(
               DSL.name("developer_project_work_history_tech_stack_id"),
-              SQLDataType.BIGINT.nullable(false),
+              SQLDataType.BIGINT.nullable(false).identity(true),
               this,
               "");
 
   /**
    * The column <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
    */
   public final TableField<DeveloperProjectWorkHistoryTechStackRecord, Long>
       DEVELOPER_PROJECT_WORK_HISTORY_ID =
@@ -70,7 +71,7 @@ public class DeveloperProjectWorkHistoryTechStack
               this,
               "");
 
-  /** The column <code>SION.developer_project_work_history_tech_stack.tech_stack_name</code>. */
+  /** The column <code>sion.developer_project_work_history_tech_stack.tech_stack_name</code>. */
   public final TableField<DeveloperProjectWorkHistoryTechStackRecord, String> TECH_STACK_NAME =
       createField(DSL.name("tech_stack_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
@@ -87,20 +88,20 @@ public class DeveloperProjectWorkHistoryTechStack
   }
 
   /**
-   * Create an aliased <code>SION.developer_project_work_history_tech_stack</code> table reference
+   * Create an aliased <code>sion.developer_project_work_history_tech_stack</code> table reference
    */
   public DeveloperProjectWorkHistoryTechStack(String alias) {
     this(DSL.name(alias), DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK);
   }
 
   /**
-   * Create an aliased <code>SION.developer_project_work_history_tech_stack</code> table reference
+   * Create an aliased <code>sion.developer_project_work_history_tech_stack</code> table reference
    */
   public DeveloperProjectWorkHistoryTechStack(Name alias) {
     this(alias, DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK);
   }
 
-  /** Create a <code>SION.developer_project_work_history_tech_stack</code> table reference */
+  /** Create a <code>sion.developer_project_work_history_tech_stack</code> table reference */
   public DeveloperProjectWorkHistoryTechStack() {
     this(DSL.name("developer_project_work_history_tech_stack"), null);
   }
@@ -116,6 +117,11 @@ public class DeveloperProjectWorkHistoryTechStack
   }
 
   @Override
+  public Identity<DeveloperProjectWorkHistoryTechStackRecord, Long> getIdentity() {
+    return (Identity<DeveloperProjectWorkHistoryTechStackRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<DeveloperProjectWorkHistoryTechStackRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_PRIMARY;
   }
@@ -128,7 +134,7 @@ public class DeveloperProjectWorkHistoryTechStack
   private transient DeveloperProjectWorkHistory _developerProjectWorkHistory;
   private transient TechStack _techStack;
 
-  /** Get the implicit join path to the <code>SION.developer_project_work_history</code> table. */
+  /** Get the implicit join path to the <code>sion.developer_project_work_history</code> table. */
   public DeveloperProjectWorkHistory developerProjectWorkHistory() {
     if (_developerProjectWorkHistory == null)
       _developerProjectWorkHistory = new DeveloperProjectWorkHistory(this, Keys.FK_DPWH_TS_DPWH);
@@ -136,7 +142,7 @@ public class DeveloperProjectWorkHistoryTechStack
     return _developerProjectWorkHistory;
   }
 
-  /** Get the implicit join path to the <code>SION.tech_stack</code> table. */
+  /** Get the implicit join path to the <code>sion.tech_stack</code> table. */
   public TechStack techStack() {
     if (_techStack == null) _techStack = new TechStack(this, Keys.FK_DPWH_TS_TECH_STACK);
 

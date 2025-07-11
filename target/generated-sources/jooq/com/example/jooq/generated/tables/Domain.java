@@ -33,7 +33,7 @@ public class Domain extends TableImpl<DomainRecord> {
 
   private static final long serialVersionUID = 1L;
 
-  /** The reference instance of <code>SION.domain</code> */
+  /** The reference instance of <code>sion.domain</code> */
   public static final Domain DOMAIN = new Domain();
 
   /** The class holding records for this type */
@@ -42,11 +42,11 @@ public class Domain extends TableImpl<DomainRecord> {
     return DomainRecord.class;
   }
 
-  /** The column <code>SION.domain.name</code>. */
+  /** The column <code>sion.domain.name</code>. */
   public final TableField<DomainRecord, String> NAME =
       createField(DSL.name("name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>SION.domain.created_at</code>. */
+  /** The column <code>sion.domain.created_at</code>. */
   public final TableField<DomainRecord, LocalDateTime> CREATED_AT =
       createField(
           DSL.name("created_at"),
@@ -56,7 +56,7 @@ public class Domain extends TableImpl<DomainRecord> {
           this,
           "");
 
-  /** The column <code>SION.domain.updated_at</code>. */
+  /** The column <code>sion.domain.updated_at</code>. */
   public final TableField<DomainRecord, LocalDateTime> UPDATED_AT =
       createField(
           DSL.name("updated_at"),
@@ -74,17 +74,17 @@ public class Domain extends TableImpl<DomainRecord> {
     super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
   }
 
-  /** Create an aliased <code>SION.domain</code> table reference */
+  /** Create an aliased <code>sion.domain</code> table reference */
   public Domain(String alias) {
     this(DSL.name(alias), DOMAIN);
   }
 
-  /** Create an aliased <code>SION.domain</code> table reference */
+  /** Create an aliased <code>sion.domain</code> table reference */
   public Domain(Name alias) {
     this(alias, DOMAIN);
   }
 
-  /** Create a <code>SION.domain</code> table reference */
+  /** Create a <code>sion.domain</code> table reference */
   public Domain() {
     this(DSL.name("domain"), null);
   }

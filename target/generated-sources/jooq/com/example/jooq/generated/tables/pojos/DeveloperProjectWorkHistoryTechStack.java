@@ -34,7 +34,7 @@ public class DeveloperProjectWorkHistoryTechStack implements Serializable {
 
   /**
    * Getter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
    * </code>.
    */
   public Long getDeveloperProjectWorkHistoryTechStackId() {
@@ -43,7 +43,7 @@ public class DeveloperProjectWorkHistoryTechStack implements Serializable {
 
   /**
    * Setter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_tech_stack_id
    * </code>.
    */
   public void setDeveloperProjectWorkHistoryTechStackId(
@@ -53,7 +53,7 @@ public class DeveloperProjectWorkHistoryTechStack implements Serializable {
 
   /**
    * Getter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
    */
   public Long getDeveloperProjectWorkHistoryId() {
     return this.developerProjectWorkHistoryId;
@@ -61,18 +61,18 @@ public class DeveloperProjectWorkHistoryTechStack implements Serializable {
 
   /**
    * Setter for <code>
-   * SION.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
+   * sion.developer_project_work_history_tech_stack.developer_project_work_history_id</code>.
    */
   public void setDeveloperProjectWorkHistoryId(Long developerProjectWorkHistoryId) {
     this.developerProjectWorkHistoryId = developerProjectWorkHistoryId;
   }
 
-  /** Getter for <code>SION.developer_project_work_history_tech_stack.tech_stack_name</code>. */
+  /** Getter for <code>sion.developer_project_work_history_tech_stack.tech_stack_name</code>. */
   public String getTechStackName() {
     return this.techStackName;
   }
 
-  /** Setter for <code>SION.developer_project_work_history_tech_stack.tech_stack_name</code>. */
+  /** Setter for <code>sion.developer_project_work_history_tech_stack.tech_stack_name</code>. */
   public void setTechStackName(String techStackName) {
     this.techStackName = techStackName;
   }
