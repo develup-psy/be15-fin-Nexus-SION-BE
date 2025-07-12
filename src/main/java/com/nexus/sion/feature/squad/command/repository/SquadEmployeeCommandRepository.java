@@ -1,7 +1,9 @@
 package com.nexus.sion.feature.squad.command.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +23,10 @@ public interface SquadEmployeeCommandRepository extends JpaRepository<SquadEmplo
     WHERE pj.projectCode = :projectCode
 """)
   List<SquadEmployee> findByProjectCode(@Param("projectCode") String projectCode);
+
+  void deleteBySquadCodeAndEmployeeIdentificationNumber(String squadCode, String oldEmployeeId);
+
+  boolean existsBySquadCodeAndEmployeeIdentificationNumber(String squadCode, String oldEmployeeId);
+
+  Optional<SquadEmployee> findBySquadCodeAndEmployeeIdentificationNumber(String squadCode,  String oldEmployeeId);
 }
