@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.util.List;
 
+import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,14 +88,14 @@ class SquadCommandIntegrationTest {
             .projectCode("ha_1_1")
             .title("스쿼드 A")
             .description("신규 백엔드 개발 스쿼드")
-            .members(
+            .developers(
                 List.of(
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
+                    Developer.builder()
+                        .employeeId("01202305")
                         .projectAndJobId(1L)
                         .build(),
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("02202306")
+                        Developer.builder()
+                                .employeeId("02202306")
                         .projectAndJobId(2L)
                         .build()))
             .build();
@@ -116,10 +117,10 @@ class SquadCommandIntegrationTest {
             .projectCode("PRJ001")
             .title(null) // 필수 누락
             .description("설명 없음")
-            .members(
+            .developers(
                 List.of(
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP001")
+                    Developer.builder()
+                        .employeeId("EMP001")
                         .projectAndJobId(101L)
                         .build()))
             .build();
@@ -139,17 +140,16 @@ class SquadCommandIntegrationTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode("SQUAD001")
-            .projectCode("PRJ001")
             .title("수정된 스쿼드 제목")
             .description("수정된 설명입니다.")
-            .members(
+            .developers(
                 List.of(
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
+                    Developer.builder()
+                        .employeeId("01202305")
                         .projectAndJobId(1L)
                         .build(),
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("02202306")
+                        Developer.builder()
+                                .employeeId("02202306")
                         .projectAndJobId(3L)
                         .build()))
             .build();
@@ -169,13 +169,12 @@ class SquadCommandIntegrationTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode("not_exist_code")
-            .projectCode("PRJ001")
             .title("제목")
             .description("설명")
-            .members(
+            .developers(
                 List.of(
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
+                        Developer.builder()
+                                .employeeId("01202305")
                         .projectAndJobId(1L)
                         .build()))
             .build();
