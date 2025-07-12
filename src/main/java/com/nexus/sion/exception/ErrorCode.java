@@ -76,6 +76,9 @@ public enum ErrorCode {
   INSUFFICIENT_TOTAL_MEMBER("40013", "프로젝트에 필요한 인원수가 충족되지 않았습니다", HttpStatus.BAD_REQUEST),
   EXCEED_PROJECT_BUDGET("40014", "프로젝트 예산 상한선을 충족하지 못한 스쿼드입니다", HttpStatus.BAD_REQUEST),
   EXCEED_PROJECT_DURATION("40015", "프로젝트 기간 상한선을 충족하지 못한 스쿼드입니다", HttpStatus.BAD_REQUEST),
+  INVALID_SQUAD_MEMBER("40016","스쿼드에 포함되지 않는 멤버입니다",HttpStatus.BAD_REQUEST ),
+  INVALID_LEADER_REPLACEMENT("40017", "리더는 대체될 수 없습니다", HttpStatus.BAD_REQUEST),
+  INVALID_EXIST_MEMBER_REPLACEMENT("40018", "이미 배정된 멤버로 대체할 수 없습니다", HttpStatus.BAD_REQUEST),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
