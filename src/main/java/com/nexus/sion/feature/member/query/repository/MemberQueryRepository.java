@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.example.jooq.generated.enums.MemberRole;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
@@ -200,6 +201,37 @@ public class MemberQueryRepository {
                             .containsIgnoreCase(keyword)
                             .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword))))
             .fetchOneInto(Integer.class);
+
+    return count != null ? count : 0;
+  }
+
+  public List<AdminSearchResponse> searchAdmins(String keyword, int offset, int limit) {
+    String safeKeyword = Optional.ofNullable(keyword).orElse("").trim();
+    Condition condition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.ADMIN));
+
+    if (!safeKeyword.isEmpty()) {
+      condition = condition.and(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(safeKeyword));
+    }
+
+    return dsl.select(
+            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.as("employeeId"), MEMBER.EMPLOYEE_NAME.as("name"), MEMBER.PROFILE_IMAGE_URL)
+        .from(MEMBER)
+        .where(condition)
+        .orderBy(MEMBER.EMPLOYEE_NAME.asc())
+        .offset(offset)
+        .limit(limit)
+        .fetchInto(AdminSearchResponse.class);
+  }
+
+  public int countSearchAdmins(String keyword) {
+    String safeKeyword = Optional.ofNullable(keyword).orElse("").trim();
+    Condition condition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.eq(MemberRole.ADMIN));
+
+    if (!safeKeyword.isEmpty()) {
+      condition = condition.and(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(safeKeyword));
+    }
+
+    Integer count = dsl.selectCount().from(MEMBER).where(condition).fetchOneInto(Integer.class);
 
     return count != null ? count : 0;
   }
