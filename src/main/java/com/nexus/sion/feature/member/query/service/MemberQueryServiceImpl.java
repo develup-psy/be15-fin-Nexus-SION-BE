@@ -17,10 +17,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
-import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import com.nexus.sion.feature.member.query.dto.response.*;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
 import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
 import com.nexus.sion.feature.member.query.util.SortFieldSelector;
@@ -132,5 +129,15 @@ public class MemberQueryServiceImpl implements MemberQueryService {
         memberQueryRepository.findAllSquadMembers(query, condition, sortField);
 
     return PageResponse.fromJooq(content, total, query.page(), query.size());
+  }
+
+  @Override
+  public List<ScoreTrendDto> getMonthlyTotalScoreTrend(String employeeId) {
+    return memberQueryRepository.findMonthlyTotalScoreTrend(employeeId);
+  }
+
+  @Override
+  public List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId) {
+    return memberQueryRepository.findMonthlyTechStackScoreTrend(employeeId);
   }
 }
