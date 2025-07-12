@@ -208,11 +208,12 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     // 기존에 project_fp_summary나 project_function_estimate가 있다면 삭제
     ProjectFpSummary fpSummary =
         projectFpSummaryRepository
-            .findByProjectCode(projectId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+            .findByProjectCode(projectId).orElse(null);
 
-    projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
-    projectFpSummaryRepository.deleteByProjectCode(projectId);
+    if (fpSummary != null) {
+      projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
+      projectFpSummaryRepository.deleteByProjectCode(projectId);
+    }
 
     Project project =
         projectRepository

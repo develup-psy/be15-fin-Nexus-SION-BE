@@ -47,13 +47,11 @@ public class ProjectEvaluateCommandServiceImpl implements ProjectEvaluateCommand
       String complexity = classifyComplexity(req.getFpType(), req.getDet(), req.getFtrOrRet());
       int score = getFpScore(req.getFpType(), complexity);
 
-      // 균등 분배 방식: 스택 수만큼 나눔
       int perStackScore = score / req.getStacks().size();
       for (String stack : req.getStacks()) {
         techStackTotalScoreMap.merge(stack, perStackScore, Integer::sum); // stack이 일치하면 점수 합치기
       }
 
-      // FastAPI에 벡터 저장
       Map<String, Object> payload = new HashMap<>();
       payload.put("function_name", req.getFunctionName());
       payload.put("description", req.getDescription());
@@ -64,7 +62,6 @@ public class ProjectEvaluateCommandServiceImpl implements ProjectEvaluateCommand
       vectorPayloads.add(payload);
     }
 
-    // 기술스택 점수 저장
     for (Map.Entry<String, Integer> entry : techStackTotalScoreMap.entrySet()) {
       String techStackName = entry.getKey();
       int addedScore = entry.getValue();
