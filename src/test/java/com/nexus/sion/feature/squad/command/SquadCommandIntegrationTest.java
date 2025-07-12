@@ -24,6 +24,7 @@ import com.nexus.sion.feature.project.command.domain.aggregate.Project.ProjectSt
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
+import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
@@ -87,16 +88,10 @@ class SquadCommandIntegrationTest {
             .projectCode("ha_1_1")
             .title("스쿼드 A")
             .description("신규 백엔드 개발 스쿼드")
-            .members(
+            .developers(
                 List.of(
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
-                        .projectAndJobId(1L)
-                        .build(),
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("02202306")
-                        .projectAndJobId(2L)
-                        .build()))
+                    Developer.builder().employeeId("01202305").projectAndJobId(1L).build(),
+                    Developer.builder().employeeId("02202306").projectAndJobId(2L).build()))
             .build();
 
     mockMvc
@@ -116,12 +111,8 @@ class SquadCommandIntegrationTest {
             .projectCode("PRJ001")
             .title(null) // 필수 누락
             .description("설명 없음")
-            .members(
-                List.of(
-                    SquadRegisterRequest.Member.builder()
-                        .employeeIdentificationNumber("EMP001")
-                        .projectAndJobId(101L)
-                        .build()))
+            .developers(
+                List.of(Developer.builder().employeeId("EMP001").projectAndJobId(101L).build()))
             .build();
 
     mockMvc
@@ -139,19 +130,12 @@ class SquadCommandIntegrationTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode("SQUAD001")
-            .projectCode("PRJ001")
             .title("수정된 스쿼드 제목")
             .description("수정된 설명입니다.")
-            .members(
+            .developers(
                 List.of(
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
-                        .projectAndJobId(1L)
-                        .build(),
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("02202306")
-                        .projectAndJobId(3L)
-                        .build()))
+                    Developer.builder().employeeId("01202305").projectAndJobId(1L).build(),
+                    Developer.builder().employeeId("02202306").projectAndJobId(3L).build()))
             .build();
 
     mockMvc
@@ -169,15 +153,10 @@ class SquadCommandIntegrationTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode("not_exist_code")
-            .projectCode("PRJ001")
             .title("제목")
             .description("설명")
-            .members(
-                List.of(
-                    SquadUpdateRequest.Member.builder()
-                        .employeeIdentificationNumber("01202305")
-                        .projectAndJobId(1L)
-                        .build()))
+            .developers(
+                List.of(Developer.builder().employeeId("01202305").projectAndJobId(1L).build()))
             .build();
 
     mockMvc
