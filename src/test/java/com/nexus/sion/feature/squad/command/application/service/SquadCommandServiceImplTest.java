@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,9 +44,9 @@ class SquadCommandServiceImplTest {
   @DisplayName("스쿼드 수동 등록 성공")
   void registerManualSquad_success() {
     // given
-    SquadRegisterRequest.Member member1 =
-        SquadRegisterRequest.Member.builder()
-            .employeeIdentificationNumber("EMP001")
+    Developer developer =
+        Developer.builder()
+            .employeeId("EMP001")
             .projectAndJobId(101L)
             .build();
 
@@ -54,7 +55,7 @@ class SquadCommandServiceImplTest {
             .projectCode("ha_1_1")
             .title("프론트엔드팀")
             .description("설명입니다.")
-            .members(List.of(member1))
+            .developers(List.of(developer))
             .build();
 
     Project project = Project.builder().projectCode("ha_1_1").clientCode("ha_1").build();
@@ -86,7 +87,7 @@ class SquadCommandServiceImplTest {
             .projectCode("invalid_code")
             .title("스쿼드명")
             .description("설명")
-            .members(List.of())
+            .developers(List.of())
             .build();
 
     when(projectRepository.findByProjectCode("invalid_code")).thenReturn(Optional.empty());
@@ -109,13 +110,12 @@ class SquadCommandServiceImplTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode(squadCode)
-            .projectCode("ha_1_1")
             .title("수정된 스쿼드 제목")
             .description("수정된 설명")
-            .members(
+            .developers(
                 List.of(
-                    new SquadUpdateRequest.Member("EMP001", 101L),
-                    new SquadUpdateRequest.Member("EMP002", 102L)))
+                    new Developer("EMP001", 101L, false),
+                    new Developer("EMP002", 102L, false)))
             .build();
 
     Squad squad =
@@ -149,10 +149,9 @@ class SquadCommandServiceImplTest {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
             .squadCode(squadCode)
-            .projectCode("ha_1_1")
             .title("제목")
             .description("설명")
-            .members(List.of())
+            .developers(List.of())
             .build();
 
     given(squadCommandRepository.findBySquadCode(squadCode)).willReturn(Optional.empty());
