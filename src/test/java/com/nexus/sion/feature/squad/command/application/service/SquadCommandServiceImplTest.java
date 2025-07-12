@@ -9,7 +9,6 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
@@ -44,11 +44,7 @@ class SquadCommandServiceImplTest {
   @DisplayName("스쿼드 수동 등록 성공")
   void registerManualSquad_success() {
     // given
-    Developer developer =
-        Developer.builder()
-            .employeeId("EMP001")
-            .projectAndJobId(101L)
-            .build();
+    Developer developer = Developer.builder().employeeId("EMP001").projectAndJobId(101L).build();
 
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
@@ -113,9 +109,7 @@ class SquadCommandServiceImplTest {
             .title("수정된 스쿼드 제목")
             .description("수정된 설명")
             .developers(
-                List.of(
-                    new Developer("EMP001", 101L, false),
-                    new Developer("EMP002", 102L, false)))
+                List.of(new Developer("EMP001", 101L, false), new Developer("EMP002", 102L, false)))
             .build();
 
     Squad squad =
