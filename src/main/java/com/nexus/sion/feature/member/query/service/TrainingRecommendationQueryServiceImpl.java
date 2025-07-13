@@ -78,7 +78,7 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
 
   private int calculatePercentile(int myScore, List<Integer> all) {
     long below = all.stream().filter(score -> score < myScore).count();
-    return (int) ((below * 100.0) / all.size());
+    return all.isEmpty() ? 0 : (int) ((below * 100.0) / all.size());
   }
 
   private String getDifficultyLevel(int percentile) {
