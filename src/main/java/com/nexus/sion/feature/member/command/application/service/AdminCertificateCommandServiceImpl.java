@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CertificateCommandServiceImpl implements CertificateCommandService {
+public class AdminCertificateCommandServiceImpl implements AdminCertificateCommandService {
 
   private final CertificateRepository certificateRepository;
 
