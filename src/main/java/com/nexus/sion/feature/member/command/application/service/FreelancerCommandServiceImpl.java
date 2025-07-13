@@ -1,5 +1,8 @@
 package com.nexus.sion.feature.member.command.application.service;
 
+import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.classifyComplexity;
+import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.getFpScore;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -7,32 +10,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.nexus.sion.common.fastapi.FastApiClient;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStackHistory;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.MemberScoreHistory;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import com.nexus.sion.feature.member.command.domain.repository.*;
+import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
+import com.nexus.sion.feature.member.query.repository.FreelancerQueryRepository;
 import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
 import com.nexus.sion.feature.techstack.command.domain.aggregate.TechStack;
 import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.query.dto.response.FreelancerDetailResponse;
-import com.nexus.sion.feature.member.query.repository.FreelancerQueryRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.classifyComplexity;
-import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.getFpScore;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -67,24 +67,27 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     String encodedPassword = passwordEncoder.encode(rawPassword);
 
-    Member member = memberRepository
+    Member member =
+        memberRepository
             .findById(freelancer.freelancerId())
-            .orElseGet(() -> {
-              Member newMember =Member.builder()
-                      .employeeIdentificationNumber(freelancer.freelancerId())
-                      .employeeName(freelancer.name())
-                      .password(encodedPassword)
-                      .profileImageUrl(freelancer.profileImageUrl())
-                      .phoneNumber(freelancer.phoneNumber())
-                      .email(freelancer.email())
-                      .birthday(freelancer.birthday())
-                      .careerYears(freelancer.careerYears())
-                      .joinedAt(LocalDate.now())
-                      .role(MemberRole.OUTSIDER)
-                      .status(MemberStatus.AVAILABLE)
-                      .build();
-              return memberRepository.save(newMember);
-            });
+            .orElseGet(
+                () -> {
+                  Member newMember =
+                      Member.builder()
+                          .employeeIdentificationNumber(freelancer.freelancerId())
+                          .employeeName(freelancer.name())
+                          .password(encodedPassword)
+                          .profileImageUrl(freelancer.profileImageUrl())
+                          .phoneNumber(freelancer.phoneNumber())
+                          .email(freelancer.email())
+                          .birthday(freelancer.birthday())
+                          .careerYears(freelancer.careerYears())
+                          .joinedAt(LocalDate.now())
+                          .role(MemberRole.OUTSIDER)
+                          .status(MemberStatus.AVAILABLE)
+                          .build();
+                  return memberRepository.save(newMember);
+                });
 
     memberRepository.save(member);
 
@@ -116,48 +119,54 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
       String techStackName = entry.getKey();
       int addedScore = entry.getValue();
 
-      techStackRepository.findById(techStackName)
-              .orElseGet(() -> techStackRepository.save(
-                      TechStack.builder().techStackName(techStackName).build()
-              ));
+      techStackRepository
+          .findById(techStackName)
+          .orElseGet(
+              () ->
+                  techStackRepository.save(
+                      TechStack.builder().techStackName(techStackName).build()));
 
-      DeveloperTechStack stack = developerTechStackRepository
-              .findByEmployeeIdentificationNumberAndTechStackName(freelancer.freelancerId(), techStackName)
-              .orElseGet(() -> developerTechStackRepository.save(
-                      DeveloperTechStack.builder()
+      DeveloperTechStack stack =
+          developerTechStackRepository
+              .findByEmployeeIdentificationNumberAndTechStackName(
+                  freelancer.freelancerId(), techStackName)
+              .orElseGet(
+                  () ->
+                      developerTechStackRepository.save(
+                          DeveloperTechStack.builder()
                               .employeeIdentificationNumber(freelancer.freelancerId())
                               .techStackName(techStackName)
                               .totalScore(0)
-                              .build()
-              ));
+                              .build()));
 
       developerTechStackHistoryRepository.save(
-              DeveloperTechStackHistory.builder()
-                      .addedScore(addedScore)
-                      .developerTechStackId(stack.getId())
-                      .build()
-      );
+          DeveloperTechStackHistory.builder()
+              .addedScore(addedScore)
+              .developerTechStackId(stack.getId())
+              .build());
 
       stack.setTotalScore(stack.getTotalScore() + addedScore);
       developerTechStackRepository.save(stack);
     }
 
-
-    //Member 점수 이력 갱신
-    int totalStackScore = developerTechStackRepository
+    // Member 점수 이력 갱신
+    int totalStackScore =
+        developerTechStackRepository
             .findAllByEmployeeIdentificationNumber(freelancer.freelancerId())
             .stream()
             .mapToInt(DeveloperTechStack::getTotalScore)
             .sum();
 
-    MemberScoreHistory scoreHistory = memberScoreHistoryRepository
+    MemberScoreHistory scoreHistory =
+        memberScoreHistoryRepository
             .findByEmployeeIdentificationNumber(freelancer.freelancerId())
-            .orElseGet(() -> MemberScoreHistory.builder()
-                    .employeeIdentificationNumber(freelancer.freelancerId())
-                    .totalCertificateScores(0)
-                    .totalTechStackScores(0)
-                    .build()
-            );
+            .orElseGet(
+                () ->
+                    MemberScoreHistory.builder()
+                        .employeeIdentificationNumber(freelancer.freelancerId())
+                        .totalCertificateScores(0)
+                        .totalTechStackScores(0)
+                        .build());
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
 

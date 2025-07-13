@@ -87,7 +87,7 @@ public enum ErrorCode {
   // FP
   FP_NOT_FOUND("70001", "총 FP 포인트가 없는 프로젝트 평가입니다.", HttpStatus.NOT_FOUND),
   PROJECT_ANALYSIS_ALREADY_IN_PROGRESS("70002", "이미 분석이 진행 중이거나 완료된 프로젝트입니다.", HttpStatus.CONFLICT),
-  FP_ANALYZE_FAIL("70003","FP 분석에 실패했습니다.", HttpStatus.CONFLICT ),
+  FP_ANALYZE_FAIL("70003", "FP 분석에 실패했습니다.", HttpStatus.CONFLICT),
 
   // developer project work
   WORK_HISTORY_NOT_FOUND("80001", "작업 이력이 존재하지 않습니다.", HttpStatus.NOT_FOUND),

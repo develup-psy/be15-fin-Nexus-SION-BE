@@ -96,10 +96,12 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     Condition fullCondition = condition;
     String keyword = request.getKeyword();
     if (keyword != null && !keyword.isBlank()) {
-      fullCondition = fullCondition.and(
-              MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.containsIgnoreCase(keyword)
-                      .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword))
-      );
+      fullCondition =
+          fullCondition.and(
+              MEMBER
+                  .EMPLOYEE_IDENTIFICATION_NUMBER
+                  .containsIgnoreCase(keyword)
+                  .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword)));
     }
 
     long total = memberQueryRepository.countMembers(fullCondition);

@@ -207,8 +207,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
     // 기존에 project_fp_summary나 project_function_estimate가 있다면 삭제
     ProjectFpSummary fpSummary =
-        projectFpSummaryRepository
-            .findByProjectCode(projectId).orElse(null);
+        projectFpSummaryRepository.findByProjectCode(projectId).orElse(null);
 
     if (fpSummary != null) {
       projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
