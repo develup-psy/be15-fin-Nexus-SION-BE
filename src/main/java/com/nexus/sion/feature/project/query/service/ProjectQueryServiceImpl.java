@@ -47,50 +47,50 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
 
   @Override
   public ProjectDetailResponse findProjectDetailByMemberIdAndProjectCode(
-          String employeeId, String projectCode) {
+      String employeeId, String projectCode) {
     return projectQueryRepository.findProjectDetailByMemberIdAndProjectCode(
-            employeeId, projectCode);
+        employeeId, projectCode);
   }
 
   @Override
   public PageResponse<ProjectListResponse> findProjectListByMemberId(
-          String employeeId, int page, int size) {
+      String employeeId, int page, int size) {
     return projectQueryRepository.findProjectListByMemberId(employeeId, page, size);
   }
 
   public PageResponse<ProjectListResponse> getProjectsByEmployeeId(
-          String employeeId, List<String> statuses, int page, int size) {
+      String employeeId, List<String> statuses, int page, int size) {
     List<Project> pojos =
-            projectQueryRepository.findProjectsByEmployeeId(employeeId, statuses, page, size);
+        projectQueryRepository.findProjectsByEmployeeId(employeeId, statuses, page, size);
     long totalCount = projectQueryRepository.countProjectsByEmployeeId(employeeId, statuses);
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     List<ProjectListResponse> content =
-            pojos.stream()
-                    .map(
-                            p ->
-                                    ProjectListResponse.builder()
-                                            .projectCode(p.getProjectCode())
-                                            .title(p.getTitle())
-                                            .description(p.getDescription())
-                                            .startDate(
-                                                    p.getStartDate() != null ? p.getStartDate().format(formatter) : null)
-                                            .endDate(
-                                                    p.getExpectedEndDate() != null
-                                                            ? p.getExpectedEndDate().format(formatter)
-                                                            : null)
-                                            .period(
-                                                    p.getStartDate() != null && p.getExpectedEndDate() != null
-                                                            ? (int)
-                                                            p.getStartDate().until(p.getExpectedEndDate()).toTotalMonths()
-                                                            : 0)
-                                            .status(p.getStatus() != null ? p.getStatus().name() : null)
-                                            .domainName(p.getDomainName())
-                                            .hrCount(p.getNumberOfMembers())
-                                            .analysisStatus(p.getAnalysisStatus())
-                                            .build())
-                    .toList();
+        pojos.stream()
+            .map(
+                p ->
+                    ProjectListResponse.builder()
+                        .projectCode(p.getProjectCode())
+                        .title(p.getTitle())
+                        .description(p.getDescription())
+                        .startDate(
+                            p.getStartDate() != null ? p.getStartDate().format(formatter) : null)
+                        .endDate(
+                            p.getExpectedEndDate() != null
+                                ? p.getExpectedEndDate().format(formatter)
+                                : null)
+                        .period(
+                            p.getStartDate() != null && p.getExpectedEndDate() != null
+                                ? (int)
+                                    p.getStartDate().until(p.getExpectedEndDate()).toTotalMonths()
+                                : 0)
+                        .status(p.getStatus() != null ? p.getStatus().name() : null)
+                        .domainName(p.getDomainName())
+                        .hrCount(p.getNumberOfMembers())
+                        .analysisStatus(p.getAnalysisStatus())
+                        .build())
+            .toList();
 
     return PageResponse.fromJooq(content, totalCount, page, size);
   }

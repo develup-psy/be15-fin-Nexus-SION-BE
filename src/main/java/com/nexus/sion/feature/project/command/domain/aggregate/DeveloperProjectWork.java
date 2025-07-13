@@ -47,7 +47,7 @@ public class DeveloperProjectWork extends BaseTimeEntity {
   }
 
   public DeveloperProjectWork(
-          String employeeIdentificationNumber, String projectCode, ApprovalStatus approvalStatus) {
+      String employeeIdentificationNumber, String projectCode, ApprovalStatus approvalStatus) {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
     this.projectCode = projectCode;
     this.approvalStatus = approvalStatus != null ? approvalStatus : ApprovalStatus.PENDING;

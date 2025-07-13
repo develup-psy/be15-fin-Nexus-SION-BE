@@ -25,14 +25,14 @@ public class ProjectCommandController {
 
   @PostMapping
   public ResponseEntity<ApiResponse<ProjectRegisterResponse>> registerProject(
-          @RequestBody ProjectRegisterRequest request) {
+      @RequestBody ProjectRegisterRequest request) {
     ProjectRegisterResponse response = projectCommandService.registerProject(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
   }
 
   @PutMapping("/{projectCode}")
   public ResponseEntity<ApiResponse<Void>> updateProject(
-          @PathVariable String projectCode, @RequestBody ProjectUpdateRequest request) {
+      @PathVariable String projectCode, @RequestBody ProjectUpdateRequest request) {
     request.setProjectCode(projectCode);
     projectCommandService.updateProject(request);
     return ResponseEntity.ok(ApiResponse.success(null));
@@ -46,16 +46,16 @@ public class ProjectCommandController {
 
   @PutMapping("/{projectCode}/status/{status}")
   public ResponseEntity<ApiResponse<Void>> updateProjectStatus(
-          @PathVariable String projectCode, @PathVariable Project.ProjectStatus status) {
+      @PathVariable String projectCode, @PathVariable Project.ProjectStatus status) {
     projectCommandService.updateProjectStatus(projectCode, status);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @PostMapping("/{projectCode}/analyze")
   public ResponseEntity<Void> analyzeProject(
-          @AuthenticationPrincipal UserDetails userDetails,
-          @PathVariable String projectCode,
-          @RequestParam("file") MultipartFile multipartFile) {
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String projectCode,
+      @RequestParam("file") MultipartFile multipartFile) {
 
     projectCommandService.analyzeProject(projectCode, multipartFile, userDetails.getUsername());
     return ResponseEntity.accepted().build();

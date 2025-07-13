@@ -3,10 +3,10 @@ package com.nexus.sion.feature.project.query.service;
 import java.util.List;
 
 import com.nexus.sion.common.dto.PageResponse;
+import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
-import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 
 public interface DeveloperProjectWorkQueryService {
   PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size);

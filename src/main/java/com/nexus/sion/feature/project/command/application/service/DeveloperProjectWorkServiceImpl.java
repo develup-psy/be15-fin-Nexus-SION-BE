@@ -37,30 +37,32 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
   public void approve(Long id, String adminId) {
     validateAdmin(adminId);
     DeveloperProjectWork work =
-            workRepository
-                    .findById(id)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
+        workRepository
+            .findById(id)
+            .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
     work.approve(adminId);
-
 
     // ===== 승인 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber(); // 요청한 사원
-    String receiverName = memberRepository
+    String receiverName =
+        memberRepository
             .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String statusMessage = "승인"; // 승인 상태 메시지
-    String message = NotificationType.TASK_APPROVAL_RESULT.getMessage()
+    String message =
+        NotificationType.TASK_APPROVAL_RESULT
+            .getMessage()
             .replace("{username}", receiverName)
             .replace("{status}", statusMessage);
 
     notificationCommandService.createAndSendNotification(
-            adminId,                                       // senderId = 승인한 관리자
-            receiverId,                                    // receiverId = 요청한 사원
-            message,                                       // 직접 생성한 메시지 전달
-            NotificationType.TASK_APPROVAL_RESULT,         // 알림 타입
-            String.valueOf(id)                             // linkedContentId = 이력 ID
-    );
+        adminId, // senderId = 승인한 관리자
+        receiverId, // receiverId = 요청한 사원
+        message, // 직접 생성한 메시지 전달
+        NotificationType.TASK_APPROVAL_RESULT, // 알림 타입
+        String.valueOf(id) // linkedContentId = 이력 ID
+        );
   }
 
   @Override
@@ -68,7 +70,8 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
   public void reject(Long id, String adminId, String reason) {
     validateAdmin(adminId);
 
-    DeveloperProjectWork work = workRepository
+    DeveloperProjectWork work =
+        workRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
 
@@ -76,25 +79,24 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
 
     // ===== 거부 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber();
-    String senderName = memberRepository
+    String senderName =
+        memberRepository
             .findEmployeeNameByEmployeeIdentificationNumber(adminId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String statusMessage = "거부";
-    String message = NotificationType.TASK_APPROVAL_RESULT.getMessage()
+    String message =
+        NotificationType.TASK_APPROVAL_RESULT
+            .getMessage()
             .replace("{username}", senderName)
             .replace("{status}", statusMessage);
 
     notificationCommandService.createAndSendNotification(
-            adminId,
-            receiverId,
-            message,
-            NotificationType.TASK_APPROVAL_RESULT,
-            String.valueOf(id)
-    );
+        adminId, receiverId, message, NotificationType.TASK_APPROVAL_RESULT, String.valueOf(id));
 
     // ===== 새로운 이력 생성 및 다시 요청 알림 전송 =====
-    DeveloperProjectWork newWork = DeveloperProjectWork.builder()
+    DeveloperProjectWork newWork =
+        DeveloperProjectWork.builder()
             .employeeIdentificationNumber(receiverId)
             .projectCode(work.getProjectCode())
             .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
@@ -102,21 +104,21 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
 
     DeveloperProjectWork saved = workRepository.save(newWork);
 
-    String requestAgainMessage = NotificationType.TASK_APPROVAL_REQUEST_AGAIN.getMessage()
-            .replace("{username}", senderName);
+    String requestAgainMessage =
+        NotificationType.TASK_APPROVAL_REQUEST_AGAIN.getMessage().replace("{username}", senderName);
 
     notificationCommandService.createAndSendNotification(
-            adminId,
-            receiverId,
-            requestAgainMessage,
-            NotificationType.TASK_APPROVAL_REQUEST_AGAIN,
-            String.valueOf(saved.getId())  // 새로 생성된 workId
-    );
+        adminId,
+        receiverId,
+        requestAgainMessage,
+        NotificationType.TASK_APPROVAL_REQUEST_AGAIN,
+        String.valueOf(saved.getId()) // 새로 생성된 workId
+        );
   }
 
   private void validateAdmin(String adminId) {
     boolean isAdmin =
-            memberRepository.existsByEmployeeIdentificationNumberAndRole(adminId, MemberRole.ADMIN);
+        memberRepository.existsByEmployeeIdentificationNumberAndRole(adminId, MemberRole.ADMIN);
     if (!isAdmin) {
       throw new BusinessException(ErrorCode.UNAUTHORIZED_APPROVER);
     }
@@ -126,35 +128,35 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
   @Transactional
   public void addHistories(Long workId, WorkHistoryAddRequestDto dto) {
     DeveloperProjectWork work =
-            workRepository
-                    .findById(workId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.WORK_NOT_FOUND));
+        workRepository
+            .findById(workId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.WORK_NOT_FOUND));
 
     work.setApprovalStatus(DeveloperProjectWork.ApprovalStatus.PENDING);
 
     for (WorkHistoryAddRequestDto.WorkHistoryItemDto item : dto.getHistories()) {
       DeveloperProjectWorkHistory history =
-              DeveloperProjectWorkHistory.builder()
-                      .developerProjectWorkId(workId)
-                      .functionName(item.getFunctionName())
-                      .functionDescription(item.getFunctionDescription())
-                      .functionType(
-                              DeveloperProjectWorkHistory.FunctionType.valueOf(item.getFunctionType()))
-                      .det(Integer.parseInt(item.getDet()))
-                      .ftr(Integer.parseInt(item.getFtr()))
-                      .build();
+          DeveloperProjectWorkHistory.builder()
+              .developerProjectWorkId(workId)
+              .functionName(item.getFunctionName())
+              .functionDescription(item.getFunctionDescription())
+              .functionType(
+                  DeveloperProjectWorkHistory.FunctionType.valueOf(item.getFunctionType()))
+              .det(Integer.parseInt(item.getDet()))
+              .ftr(Integer.parseInt(item.getFtr()))
+              .build();
 
       workHistoryRepository.save(history);
 
       List<DeveloperProjectWorkHistoryTechStack> techStacks =
-              item.getTechStackNames().stream()
-                      .map(
-                              name ->
-                                      DeveloperProjectWorkHistoryTechStack.builder()
-                                              .developerProjectWorkHistoryId(history.getId())
-                                              .techStackName(name)
-                                              .build())
-                      .toList();
+          item.getTechStackNames().stream()
+              .map(
+                  name ->
+                      DeveloperProjectWorkHistoryTechStack.builder()
+                          .developerProjectWorkHistoryId(history.getId())
+                          .techStackName(name)
+                          .build())
+              .toList();
 
       workHistoryTechStackRepository.saveAll(techStacks);
     }
@@ -166,12 +168,12 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
     List<Member> adminMembers = memberRepository.findAllByRole(MemberRole.ADMIN);
     for (Member admin : adminMembers) {
       notificationCommandService.createAndSendNotification(
-              senderId,
-              admin.getEmployeeIdentificationNumber(),
-              null, // message는 null로 두면 NotificationType이 자동 메시지 생성
-              NotificationType.TASK_APPROVAL_REQUEST,
-              String.valueOf(workId) // linkedContentId는 작업 ID 사용
-      );
+          senderId,
+          admin.getEmployeeIdentificationNumber(),
+          null, // message는 null로 두면 NotificationType이 자동 메시지 생성
+          NotificationType.TASK_APPROVAL_REQUEST,
+          String.valueOf(workId) // linkedContentId는 작업 ID 사용
+          );
     }
   }
 }

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
+import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
-import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.repository.DeveloperProjectWorkQueryRepository;
 import com.nexus.sion.feature.project.query.repository.ProjectQueryRepository;
 
@@ -33,9 +33,9 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
 
   @Override
   public PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(
-          String employeeId, int page, int size) {
+      String employeeId, int page, int size) {
     List<WorkRequestQueryDto> fullList =
-            developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
+        developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
 
     int total = fullList.size();
     int fromIndex = Math.min(page * size, total);
@@ -58,7 +58,7 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
   @Override
   public List<FunctionTypeDto> getFunctionTypes() {
     return Arrays.stream(DeveloperProjectWorkHistory.FunctionType.values())
-            .map(type -> new FunctionTypeDto(type.name(), type.name()))
-            .collect(Collectors.toList());
+        .map(type -> new FunctionTypeDto(type.name(), type.name()))
+        .collect(Collectors.toList());
   }
 }
