@@ -16,7 +16,6 @@ public class TrainingRecommendationResponse {
   private String imageUrl;
   private String recommendationReason;
   private String category;
-  private String organization;
   private String videoUrl;
 
   public static TrainingRecommendationResponse from(TrainingProgram p, String reason) {
