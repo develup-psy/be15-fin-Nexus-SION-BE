@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.member.command.application.dto.request.CertificateCreateRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.CertificateUpdateRequest;
-import com.nexus.sion.feature.member.command.application.service.CertificateCommandService;
+import com.nexus.sion.feature.member.command.application.service.AdminCertificateCommandService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CertificateCommandController {
 
-  private final CertificateCommandService certificateService;
+  private final AdminCertificateCommandService certificateService;
 
   /* 관리자의 자격증 종류 등록 */
   @PostMapping("/register")
