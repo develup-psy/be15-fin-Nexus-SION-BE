@@ -49,4 +49,8 @@ public class Grade {
       this.ratio = new BigDecimal(GRADE_RATIO);
     }
   }
+  @PreUpdate
+  public void preUpdate() {
+    this.ratio = new BigDecimal(GRADE_RATIO);
+  }
 }

@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.member.command.application.service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import jakarta.transaction.Transactional;
@@ -13,6 +14,8 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.Grade;
 import com.nexus.sion.feature.member.command.domain.repository.GradeRepository;
 
 import lombok.RequiredArgsConstructor;
+
+import static com.nexus.sion.common.constants.GradeRatioConstants.GRADE_RATIO;
 
 @Service
 @RequiredArgsConstructor
