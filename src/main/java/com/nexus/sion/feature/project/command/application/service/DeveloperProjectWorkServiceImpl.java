@@ -30,7 +30,6 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
   private final DeveloperProjectWorkHistoryRepository workHistoryRepository;
   private final DeveloperProjectWorkHistoryTechStackRepository workHistoryTechStackRepository;
   private final NotificationCommandService notificationCommandService;
-
   private final MemberRepository memberRepository;
 
   @Override
@@ -42,17 +41,77 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
     work.approve(adminId);
+
+
+    // ===== 승인 알림 전송 =====
+    String receiverId = work.getEmployeeIdentificationNumber(); // 요청한 사원
+    String senderName = memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(adminId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+
+    String statusMessage = "승인"; // 승인 상태 메시지
+    String message = NotificationType.TASK_APPROVAL_RESULT.getMessage()
+            .replace("{username}", senderName)
+            .replace("{status}", statusMessage);
+
+    notificationCommandService.createAndSendNotification(
+            adminId,                                       // senderId = 승인한 관리자
+            receiverId,                                    // receiverId = 요청한 사원
+            message,                                       // 직접 생성한 메시지 전달
+            NotificationType.TASK_APPROVAL_RESULT,         // 알림 타입
+            String.valueOf(id)                             // linkedContentId = 이력 ID
+    );
   }
 
   @Override
   @Transactional
   public void reject(Long id, String adminId, String reason) {
     validateAdmin(adminId);
-    DeveloperProjectWork work =
-        workRepository
+
+    DeveloperProjectWork work = workRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
-    work.reject(adminId , reason);
+
+    work.reject(adminId, reason);
+
+    // ===== 거부 알림 전송 =====
+    String receiverId = work.getEmployeeIdentificationNumber();
+    String senderName = memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(adminId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+
+    String statusMessage = "거부";
+    String message = NotificationType.TASK_APPROVAL_RESULT.getMessage()
+            .replace("{username}", senderName)
+            .replace("{status}", statusMessage);
+
+    notificationCommandService.createAndSendNotification(
+            adminId,
+            receiverId,
+            message,
+            NotificationType.TASK_APPROVAL_RESULT,
+            String.valueOf(id)
+    );
+
+    // ===== 새로운 이력 생성 및 다시 요청 알림 전송 =====
+    DeveloperProjectWork newWork = DeveloperProjectWork.builder()
+            .employeeIdentificationNumber(receiverId)
+            .projectCode(work.getProjectCode())
+            .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
+            .build();
+
+    DeveloperProjectWork saved = workRepository.save(newWork);
+
+    String requestAgainMessage = NotificationType.TASK_APPROVAL_REQUEST_AGAIN.getMessage()
+            .replace("{username}", senderName);
+
+    notificationCommandService.createAndSendNotification(
+            adminId,
+            receiverId,
+            requestAgainMessage,
+            NotificationType.TASK_APPROVAL_REQUEST_AGAIN,
+            String.valueOf(saved.getId())  // 새로 생성된 workId
+    );
   }
 
   private void validateAdmin(String adminId) {
