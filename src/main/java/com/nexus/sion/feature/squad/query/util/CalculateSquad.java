@@ -9,27 +9,39 @@ import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
 
 @Service
 public class CalculateSquad {
+
   private static final double TECH_STACK_WEIGHT_RATIO = 0.5;
   private static final double DOMAIN_MATCH_WEIGHT_RATIO = 0.5;
 
   public void applyWeightToCandidates(Map<String, List<DeveloperSummary>> candidatesPerJob) {
-    for (Map.Entry<String, List<DeveloperSummary>> entry : candidatesPerJob.entrySet()) {
-      List<DeveloperSummary> list = entry.getValue();
+    for (List<DeveloperSummary> developers : candidatesPerJob.values()) {
+      applyWeight(developers);
+    }
+  }
 
-      // 정규화를 위한 최대값 구하기
-      double maxTechScore =
-          list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).max().orElse(1.0);
-      int maxDomainCount = list.stream().mapToInt(DeveloperSummary::getDomainCount).max().orElse(1);
+  public void applyWeightToCandidates(List<DeveloperSummary> developers) {
+    applyWeight(developers);
+  }
 
-      for (DeveloperSummary dev : list) {
-        double techScoreRatio = dev.getAvgTechScore() / maxTechScore;
-        double domainRatio = (double) dev.getDomainCount() / maxDomainCount;
+  private void applyWeight(List<DeveloperSummary> list) {
+    if (list == null || list.isEmpty()) return;
 
-        double weight =
-            TECH_STACK_WEIGHT_RATIO * techScoreRatio + DOMAIN_MATCH_WEIGHT_RATIO * domainRatio;
+    double minTechScore = list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).min().orElse(0);
+    double maxTechScore = list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).max().orElse(1);
+    double techRange = (maxTechScore - minTechScore == 0) ? 1 : (maxTechScore - minTechScore);
 
-        dev.setWeight(weight);
-      }
+    double minDomain = list.stream().mapToInt(DeveloperSummary::getDomainCount).min().orElse(0);
+    double maxDomain = list.stream().mapToInt(DeveloperSummary::getDomainCount).max().orElse(1);
+    double domainRange = (maxDomain - minDomain == 0) ? 1 : (maxDomain - minDomain);
+
+    for (DeveloperSummary dev : list) {
+      double techNormalized = (dev.getAvgTechScore() - minTechScore) / techRange;
+      double domainNormalized = (dev.getDomainCount() - minDomain) / domainRange;
+
+      double weight = TECH_STACK_WEIGHT_RATIO * techNormalized
+              + DOMAIN_MATCH_WEIGHT_RATIO * domainNormalized;
+
+      dev.setWeight(weight);
     }
   }
 }

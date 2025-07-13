@@ -20,10 +20,12 @@ public class ProjectDetailResponse {
   private List<SquadMemberInfo> members;
   private String status;
   private ProjectAnalysisStatus analysisStatus;
+  private String squadCode;
 
   @Getter
   @AllArgsConstructor
   public static class SquadMemberInfo {
+    private String employeeId;
     private Integer isLeader;
     private String imageUrl;
     private String name;

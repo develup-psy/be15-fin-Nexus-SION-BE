@@ -92,7 +92,6 @@ public class SquadCommandServiceImpl implements SquadCommandService {
                         .employeeIdentificationNumber(dev.getEmployeeId())
                         .projectAndJobId(dev.getProjectAndJobId())
                         .isLeader(dev.getIsLeader())
-                        .assignedDate(LocalDate.now())
                         .build())
             .toList();
 
