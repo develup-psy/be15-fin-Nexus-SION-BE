@@ -34,4 +34,11 @@ public class MemberTechStackQueryRepository {
         .orderBy(DEVELOPER_TECH_STACK.TECH_STACK_TOTAL_SCORES.desc())
         .fetchInto(MemberTechStackResponse.class);
   }
+
+  public List<Integer> findAllScoresForTech(String techStackName) {
+    return dsl.select(DEVELOPER_TECH_STACK.TECH_STACK_TOTAL_SCORES)
+        .from(DEVELOPER_TECH_STACK)
+        .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.eq(techStackName))
+        .fetchInto(Integer.class);
+  }
 }

@@ -3,8 +3,6 @@
  */
 package com.example.jooq.generated.tables;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -124,29 +122,6 @@ public class DeveloperProjectWorkHistoryTechStack
   @Override
   public UniqueKey<DeveloperProjectWorkHistoryTechStackRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK_PRIMARY;
-  }
-
-  @Override
-  public List<ForeignKey<DeveloperProjectWorkHistoryTechStackRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_DPWH_TS_DPWH, Keys.FK_DPWH_TS_TECH_STACK);
-  }
-
-  private transient DeveloperProjectWorkHistory _developerProjectWorkHistory;
-  private transient TechStack _techStack;
-
-  /** Get the implicit join path to the <code>sion.developer_project_work_history</code> table. */
-  public DeveloperProjectWorkHistory developerProjectWorkHistory() {
-    if (_developerProjectWorkHistory == null)
-      _developerProjectWorkHistory = new DeveloperProjectWorkHistory(this, Keys.FK_DPWH_TS_DPWH);
-
-    return _developerProjectWorkHistory;
-  }
-
-  /** Get the implicit join path to the <code>sion.tech_stack</code> table. */
-  public TechStack techStack() {
-    if (_techStack == null) _techStack = new TechStack(this, Keys.FK_DPWH_TS_TECH_STACK);
-
-    return _techStack;
   }
 
   @Override

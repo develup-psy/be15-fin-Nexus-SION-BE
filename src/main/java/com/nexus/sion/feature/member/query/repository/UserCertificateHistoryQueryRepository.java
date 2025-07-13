@@ -9,6 +9,7 @@ import java.util.List;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import com.example.jooq.generated.enums.UserCertificateHistoryCertificateStatus;
 import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,7 @@ public class UserCertificateHistoryQueryRepository {
         .on(
             USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-        .where(
-            USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
-                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .where(USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(memberId))
         .fetch(
             record ->
                 UserCertificateHistoryResponse.builder()
@@ -59,5 +58,23 @@ public class UserCertificateHistoryQueryRepository {
                     .createdAt(record.get(USER_CERTIFICATE_HISTORY.CREATED_AT))
                     .updatedAt(record.get(USER_CERTIFICATE_HISTORY.UPDATED_AT))
                     .build());
+  }
+
+  public List<String> findAllCertificateNames() {
+    return dsl.selectDistinct(CERTIFICATE.CERTIFICATE_NAME)
+        .from(CERTIFICATE)
+        .fetchInto(String.class);
+  }
+
+  public List<String> findOwnedCertificateNamesByStatus(
+      String employeeId, UserCertificateHistoryCertificateStatus status) {
+    return dsl.selectDistinct(USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME)
+        .from(USER_CERTIFICATE_HISTORY)
+        .where(
+            USER_CERTIFICATE_HISTORY
+                .EMPLOYEE_IDENTIFICATION_NUMBER
+                .eq(employeeId)
+                .and(USER_CERTIFICATE_HISTORY.CERTIFICATE_STATUS.eq(status)))
+        .fetchInto(String.class);
   }
 }

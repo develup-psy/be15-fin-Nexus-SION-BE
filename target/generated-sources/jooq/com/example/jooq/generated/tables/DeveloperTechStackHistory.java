@@ -4,8 +4,6 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -133,29 +131,6 @@ public class DeveloperTechStackHistory extends TableImpl<DeveloperTechStackHisto
   @Override
   public UniqueKey<DeveloperTechStackHistoryRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY;
-  }
-
-  @Override
-  public List<ForeignKey<DeveloperTechStackHistoryRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_DTSH_PROJECT, Keys.FK_DTSH_TECH_STACK);
-  }
-
-  private transient Project _project;
-  private transient DeveloperTechStack _developerTechStack;
-
-  /** Get the implicit join path to the <code>sion.project</code> table. */
-  public Project project() {
-    if (_project == null) _project = new Project(this, Keys.FK_DTSH_PROJECT);
-
-    return _project;
-  }
-
-  /** Get the implicit join path to the <code>sion.developer_tech_stack</code> table. */
-  public DeveloperTechStack developerTechStack() {
-    if (_developerTechStack == null)
-      _developerTechStack = new DeveloperTechStack(this, Keys.FK_DTSH_TECH_STACK);
-
-    return _developerTechStack;
   }
 
   @Override
