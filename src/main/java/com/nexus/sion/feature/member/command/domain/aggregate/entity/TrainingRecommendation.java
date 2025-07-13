@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "training_recommendation")
@@ -28,9 +29,7 @@ public class TrainingRecommendation {
   @Column(name = "recommendation_reason", columnDefinition = "TEXT", nullable = false)
   private String recommendationReason;
 
-  @Column(
-      name = "created_at",
-      nullable = false,
-      columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @CreatedDate
+  @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 }
