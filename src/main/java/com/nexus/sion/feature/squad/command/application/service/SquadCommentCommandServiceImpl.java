@@ -22,12 +22,13 @@ public class SquadCommentCommandServiceImpl implements SquadCommentCommandServic
 
   @Override
   public void registerComment(
-          String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber) {
+      String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber) {
     if (request.getContent() == null || request.getContent().trim().isEmpty()) {
       throw new BusinessException(ErrorCode.COMMENT_CONTENT_EMPTY);
     }
 
-    SquadComment comment = SquadComment.builder()
+    SquadComment comment =
+        SquadComment.builder()
             .squadCode(squadCode)
             .employeeIdentificationNumber(employeeIdentificationNumber)
             .content(request.getContent())
@@ -38,7 +39,9 @@ public class SquadCommentCommandServiceImpl implements SquadCommentCommandServic
 
   @Override
   public void deleteComment(String squadCode, Long commentId) {
-    SquadComment comment = squadCommentRepository.findById(commentId)
+    SquadComment comment =
+        squadCommentRepository
+            .findById(commentId)
             .orElseThrow(() -> new BusinessException(ErrorCode.COMMENT_NOT_FOUND));
 
     if (!comment.getSquadCode().equals(squadCode)) {

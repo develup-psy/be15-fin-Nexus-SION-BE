@@ -174,13 +174,14 @@ public class ProjectQueryRepository {
                     MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .join(PROJECT_AND_JOB)
             .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .where(SQUAD.PROJECT_CODE.eq(projectCode)).and(SQUAD.IS_ACTIVE.eq((byte)1))
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .and(SQUAD.IS_ACTIVE.eq((byte) 1))
             .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저 정렬
             .fetch()
             .map(
                 r ->
                     new ProjectDetailResponse.SquadMemberInfo(
-                            r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
+                        r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
                         Integer.valueOf(r.get(SQUAD_EMPLOYEE.IS_LEADER)), // 👈 여기로 포함
                         r.get(MEMBER.PROFILE_IMAGE_URL),
                         r.get(MEMBER.EMPLOYEE_NAME),
@@ -190,10 +191,11 @@ public class ProjectQueryRepository {
     String status = String.valueOf(project.get(PROJECT.STATUS));
     ProjectAnalysisStatus analysisStatus = project.get(PROJECT.ANALYSIS_STATUS);
 
-    String squadCode = dsl.select(SQUAD.SQUAD_CODE)
+    String squadCode =
+        dsl.select(SQUAD.SQUAD_CODE)
             .from(SQUAD)
             .where(SQUAD.PROJECT_CODE.eq(projectCode))
-            .and(SQUAD.IS_ACTIVE.eq((byte)1))
+            .and(SQUAD.IS_ACTIVE.eq((byte) 1))
             .fetchOne(SQUAD.SQUAD_CODE);
 
     return new ProjectDetailResponse(
@@ -207,8 +209,7 @@ public class ProjectQueryRepository {
         members,
         status,
         analysisStatus, // ✅ 여기 포함,
-            squadCode
-        );
+        squadCode);
   }
 
   public PageResponse<ProjectListResponse> findProjectListByMemberId(

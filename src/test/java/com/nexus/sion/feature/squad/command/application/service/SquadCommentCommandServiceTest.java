@@ -3,15 +3,16 @@ package com.nexus.sion.feature.squad.command.application.service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadCommentRegisterRequest;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadComment;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 class SquadCommentCommandServiceTest {
 
@@ -26,7 +27,7 @@ class SquadCommentCommandServiceTest {
     notificationCommandService = mock(NotificationCommandService.class);
 
     squadCommentCommandService =
-            new SquadCommentCommandServiceImpl(squadCommentRepository, notificationCommandService);
+        new SquadCommentCommandServiceImpl(squadCommentRepository, notificationCommandService);
   }
 
   @Test
@@ -51,9 +52,10 @@ class SquadCommentCommandServiceTest {
     String squadCode = "ha_1_1_1";
 
     // when & then
-    assertThatThrownBy(() -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.COMMENT_CONTENT_EMPTY.getMessage());
+    assertThatThrownBy(
+            () -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.COMMENT_CONTENT_EMPTY.getMessage());
 
     verify(squadCommentRepository, never()).save(any());
   }
@@ -65,12 +67,12 @@ class SquadCommentCommandServiceTest {
     String squadCode = "ha_1_1_1";
     Long commentId = 1L;
     SquadComment comment =
-            SquadComment.builder()
-                    .id(commentId)
-                    .squadCode(squadCode)
-                    .employeeIdentificationNumber("EMM001")
-                    .content("삭제 테스트")
-                    .build();
+        SquadComment.builder()
+            .id(commentId)
+            .squadCode(squadCode)
+            .employeeIdentificationNumber("EMM001")
+            .content("삭제 테스트")
+            .build();
 
     when(squadCommentRepository.findById(commentId)).thenReturn(java.util.Optional.of(comment));
 
@@ -91,8 +93,8 @@ class SquadCommentCommandServiceTest {
 
     // when & then
     assertThatThrownBy(() -> squadCommentCommandService.deleteComment(squadCode, commentId))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.COMMENT_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.COMMENT_NOT_FOUND.getMessage());
 
     verify(squadCommentRepository, never()).delete(any());
   }
@@ -104,19 +106,19 @@ class SquadCommentCommandServiceTest {
     String requestSquadCode = "ha_1_1_1";
     Long commentId = 1L;
     SquadComment comment =
-            SquadComment.builder()
-                    .id(commentId)
-                    .squadCode("another_squad_code")
-                    .employeeIdentificationNumber("EMM001")
-                    .content("테스트")
-                    .build();
+        SquadComment.builder()
+            .id(commentId)
+            .squadCode("another_squad_code")
+            .employeeIdentificationNumber("EMM001")
+            .content("테스트")
+            .build();
 
     when(squadCommentRepository.findById(commentId)).thenReturn(java.util.Optional.of(comment));
 
     // when & then
     assertThatThrownBy(() -> squadCommentCommandService.deleteComment(requestSquadCode, commentId))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.INVALID_COMMENT_ACCESS.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.INVALID_COMMENT_ACCESS.getMessage());
 
     verify(squadCommentRepository, never()).delete(any(SquadComment.class));
   }

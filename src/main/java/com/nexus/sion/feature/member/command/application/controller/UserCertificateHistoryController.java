@@ -22,8 +22,8 @@ public class UserCertificateHistoryController {
   // 개발자 자격증 등록
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> registerUserCertificate(
-          @PathVariable String employeeId,
-          @ModelAttribute @Valid UserCertificateHistoryRequest request) {
+      @PathVariable String employeeId,
+      @ModelAttribute @Valid UserCertificateHistoryRequest request) {
     developerCertificateHistoryService.registerUserCertificate(employeeId, request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }

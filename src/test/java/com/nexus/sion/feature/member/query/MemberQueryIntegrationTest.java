@@ -9,10 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.util.List;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
-import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
-import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +21,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
 import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
+import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,8 +38,7 @@ class MemberQueryIntegrationTest {
   @Autowired private MockMvc mockMvc;
 
   @Autowired private MemberRepository memberRepository;
-    @Autowired
-    private DeveloperTechStackRepository developerTechStackRepository;
+  @Autowired private DeveloperTechStackRepository developerTechStackRepository;
 
   @BeforeEach
   void setUp() {
@@ -52,7 +51,7 @@ class MemberQueryIntegrationTest {
             .phoneNumber("01011111111")
             .role(MemberRole.INSIDER)
             .status(MemberStatus.AVAILABLE)
-              .gradeCode(GradeCode.B)
+            .gradeCode(GradeCode.B)
             .birthday(LocalDate.of(1990, 1, 1))
             .salary(50000000L)
             .build());
@@ -138,22 +137,23 @@ class MemberQueryIntegrationTest {
   void squadSearchDevelopers_success() throws Exception {
 
     memberRepository.save(
-            Member.builder()
-                    .employeeIdentificationNumber("12345678")
-                    .employeeName("아무개")
-                    .password("encoded_password")
-                    .email("example@example.com")
-                    .phoneNumber("01011111111")
-                    .role(MemberRole.INSIDER)
-                    .status(MemberStatus.AVAILABLE)
-                    .gradeCode(GradeCode.B)
-                    .birthday(LocalDate.of(1990, 1, 1))
-                    .salary(50000000L)
-                    .build());
+        Member.builder()
+            .employeeIdentificationNumber("12345678")
+            .employeeName("아무개")
+            .password("encoded_password")
+            .email("example@example.com")
+            .phoneNumber("01011111111")
+            .role(MemberRole.INSIDER)
+            .status(MemberStatus.AVAILABLE)
+            .gradeCode(GradeCode.B)
+            .birthday(LocalDate.of(1990, 1, 1))
+            .salary(50000000L)
+            .build());
 
     memberRepository.flush();
 
-    DeveloperTechStack techStack = DeveloperTechStack.builder()
+    DeveloperTechStack techStack =
+        DeveloperTechStack.builder()
             .employeeIdentificationNumber("12345678")
             .techStackName("Java")
             .totalScore(90)
@@ -162,9 +162,9 @@ class MemberQueryIntegrationTest {
     developerTechStackRepository.save(techStack);
     developerTechStackRepository.flush();
 
-
     // given
-    MemberSquadSearchRequest request = MemberSquadSearchRequest.builder()
+    MemberSquadSearchRequest request =
+        MemberSquadSearchRequest.builder()
             .keyword("아무개")
             .grades(List.of("B"))
             .status("AVAILABLE")
@@ -175,21 +175,22 @@ class MemberQueryIntegrationTest {
             .size(10)
             .build();
 
-
     // when & then
-    mockMvc.perform(post("/api/v1/members/squad-search")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data.content").isArray())
-            .andExpect(jsonPath("$.data.content.length()").value(1))
-            .andExpect(jsonPath("$.data.content[0].employeeId").value("12345678"))
-            .andExpect(jsonPath("$.data.content[0].name").value("아무개"))
-            .andExpect(jsonPath("$.data.content[0].grade").value("B"))
-            .andExpect(jsonPath("$.data.content[0].status").value("AVAILABLE"))
-            .andExpect(jsonPath("$.data.content[0].topTechStackName").value("Java"))
-            .andExpect(jsonPath("$.data.content[0].monthlyUnitPrice").isNumber())
-            .andExpect(jsonPath("$.data.content[0].productivity").isNumber());
+    mockMvc
+        .perform(
+            post("/api/v1/members/squad-search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data.content").isArray())
+        .andExpect(jsonPath("$.data.content.length()").value(1))
+        .andExpect(jsonPath("$.data.content[0].employeeId").value("12345678"))
+        .andExpect(jsonPath("$.data.content[0].name").value("아무개"))
+        .andExpect(jsonPath("$.data.content[0].grade").value("B"))
+        .andExpect(jsonPath("$.data.content[0].status").value("AVAILABLE"))
+        .andExpect(jsonPath("$.data.content[0].topTechStackName").value("Java"))
+        .andExpect(jsonPath("$.data.content[0].monthlyUnitPrice").isNumber())
+        .andExpect(jsonPath("$.data.content[0].productivity").isNumber());
   }
 }

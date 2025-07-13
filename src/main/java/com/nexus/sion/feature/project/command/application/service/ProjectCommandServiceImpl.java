@@ -3,29 +3,28 @@ package com.nexus.sion.feature.project.command.application.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
-import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
-import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
@@ -245,40 +244,43 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void replaceMember(SquadReplacementRequest request) {
 
-    Squad existSquad = squadCommandRepository.findById(request.getSquadCode()).orElseThrow(
-            () -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND)
-    );
+    Squad existSquad =
+        squadCommandRepository
+            .findById(request.getSquadCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
 
+    SquadEmployee existsMember =
+        squadEmployeeCommandRepository
+            .findBySquadCodeAndEmployeeIdentificationNumber(
+                request.getSquadCode(), request.getOldEmployeeId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
 
-    SquadEmployee existsMember = squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(
-            request.getSquadCode(), request.getOldEmployeeId()).orElseThrow(
-            () -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND)
-    );
-
-    if(existsMember.isLeader()){
+    if (existsMember.isLeader()) {
       throw new BusinessException(ErrorCode.INVALID_LEADER_REPLACEMENT);
     }
 
     squadEmployeeCommandRepository.deleteBySquadCodeAndEmployeeIdentificationNumber(
-            request.getSquadCode(),
-            request.getOldEmployeeId()
-    );
+        request.getSquadCode(), request.getOldEmployeeId());
 
-    boolean existsNew = squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
+    boolean existsNew =
+        squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
             request.getSquadCode(), request.getNewEmployeeId());
 
     if (existsNew) {
       throw new BusinessException(ErrorCode.INVALID_EXIST_MEMBER_REPLACEMENT);
     }
 
-    Member targetMember = memberRepository.findById(request.getNewEmployeeId())
+    Member targetMember =
+        memberRepository
+            .findById(request.getNewEmployeeId())
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
     if (targetMember.getStatus() != MemberStatus.AVAILABLE) {
       throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);
     }
 
-    SquadEmployee newMember = SquadEmployee.builder()
+    SquadEmployee newMember =
+        SquadEmployee.builder()
             .squadCode(request.getSquadCode())
             .employeeIdentificationNumber(request.getNewEmployeeId())
             .projectAndJobId(existsMember.getProjectAndJobId())

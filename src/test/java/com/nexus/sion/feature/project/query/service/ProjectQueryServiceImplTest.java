@@ -150,7 +150,7 @@ class ProjectQueryServiceImplTest {
             members,
             "WAITING",
             ProjectAnalysisStatus.COMPLETE,
-                "ha_1_1_1");
+            "ha_1_1_1");
 
     when(repository.getProjectDetail(projectCode)).thenReturn(mockResponse);
 

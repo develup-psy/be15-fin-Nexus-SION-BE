@@ -52,13 +52,15 @@ class TechStackQueryIntegrationTest {
     techStackRepository.flush();
 
     // when & then
-    mockMvc.perform(get("/api/v1/tech-stack/autocomplete")
-                    .param("keyword", "Spr")
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data.techStacks", hasItems("Spring Boot", "Spring Security", "Spring Batch")));
+    mockMvc
+        .perform(
+            get("/api/v1/tech-stack/autocomplete")
+                .param("keyword", "Spr")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(
+            jsonPath(
+                "$.data.techStacks", hasItems("Spring Boot", "Spring Security", "Spring Batch")));
   }
-
-
 }

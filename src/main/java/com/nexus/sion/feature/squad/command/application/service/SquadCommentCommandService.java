@@ -4,7 +4,8 @@ import com.nexus.sion.feature.squad.command.application.dto.request.SquadComment
 
 public interface SquadCommentCommandService {
 
-  void registerComment(String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber);
+  void registerComment(
+      String squadCode, SquadCommentRegisterRequest request, String employeeIdentificationNumber);
 
   void deleteComment(String squadCode, Long commentId);
 }
