@@ -15,6 +15,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.nexus.sion.feature.member.command.application.dto.response.FreelencerFpInferResponse;
+import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +33,9 @@ public class FastApiClient {
 
   @Value("${ai.fp-infer}")
   private String fpInferUrl;
+
+  @Value("${ai.fp-freelencer-infer}")
+  private String fpFreelencerInferUrl;
 
   public void sendVectors(List<Map<String, Object>> payloads) {
     HttpHeaders headers = new HttpHeaders();
@@ -56,5 +62,26 @@ public class FastApiClient {
     HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
     return restTemplate.postForEntity(fpInferUrl, request, String.class);
+  }
+
+  public List<FunctionScore> requestFpFreelencerInference(File pdfFile) {
+    try {
+      MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+      body.add("file", new FileSystemResource(pdfFile));
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+      HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
+
+      ResponseEntity<FreelencerFpInferResponse> response =
+          restTemplate.postForEntity(
+              fpFreelencerInferUrl, request, FreelencerFpInferResponse.class);
+      return response.getBody().getFunctions();
+
+    } catch (Exception e) {
+      log.warn("FastAPI 요청 실패", e);
+      throw new RuntimeException("FastAPI FP 추론 요청 실패", e);
+    }
   }
 }

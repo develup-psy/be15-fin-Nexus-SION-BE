@@ -205,6 +205,7 @@ public class SquadQueryRepository {
         .isActive(isActive)
         .description(squad.get(SQUAD.DESCRIPTION))
         .origin(squad.get(SQUAD.ORIGIN_TYPE))
+        .projectCode(squad.get(SQUAD.PROJECT_CODE))
         .build();
   }
 }

@@ -160,6 +160,7 @@ public class ProjectQueryRepository {
     // 5. 스쿼드 구성원
     List<ProjectDetailResponse.SquadMemberInfo> members =
         dsl.select(
+                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
                 SQUAD_EMPLOYEE.IS_LEADER, // ✅ 리더 여부 포함
                 MEMBER.PROFILE_IMAGE_URL,
                 MEMBER.EMPLOYEE_NAME,
@@ -173,12 +174,13 @@ public class ProjectQueryRepository {
                     MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .join(PROJECT_AND_JOB)
             .on(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .where(SQUAD.PROJECT_CODE.eq(projectCode)).and(SQUAD.IS_ACTIVE.eq((byte)1))
             .orderBy(SQUAD_EMPLOYEE.IS_LEADER.desc()) // 리더 먼저 정렬
             .fetch()
             .map(
                 r ->
                     new ProjectDetailResponse.SquadMemberInfo(
+                            r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
                         Integer.valueOf(r.get(SQUAD_EMPLOYEE.IS_LEADER)), // 👈 여기로 포함
                         r.get(MEMBER.PROFILE_IMAGE_URL),
                         r.get(MEMBER.EMPLOYEE_NAME),
@@ -187,6 +189,12 @@ public class ProjectQueryRepository {
     // ✅ 상태 추출 및 반환에 포함
     String status = String.valueOf(project.get(PROJECT.STATUS));
     ProjectAnalysisStatus analysisStatus = project.get(PROJECT.ANALYSIS_STATUS);
+
+    String squadCode = dsl.select(SQUAD.SQUAD_CODE)
+            .from(SQUAD)
+            .where(SQUAD.PROJECT_CODE.eq(projectCode))
+            .and(SQUAD.IS_ACTIVE.eq((byte)1))
+            .fetchOne(SQUAD.SQUAD_CODE);
 
     return new ProjectDetailResponse(
         project.get(PROJECT.TITLE),
@@ -198,7 +206,8 @@ public class ProjectQueryRepository {
         techStacks,
         members,
         status,
-        analysisStatus // ✅ 여기 포함
+        analysisStatus, // ✅ 여기 포함,
+            squadCode
         );
   }
 

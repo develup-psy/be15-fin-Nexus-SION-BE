@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberListRequest {
-  private int page = 0;
-  private int size = 10;
+  private int page;
+  private int size;
 
   private String gradeCode;
   private String role;

@@ -15,14 +15,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SquadEmployee extends BaseTimeEntity {
-  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "squad_employee_id")
   private Long id;
 
-  @Column(name = "assigned_date", nullable = false)
+  @Column(name = "assigned_date")
   private LocalDate assignedDate;
 
   @Column(name = "employee_identification_number", nullable = false, length = 30)
