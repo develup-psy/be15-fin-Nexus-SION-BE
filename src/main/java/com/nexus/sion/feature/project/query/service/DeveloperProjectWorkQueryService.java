@@ -6,10 +6,10 @@ import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
-import com.nexus.sion.feature.project.query.dto.response.WorkRequestQueryDto;
+import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 
 public interface DeveloperProjectWorkQueryService {
-  List<WorkRequestQueryDto> getAllRequests();
+  PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size);
 
   PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(String employeeId, int page, int size);
 

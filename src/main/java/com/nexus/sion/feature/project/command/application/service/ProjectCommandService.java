@@ -24,5 +24,5 @@ public interface ProjectCommandService {
   void analyzeProject(
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber);
 
-    void replaceMember(SquadReplacementRequest request);
+  void replaceMember(SquadReplacementRequest request);
 }

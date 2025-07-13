@@ -39,10 +39,10 @@ public class UserCertificateHistoryQueryRepository {
         .on(
             USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-            .where(
-                    USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
-                            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-            .fetch(
+        .where(
+            USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+        .fetch(
             record ->
                 UserCertificateHistoryResponse.builder()
                     .userCertificateHistoryId(

@@ -29,6 +29,12 @@ public enum NotificationType {
   /** 프로젝트 업무 승인 요청 알림 */
   TASK_APPROVAL_REQUEST("{username}님의 프로젝트 이력 등록 요청이 들어왔습니다."),
 
+  /** 프로젝트 업무 승인 요청 결과 알림 */
+  TASK_APPROVAL_RESULT("{username}님의 프로젝트 이력 등록이 {status}되었습니다."),
+
+  /** 프로젝트 업무 승인 요청 결과 알림 */
+  TASK_APPROVAL_REQUEST_AGAIN("{username}님의 프로젝트 이력 등록을 다시 해주세요."),
+
   /** 자격증 등록 승인 요청 알림 */
   CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다.");
 

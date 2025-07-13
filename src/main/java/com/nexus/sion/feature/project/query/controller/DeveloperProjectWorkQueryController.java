@@ -11,7 +11,7 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
-import com.nexus.sion.feature.project.query.dto.response.WorkRequestQueryDto;
+import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.service.DeveloperProjectWorkQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,26 +23,32 @@ public class DeveloperProjectWorkQueryController {
 
   private final DeveloperProjectWorkQueryService developerProjectWorkQueryService;
 
-  @GetMapping
-  public ResponseEntity<ApiResponse<List<WorkRequestQueryDto>>> getAllRequests() {
-    List<WorkRequestQueryDto> result = developerProjectWorkQueryService.getAllRequests();
+  @GetMapping("/admin")
+  public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getRequestsForAdmin(
+          @RequestParam(required = false) String status,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
+
+    PageResponse<WorkRequestQueryDto> result = developerProjectWorkQueryService.getRequestsForAdmin(status, page, size);
+
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 
+
   @GetMapping("/me")
   public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getMyRequests(
-      @AuthenticationPrincipal User user,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
+          @AuthenticationPrincipal User user,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
     String employeeId = user.getUsername();
     PageResponse<WorkRequestQueryDto> result =
-        developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId, page, size);
+            developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId, page, size);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 
   @GetMapping("/{projectWorkId}")
   public ResponseEntity<ApiResponse<WorkInfoQueryDto>> getProjectHistoryDetail(
-      @PathVariable Long projectWorkId) {
+          @PathVariable Long projectWorkId) {
     WorkInfoQueryDto result = developerProjectWorkQueryService.getRequestDetailById(projectWorkId);
     return ResponseEntity.ok(ApiResponse.success(result));
   }

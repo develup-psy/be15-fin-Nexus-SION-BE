@@ -19,6 +19,7 @@ public class WorkInfoQueryDto {
   private String projectCode;
   private String projectTitle;
   private String approvalStatus;
+  private String rejectedReason;
   private LocalDateTime approvedAt;
   private LocalDateTime createdAt;
   private LocalDate actualEndDate;

@@ -5,7 +5,7 @@ import com.nexus.sion.feature.project.command.application.dto.request.WorkHistor
 public interface DeveloperProjectWorkService {
   void approve(Long id, String adminId);
 
-  void reject(Long id, String adminId);
+  void reject(Long id, String adminId, String reason);
 
   void addHistories(Long workId, WorkHistoryAddRequestDto dto);
 }
