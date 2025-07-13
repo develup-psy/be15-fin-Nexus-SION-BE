@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.query.controller;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,6 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
-import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
 import com.nexus.sion.feature.member.query.service.MemberQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -116,4 +113,10 @@ public class MemberQueryController {
     PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(query);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
+
+  @GetMapping("/dashboard-summary")
+  public ResponseEntity<ApiResponse<DashboardSummaryResponse>> getDashboardSummary() {
+    return ResponseEntity.ok(ApiResponse.success(memberQueryService.getDashboardSummary()));
+  }
+
 }

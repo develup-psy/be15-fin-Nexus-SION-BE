@@ -4,6 +4,7 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.*;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,6 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
-import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
 import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
 import com.nexus.sion.feature.member.query.util.SortFieldSelector;
@@ -132,5 +129,17 @@ public class MemberQueryServiceImpl implements MemberQueryService {
         memberQueryRepository.findAllSquadMembers(query, condition, sortField);
 
     return PageResponse.fromJooq(content, total, query.page(), query.size());
+  }
+
+  @Override
+  public DashboardSummaryResponse getDashboardSummary() {
+    return new DashboardSummaryResponse(
+            memberQueryRepository.findPendingProjects(),
+            memberQueryRepository.findAnalyzingProjects(),
+            memberQueryRepository.fetchTopDevelopers(),
+            memberQueryRepository.fetchTopFreelancers(),
+            memberQueryRepository.fetchDeveloperAvailability(),
+            memberQueryRepository.fetchTopTechStacks()
+    );
   }
 }
