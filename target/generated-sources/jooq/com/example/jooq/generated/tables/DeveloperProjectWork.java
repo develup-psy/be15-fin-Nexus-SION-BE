@@ -4,8 +4,6 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -166,42 +164,6 @@ public class DeveloperProjectWork extends TableImpl<DeveloperProjectWorkRecord> 
   @Override
   public UniqueKey<DeveloperProjectWorkRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_PROJECT_WORK_PRIMARY;
-  }
-
-  @Override
-  public List<ForeignKey<DeveloperProjectWorkRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_DPWORK_MEMBER, Keys.FK_DPWORK_PROJECT, Keys.FK_DPWORK_APPROVER);
-  }
-
-  private transient Member _fkDpworkMember;
-  private transient Project _project;
-  private transient Member _fkDpworkApprover;
-
-  /**
-   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
-   * FK_DPWORK_MEMBER</code> key.
-   */
-  public Member fkDpworkMember() {
-    if (_fkDpworkMember == null) _fkDpworkMember = new Member(this, Keys.FK_DPWORK_MEMBER);
-
-    return _fkDpworkMember;
-  }
-
-  /** Get the implicit join path to the <code>sion.project</code> table. */
-  public Project project() {
-    if (_project == null) _project = new Project(this, Keys.FK_DPWORK_PROJECT);
-
-    return _project;
-  }
-
-  /**
-   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
-   * FK_DPWORK_APPROVER</code> key.
-   */
-  public Member fkDpworkApprover() {
-    if (_fkDpworkApprover == null) _fkDpworkApprover = new Member(this, Keys.FK_DPWORK_APPROVER);
-
-    return _fkDpworkApprover;
   }
 
   @Override

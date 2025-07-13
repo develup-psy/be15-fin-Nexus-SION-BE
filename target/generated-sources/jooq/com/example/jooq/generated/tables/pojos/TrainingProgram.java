@@ -19,6 +19,7 @@ public class TrainingProgram implements Serializable {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private String imageUrl;
+  private String videoUrl;
 
   public TrainingProgram() {}
 
@@ -30,6 +31,7 @@ public class TrainingProgram implements Serializable {
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
     this.imageUrl = value.imageUrl;
+    this.videoUrl = value.videoUrl;
   }
 
   public TrainingProgram(
@@ -39,7 +41,8 @@ public class TrainingProgram implements Serializable {
       String trainingCategory,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
-      String imageUrl) {
+      String imageUrl,
+      String videoUrl) {
     this.trainingId = trainingId;
     this.trainingName = trainingName;
     this.trainingDescription = trainingDescription;
@@ -47,6 +50,7 @@ public class TrainingProgram implements Serializable {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.imageUrl = imageUrl;
+    this.videoUrl = videoUrl;
   }
 
   /** Getter for <code>sion.training_program.training_id</code>. */
@@ -119,6 +123,16 @@ public class TrainingProgram implements Serializable {
     this.imageUrl = imageUrl;
   }
 
+  /** Getter for <code>sion.training_program.video_url</code>. 교육 영상 URL */
+  public String getVideoUrl() {
+    return this.videoUrl;
+  }
+
+  /** Setter for <code>sion.training_program.video_url</code>. 교육 영상 URL */
+  public void setVideoUrl(String videoUrl) {
+    this.videoUrl = videoUrl;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -146,6 +160,9 @@ public class TrainingProgram implements Serializable {
     if (this.imageUrl == null) {
       if (other.imageUrl != null) return false;
     } else if (!this.imageUrl.equals(other.imageUrl)) return false;
+    if (this.videoUrl == null) {
+      if (other.videoUrl != null) return false;
+    } else if (!this.videoUrl.equals(other.videoUrl)) return false;
     return true;
   }
 
@@ -163,6 +180,7 @@ public class TrainingProgram implements Serializable {
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     result = prime * result + ((this.imageUrl == null) ? 0 : this.imageUrl.hashCode());
+    result = prime * result + ((this.videoUrl == null) ? 0 : this.videoUrl.hashCode());
     return result;
   }
 
@@ -177,6 +195,7 @@ public class TrainingProgram implements Serializable {
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);
     sb.append(", ").append(imageUrl);
+    sb.append(", ").append(videoUrl);
 
     sb.append(")");
     return sb.toString();

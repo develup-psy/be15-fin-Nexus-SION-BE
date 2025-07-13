@@ -14,35 +14,31 @@ public class TrainingRecommendation implements Serializable {
 
   private Long trainingRecommendationId;
   private String employeeIdentificationNumber;
-  private String trainingName;
+  private Long trainingId;
   private String recommendationReason;
-  private LocalDateTime recommendedAt;
-  private Byte isCompleted;
+  private LocalDateTime createdAt;
 
   public TrainingRecommendation() {}
 
   public TrainingRecommendation(TrainingRecommendation value) {
     this.trainingRecommendationId = value.trainingRecommendationId;
     this.employeeIdentificationNumber = value.employeeIdentificationNumber;
-    this.trainingName = value.trainingName;
+    this.trainingId = value.trainingId;
     this.recommendationReason = value.recommendationReason;
-    this.recommendedAt = value.recommendedAt;
-    this.isCompleted = value.isCompleted;
+    this.createdAt = value.createdAt;
   }
 
   public TrainingRecommendation(
       Long trainingRecommendationId,
       String employeeIdentificationNumber,
-      String trainingName,
+      Long trainingId,
       String recommendationReason,
-      LocalDateTime recommendedAt,
-      Byte isCompleted) {
+      LocalDateTime createdAt) {
     this.trainingRecommendationId = trainingRecommendationId;
     this.employeeIdentificationNumber = employeeIdentificationNumber;
-    this.trainingName = trainingName;
+    this.trainingId = trainingId;
     this.recommendationReason = recommendationReason;
-    this.recommendedAt = recommendedAt;
-    this.isCompleted = isCompleted;
+    this.createdAt = createdAt;
   }
 
   /** Getter for <code>sion.training_recommendation.training_recommendation_id</code>. */
@@ -65,14 +61,14 @@ public class TrainingRecommendation implements Serializable {
     this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
-  /** Getter for <code>sion.training_recommendation.training_name</code>. */
-  public String getTrainingName() {
-    return this.trainingName;
+  /** Getter for <code>sion.training_recommendation.training_id</code>. */
+  public Long getTrainingId() {
+    return this.trainingId;
   }
 
-  /** Setter for <code>sion.training_recommendation.training_name</code>. */
-  public void setTrainingName(String trainingName) {
-    this.trainingName = trainingName;
+  /** Setter for <code>sion.training_recommendation.training_id</code>. */
+  public void setTrainingId(Long trainingId) {
+    this.trainingId = trainingId;
   }
 
   /** Getter for <code>sion.training_recommendation.recommendation_reason</code>. */
@@ -85,24 +81,14 @@ public class TrainingRecommendation implements Serializable {
     this.recommendationReason = recommendationReason;
   }
 
-  /** Getter for <code>sion.training_recommendation.recommended_at</code>. */
-  public LocalDateTime getRecommendedAt() {
-    return this.recommendedAt;
+  /** Getter for <code>sion.training_recommendation.created_at</code>. */
+  public LocalDateTime getCreatedAt() {
+    return this.createdAt;
   }
 
-  /** Setter for <code>sion.training_recommendation.recommended_at</code>. */
-  public void setRecommendedAt(LocalDateTime recommendedAt) {
-    this.recommendedAt = recommendedAt;
-  }
-
-  /** Getter for <code>sion.training_recommendation.is_completed</code>. */
-  public Byte getIsCompleted() {
-    return this.isCompleted;
-  }
-
-  /** Setter for <code>sion.training_recommendation.is_completed</code>. */
-  public void setIsCompleted(Byte isCompleted) {
-    this.isCompleted = isCompleted;
+  /** Setter for <code>sion.training_recommendation.created_at</code>. */
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
   @Override
@@ -118,18 +104,15 @@ public class TrainingRecommendation implements Serializable {
       if (other.employeeIdentificationNumber != null) return false;
     } else if (!this.employeeIdentificationNumber.equals(other.employeeIdentificationNumber))
       return false;
-    if (this.trainingName == null) {
-      if (other.trainingName != null) return false;
-    } else if (!this.trainingName.equals(other.trainingName)) return false;
+    if (this.trainingId == null) {
+      if (other.trainingId != null) return false;
+    } else if (!this.trainingId.equals(other.trainingId)) return false;
     if (this.recommendationReason == null) {
       if (other.recommendationReason != null) return false;
     } else if (!this.recommendationReason.equals(other.recommendationReason)) return false;
-    if (this.recommendedAt == null) {
-      if (other.recommendedAt != null) return false;
-    } else if (!this.recommendedAt.equals(other.recommendedAt)) return false;
-    if (this.isCompleted == null) {
-      if (other.isCompleted != null) return false;
-    } else if (!this.isCompleted.equals(other.isCompleted)) return false;
+    if (this.createdAt == null) {
+      if (other.createdAt != null) return false;
+    } else if (!this.createdAt.equals(other.createdAt)) return false;
     return true;
   }
 
@@ -147,12 +130,11 @@ public class TrainingRecommendation implements Serializable {
             + ((this.employeeIdentificationNumber == null)
                 ? 0
                 : this.employeeIdentificationNumber.hashCode());
-    result = prime * result + ((this.trainingName == null) ? 0 : this.trainingName.hashCode());
+    result = prime * result + ((this.trainingId == null) ? 0 : this.trainingId.hashCode());
     result =
         prime * result
             + ((this.recommendationReason == null) ? 0 : this.recommendationReason.hashCode());
-    result = prime * result + ((this.recommendedAt == null) ? 0 : this.recommendedAt.hashCode());
-    result = prime * result + ((this.isCompleted == null) ? 0 : this.isCompleted.hashCode());
+    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     return result;
   }
 
@@ -162,10 +144,9 @@ public class TrainingRecommendation implements Serializable {
 
     sb.append(trainingRecommendationId);
     sb.append(", ").append(employeeIdentificationNumber);
-    sb.append(", ").append(trainingName);
+    sb.append(", ").append(trainingId);
     sb.append(", ").append(recommendationReason);
-    sb.append(", ").append(recommendedAt);
-    sb.append(", ").append(isCompleted);
+    sb.append(", ").append(createdAt);
 
     sb.append(")");
     return sb.toString();
