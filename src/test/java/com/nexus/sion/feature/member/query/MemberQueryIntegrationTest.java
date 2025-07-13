@@ -1,11 +1,18 @@
 package com.nexus.sion.feature.member.query;
 
+import static com.nexus.sion.feature.squad.query.util.JsonUtils.objectMapper;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStack;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.repository.DeveloperTechStackRepository;
+import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,6 +38,8 @@ class MemberQueryIntegrationTest {
   @Autowired private MockMvc mockMvc;
 
   @Autowired private MemberRepository memberRepository;
+    @Autowired
+    private DeveloperTechStackRepository developerTechStackRepository;
 
   @BeforeEach
   void setUp() {
@@ -42,6 +52,7 @@ class MemberQueryIntegrationTest {
             .phoneNumber("01011111111")
             .role(MemberRole.INSIDER)
             .status(MemberStatus.AVAILABLE)
+              .gradeCode(GradeCode.B)
             .birthday(LocalDate.of(1990, 1, 1))
             .salary(50000000L)
             .build());
@@ -119,5 +130,66 @@ class MemberQueryIntegrationTest {
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.errorCode").value("20001"));
+  }
+
+  @Test
+  @DisplayName("스쿼드용 개발자 목록 조회 API는 정상 응답을 반환한다.")
+  @WithMockUser
+  void squadSearchDevelopers_success() throws Exception {
+
+    memberRepository.save(
+            Member.builder()
+                    .employeeIdentificationNumber("12345678")
+                    .employeeName("아무개")
+                    .password("encoded_password")
+                    .email("example@example.com")
+                    .phoneNumber("01011111111")
+                    .role(MemberRole.INSIDER)
+                    .status(MemberStatus.AVAILABLE)
+                    .gradeCode(GradeCode.B)
+                    .birthday(LocalDate.of(1990, 1, 1))
+                    .salary(50000000L)
+                    .build());
+
+    memberRepository.flush();
+
+    DeveloperTechStack techStack = DeveloperTechStack.builder()
+            .employeeIdentificationNumber("12345678")
+            .techStackName("Java")
+            .totalScore(90)
+            .build();
+
+    developerTechStackRepository.save(techStack);
+    developerTechStackRepository.flush();
+
+
+    // given
+    MemberSquadSearchRequest request = MemberSquadSearchRequest.builder()
+            .keyword("아무개")
+            .grades(List.of("B"))
+            .status("AVAILABLE")
+            .stacks(List.of("Java"))
+            .sortBy("grade")
+            .sortDir("asc")
+            .page(0)
+            .size(10)
+            .build();
+
+
+    // when & then
+    mockMvc.perform(post("/api/v1/members/squad-search")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.content").isArray())
+            .andExpect(jsonPath("$.data.content.length()").value(1))
+            .andExpect(jsonPath("$.data.content[0].employeeId").value("12345678"))
+            .andExpect(jsonPath("$.data.content[0].name").value("아무개"))
+            .andExpect(jsonPath("$.data.content[0].grade").value("B"))
+            .andExpect(jsonPath("$.data.content[0].status").value("AVAILABLE"))
+            .andExpect(jsonPath("$.data.content[0].topTechStackName").value("Java"))
+            .andExpect(jsonPath("$.data.content[0].monthlyUnitPrice").isNumber())
+            .andExpect(jsonPath("$.data.content[0].productivity").isNumber());
   }
 }

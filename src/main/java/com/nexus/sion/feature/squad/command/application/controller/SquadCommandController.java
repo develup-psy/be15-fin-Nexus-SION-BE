@@ -54,4 +54,6 @@ public class SquadCommandController {
     squadCommandService.confirmSquad(squadCode);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
+
+
 }
