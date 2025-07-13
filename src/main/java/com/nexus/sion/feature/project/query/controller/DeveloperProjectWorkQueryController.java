@@ -23,11 +23,17 @@ public class DeveloperProjectWorkQueryController {
 
   private final DeveloperProjectWorkQueryService developerProjectWorkQueryService;
 
-  @GetMapping
-  public ResponseEntity<ApiResponse<List<WorkRequestQueryDto>>> getAllRequests() {
-    List<WorkRequestQueryDto> result = developerProjectWorkQueryService.getAllRequests();
+  @GetMapping("/admin")
+  public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getRequestsForAdmin(
+          @RequestParam(required = false) String status,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
+
+    PageResponse<WorkRequestQueryDto> result = developerProjectWorkQueryService.getRequestsForAdmin(status, page, size);
+
     return ResponseEntity.ok(ApiResponse.success(result));
   }
+
 
   @GetMapping("/me")
   public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getMyRequests(

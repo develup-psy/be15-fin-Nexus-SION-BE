@@ -25,8 +25,10 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
   private final DeveloperProjectWorkQueryRepository developerProjectWorkQueryRepository;
 
   @Override
-  public List<WorkRequestQueryDto> getAllRequests() {
-    return developerProjectWorkQueryRepository.findAll();
+  public PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size) {
+    List<WorkRequestQueryDto> result = developerProjectWorkQueryRepository.findForAdmin(status);
+    long totalElements = developerProjectWorkQueryRepository.getTotalCountForAdmin(status);
+    return PageResponse.fromJooq(result, totalElements, page, size);
   }
 
   @Override
