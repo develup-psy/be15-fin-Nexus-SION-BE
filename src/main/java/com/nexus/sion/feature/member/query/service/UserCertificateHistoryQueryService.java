@@ -6,4 +6,8 @@ import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryRe
 
 public interface UserCertificateHistoryQueryService {
   List<UserCertificateHistoryResponse> getMyCertificates(String memberId);
+
+  List<String> findAllCertificateNames();
+
+  List<String> findOwnedCertificateNamesByEmployee(String employeeId);
 }
