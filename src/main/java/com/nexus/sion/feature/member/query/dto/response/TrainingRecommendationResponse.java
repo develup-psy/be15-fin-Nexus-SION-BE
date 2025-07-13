@@ -19,26 +19,32 @@ public class TrainingRecommendationResponse {
   private String videoUrl;
 
   public static TrainingRecommendationResponse from(TrainingProgram p, String reason) {
-    return TrainingRecommendationResponse.builder()
-        .trainingId(p.getTrainingId())
-        .trainingName(p.getTrainingName())
-        .trainingDescription(p.getTrainingDescription())
-        .imageUrl(p.getImageUrl())
-        .recommendationReason(reason)
-        .category(p.getTrainingCategory())
-        .videoUrl(p.getVideoUrl())
-        .build();
+    return buildResponse(p.getTrainingId(), p.getTrainingName(), p.getTrainingDescription(),
+            p.getImageUrl(), reason, p.getTrainingCategory(), p.getVideoUrl());
   }
 
   public static TrainingRecommendationResponse from(TrainingProgramResponse p, String reason) {
+    return buildResponse(p.getTrainingId(), p.getTrainingName(), p.getTrainingDescription(),
+            p.getImageUrl(), reason, p.getTrainingCategory(), p.getVideoUrl());
+  }
+
+  private static TrainingRecommendationResponse buildResponse(
+          Long trainingId,
+          String trainingName,
+          String trainingDescription,
+          String imageUrl,
+          String reason,
+          String category,
+          String videoUrl
+  ) {
     return TrainingRecommendationResponse.builder()
-        .trainingId(p.getTrainingId())
-        .trainingName(p.getTrainingName())
-        .trainingDescription(p.getTrainingDescription())
-        .imageUrl(p.getImageUrl())
-        .recommendationReason(reason)
-        .category(p.getTrainingCategory())
-        .videoUrl(p.getVideoUrl())
-        .build();
+            .trainingId(trainingId)
+            .trainingName(trainingName)
+            .trainingDescription(trainingDescription)
+            .imageUrl(imageUrl)
+            .recommendationReason(reason)
+            .category(category)
+            .videoUrl(videoUrl)
+            .build();
   }
 }
