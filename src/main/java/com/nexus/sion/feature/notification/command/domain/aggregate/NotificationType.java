@@ -38,4 +38,14 @@ public enum NotificationType {
     String safeUsername = username != null ? username : "";
     return this.message.replace("{username}", safeUsername);
   }
+
+  public Notification toEntity(String senderId, String receiverId, String message, String contentId) {
+    return Notification.builder()
+            .senderId(senderId)
+            .receiverId(receiverId)
+            .message(message)
+            .notificationType(this)
+            .linkedContentId(contentId)
+            .build();
+  }
 }

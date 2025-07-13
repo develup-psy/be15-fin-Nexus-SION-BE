@@ -2,6 +2,8 @@ package com.nexus.sion.feature.notification.command.application.controller;
 
 import java.nio.file.AccessDeniedException;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -37,6 +39,10 @@ public class NotificationCommandController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth == null || !auth.isAuthenticated()) {
       throw new AccessDeniedException("인증되지 않음");
+    }
+
+    if(userDetails == null) {
+      throw new BusinessException(ErrorCode.USER_NOT_FOUND);
     }
 
     return ResponseEntity.ok(
