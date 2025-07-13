@@ -157,11 +157,21 @@ public class SquadEmployee extends TableImpl<SquadEmployeeRecord> {
   @Override
   public List<ForeignKey<SquadEmployeeRecord, ?>> getReferences() {
     return Arrays.asList(
-        Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1, Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
+        Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1,
+        Keys.FK_PROJECT_AND_JOB_TO_SQUAD_EMPLOYEE_1,
+        Keys.FK_SQUAD_TO_SQUAD_EMPLOYEE_1);
   }
 
+  private transient Member _member;
   private transient ProjectAndJob _projectAndJob;
   private transient Squad _squad;
+
+  /** Get the implicit join path to the <code>sion.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_DEVELOPER_TO_SQUAD_EMPLOYEE_1);
+
+    return _member;
+  }
 
   /** Get the implicit join path to the <code>sion.project_and_job</code> table. */
   public ProjectAndJob projectAndJob() {
