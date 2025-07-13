@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
-import com.nexus.sion.feature.member.command.application.service.UserCertificateHistoryService;
+import com.nexus.sion.feature.member.command.application.service.DeveloperCertificateHistoryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserCertificateHistoryController {
 
-  private final UserCertificateHistoryService userCertificateHistoryService;
+  private final DeveloperCertificateHistoryService developerCertificateHistoryService;
 
   // 개발자 자격증 등록
   @PostMapping
   public ResponseEntity<ApiResponse<Void>> registerUserCertificate(
-      @PathVariable String employeeId,
-      @ModelAttribute @Valid UserCertificateHistoryRequest request) {
-    userCertificateHistoryService.registerUserCertificate(employeeId, request);
+          @PathVariable String employeeId,
+          @ModelAttribute @Valid UserCertificateHistoryRequest request) {
+    developerCertificateHistoryService.registerUserCertificate(employeeId, request);
     return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(null));
   }
 }
