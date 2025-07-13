@@ -26,8 +26,10 @@ public class CalculateSquad {
   private void applyWeight(List<DeveloperSummary> list) {
     if (list == null || list.isEmpty()) return;
 
-    double minTechScore = list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).min().orElse(0);
-    double maxTechScore = list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).max().orElse(1);
+    double minTechScore =
+        list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).min().orElse(0);
+    double maxTechScore =
+        list.stream().mapToDouble(DeveloperSummary::getAvgTechScore).max().orElse(1);
     double techRange = (maxTechScore - minTechScore == 0) ? 1 : (maxTechScore - minTechScore);
 
     double minDomain = list.stream().mapToInt(DeveloperSummary::getDomainCount).min().orElse(0);
@@ -38,8 +40,8 @@ public class CalculateSquad {
       double techNormalized = (dev.getAvgTechScore() - minTechScore) / techRange;
       double domainNormalized = (dev.getDomainCount() - minDomain) / domainRange;
 
-      double weight = TECH_STACK_WEIGHT_RATIO * techNormalized
-              + DOMAIN_MATCH_WEIGHT_RATIO * domainNormalized;
+      double weight =
+          TECH_STACK_WEIGHT_RATIO * techNormalized + DOMAIN_MATCH_WEIGHT_RATIO * domainNormalized;
 
       dev.setWeight(weight);
     }

@@ -19,32 +19,43 @@ public class TrainingRecommendationResponse {
   private String videoUrl;
 
   public static TrainingRecommendationResponse from(TrainingProgram p, String reason) {
-    return buildResponse(p.getTrainingId(), p.getTrainingName(), p.getTrainingDescription(),
-            p.getImageUrl(), reason, p.getTrainingCategory(), p.getVideoUrl());
+    return buildResponse(
+        p.getTrainingId(),
+        p.getTrainingName(),
+        p.getTrainingDescription(),
+        p.getImageUrl(),
+        reason,
+        p.getTrainingCategory(),
+        p.getVideoUrl());
   }
 
   public static TrainingRecommendationResponse from(TrainingProgramResponse p, String reason) {
-    return buildResponse(p.getTrainingId(), p.getTrainingName(), p.getTrainingDescription(),
-            p.getImageUrl(), reason, p.getTrainingCategory(), p.getVideoUrl());
+    return buildResponse(
+        p.getTrainingId(),
+        p.getTrainingName(),
+        p.getTrainingDescription(),
+        p.getImageUrl(),
+        reason,
+        p.getTrainingCategory(),
+        p.getVideoUrl());
   }
 
   private static TrainingRecommendationResponse buildResponse(
-          Long trainingId,
-          String trainingName,
-          String trainingDescription,
-          String imageUrl,
-          String reason,
-          String category,
-          String videoUrl
-  ) {
+      Long trainingId,
+      String trainingName,
+      String trainingDescription,
+      String imageUrl,
+      String reason,
+      String category,
+      String videoUrl) {
     return TrainingRecommendationResponse.builder()
-            .trainingId(trainingId)
-            .trainingName(trainingName)
-            .trainingDescription(trainingDescription)
-            .imageUrl(imageUrl)
-            .recommendationReason(reason)
-            .category(category)
-            .videoUrl(videoUrl)
-            .build();
+        .trainingId(trainingId)
+        .trainingName(trainingName)
+        .trainingDescription(trainingDescription)
+        .imageUrl(imageUrl)
+        .recommendationReason(reason)
+        .category(category)
+        .videoUrl(videoUrl)
+        .build();
   }
 }

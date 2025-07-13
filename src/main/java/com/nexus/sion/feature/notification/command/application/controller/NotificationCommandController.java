@@ -2,8 +2,6 @@ package com.nexus.sion.feature.notification.command.application.controller;
 
 import java.nio.file.AccessDeniedException;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.notification.command.application.dto.request.SquadShareNotificationRequest;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 
@@ -41,7 +41,7 @@ public class NotificationCommandController {
       throw new AccessDeniedException("인증되지 않음");
     }
 
-    if(userDetails == null) {
+    if (userDetails == null) {
       throw new BusinessException(ErrorCode.USER_NOT_FOUND);
     }
 

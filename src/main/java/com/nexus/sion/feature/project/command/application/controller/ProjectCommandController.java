@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.project.command.application.controller;
 
-import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -63,7 +63,8 @@ public class ProjectCommandController {
   }
 
   @PutMapping("/squad/replacement")
-  public ResponseEntity<ApiResponse<Void>> replaceSquadMember(@RequestBody SquadReplacementRequest request) {
+  public ResponseEntity<ApiResponse<Void>> replaceSquadMember(
+      @RequestBody SquadReplacementRequest request) {
     projectCommandService.replaceMember(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
