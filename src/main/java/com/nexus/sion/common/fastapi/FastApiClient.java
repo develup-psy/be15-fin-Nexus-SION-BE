@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import com.nexus.sion.feature.member.command.application.dto.response.FreelencerFpInferResponse;
-import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -17,9 +15,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.nexus.sion.feature.member.command.application.dto.response.FreelencerFpInferResponse;
+import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Component
@@ -75,7 +75,8 @@ public class FastApiClient {
       HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
       ResponseEntity<FreelencerFpInferResponse> response =
-              restTemplate.postForEntity(fpFreelencerInferUrl, request, FreelencerFpInferResponse.class);
+          restTemplate.postForEntity(
+              fpFreelencerInferUrl, request, FreelencerFpInferResponse.class);
       return response.getBody().getFunctions();
 
     } catch (Exception e) {

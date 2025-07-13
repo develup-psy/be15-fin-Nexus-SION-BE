@@ -16,7 +16,7 @@ public class UserCertificateHistoryQueryServiceImpl implements UserCertificateHi
   private final UserCertificateHistoryQueryRepository userCertificateHistoryQueryRepository;
 
   @Override
-  public List<UserCertificateHistoryResponse> getMyCertificates(String  memberId) {
+  public List<UserCertificateHistoryResponse> getMyCertificates(String memberId) {
     return userCertificateHistoryQueryRepository.findByMemberId(memberId);
   }
 }

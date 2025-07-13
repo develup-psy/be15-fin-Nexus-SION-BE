@@ -214,7 +214,9 @@ public class MemberQueryRepository {
     }
 
     return dsl.select(
-            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.as("employeeId"), MEMBER.EMPLOYEE_NAME.as("name"), MEMBER.PROFILE_IMAGE_URL)
+            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.as("employeeId"),
+            MEMBER.EMPLOYEE_NAME.as("name"),
+            MEMBER.PROFILE_IMAGE_URL)
         .from(MEMBER)
         .where(condition)
         .orderBy(MEMBER.EMPLOYEE_NAME.asc())
