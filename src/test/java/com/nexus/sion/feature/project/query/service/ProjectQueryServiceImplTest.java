@@ -134,9 +134,9 @@ class ProjectQueryServiceImplTest {
     List<ProjectDetailResponse.SquadMemberInfo> members =
         List.of(
             new ProjectDetailResponse.SquadMemberInfo(
-                1, "https://img.com/leader.jpg", "홍길동", "백엔드"),
+                "EMP001", 1, "https://img.com/leader.jpg", "홍길동", "백엔드"),
             new ProjectDetailResponse.SquadMemberInfo(
-                0, "https://img.com/user.jpg", "이몽룡", "프론트엔드"));
+                "EMP002", 0, "https://img.com/user.jpg", "이몽룡", "프론트엔드"));
 
     ProjectDetailResponse mockResponse =
         new ProjectDetailResponse(
@@ -149,7 +149,8 @@ class ProjectQueryServiceImplTest {
             techStacks,
             members,
             "WAITING",
-            ProjectAnalysisStatus.COMPLETE);
+            ProjectAnalysisStatus.COMPLETE,
+                "ha_1_1_1");
 
     when(repository.getProjectDetail(projectCode)).thenReturn(mockResponse);
 
