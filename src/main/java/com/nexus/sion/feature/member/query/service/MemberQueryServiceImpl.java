@@ -4,7 +4,6 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.query.dto.response.*;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -155,12 +154,11 @@ public class MemberQueryServiceImpl implements MemberQueryService {
   @Override
   public DashboardSummaryResponse getDashboardSummary() {
     return new DashboardSummaryResponse(
-            memberQueryRepository.findPendingProjects(),
-            memberQueryRepository.findAnalyzingProjects(),
-            memberQueryRepository.fetchTopDevelopers(),
-            memberQueryRepository.fetchTopFreelancers(),
-            memberQueryRepository.fetchDeveloperAvailability(),
-            memberQueryRepository.fetchTopTechStacks()
-    );
+        memberQueryRepository.findPendingProjects(),
+        memberQueryRepository.findAnalyzingProjects(),
+        memberQueryRepository.fetchTopDevelopers(),
+        memberQueryRepository.fetchTopFreelancers(),
+        memberQueryRepository.fetchDeveloperAvailability(),
+        memberQueryRepository.fetchTopTechStacks());
   }
 }
