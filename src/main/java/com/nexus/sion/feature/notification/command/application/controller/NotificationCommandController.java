@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.nexus.sion.common.dto.ApiResponse;
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.notification.command.application.dto.request.SquadShareNotificationRequest;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 
@@ -37,6 +39,10 @@ public class NotificationCommandController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth == null || !auth.isAuthenticated()) {
       throw new AccessDeniedException("인증되지 않음");
+    }
+
+    if (userDetails == null) {
+      throw new BusinessException(ErrorCode.USER_NOT_FOUND);
     }
 
     return ResponseEntity.ok(
