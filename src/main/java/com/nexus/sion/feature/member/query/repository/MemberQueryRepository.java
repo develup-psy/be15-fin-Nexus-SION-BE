@@ -12,17 +12,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.example.jooq.generated.enums.MemberStatus;
-import com.example.jooq.generated.enums.ProjectAnalysisStatus;
-import com.example.jooq.generated.enums.ProjectStatus;
-import com.example.jooq.generated.tables.Domain;
-import com.nexus.sion.feature.member.query.dto.response.*;
 import org.jooq.*;
-import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.MemberRole;
+import com.example.jooq.generated.enums.MemberStatus;
+import com.example.jooq.generated.enums.ProjectAnalysisStatus;
+import com.example.jooq.generated.enums.ProjectStatus;
+import com.example.jooq.generated.tables.Domain;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.response.*;
@@ -39,47 +37,53 @@ public class MemberQueryRepository {
 
   public List<DashboardSummaryResponse.PendingProject> findPendingProjects() {
     // 하위 쿼리: PENDING 프로젝트 5개만 추출
-    var projects = dsl.select(
-                    PROJECT.PROJECT_CODE,
-                    PROJECT.TITLE,
-                    PROJECT.DESCRIPTION,
-                    PROJECT.BUDGET,
-                    DOMAIN.NAME,
-                    PROJECT.START_DATE
-            )
+    var projects =
+        dsl.select(
+                PROJECT.PROJECT_CODE,
+                PROJECT.TITLE,
+                PROJECT.DESCRIPTION,
+                PROJECT.BUDGET,
+                DOMAIN.NAME,
+                PROJECT.START_DATE)
             .from(PROJECT)
-            .join(DOMAIN).on(PROJECT.DOMAIN_NAME.eq(Domain.DOMAIN.NAME))
-            .where(PROJECT.STATUS.eq(ProjectStatus.WAITING))  // enum
+            .join(DOMAIN)
+            .on(PROJECT.DOMAIN_NAME.eq(Domain.DOMAIN.NAME))
+            .where(PROJECT.STATUS.eq(ProjectStatus.WAITING)) // enum
             .orderBy(PROJECT.START_DATE.asc()) // 시작일 임박 기준
             .limit(5)
             .fetch();
 
     // 프로젝트 코드별 직무 역할 수 조회 (project_and_job 기준)
-    Map<String, Map<String, Integer>> rolesMap = dsl.select(
-                    PROJECT_AND_JOB.PROJECT_CODE,
-                    PROJECT_AND_JOB.JOB_NAME,
-                    PROJECT_AND_JOB.REQUIRED_NUMBER
-            )
+    Map<String, Map<String, Integer>> rolesMap =
+        dsl
+            .select(
+                PROJECT_AND_JOB.PROJECT_CODE,
+                PROJECT_AND_JOB.JOB_NAME,
+                PROJECT_AND_JOB.REQUIRED_NUMBER)
             .from(PROJECT_AND_JOB)
-            .where(PROJECT_AND_JOB.PROJECT_CODE.in(projects.stream()
-                    .map(p -> p.get(PROJECT.PROJECT_CODE))
-                    .toList()))
+            .where(
+                PROJECT_AND_JOB.PROJECT_CODE.in(
+                    projects.stream().map(p -> p.get(PROJECT.PROJECT_CODE)).toList()))
             .fetchGroups(
-                    r -> r.get(PROJECT_AND_JOB.PROJECT_CODE),
-                    r -> Map.entry(r.get(PROJECT_AND_JOB.JOB_NAME), r.get(PROJECT_AND_JOB.REQUIRED_NUMBER))
-            ).entrySet().stream()
-            .collect(Collectors.toMap(
+                r -> r.get(PROJECT_AND_JOB.PROJECT_CODE),
+                r ->
+                    Map.entry(
+                        r.get(PROJECT_AND_JOB.JOB_NAME), r.get(PROJECT_AND_JOB.REQUIRED_NUMBER)))
+            .entrySet()
+            .stream()
+            .collect(
+                Collectors.toMap(
                     Map.Entry::getKey,
-                    e -> e.getValue().stream()
-                            .collect(Collectors.toMap(
-                                    Map.Entry::getKey,
-                                    Map.Entry::getValue,
-                                    Integer::sum
-                            ))
-            ));
+                    e ->
+                        e.getValue().stream()
+                            .collect(
+                                Collectors.toMap(
+                                    Map.Entry::getKey, Map.Entry::getValue, Integer::sum))));
 
     return projects.stream()
-            .map(p -> DashboardSummaryResponse.PendingProject.builder()
+        .map(
+            p ->
+                DashboardSummaryResponse.PendingProject.builder()
                     .projectCode(p.get(PROJECT.PROJECT_CODE))
                     .title(p.get(PROJECT.TITLE))
                     .description(p.get(PROJECT.DESCRIPTION))
@@ -88,34 +92,33 @@ public class MemberQueryRepository {
                     .startDate(p.get(PROJECT.START_DATE))
                     .roles(rolesMap.getOrDefault(p.get(PROJECT.PROJECT_CODE), Map.of()))
                     .build())
-            .toList();
+        .toList();
   }
+
   public List<DashboardSummaryResponse.AnalyzingProject> findAnalyzingProjects() {
-    return dsl.select(
-                    PROJECT.PROJECT_CODE,
-                    PROJECT.TITLE,
-                    PROJECT.CREATED_AT
-            )
-            .from(PROJECT)
-            .where(PROJECT.ANALYSIS_STATUS.eq(ProjectAnalysisStatus.PROCEEDING))
-            .orderBy(PROJECT.CREATED_AT.desc())
-            .limit(5)
-            .fetch()
-            .map(r -> new DashboardSummaryResponse.AnalyzingProject(
+    return dsl.select(PROJECT.PROJECT_CODE, PROJECT.TITLE, PROJECT.CREATED_AT)
+        .from(PROJECT)
+        .where(PROJECT.ANALYSIS_STATUS.eq(ProjectAnalysisStatus.PROCEEDING))
+        .orderBy(PROJECT.CREATED_AT.desc())
+        .limit(5)
+        .fetch()
+        .map(
+            r ->
+                new DashboardSummaryResponse.AnalyzingProject(
                     r.get(PROJECT.PROJECT_CODE),
                     r.get(PROJECT.TITLE),
-                    r.get(PROJECT.CREATED_AT).toLocalDate()
-            ));
+                    r.get(PROJECT.CREATED_AT).toLocalDate()));
   }
+
   public List<DashboardSummaryResponse.TopDeveloper> fetchTopDevelopers() {
     // 상위 생산성 개발자 10명 조회
-    var topDevelopers = dsl.select(
-                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    MEMBER.EMPLOYEE_NAME,
-                    MEMBER.GRADE_CODE,
-                    GRADE.PRODUCTIVITY,
-                    MEMBER.PROFILE_IMAGE_URL
-            )
+    var topDevelopers =
+        dsl.select(
+                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+                MEMBER.EMPLOYEE_NAME,
+                MEMBER.GRADE_CODE,
+                GRADE.PRODUCTIVITY,
+                MEMBER.PROFILE_IMAGE_URL)
             .from(MEMBER)
             .join(GRADE)
             .on(MEMBER.GRADE_CODE.cast(String.class).eq(GRADE.GRADE_CODE.cast(String.class)))
@@ -124,110 +127,111 @@ public class MemberQueryRepository {
             .fetch();
 
     // 개발자 ID 리스트
-    List<String> developerIds = topDevelopers.stream()
-            .map(r -> r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-            .toList();
+    List<String> developerIds =
+        topDevelopers.stream().map(r -> r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)).toList();
 
     // 기술스택 조회
-    Map<String, List<String>> techStackMap = dsl.select(
-                    DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    DEVELOPER_TECH_STACK.TECH_STACK_NAME
-            )
+    Map<String, List<String>> techStackMap =
+        dsl.select(
+                DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER,
+                DEVELOPER_TECH_STACK.TECH_STACK_NAME)
             .from(DEVELOPER_TECH_STACK)
             .where(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.in(developerIds))
             .fetchGroups(
-                    r -> r.get(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER),
-                    r -> r.get(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
-            );
+                r -> r.get(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER),
+                r -> r.get(DEVELOPER_TECH_STACK.TECH_STACK_NAME));
 
     // DTO 변환
     return topDevelopers.stream()
-            .map(r -> DashboardSummaryResponse.TopDeveloper.builder()
+        .map(
+            r ->
+                DashboardSummaryResponse.TopDeveloper.builder()
                     .id(r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
                     .name(r.get(MEMBER.EMPLOYEE_NAME))
                     .grade(r.get(MEMBER.GRADE_CODE).name())
                     .productivity(r.get(GRADE.PRODUCTIVITY))
                     .profileUrl(r.get(MEMBER.PROFILE_IMAGE_URL))
-                    .techStacks(techStackMap.getOrDefault(r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER), List.of()))
+                    .techStacks(
+                        techStackMap.getOrDefault(
+                            r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER), List.of()))
                     .build())
-            .toList();
+        .toList();
   }
 
   public List<DashboardSummaryResponse.FreelancerSummary> fetchTopFreelancers() {
     return dsl.select(
-                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    MEMBER.EMPLOYEE_NAME,
-                    MEMBER.CAREER_YEARS,
-                    MEMBER.PROFILE_IMAGE_URL,
-                    MEMBER.GRADE_CODE
-            )
-            .from(MEMBER)
-            .where(MEMBER.ROLE.eq(MemberRole.OUTSIDER))
-            .orderBy(MEMBER.CAREER_YEARS.desc(), MEMBER.CREATED_AT.desc())
-            .limit(5)
-            .fetch()
-            .map(r -> new DashboardSummaryResponse.FreelancerSummary(
+            MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+            MEMBER.EMPLOYEE_NAME,
+            MEMBER.CAREER_YEARS,
+            MEMBER.PROFILE_IMAGE_URL,
+            MEMBER.GRADE_CODE)
+        .from(MEMBER)
+        .where(MEMBER.ROLE.eq(MemberRole.OUTSIDER))
+        .orderBy(MEMBER.CAREER_YEARS.desc(), MEMBER.CREATED_AT.desc())
+        .limit(5)
+        .fetch()
+        .map(
+            r ->
+                new DashboardSummaryResponse.FreelancerSummary(
                     r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER),
                     r.get(MEMBER.EMPLOYEE_NAME),
                     Optional.ofNullable(r.get(MEMBER.CAREER_YEARS)).orElse(0),
                     r.get(MEMBER.GRADE_CODE) != null ? r.get(MEMBER.GRADE_CODE).name() : "미정",
-                    r.get(MEMBER.PROFILE_IMAGE_URL)
-            ));
+                    r.get(MEMBER.PROFILE_IMAGE_URL)));
   }
 
   public DashboardSummaryResponse.DeveloperAvailability fetchDeveloperAvailability() {
     // 1. 전체 가용 인원 수
-    Integer totalAvailable = dsl.selectCount()
+    Integer totalAvailable =
+        dsl.selectCount()
             .from(MEMBER)
             .where(MEMBER.STATUS.eq(MemberStatus.AVAILABLE))
             .fetchOne(0, int.class);
 
     // 2. 등급별 인원 분포
     List<DashboardSummaryResponse.DeveloperAvailability.GradeDistribution> gradeDistribution =
-            dsl.select(
-                            MEMBER.GRADE_CODE,
-                            DSL.count()
-                    )
-                    .from(MEMBER)
-                    .where(MEMBER.STATUS.eq(MemberStatus.AVAILABLE))
-                    .groupBy(MEMBER.GRADE_CODE)
-                    .fetch()
-                    .map(r -> new DashboardSummaryResponse.DeveloperAvailability.GradeDistribution(
-                            r.get(MEMBER.GRADE_CODE) != null ? r.get(MEMBER.GRADE_CODE).name() : "미정",
-                            r.get(DSL.count())
-                    ));
+        dsl.select(MEMBER.GRADE_CODE, DSL.count())
+            .from(MEMBER)
+            .where(MEMBER.STATUS.eq(MemberStatus.AVAILABLE))
+            .groupBy(MEMBER.GRADE_CODE)
+            .fetch()
+            .map(
+                r ->
+                    new DashboardSummaryResponse.DeveloperAvailability.GradeDistribution(
+                        r.get(MEMBER.GRADE_CODE) != null ? r.get(MEMBER.GRADE_CODE).name() : "미정",
+                        r.get(DSL.count())));
 
     // 3. available 상태 개발자들의 기술스택 목록 (중복 제거)
-    List<String> availableStacks = dsl.selectDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
+    List<String> availableStacks =
+        dsl.selectDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
             .from(DEVELOPER_TECH_STACK)
             .join(MEMBER)
-            .on(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .on(
+                DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .where(MEMBER.STATUS.eq(MemberStatus.AVAILABLE))
             .fetch(DEVELOPER_TECH_STACK.TECH_STACK_NAME);
 
     return new DashboardSummaryResponse.DeveloperAvailability(
-            totalAvailable != null ? totalAvailable : 0,
-            gradeDistribution,
-            availableStacks
-    );
+        totalAvailable != null ? totalAvailable : 0, gradeDistribution, availableStacks);
   }
 
   public List<DashboardSummaryResponse.TechStackDemand> fetchTopTechStacks() {
     return dsl.select(
-                    JOB_AND_TECH_STACK.TECH_STACK_NAME,
-                    DSL.countDistinct(PROJECT_AND_JOB.PROJECT_CODE).as("project_count")
-            )
-            .from(JOB_AND_TECH_STACK)
-            .join(PROJECT_AND_JOB)
-            .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
-            .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
-            .orderBy(DSL.countDistinct(PROJECT_AND_JOB.PROJECT_CODE).desc())
-            .limit(10)
-            .fetch()
-            .map(r -> new DashboardSummaryResponse.TechStackDemand(
+            JOB_AND_TECH_STACK.TECH_STACK_NAME,
+            DSL.countDistinct(PROJECT_AND_JOB.PROJECT_CODE).as("project_count"))
+        .from(JOB_AND_TECH_STACK)
+        .join(PROJECT_AND_JOB)
+        .on(JOB_AND_TECH_STACK.PROJECT_AND_JOB_ID.eq(PROJECT_AND_JOB.PROJECT_AND_JOB_ID))
+        .groupBy(JOB_AND_TECH_STACK.TECH_STACK_NAME)
+        .orderBy(DSL.countDistinct(PROJECT_AND_JOB.PROJECT_CODE).desc())
+        .limit(10)
+        .fetch()
+        .map(
+            r ->
+                new DashboardSummaryResponse.TechStackDemand(
                     r.get(JOB_AND_TECH_STACK.TECH_STACK_NAME),
-                    r.get("project_count", Integer.class)
-            ));
+                    r.get("project_count", Integer.class)));
   }
 
   public long countMembers(Condition condition) {

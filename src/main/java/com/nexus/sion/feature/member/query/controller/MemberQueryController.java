@@ -2,7 +2,6 @@ package com.nexus.sion.feature.member.query.controller;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.query.dto.response.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
-
+import com.nexus.sion.feature.member.query.dto.response.*;
 import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
 import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
@@ -134,5 +133,4 @@ public class MemberQueryController {
   public ResponseEntity<ApiResponse<DashboardSummaryResponse>> getDashboardSummary() {
     return ResponseEntity.ok(ApiResponse.success(memberQueryService.getDashboardSummary()));
   }
-
 }
