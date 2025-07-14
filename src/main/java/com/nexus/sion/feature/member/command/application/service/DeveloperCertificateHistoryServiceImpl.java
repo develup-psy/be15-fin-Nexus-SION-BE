@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +11,15 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Certificate;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.UserCertificateHistory;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.CertificateStatus;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.repository.CertificateRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHistoryRepository;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +30,8 @@ public class DeveloperCertificateHistoryServiceImpl implements DeveloperCertific
   private final CertificateRepository certificateRepository;
   private final UserCertificateHistoryRepository userCertificateHistoryRepository;
   private final DocumentS3Service documentS3Service;
+  private final NotificationCommandService notificationCommandService;
+  private final MemberRepository memberRepository;
 
   @Override
   @Transactional
@@ -48,5 +56,15 @@ public class DeveloperCertificateHistoryServiceImpl implements DeveloperCertific
             .build();
 
     userCertificateHistoryRepository.save(history);
+
+    List<Member> adminMembers = memberRepository.findAllByRole(MemberRole.ADMIN);
+    for (Member admin : adminMembers) {
+      notificationCommandService.createAndSendNotification(
+          employeeId,
+          admin.getEmployeeIdentificationNumber(),
+          null,
+          NotificationType.CERTIFICATION_APPROVAL_REQUEST,
+          String.valueOf(history.getId()));
+    }
   }
 }
