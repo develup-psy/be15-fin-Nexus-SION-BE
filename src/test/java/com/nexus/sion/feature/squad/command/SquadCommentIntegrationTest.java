@@ -34,8 +34,7 @@ class SquadCommentCommandIntegrationTest {
   void registerComment_success() throws Exception {
     // given
     String squadCode = "ha_1_1_1"; // 실제 DB에 존재하는 코드일 것
-    SquadCommentRegisterRequest request =
-        new SquadCommentRegisterRequest("스쿼드에 대한 코멘트입니다.");
+    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("스쿼드에 대한 코멘트입니다.");
 
     // when & then
     mockMvc
