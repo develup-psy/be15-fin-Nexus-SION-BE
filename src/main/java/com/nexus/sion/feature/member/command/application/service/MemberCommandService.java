@@ -150,11 +150,11 @@ public class MemberCommandService {
               .careerYears(request.careerYears())
               .positionName(request.positionName())
               .departmentName(request.departmentName())
-                  .profileImageUrl(
-                          request.profileImageUrl() != null
-                                  ? request.profileImageUrl()
-                                  : "https://api.dicebear.com/9.x/notionists/svg?seed=" + request.employeeIdentificationNumber()
-                  )
+              .profileImageUrl(
+                  request.profileImageUrl() != null
+                      ? request.profileImageUrl()
+                      : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                          + request.employeeIdentificationNumber())
               .salary(request.salary())
               .gradeCode(gradeCode)
               .role(MemberRole.INSIDER)
