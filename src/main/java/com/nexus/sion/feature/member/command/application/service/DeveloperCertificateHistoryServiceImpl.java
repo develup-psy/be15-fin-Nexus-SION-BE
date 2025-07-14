@@ -1,7 +1,6 @@
 package com.nexus.sion.feature.member.command.application.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,23 +8,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nexus.sion.common.s3.service.DocumentS3Service;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.member.command.application.dto.request.CertificateRejectRequest;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Certificate;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.UserCertificateHistory;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.CertificateStatus;
 import com.nexus.sion.feature.member.command.domain.repository.CertificateRepository;
 import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHistoryRepository;
-import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
-public class UserCertificateHistoryServiceImpl implements UserCertificateHistoryService {
+@RequiredArgsConstructor
+public class DeveloperCertificateHistoryServiceImpl implements DeveloperCertificateHistoryService {
 
-  private final UserCertificateHistoryRepository userCertificateHistoryRepository;
   private final CertificateRepository certificateRepository;
+  private final UserCertificateHistoryRepository userCertificateHistoryRepository;
   private final DocumentS3Service documentS3Service;
 
   @Override
@@ -36,8 +33,8 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
             .findById(request.getCertificateName())
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
 
-    String prefix = "certificates";
-    String uploadedUrl = documentS3Service.uploadFile(request.getPdfFileUrl(), prefix).getUrl();
+    String uploadedUrl =
+        documentS3Service.uploadFile(request.getPdfFileUrl(), "certificates").getUrl();
 
     UserCertificateHistory history =
         UserCertificateHistory.builder()
@@ -50,39 +47,6 @@ public class UserCertificateHistoryServiceImpl implements UserCertificateHistory
             .updatedAt(LocalDateTime.now())
             .build();
 
-    userCertificateHistoryRepository.save(history);
-  }
-
-  @Override
-  @Transactional
-  public List<UserCertificateHistoryResponse> getAllCertificates() {
-    return userCertificateHistoryRepository.findAll().stream()
-        .map(UserCertificateHistoryResponse::fromEntity)
-        .toList();
-  }
-
-  @Override
-  @Transactional
-  public void approveUserCertificate(Long certificateRequestId) {
-    UserCertificateHistory history =
-        userCertificateHistoryRepository
-            .findById(certificateRequestId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
-
-    history.approve();
-    userCertificateHistoryRepository.save(history);
-  }
-
-  @Override
-  @Transactional
-  public void rejectUserCertificate(
-      Long certificateRequestId, CertificateRejectRequest rejectedReason) {
-    UserCertificateHistory history =
-        userCertificateHistoryRepository
-            .findById(certificateRequestId)
-            .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
-
-    history.reject(rejectedReason.getRejectedReason());
     userCertificateHistoryRepository.save(history);
   }
 }

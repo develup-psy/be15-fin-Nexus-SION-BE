@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
@@ -59,5 +60,12 @@ public class ProjectCommandController {
 
     projectCommandService.analyzeProject(projectCode, multipartFile, userDetails.getUsername());
     return ResponseEntity.accepted().build();
+  }
+
+  @PutMapping("/squad/replacement")
+  public ResponseEntity<ApiResponse<Void>> replaceSquadMember(
+      @RequestBody SquadReplacementRequest request) {
+    projectCommandService.replaceMember(request);
+    return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
