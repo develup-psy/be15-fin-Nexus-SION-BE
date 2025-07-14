@@ -75,6 +75,8 @@ public class SecurityConfig {
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.addAllowedOrigin("http://localhost:5173");
+    config.addAllowedOrigin("https://sion-nexus.site");
+    config.addAllowedOrigin("https://www.sion-nexus.site");
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
 
