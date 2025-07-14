@@ -328,6 +328,7 @@ public class ProjectQueryRepository {
                 DEVELOPER_PROJECT_WORK.PROJECT_CODE,
                 PROJECT.TITLE.as("project_title"),
                 DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
+                DEVELOPER_PROJECT_WORK.REJECTED_REASON,
                 DEVELOPER_PROJECT_WORK.APPROVED_AT,
                 DEVELOPER_PROJECT_WORK.CREATED_AT,
                 PROJECT.ACTUAL_END_DATE)
@@ -411,6 +412,7 @@ public class ProjectQueryRepository {
         .projectCode(work.get(DEVELOPER_PROJECT_WORK.PROJECT_CODE))
         .projectTitle(work.get("project_title", String.class))
         .approvalStatus(approvalStatus != null ? approvalStatus.name() : null)
+        .rejectedReason(work.get(DEVELOPER_PROJECT_WORK.REJECTED_REASON))
         .approvedAt(work.get(DEVELOPER_PROJECT_WORK.APPROVED_AT))
         .createdAt(work.get(DEVELOPER_PROJECT_WORK.CREATED_AT))
         .actualEndDate(work.get(PROJECT.ACTUAL_END_DATE, LocalDate.class))

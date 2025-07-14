@@ -1,4 +1,4 @@
-package com.nexus.sion.feature.project.query.dto.response;
+package com.nexus.sion.feature.project.query.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +18,7 @@ public class WorkRequestQueryDto {
   private String projectCode;
   private String projectTitle;
   private String approvalStatus;
+  private String rejectedReason;
   private LocalDateTime approvedAt;
   private LocalDateTime createdAt;
   private List<WorkRequestHistoryDto> histories;

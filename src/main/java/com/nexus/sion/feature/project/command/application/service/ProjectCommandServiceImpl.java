@@ -167,21 +167,11 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
-
-      notifySquadEmployeesToUploadTask(projectCode);
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
-  }
-
-  public void notifySquadEmployeesToUploadTask(String projectCode) {
-    String activeSquadCode = findActiveSquadCode(projectCode);
-
-    List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
-
-    squadEmployees.forEach(employee -> sendTaskUploadRequestNotification(employee, projectCode));
   }
 
   private String findActiveSquadCode(String projectCode) {
@@ -195,10 +185,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     return squadEmployeeCommandRepository.findBySquadCode(squadCode);
   }
 
-  private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
+  private void sendTaskUploadRequestNotification(
+      SquadEmployee employee, Long developerProjectWorkId) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-        null, employeeId, null, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
+        null,
+        employeeId,
+        null,
+        NotificationType.TASK_UPLOAD_REQUEST,
+        developerProjectWorkId.toString());
   }
 
   @Override
@@ -215,10 +210,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     ProjectFpSummary fpSummary =
         projectFpSummaryRepository.findByProjectCode(projectId).orElse(null);
 
-    if (fpSummary != null) {
-      projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
-      projectFpSummaryRepository.deleteByProjectCode(projectId);
-    }
+    projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
+    projectFpSummaryRepository.deleteByProjectCode(projectId);
 
     Project project =
         projectRepository
@@ -239,6 +232,28 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
               notifyFPAnalysisFailure(employeeIdentificationNumber, projectId);
               return null;
             });
+  }
+
+  private void notifyFPAnalysisFailure(String managerId, String projectId) {
+    notificationCommandService.createAndSendNotification(
+        null, managerId, null, NotificationType.FP_ANALYSIS_FAILURE, projectId);
+  }
+
+  private void createDeveloperProjectWorks(String projectCode) {
+    List<SquadEmployee> employees = squadEmployeeCommandRepository.findByProjectCode(projectCode);
+
+    for (SquadEmployee employee : employees) {
+      DeveloperProjectWork dpw =
+          DeveloperProjectWork.builder()
+              .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
+              .projectCode(projectCode)
+              .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
+              .build();
+
+      DeveloperProjectWork saved = developerProjectWorkRepository.save(dpw);
+
+      sendTaskUploadRequestNotification(employee, saved.getId());
+    }
   }
 
   @Override
@@ -288,25 +303,5 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .build();
 
     squadEmployeeCommandRepository.save(newMember);
-  }
-
-  private void notifyFPAnalysisFailure(String managerId, String projectId) {
-    notificationCommandService.createAndSendNotification(
-        null, managerId, null, NotificationType.FP_ANALYSIS_FAILURE, projectId);
-  }
-
-  private void createDeveloperProjectWorks(String projectCode) {
-    List<SquadEmployee> employees = squadEmployeeCommandRepository.findByProjectCode(projectCode);
-
-    for (SquadEmployee employee : employees) {
-      DeveloperProjectWork dpw =
-          DeveloperProjectWork.builder()
-              .employeeIdentificationNumber(employee.getEmployeeIdentificationNumber())
-              .projectCode(projectCode)
-              .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
-              .build();
-
-      developerProjectWorkRepository.save(dpw);
-    }
   }
 }
