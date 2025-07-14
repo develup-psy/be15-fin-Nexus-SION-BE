@@ -35,6 +35,8 @@ public class ProjectDomainService {
 
     double effortPerFP = SquadEvaluatorImpl.getEffortRatePerFP(totalFp);
 
+    log.info("projectCode: {}", projectCode);
+
     Project project =
         projectRepository
             .findById(projectCode)

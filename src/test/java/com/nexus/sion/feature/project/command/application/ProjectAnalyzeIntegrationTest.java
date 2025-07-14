@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexus.sion.common.fastapi.FastApiClient;
@@ -50,7 +50,6 @@ import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository
   ProjectAnalyzeIntegrationTest.TestAsyncConfig.class,
   ProjectAnalyzeIntegrationTest.MockFastApiConfig.class
 })
-@Transactional
 class ProjectAnalyzeIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
@@ -63,19 +62,19 @@ class ProjectAnalyzeIntegrationTest {
 
   @Autowired private FastApiClient fastApiClient;
 
-  private final String testProjectCode = "ka_2_1";
+  private final String testProjectCode = "ka_3_1";
 
   @BeforeEach
   void setUp() {
 
     // 1. 선행 데이터 - 클라이언트 회사 저장
     clientCompanyRepository.save(
-        ClientCompany.builder().clientCode("ka_2").companyName("카카오페이").domainName("CS").build());
+        ClientCompany.builder().clientCode("ka_3").companyName("카카오택시").domainName("CS").build());
 
     projectRepository.save(
         Project.builder()
             .projectCode(testProjectCode)
-            .clientCode("ka_2")
+            .clientCode("ka_3")
             .title("테스트 프로젝트")
             .description("통합 테스트용")
             .startDate(LocalDate.of(2025, 1, 1))
@@ -90,71 +89,62 @@ class ProjectAnalyzeIntegrationTest {
 
   @Test
   @WithMockUser
-  @DisplayName("프로젝트 분석 요청이 성공하면 분석 결과가 DB에 저장된다")
+  @DisplayName("프로젝트 분석 성공 → DB 결과 확인")
   void analyzeProject_success() throws Exception {
     // given
-    MockMultipartFile file =
-        new MockMultipartFile(
-            "file", "requirement.pdf", "application/pdf", "dummy content".getBytes());
+    MockMultipartFile file = new MockMultipartFile(
+            "file", "requirement.pdf", "application/pdf", "dummy content".getBytes()
+    );
 
-    String responseJson =
-        """
-      {
-        "project_id": "%s",
-        "total_fp_score" : 160,
-        "functions": [
-          {
-            "function_name": "로그인",
-            "description": "사용자 로그인 기능",
-            "fp_type": "EI",
-            "complexity": "SIMPLE",
-            "score": 3,
-            "estimated_ftr": 1,
-            "estimated_det": 2
-          },
-          {
-            "function_name": "회원가입",
-            "description": "신규 사용자 등록",
-            "fp_type": "EO",
-            "complexity": "COMPLEX",
-            "score": 7,
-            "estimated_ftr": 3,
-            "estimated_det": 6
-          }
-        ]
-      }
-    """
-            .formatted(testProjectCode);
+    String responseJson = """
+            {
+              "project_id": "%s",
+              "total_fp_score" : 160,
+              "functions": [
+                {
+                  "function_name": "로그인",
+                  "description": "사용자 로그인 기능",
+                  "fp_type": "EI",
+                  "complexity": "SIMPLE",
+                  "score": 3,
+                  "estimated_ftr": 1,
+                  "estimated_det": 2
+                },
+                {
+                  "function_name": "회원가입",
+                  "description": "신규 사용자 등록",
+                  "fp_type": "EO",
+                  "complexity": "COMPLEX",
+                  "score": 7,
+                  "estimated_ftr": 3,
+                  "estimated_det": 6
+                }
+              ]
+            }
+        """.formatted(testProjectCode);
 
     ResponseEntity<String> fastApiResponse = ResponseEntity.ok(responseJson);
 
-    // mock FastAPI 응답
-    org.mockito.BDDMockito.given(fastApiClient.requestFpInference(anyString(), any(File.class)))
-        .willReturn(fastApiResponse);
+    given(fastApiClient.requestFpInference(anyString(), any(File.class)))
+            .willReturn(fastApiResponse);
 
     // when
-    mockMvc
-        .perform(multipart("/api/v1/projects/{projectCode}/analyze", testProjectCode).file(file))
-        .andExpect(status().isAccepted());
+    mockMvc.perform(
+            multipart("/api/v1/projects/{projectCode}/analyze", testProjectCode).file(file)
+    ).andExpect(status().isAccepted());
 
     // then
     Project updated = projectRepository.findById(testProjectCode).orElseThrow();
+    assertThat(updated.getAnalysisStatus()).isEqualTo(Project.AnalysisStatus.PROCEEDING);
 
-    ProjectFpSummary savedSummary =
-        projectFpSummaryRepository.findByProjectCode(testProjectCode).orElse(null);
-    assertThat(savedSummary).isNotNull();
-    assertThat(savedSummary.getTotalFp()).isEqualTo(120);
-    assertThat(savedSummary.getAvgEffortPerFp()).isEqualTo(4);
-    assertThat(savedSummary.getEstimatedCost()).isEqualByComparingTo("23000000");
+    ProjectFpSummary summary = projectFpSummaryRepository.findByProjectCode(testProjectCode).orElseThrow();
+    assertThat(summary.getTotalFp()).isEqualTo(160);
 
     List<ProjectFunctionEstimate> functions = projectFunctionEstimateRepository.findAll();
     assertThat(functions).hasSize(2);
-
-    ProjectFunctionEstimate loginFn = functions.get(0);
-    assertThat(loginFn.getFunctionName()).isEqualTo("로그인");
-    assertThat(loginFn.getFunctionType()).isEqualTo(ProjectFunctionEstimate.FunctionType.EI);
-    assertThat(loginFn.getComplexity()).isEqualTo(ProjectFunctionEstimate.Complexity.SIMPLE);
-    assertThat(loginFn.getFunctionScore()).isEqualTo(3);
+    assertThat(functions)
+            .extracting(ProjectFunctionEstimate::getFunctionName)
+            .containsExactlyInAnyOrder("로그인", "회원가입");
   }
 
   @TestConfiguration

@@ -17,15 +17,17 @@ import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 class SquadCommentCommandServiceTest {
 
   private SquadCommentRepository squadCommentRepository;
-  private SquadCommentCommandService squadCommentCommandService;
   private NotificationCommandService notificationCommandService;
+
+  private SquadCommentCommandService squadCommentCommandService;
 
   @BeforeEach
   void setUp() {
     squadCommentRepository = mock(SquadCommentRepository.class);
     notificationCommandService = mock(NotificationCommandService.class);
+
     squadCommentCommandService =
-        new SquadCommentCommandService(squadCommentRepository, notificationCommandService);
+        new SquadCommentCommandServiceImpl(squadCommentRepository, notificationCommandService);
   }
 
   @Test
@@ -47,9 +49,9 @@ class SquadCommentCommandServiceTest {
   void registerComment_fail_whenContentIsNull() {
     // given
     SquadCommentRegisterRequest request = new SquadCommentRegisterRequest(null);
+    String squadCode = "ha_1_1_1";
 
     // when & then
-    String squadCode = "ha_1_1_1";
     assertThatThrownBy(
             () -> squadCommentCommandService.registerComment(squadCode, request, "EMM001"))
         .isInstanceOf(BusinessException.class)

@@ -73,7 +73,6 @@ class MemberQueryServiceImplTest {
                 null,
                 "Java",
                 5));
-
     when(memberQueryRepository.countMembers(any(Condition.class))).thenReturn(1L);
     when(memberQueryRepository.findAllMembers(
             eq(request), any(Condition.class), any(SortField.class)))
@@ -221,27 +220,6 @@ class MemberQueryServiceImplTest {
       baseSortField = MEMBER.EMPLOYEE_NAME.asc();
     }
 
-    @Test
-    @DisplayName("상태 필터만 있는 경우 - 정상 조회")
-    void givenStatusOnly_whenSearch_thenReturnsFiltered() {
-      // given
-      List<MemberSquadListResponse> mockResults =
-          List.of(new MemberSquadListResponse("EMP001", "홍길동", "S", "AVAILABLE", "Java", 0, null));
-
-      // when
-    }
-
-    @Test
-    @DisplayName("등급 + 기술스택 조합 조건 - 정상 조회")
-    void givenGradeAndStacks_whenSearch_thenReturnsCorrectList() {
-      // given / when / then
-    }
-
-    @Test
-    @DisplayName("필터 조건 없음 - 전체 조회")
-    void givenNoFilters_whenSearch_thenReturnsAll() {
-      // given / when / then
-    }
 
     @Test
     @DisplayName("성공: 상태 + 등급 + 기술스택 조건으로 정상 조회")
@@ -273,6 +251,44 @@ class MemberQueryServiceImplTest {
       verify(sortFieldSelector).select("employeeName", "asc");
       verify(memberQueryRepository).countMembers(baseCondition);
       verify(memberQueryRepository).findAllSquadMembers(baseQuery, baseCondition, baseSortField);
+      verifyNoMoreInteractions(memberConditionBuilder, sortFieldSelector, memberQueryRepository);
+    }
+
+    @Test
+    @DisplayName("경계값: 조건과 일치하는 개발자가 없으면 빈 리스트 반환")
+    void givenFilters_whenNoMatchingMembers_thenReturnsEmptyList() {
+      // given
+      MemberListQuery noMatchQuery =
+              new MemberListQuery(
+                      "존재하지않는키워드",
+                      MemberStatus.AVAILABLE,
+                      List.of(GradeGradeCode.S),
+                      List.of("UnknownStack"),
+                      "employeeName",
+                      "asc",
+                      1,
+                      10,
+                      List.of("INSIDER"));
+
+      when(memberConditionBuilder.build(noMatchQuery)).thenReturn(baseCondition);
+      when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
+              .thenAnswer(invocation -> baseSortField);
+      when(memberQueryRepository.countMembers(baseCondition)).thenReturn(0L);
+      when(memberQueryRepository.findAllSquadMembers(noMatchQuery, baseCondition, baseSortField))
+              .thenReturn(List.of());
+
+      // when
+      PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(noMatchQuery);
+
+      // then
+      assertThat(result.getTotalElements()).isEqualTo(0L);
+      assertThat(result.getContent()).isEmpty();
+
+      // verify
+      verify(memberConditionBuilder).build(noMatchQuery);
+      verify(sortFieldSelector).select("employeeName", "asc");
+      verify(memberQueryRepository).countMembers(baseCondition);
+      verify(memberQueryRepository).findAllSquadMembers(noMatchQuery, baseCondition, baseSortField);
       verifyNoMoreInteractions(memberConditionBuilder, sortFieldSelector, memberQueryRepository);
     }
 
