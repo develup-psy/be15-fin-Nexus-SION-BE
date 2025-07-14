@@ -49,7 +49,6 @@ class ProjectCommandServiceImplTest {
   @Mock private ProjectAnalysisService projectAnalysisService;
   @Mock private ProjectRepository projectRepository;
 
-  @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
   @InjectMocks private ProjectCommandServiceImpl projectCommandService;
 
