@@ -34,6 +34,9 @@ public class DeveloperProjectWork extends BaseTimeEntity {
   @Column(name = "approved_by")
   private String approvedBy;
 
+  @Column(name = "rejected_reason", columnDefinition = "TEXT")
+  private String rejectedReason;
+
   @Column(name = "approved_at")
   private LocalDateTime approvedAt;
 
@@ -54,12 +57,18 @@ public class DeveloperProjectWork extends BaseTimeEntity {
     this.approvalStatus = ApprovalStatus.APPROVED;
     this.approvedBy = adminId;
     this.approvedAt = LocalDateTime.now();
+    this.rejectedReason = null; // 승인 시 반려 사유 제거
   }
 
-  public void reject(String adminId) {
+  public void reject(String adminId, String reason) {
     this.approvalStatus = ApprovalStatus.REJECTED;
     this.approvedBy = adminId;
     this.approvedAt = LocalDateTime.now();
+    this.rejectedReason = reason;
+  }
+
+  public void setApprovalStatus(ApprovalStatus status) {
+    this.approvalStatus = status;
   }
 
   public enum ApprovalStatus {
@@ -67,9 +76,5 @@ public class DeveloperProjectWork extends BaseTimeEntity {
     PENDING,
     APPROVED,
     REJECTED
-  }
-
-  public void setApprovalStatus(ApprovalStatus status) {
-    this.approvalStatus = status;
   }
 }

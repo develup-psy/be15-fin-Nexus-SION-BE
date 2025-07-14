@@ -4,15 +4,13 @@ import jakarta.validation.constraints.NotNull;
 
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SquadRecommendationRequest {
 
   @NotNull(message = "projectId는 필수입니다.")

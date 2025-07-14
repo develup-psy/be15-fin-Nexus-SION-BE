@@ -152,32 +152,16 @@ public class Notification extends TableImpl<NotificationRecord> {
 
   @Override
   public List<ForeignKey<NotificationRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER, Keys.FK_NOTIFICATION_MEMBER_2);
+    return Arrays.asList(Keys.FK_NOTIFICATION_MEMBER_2);
   }
 
-  private transient Member _fkNotificationMember;
-  private transient Member _fkNotificationMember_2;
+  private transient Member _member;
 
-  /**
-   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
-   * FK_NOTIFICATION_MEMBER</code> key.
-   */
-  public Member fkNotificationMember() {
-    if (_fkNotificationMember == null)
-      _fkNotificationMember = new Member(this, Keys.FK_NOTIFICATION_MEMBER);
+  /** Get the implicit join path to the <code>sion.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_NOTIFICATION_MEMBER_2);
 
-    return _fkNotificationMember;
-  }
-
-  /**
-   * Get the implicit join path to the <code>sion.member</code> table, via the <code>
-   * FK_NOTIFICATION_MEMBER_2</code> key.
-   */
-  public Member fkNotificationMember_2() {
-    if (_fkNotificationMember_2 == null)
-      _fkNotificationMember_2 = new Member(this, Keys.FK_NOTIFICATION_MEMBER_2);
-
-    return _fkNotificationMember_2;
+    return _member;
   }
 
   @Override

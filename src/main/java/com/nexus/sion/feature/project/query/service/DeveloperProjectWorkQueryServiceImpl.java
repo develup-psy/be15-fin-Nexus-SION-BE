@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
+import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
-import com.nexus.sion.feature.project.query.dto.response.WorkRequestQueryDto;
 import com.nexus.sion.feature.project.query.repository.DeveloperProjectWorkQueryRepository;
 import com.nexus.sion.feature.project.query.repository.ProjectQueryRepository;
 
@@ -25,8 +25,10 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
   private final DeveloperProjectWorkQueryRepository developerProjectWorkQueryRepository;
 
   @Override
-  public List<WorkRequestQueryDto> getAllRequests() {
-    return developerProjectWorkQueryRepository.findAll();
+  public PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size) {
+    List<WorkRequestQueryDto> result = developerProjectWorkQueryRepository.findForAdmin(status);
+    long totalElements = developerProjectWorkQueryRepository.getTotalCountForAdmin(status);
+    return PageResponse.fromJooq(result, totalElements, page, size);
   }
 
   @Override

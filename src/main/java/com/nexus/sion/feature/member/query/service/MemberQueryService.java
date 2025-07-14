@@ -21,4 +21,6 @@ public interface MemberQueryService {
   List<ScoreTrendDto> getMonthlyTotalScoreTrend(String employeeId);
 
   List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId);
+
+  DashboardSummaryResponse getDashboardSummary();
 }

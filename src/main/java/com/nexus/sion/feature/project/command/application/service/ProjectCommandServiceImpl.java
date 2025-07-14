@@ -11,15 +11,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
@@ -46,6 +51,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   private final ProjectFpSummaryRepository projectFpSummaryRepository;
 
   private final DeveloperProjectWorkRepository developerProjectWorkRepository;
+  private final MemberRepository memberRepository;
 
   @Override
   public ProjectRegisterResponse registerProject(ProjectRegisterRequest request) {
@@ -161,21 +167,11 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setStatus(status);
     if (status == Project.ProjectStatus.COMPLETE) {
       project.setActualEndDate(LocalDate.now());
-
-      notifySquadEmployeesToUploadTask(projectCode);
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
     }
     projectCommandRepository.save(project);
-  }
-
-  public void notifySquadEmployeesToUploadTask(String projectCode) {
-    String activeSquadCode = findActiveSquadCode(projectCode);
-
-    List<SquadEmployee> squadEmployees = findSquadEmployees(activeSquadCode);
-
-    squadEmployees.forEach(employee -> sendTaskUploadRequestNotification(employee, projectCode));
   }
 
   private String findActiveSquadCode(String projectCode) {
@@ -189,10 +185,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     return squadEmployeeCommandRepository.findBySquadCode(squadCode);
   }
 
-  private void sendTaskUploadRequestNotification(SquadEmployee employee, String projectCode) {
+  private void sendTaskUploadRequestNotification(
+      SquadEmployee employee, Long developerProjectWorkId) {
     String employeeId = employee.getEmployeeIdentificationNumber();
     notificationCommandService.createAndSendNotification(
-        null, employeeId, null, NotificationType.TASK_UPLOAD_REQUEST, projectCode);
+        null,
+        employeeId,
+        null,
+        NotificationType.TASK_UPLOAD_REQUEST,
+        developerProjectWorkId.toString());
   }
 
   @Override
@@ -207,13 +208,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber) {
     // 기존에 project_fp_summary나 project_function_estimate가 있다면 삭제
     ProjectFpSummary fpSummary =
-        projectFpSummaryRepository
-            .findByProjectCode(projectId).orElse(null);
+        projectFpSummaryRepository.findByProjectCode(projectId).orElse(null);
 
-    if (fpSummary != null) {
-      projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
-      projectFpSummaryRepository.deleteByProjectCode(projectId);
-    }
+    projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
+    projectFpSummaryRepository.deleteByProjectCode(projectId);
 
     Project project =
         projectRepository
@@ -252,7 +250,58 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
               .approvalStatus(DeveloperProjectWork.ApprovalStatus.NOT_REQUESTED)
               .build();
 
-      developerProjectWorkRepository.save(dpw);
+      DeveloperProjectWork saved = developerProjectWorkRepository.save(dpw);
+
+      sendTaskUploadRequestNotification(employee, saved.getId());
     }
+  }
+
+  @Override
+  public void replaceMember(SquadReplacementRequest request) {
+
+    Squad existSquad =
+        squadCommandRepository
+            .findById(request.getSquadCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+
+    SquadEmployee existsMember =
+        squadEmployeeCommandRepository
+            .findBySquadCodeAndEmployeeIdentificationNumber(
+                request.getSquadCode(), request.getOldEmployeeId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+
+    if (existsMember.isLeader()) {
+      throw new BusinessException(ErrorCode.INVALID_LEADER_REPLACEMENT);
+    }
+
+    squadEmployeeCommandRepository.deleteBySquadCodeAndEmployeeIdentificationNumber(
+        request.getSquadCode(), request.getOldEmployeeId());
+
+    boolean existsNew =
+        squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
+            request.getSquadCode(), request.getNewEmployeeId());
+
+    if (existsNew) {
+      throw new BusinessException(ErrorCode.INVALID_EXIST_MEMBER_REPLACEMENT);
+    }
+
+    Member targetMember =
+        memberRepository
+            .findById(request.getNewEmployeeId())
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+    if (targetMember.getStatus() != MemberStatus.AVAILABLE) {
+      throw new BusinessException(ErrorCode.INVALID_MEMBER_STATUS);
+    }
+
+    SquadEmployee newMember =
+        SquadEmployee.builder()
+            .squadCode(request.getSquadCode())
+            .employeeIdentificationNumber(request.getNewEmployeeId())
+            .projectAndJobId(existsMember.getProjectAndJobId())
+            .isLeader(false)
+            .build();
+
+    squadEmployeeCommandRepository.save(newMember);
   }
 }

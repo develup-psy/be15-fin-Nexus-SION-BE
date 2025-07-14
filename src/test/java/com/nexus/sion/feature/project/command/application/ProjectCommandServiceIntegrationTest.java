@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,10 +21,29 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.JobInfo;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.TechStackInfo;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
+import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
+import com.nexus.sion.feature.project.command.domain.aggregate.JobAndTechStack;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.project.command.domain.aggregate.ProjectAndJob;
+import com.nexus.sion.feature.project.command.domain.repository.JobAndTechStackRepository;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectCommandRepository;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
+import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.domain.aggregate.enums.OriginType;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,6 +55,14 @@ class ProjectCommandServiceIntegrationTest {
   @Autowired private ObjectMapper objectMapper;
 
   @Autowired private ProjectCommandRepository projectCommandRepository;
+
+  @Autowired private SquadCommandRepository squadCommandRepository;
+  @Autowired private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
+  @Autowired private MemberRepository memberRepository;
+  @Autowired private ProjectRepository projectRepository;
+  @Autowired private ClientCompanyRepository clientCompanyRepository;
+  @Autowired private ProjectAndJobRepository projectAndJobRepository;
+  @Autowired private JobAndTechStackRepository jobAndTechStackRepository;
 
   @Test
   @DisplayName("프로젝트 등록 성공")
@@ -155,5 +183,130 @@ class ProjectCommandServiceIntegrationTest {
     request.setJobs(List.of(job));
 
     return request;
+  }
+
+  @Test
+  @DisplayName("스쿼드 구성원 대체 성공")
+  void replaceSquadMember_success() throws Exception {
+
+    String squadCode = "ka_2_1_1";
+    String oldEmployeeId = "12345678";
+    String newEmployeeId = "87654321";
+    String projectCode = "ka_2_1";
+
+    clientCompanyRepository.save(
+        ClientCompany.builder().clientCode("ka_2").companyName("카카오페이").domainName("CS").build());
+
+    projectRepository.save(
+        Project.builder()
+            .projectCode(projectCode)
+            .clientCode("ka_2")
+            .title("테스트 프로젝트")
+            .description("통합 테스트용")
+            .startDate(LocalDate.of(2025, 1, 1))
+            .expectedEndDate(LocalDate.of(2025, 12, 31))
+            .numberOfMembers(1)
+            .budget(10_000_000L)
+            .status(Project.ProjectStatus.WAITING)
+            .requestSpecificationUrl("http://example.com/spec")
+            .domainName("CS")
+            .build());
+
+    squadCommandRepository.save(
+        Squad.builder()
+            .squadCode(squadCode)
+            .projectCode("ka_2_1")
+            .title("기존 스쿼드")
+            .description("기존 설명")
+            .estimatedCost(BigDecimal.valueOf(10_000_000L))
+            .estimatedDuration(BigDecimal.valueOf(12L))
+            .originType(OriginType.MANUAL)
+            .build());
+
+    memberRepository.save(
+        Member.builder()
+            .employeeIdentificationNumber(oldEmployeeId)
+            .employeeName("홍길동")
+            .password("encoded-password")
+            .phoneNumber("01012345678")
+            .positionName("과장")
+            .departmentName("개발팀")
+            .birthday(LocalDate.of(1995, 5, 5))
+            .joinedAt(LocalDate.of(2020, 1, 1))
+            .email("hong@example.com")
+            .careerYears(3)
+            .salary(50000000L)
+            .status(MemberStatus.AVAILABLE)
+            .gradeCode(GradeCode.B)
+            .role(MemberRole.INSIDER)
+            .build());
+
+    memberRepository.save(
+        Member.builder()
+            .employeeIdentificationNumber(newEmployeeId)
+            .employeeName("이순신")
+            .password("encoded-password")
+            .phoneNumber("01098765432")
+            .positionName("사원")
+            .departmentName("개발팀")
+            .birthday(LocalDate.of(1994, 2, 2))
+            .joinedAt(LocalDate.of(2021, 2, 1))
+            .email("lee@example.com")
+            .careerYears(2)
+            .salary(40000000L)
+            .status(MemberStatus.AVAILABLE)
+            .gradeCode(GradeCode.C)
+            .role(MemberRole.INSIDER)
+            .build());
+
+    ProjectAndJob job =
+        projectAndJobRepository.save(
+            ProjectAndJob.builder()
+                .projectCode(projectCode)
+                .jobName("백엔드")
+                .requiredNumber(1)
+                .build());
+
+    jobAndTechStackRepository.save(
+        JobAndTechStack.builder()
+            .projectJobId(job.getId())
+            .techStackName("Java")
+            .priority(1)
+            .build());
+
+    SquadEmployee oldMember =
+        SquadEmployee.builder()
+            .squadCode(squadCode)
+            .employeeIdentificationNumber(oldEmployeeId)
+            .projectAndJobId(job.getId())
+            .isLeader(false)
+            .build();
+    squadEmployeeCommandRepository.save(oldMember);
+
+    SquadReplacementRequest request =
+        SquadReplacementRequest.builder()
+            .squadCode(squadCode)
+            .oldEmployeeId(oldEmployeeId)
+            .newEmployeeId(newEmployeeId)
+            .build();
+
+    // when & then
+    mockMvc
+        .perform(
+            put("/api/v1/projects/squad/replacement")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true));
+
+    boolean oldMemberExists =
+        squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
+            squadCode, oldEmployeeId);
+    boolean newMemberExists =
+        squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
+            squadCode, newEmployeeId);
+
+    assertThat(oldMemberExists).isFalse();
+    assertThat(newMemberExists).isTrue();
   }
 }

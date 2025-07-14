@@ -1,5 +1,9 @@
 package com.nexus.sion.feature.project.query.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,9 +11,12 @@ import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.MyProjectListRequest;
 import com.nexus.sion.feature.project.query.dto.request.ProjectListRequest;
+import com.nexus.sion.feature.project.query.dto.request.ReplacementRecommendationRequest;
 import com.nexus.sion.feature.project.query.dto.response.*;
 import com.nexus.sion.feature.project.query.service.DeveloperProjectWorkQueryService;
 import com.nexus.sion.feature.project.query.service.ProjectQueryService;
+import com.nexus.sion.feature.project.query.service.ReplacementRecommendationService;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +27,7 @@ public class ProjectQueryController {
 
   private final ProjectQueryService projectQueryService;
   private final DeveloperProjectWorkQueryService developerProjectWorkQueryService;
+  private final ReplacementRecommendationService replacementRecommendationService;
 
   // 목록 조회
   @PostMapping("/list")
@@ -73,5 +81,15 @@ public class ProjectQueryController {
   public ResponseEntity<ApiResponse<ProjectInfoDto>> getProjectInfo(@PathVariable Long id) {
     ProjectInfoDto response = developerProjectWorkQueryService.getProjectInfo(id);
     return ResponseEntity.ok(ApiResponse.success(response));
+  }
+
+  // 프로젝트 스쿼드 인원 대체 추천
+  @PostMapping("/replacement")
+  public ResponseEntity<ApiResponse<List<DeveloperSummary>>> recommendReplacement(
+      @RequestBody @Valid ReplacementRecommendationRequest request) {
+    List<DeveloperSummary> candidates =
+        replacementRecommendationService.recommendCandidates(
+            request.getProjectCode(), request.getLeavingMember());
+    return ResponseEntity.ok(ApiResponse.success(candidates));
   }
 }

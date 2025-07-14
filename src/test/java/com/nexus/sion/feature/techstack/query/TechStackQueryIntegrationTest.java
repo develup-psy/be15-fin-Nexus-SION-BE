@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,5 +40,27 @@ class TechStackQueryIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.data.techStacks", hasItems(techStackName)));
+  }
+
+  @Test
+  @DisplayName("기술스택 자동완성 검색 성공")
+  void techstack_autocomplete_search_success() throws Exception {
+    // given
+    techStackRepository.save(TechStack.of("Spring Boot"));
+    techStackRepository.save(TechStack.of("Spring Security"));
+    techStackRepository.save(TechStack.of("Spring Batch"));
+    techStackRepository.flush();
+
+    // when & then
+    mockMvc
+        .perform(
+            get("/api/v1/tech-stack/autocomplete")
+                .param("keyword", "Spr")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(
+            jsonPath(
+                "$.data.techStacks", hasItems("Spring Boot", "Spring Security", "Spring Batch")));
   }
 }

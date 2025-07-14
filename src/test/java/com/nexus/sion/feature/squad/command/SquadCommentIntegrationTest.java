@@ -49,8 +49,7 @@ class SquadCommentCommandIntegrationTest {
   @DisplayName("코멘트 내용이 공백이면 400 에러를 반환한다")
   void registerComment_fail_whenContentIsBlank() throws Exception {
     String squadCode = "ha_1_1_1";
-    String employeeId = "02202308";
-    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest(" ");
+    SquadCommentRegisterRequest request = new SquadCommentRegisterRequest("");
 
     mockMvc
         .perform(

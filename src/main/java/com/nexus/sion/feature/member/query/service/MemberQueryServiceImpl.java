@@ -4,6 +4,7 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.*;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.springframework.stereotype.Service;
@@ -90,9 +91,19 @@ public class MemberQueryServiceImpl implements MemberQueryService {
                   : MEMBER.EMPLOYEE_NAME.asc();
         };
 
-    long total = memberQueryRepository.countMembers(condition);
-    var content = memberQueryRepository.findAllMembers(request, condition, sortField);
+    Condition fullCondition = condition;
+    String keyword = request.getKeyword();
+    if (keyword != null && !keyword.isBlank()) {
+      fullCondition =
+          fullCondition.and(
+              MEMBER
+                  .EMPLOYEE_IDENTIFICATION_NUMBER
+                  .containsIgnoreCase(keyword)
+                  .or(MEMBER.EMPLOYEE_NAME.containsIgnoreCase(keyword)));
+    }
 
+    long total = memberQueryRepository.countMembers(fullCondition);
+    var content = memberQueryRepository.findAllMembers(request, fullCondition, sortField);
     return PageResponse.fromJooq(content, total, page, size);
   }
 
@@ -139,5 +150,14 @@ public class MemberQueryServiceImpl implements MemberQueryService {
   @Override
   public List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId) {
     return memberQueryRepository.findMonthlyTechStackScoreTrend(employeeId);
+  public DashboardSummaryResponse getDashboardSummary() {
+    return new DashboardSummaryResponse(
+            memberQueryRepository.findPendingProjects(),
+            memberQueryRepository.findAnalyzingProjects(),
+            memberQueryRepository.fetchTopDevelopers(),
+            memberQueryRepository.fetchTopFreelancers(),
+            memberQueryRepository.fetchDeveloperAvailability(),
+            memberQueryRepository.fetchTopTechStacks()
+    );
   }
 }

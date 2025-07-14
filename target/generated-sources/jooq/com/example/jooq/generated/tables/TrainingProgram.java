@@ -4,18 +4,16 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -87,6 +85,10 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
   public final TableField<TrainingProgramRecord, String> IMAGE_URL =
       createField(DSL.name("image_url"), SQLDataType.CLOB.nullable(false), this, "");
 
+  /** The column <code>sion.training_program.video_url</code>. 교육 영상 URL */
+  public final TableField<TrainingProgramRecord, String> VIDEO_URL =
+      createField(DSL.name("video_url"), SQLDataType.CLOB.nullable(false), this, "교육 영상 URL");
+
   private TrainingProgram(Name alias, Table<TrainingProgramRecord> aliased) {
     this(alias, aliased, null);
   }
@@ -131,11 +133,6 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
   }
 
   @Override
-  public List<UniqueKey<TrainingProgramRecord>> getUniqueKeys() {
-    return Arrays.asList(Keys.KEY_TRAINING_PROGRAM_UK_TRAINING_NAME);
-  }
-
-  @Override
   public TrainingProgram as(String alias) {
     return new TrainingProgram(DSL.name(alias), this);
   }
@@ -169,23 +166,25 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
   }
 
   // -------------------------------------------------------------------------
-  // Row7 type methods
+  // Row8 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row7<Long, String, String, String, LocalDateTime, LocalDateTime, String> fieldsRow() {
-    return (Row7) super.fieldsRow();
+  public Row8<Long, String, String, String, LocalDateTime, LocalDateTime, String, String>
+      fieldsRow() {
+    return (Row8) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function7<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {
@@ -195,13 +194,14 @@ public class TrainingProgram extends TableImpl<TrainingProgramRecord> {
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function7<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
+              ? super String,
               ? super String,
               ? extends U>
           from) {

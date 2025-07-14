@@ -81,18 +81,6 @@ public class TrainingProgramDao
     return fetch(TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME, values);
   }
 
-  /** Fetch a unique record that has <code>training_name = value</code> */
-  public com.example.jooq.generated.tables.pojos.TrainingProgram fetchOneByTrainingName(
-      String value) {
-    return fetchOne(TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME, value);
-  }
-
-  /** Fetch a unique record that has <code>training_name = value</code> */
-  public Optional<com.example.jooq.generated.tables.pojos.TrainingProgram>
-      fetchOptionalByTrainingName(String value) {
-    return fetchOptional(TrainingProgram.TRAINING_PROGRAM.TRAINING_NAME, value);
-  }
-
   /**
    * Fetch records that have <code>training_description BETWEEN lowerInclusive
    * AND upperInclusive</code>
@@ -168,5 +156,20 @@ public class TrainingProgramDao
   public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByImageUrl(
       String... values) {
     return fetch(TrainingProgram.TRAINING_PROGRAM.IMAGE_URL, values);
+  }
+
+  /**
+   * Fetch records that have <code>video_url BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchRangeOfVideoUrl(
+      String lowerInclusive, String upperInclusive) {
+    return fetchRange(TrainingProgram.TRAINING_PROGRAM.VIDEO_URL, lowerInclusive, upperInclusive);
+  }
+
+  /** Fetch records that have <code>video_url IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.TrainingProgram> fetchByVideoUrl(
+      String... values) {
+    return fetch(TrainingProgram.TRAINING_PROGRAM.VIDEO_URL, values);
   }
 }

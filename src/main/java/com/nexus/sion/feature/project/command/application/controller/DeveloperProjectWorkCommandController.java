@@ -32,8 +32,9 @@ public class DeveloperProjectWorkCommandController {
 
   @PutMapping("/{id}/reject")
   public ResponseEntity<ApiResponse<Void>> rejectWorkHistory(
-      @PathVariable Long id, @RequestParam String adminId) {
-    developerProjectWorkService.reject(id, adminId);
+      @PathVariable Long id, @RequestParam String adminId, @RequestParam String reason) {
+
+    developerProjectWorkService.reject(id, adminId, reason);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

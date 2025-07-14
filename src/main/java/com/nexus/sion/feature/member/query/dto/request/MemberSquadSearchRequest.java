@@ -2,15 +2,14 @@ package com.nexus.sion.feature.member.query.dto.request;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
 @ToString
 @Setter
+@Builder
+@AllArgsConstructor
 public class MemberSquadSearchRequest {
   private String keyword;
   private String status;

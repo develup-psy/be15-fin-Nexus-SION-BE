@@ -147,7 +147,6 @@ public class Project extends TableImpl<ProjectRecord> {
       createField(
           DSL.name("analysis_status"),
           SQLDataType.VARCHAR(10)
-              .nullable(false)
               .defaultValue(DSL.field(DSL.raw("'PENDING'"), SQLDataType.VARCHAR))
               .asEnumDataType(com.example.jooq.generated.enums.ProjectAnalysisStatus.class),
           this,

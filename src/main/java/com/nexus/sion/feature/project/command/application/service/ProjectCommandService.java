@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
@@ -22,4 +23,6 @@ public interface ProjectCommandService {
 
   void analyzeProject(
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber);
+
+  void replaceMember(SquadReplacementRequest request);
 }
