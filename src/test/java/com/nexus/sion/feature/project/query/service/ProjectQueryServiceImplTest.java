@@ -1,10 +1,15 @@
 package com.nexus.sion.feature.project.query.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import com.nexus.sion.feature.project.query.dto.response.JobRequirement;
+import com.nexus.sion.feature.project.query.dto.response.ProjectForSquadResponse;
+import com.nexus.sion.feature.project.query.mapper.ProjectQueryMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +31,7 @@ class ProjectQueryServiceImplTest {
 
   @Mock private ProjectQueryRepository repository;
   @InjectMocks private ProjectQueryServiceImpl service;
+  @Mock private ProjectQueryMapper projectQueryMapper;
 
   @Test
   @DisplayName("예산 조건으로 프로젝트 목록을 조회한다")
@@ -180,4 +186,62 @@ class ProjectQueryServiceImplTest {
 
     verify(repository).getProjectDetail(invalidCode);
   }
+
+
+  @Test
+  @DisplayName("스쿼드용 프로젝트 상세 조회 성공")
+  void getProjectInfoForSquad_success() {
+    // given
+    String projectCode = "PROJ-001";
+
+
+    List<JobRequirement> requirements = List.of(
+            new JobRequirement("백엔드", 2, 10000L),
+            new JobRequirement("프론트엔드", 1, 20000L)
+    );
+
+    ProjectForSquadResponse projectResponse = ProjectForSquadResponse.builder()
+            .projectCode(projectCode)
+            .budgetLimit(2000000L)
+            .durationLimit(12.2)
+            .totalEffort(160.5)
+            .jobRequirements(requirements)
+            .build();
+
+    when(projectQueryMapper.findProjectInfo(projectCode)).thenReturn(projectResponse);
+    when(projectQueryMapper.findJobRequirements(projectCode)).thenReturn(requirements);
+
+    // when
+    ProjectForSquadResponse result = service.getProjectInfoForSquad(projectCode);
+
+    // then
+    assertThat(result).isNotNull();
+    assertThat(result.getProjectCode()).isEqualTo(projectCode);
+    assertThat(result.getJobRequirements()).hasSize(2);
+    assertThat(result.getJobRequirements())
+            .extracting(JobRequirement::getJobName)
+            .containsExactlyInAnyOrder("백엔드", "프론트엔드");
+
+    verify(projectQueryMapper).findProjectInfo(projectCode);
+    verify(projectQueryMapper).findJobRequirements(projectCode);
+  }
+
+
+  @Test
+  @DisplayName("스쿼드용 프로젝트 상세 조회 실패 - 프로젝트 없음")
+  void getProjectInfoForSquad_notFound_throwsException() {
+    // given
+    String invalidCode = "INVALID";
+
+    when(projectQueryMapper.findProjectInfo(invalidCode)).thenReturn(null);
+
+    // when & then
+    assertThatThrownBy(() -> service.getProjectInfoForSquad(invalidCode))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("Project not found");
+
+    verify(projectQueryMapper).findProjectInfo(invalidCode);
+    verify(projectQueryMapper, never()).findJobRequirements(anyString());
+  }
+
 }

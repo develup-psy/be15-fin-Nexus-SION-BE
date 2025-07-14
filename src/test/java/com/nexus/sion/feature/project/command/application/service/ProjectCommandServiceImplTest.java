@@ -1,12 +1,21 @@
 package com.nexus.sion.feature.project.command.application.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +39,9 @@ class ProjectCommandServiceImplTest {
   @Mock private ProjectCommandRepository projectCommandRepository;
   @Mock private ProjectAndJobRepository projectAndJobRepository;
   @Mock private JobAndTechStackRepository jobAndTechStackRepository;
+  @Mock private SquadCommandRepository squadCommandRepository;
+  @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
+  @Mock private MemberRepository memberRepository;
   @Mock private ProjectRepository projectRepository;
   @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
@@ -201,4 +213,90 @@ class ProjectCommandServiceImplTest {
         .requestSpecificationUrl("https://s3.url/updated_spec.pdf")
         .build(); // ✅ jobTechStacks 제거됨
   }
+
+  @Test
+  @DisplayName("프로젝트 인원 교체 성공")
+  void replaceMember_success() {
+    // given
+    String squadCode = "SQD001";
+    String oldEmployeeId = "OLD001";
+    String newEmployeeId = "NEW001";
+
+    Squad squad = Squad.builder()
+            .squadCode(squadCode)
+            .projectCode("P123")
+            .build();
+
+    SquadEmployee oldMember = SquadEmployee.builder()
+            .squadCode(squadCode)
+            .employeeIdentificationNumber(oldEmployeeId)
+            .projectAndJobId(1001L)
+            .isLeader(false)
+            .build();
+
+    Member newMember = Member.builder()
+            .employeeIdentificationNumber(newEmployeeId)
+            .status(MemberStatus.AVAILABLE)
+            .build();
+
+    given(squadCommandRepository.findById(squadCode)).willReturn(Optional.of(squad));
+    given(squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(squadCode, oldEmployeeId))
+            .willReturn(Optional.of(oldMember));
+    given(squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(squadCode, newEmployeeId))
+            .willReturn(false);
+    given(memberRepository.findById(newEmployeeId)).willReturn(Optional.of(newMember));
+
+    SquadReplacementRequest request = SquadReplacementRequest.builder()
+            .squadCode(squadCode)
+            .oldEmployeeId(oldEmployeeId)
+            .newEmployeeId(newEmployeeId)
+            .build();
+
+    // when
+    projectCommandService.replaceMember(request);
+
+    // then
+    verify(squadEmployeeCommandRepository).deleteBySquadCodeAndEmployeeIdentificationNumber(squadCode, oldEmployeeId);
+    verify(squadEmployeeCommandRepository).save(any(SquadEmployee.class));
+  }
+
+  @Test
+  @DisplayName("인원 교체 실패 - 스쿼드 없음")
+  void replaceMember_fail_squadNotFound() {
+    String squadCode = "INVALID";
+    SquadReplacementRequest request = SquadReplacementRequest.builder()
+            .squadCode(squadCode)
+            .oldEmployeeId("OLD")
+            .newEmployeeId("NEW")
+            .build();
+
+    given(squadCommandRepository.findById(squadCode)).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> projectCommandService.replaceMember(request))
+            .isInstanceOf(BusinessException.class)
+            .hasMessageContaining(ErrorCode.SQUAD_NOT_FOUND.getMessage());
+  }
+
+  @Test
+  @DisplayName("인원 교체 실패 - 리더 교체 불가")
+  void replaceMember_fail_invalidLeaderReplacement() {
+    String squadCode = "SQD001";
+    Squad squad = Squad.builder().squadCode(squadCode).build();
+    SquadEmployee leader = SquadEmployee.builder().isLeader(true).build();
+
+    given(squadCommandRepository.findById(squadCode)).willReturn(Optional.of(squad));
+    given(squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(any(), any()))
+            .willReturn(Optional.of(leader));
+
+    SquadReplacementRequest request = SquadReplacementRequest.builder()
+            .squadCode(squadCode)
+            .oldEmployeeId("OLD")
+            .newEmployeeId("NEW")
+            .build();
+
+    assertThatThrownBy(() -> projectCommandService.replaceMember(request))
+            .isInstanceOf(BusinessException.class)
+            .hasMessageContaining(ErrorCode.INVALID_LEADER_REPLACEMENT.getMessage());
+  }
+
 }

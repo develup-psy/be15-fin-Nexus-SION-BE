@@ -36,38 +36,22 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
   @Override
   public SquadCandidateResponse findCandidatesByRoles(String projectId) {
-    try {
-      List<JobInfo> jobList = squadQueryMapper.findJobsByProjectId(projectId);
+    List<JobInfo> jobList = squadQueryMapper.findJobsByProjectId(projectId);
 
-      if (jobList == null || jobList.isEmpty()) {
-        throw new BusinessException(ErrorCode.JOB_NOT_FOUND,
-                String.format("No jobs found for projectId: %s", projectId));
-      }
+    Map<String, List<DeveloperSummary>> result = new LinkedHashMap<>();
 
-      Map<String, List<DeveloperSummary>> result = new LinkedHashMap<>();
-
-      for (JobInfo job : jobList) {
-        List<DeveloperSummary> developers =
-                squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
-
-        result.put(job.getJobName(), developers != null ? developers : List.of());
-      }
-
-      calculateSquad.applyWeightToCandidates(result);
-
-      for (List<DeveloperSummary> list : result.values()) {
-        list.sort(Comparator.comparingDouble(
-                        (DeveloperSummary dev) -> Optional.ofNullable(dev.getWeight()).orElse(0.0))
-                .reversed());
-      }
-
-      return new SquadCandidateResponse(result);
-
-    } catch (BusinessException e) {
-      throw e; // 비즈니스 예외는 그대로 전파
-    } catch (Exception e) {
-      throw new BusinessException(ErrorCode.SQUAD_CANDIDATE_FETCH_FAILED);
+    for (JobInfo job : jobList) {
+      List<DeveloperSummary> developers =
+              squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
+      result.put(job.getJobName(), developers);
     }
+
+    calculateSquad.applyWeightToCandidates(result);
+    for (List<DeveloperSummary> list : result.values()) {
+      list.sort(Comparator.comparingDouble(DeveloperSummary::getWeight).reversed());
+    }
+
+    return new SquadCandidateResponse(result);
   }
 
   @Override
