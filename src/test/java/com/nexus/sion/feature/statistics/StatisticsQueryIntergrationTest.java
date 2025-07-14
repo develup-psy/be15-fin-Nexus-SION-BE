@@ -134,4 +134,43 @@ class StatisticsQueryIntergrationTest {
         .andExpect(jsonPath("$.data[0].gradeCode").exists())
         .andExpect(jsonPath("$.data[0].waitingCount").isNumber());
   }
+
+  @Test
+  @DisplayName("GET /salary-stats-by-grade - 등급별 연봉 통계 조회")
+  void getSalaryStatsByGrade() throws Exception {
+    mockMvc
+            .perform(get("/api/v1/statistics/salary-stats-by-grade"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[0].gradeCode").exists())
+            .andExpect(jsonPath("$.data[0].minSalary").isNumber())
+            .andExpect(jsonPath("$.data[0].maxSalary").isNumber())
+            .andExpect(jsonPath("$.data[0].avgSalary").isNumber());
+  }
+
+  @Test
+  @DisplayName("GET /tech-adoption-trend - 기술 도입률 변화 추이 조회")
+  void getTechAdoptionTrendsByYear() throws Exception {
+    mockMvc
+            .perform(get("/api/v1/statistics/tech-adoption-trend").param("year", "2025"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[0].techStackName").exists())
+            .andExpect(jsonPath("$.data[0].quarter").isNumber())
+            .andExpect(jsonPath("$.data[0].percentage").isNumber())
+            .andExpect(jsonPath("$.data[0].totalPercentage").isNumber());
+  }
+
+  @Test
+  @DisplayName("GET /project/years - 프로젝트 연도 목록 조회")
+  void getProjectYears() throws Exception {
+    mockMvc
+            .perform(get("/api/v1/statistics/project/years"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data[0]").isNumber());
+  }
 }

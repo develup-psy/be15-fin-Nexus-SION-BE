@@ -164,4 +164,67 @@ class StatisticsQueryServiceImplTest {
     assertEquals(0, result.get(2).getWaitingCount());
     assertEquals(2, result.get(2).getTotalCount());
   }
+
+  // 등급별 연봉 통계 조회 기능 테스트
+  @Test
+  void getGradeSalaryStats_returnsSalaryStats() {
+    List<GradeSalaryStatsDto> mockResult = List.of(
+            GradeSalaryStatsDto.builder()
+                    .gradeCode(MemberGradeCode.S)
+                    .avgSalary(9000L)
+                    .minSalary(8000L)
+                    .maxSalary(10000L)
+                    .build(),
+            GradeSalaryStatsDto.builder()
+                    .gradeCode(MemberGradeCode.A)
+                    .avgSalary(7000L)
+                    .minSalary(6500L)
+                    .maxSalary(7500L)
+                    .build()
+    );
+
+    when(statisticsQueryRepository.getGradeSalaryStatistics()).thenReturn(mockResult);
+
+    List<GradeSalaryStatsDto> result = service.getGradeSalaryStats();
+
+    assertEquals(2, result.size());
+    assertEquals(MemberGradeCode.S, result.get(0).getGradeCode());
+    assertEquals(9000, result.get(0).getAvgSalary());
+    assertEquals(7500, result.get(1).getMaxSalary());
+  }
+
+  // 기술 도입률 변화 추이 조회 기능 테스트
+  @Test
+  void getTechAdoptionTrendsByYear_returnsTrendList() {
+    int year = 2025;
+    List<TechAdoptionTrendDto> mockResult = List.of(
+            TechAdoptionTrendDto.builder()
+                    .techStackName("Spring Boot")
+                    .year(year)
+                    .quarter(1)
+                    .projectCount(12L)
+                    .percentage(35.5)
+                    .totalPercentage(60.0)
+                    .build(),
+            TechAdoptionTrendDto.builder()
+                    .techStackName("Spring Boot")
+                    .year(year)
+                    .quarter(2)
+                    .projectCount(15L)
+                    .percentage(40.0)
+                    .totalPercentage(60.0)
+                    .build()
+    );
+
+    when(statisticsQueryRepository.findTechAdoptionTrendsByYear(year)).thenReturn(mockResult);
+
+    List<TechAdoptionTrendDto> result = service.getTechAdoptionTrendsByYear(year);
+
+    assertEquals(2, result.size());
+    assertEquals(1, result.get(0).getQuarter()); // Integer 비교
+    assertEquals(35.5, result.get(0).getPercentage());
+    assertEquals(2, result.get(1).getQuarter());
+    assertEquals(40.0, result.get(1).getPercentage());
+    assertEquals(60.0, result.get(1).getTotalPercentage());
+  }
 }
