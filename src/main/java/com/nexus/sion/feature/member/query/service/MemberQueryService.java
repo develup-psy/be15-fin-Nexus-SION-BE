@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.member.query.service;
 
+import java.util.List;
+
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
@@ -15,6 +17,10 @@ public interface MemberQueryService {
   MemberDetailResponse getMemberDetail(String employeeId);
 
   PageResponse<MemberSquadListResponse> squadSearchMembers(MemberListQuery request);
+
+  List<ScoreTrendDto> getMonthlyTotalScoreTrend(String employeeId);
+
+  List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId);
 
   DashboardSummaryResponse getDashboardSummary();
 }

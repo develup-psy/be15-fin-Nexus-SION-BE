@@ -15,6 +15,12 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
 import com.nexus.sion.feature.member.query.dto.request.MemberSquadSearchRequest;
+
+import com.nexus.sion.feature.member.query.dto.response.AdminSearchResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
+import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
+import com.nexus.sion.feature.member.query.dto.response.ScoreTrendDto;
 import com.nexus.sion.feature.member.query.service.MemberQueryService;
 
 import lombok.RequiredArgsConstructor;
@@ -112,6 +118,16 @@ public class MemberQueryController {
     // 5. 서비스 호출 및 응답
     PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(query);
     return ResponseEntity.ok(ApiResponse.success(result));
+  }
+
+  @GetMapping("/{employeeId}/score-trend/total")
+  public ApiResponse<List<ScoreTrendDto>> getTotalScoreTrend(@PathVariable String employeeId) {
+    return ApiResponse.success(memberQueryService.getMonthlyTotalScoreTrend(employeeId));
+  }
+
+  @GetMapping("/{employeeId}/score-trend/techstack")
+  public ApiResponse<List<ScoreTrendDto>> getTechStackScoreTrend(@PathVariable String employeeId) {
+    return ApiResponse.success(memberQueryService.getMonthlyTechStackScoreTrend(employeeId));
   }
 
   @GetMapping("/dashboard-summary")

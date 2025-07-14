@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.member.query.repository;
 
 import static com.example.jooq.generated.Tables.*;
+import static com.example.jooq.generated.Tables.DEVELOPER_TECH_STACK_HISTORY;
 import static com.example.jooq.generated.tables.DeveloperTechStack.DEVELOPER_TECH_STACK;
 import static com.example.jooq.generated.tables.Member.MEMBER;
 import static org.jooq.impl.DSL.*;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import com.example.jooq.generated.enums.MemberRole;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
+import com.nexus.sion.feature.member.query.dto.response.*;
 import com.nexus.sion.feature.member.query.util.TopTechStackSubqueryProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -507,5 +509,46 @@ public class MemberQueryRepository {
                     record.get(topStack.techStackName()),
                     record.get(GRADE.MONTHLY_UNIT_PRICE),
                     record.get(GRADE.PRODUCTIVITY)));
+  }
+
+  public List<ScoreTrendDto> findMonthlyTotalScoreTrend(String employeeId) {
+    Field<String> monthField =
+        DSL.field(
+            "DATE_FORMAT({0}, {1})",
+            String.class, MEMBER_SCORE_HISTORY.CREATED_AT, DSL.inline("%Y-%m"));
+
+    return dsl.select(
+            monthField.as("month"),
+            DSL.inline((String) null).as("techStackName"),
+            MEMBER_SCORE_HISTORY
+                .TOTAL_TECH_STACK_SCORES
+                .add(MEMBER_SCORE_HISTORY.TOTAL_CERTIFICATE_SCORES)
+                .as("score"))
+        .from(MEMBER_SCORE_HISTORY)
+        .where(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+        .groupBy(monthField)
+        .orderBy(monthField)
+        .fetchInto(ScoreTrendDto.class);
+  }
+
+  public List<ScoreTrendDto> findMonthlyTechStackScoreTrend(String employeeId) {
+    Field<String> monthField =
+        DSL.field(
+            "DATE_FORMAT({0}, {1})",
+            String.class, DEVELOPER_TECH_STACK_HISTORY.CREATED_AT, DSL.inline("%Y-%m"));
+
+    return dsl.select(
+            monthField.as("month"),
+            DEVELOPER_TECH_STACK.TECH_STACK_NAME.as("techStackName"),
+            DSL.sum(DEVELOPER_TECH_STACK_HISTORY.ADDED_SCORE).as("score"))
+        .from(DEVELOPER_TECH_STACK_HISTORY)
+        .join(DEVELOPER_TECH_STACK)
+        .on(
+            DEVELOPER_TECH_STACK_HISTORY.DEVELOPER_TECH_STACK_ID.eq(
+                DEVELOPER_TECH_STACK.DEVELOPER_TECH_STACK_ID))
+        .where(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+        .groupBy(monthField, DEVELOPER_TECH_STACK.TECH_STACK_NAME)
+        .orderBy(monthField, DEVELOPER_TECH_STACK.TECH_STACK_NAME)
+        .fetchInto(ScoreTrendDto.class);
   }
 }
