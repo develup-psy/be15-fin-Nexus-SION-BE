@@ -1,5 +1,15 @@
 package com.nexus.sion.feature.project.query.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
 import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
@@ -8,15 +18,6 @@ import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
 import com.nexus.sion.feature.project.query.repository.DeveloperProjectWorkQueryRepository;
 import com.nexus.sion.feature.project.query.repository.ProjectQueryRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 class DeveloperProjectWorkQueryServiceImplTest {
 
@@ -57,11 +58,13 @@ class DeveloperProjectWorkQueryServiceImplTest {
     // given
     String employeeId = "EMP001";
     int page = 0, size = 10;
-    List<WorkRequestQueryDto> mockList = List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
+    List<WorkRequestQueryDto> mockList =
+        List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
     when(workQueryRepository.findByEmployeeId(employeeId)).thenReturn(mockList);
 
     // when
-    PageResponse<WorkRequestQueryDto> result = service.getRequestsByEmployeeId(employeeId, page, size);
+    PageResponse<WorkRequestQueryDto> result =
+        service.getRequestsByEmployeeId(employeeId, page, size);
 
     // then
     assertThat(result.getContent()).hasSize(2);
@@ -74,13 +77,13 @@ class DeveloperProjectWorkQueryServiceImplTest {
   void getProjectInfo() {
     // given
     Long workId = 1L;
-    ProjectInfoDto dto = new ProjectInfoDto(
+    ProjectInfoDto dto =
+        new ProjectInfoDto(
             "PROJ001",
             "테스트 프로젝트",
             LocalDate.of(2025, 1, 1),
             LocalDate.of(2025, 6, 30),
-            DeveloperProjectWork.ApprovalStatus.PENDING
-    );
+            DeveloperProjectWork.ApprovalStatus.PENDING);
     when(projectQueryRepository.findProjectInfoByWorkId(workId)).thenReturn(dto);
 
     // when

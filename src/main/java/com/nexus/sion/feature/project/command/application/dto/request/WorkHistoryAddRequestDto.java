@@ -28,4 +28,3 @@ public class WorkHistoryAddRequestDto {
     private List<String> techStackNames;
   }
 }
-

@@ -80,9 +80,9 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
     // ===== 거부 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber();
     String receiverName =
-            memberRepository
-                    .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+        memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String statusMessage = "거부";
     String message =
@@ -105,7 +105,9 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
     DeveloperProjectWork saved = workRepository.save(newWork);
 
     String requestAgainMessage =
-        NotificationType.TASK_APPROVAL_REQUEST_AGAIN.getMessage().replace("{username}", receiverName);
+        NotificationType.TASK_APPROVAL_REQUEST_AGAIN
+            .getMessage()
+            .replace("{username}", receiverName);
 
     notificationCommandService.createAndSendNotification(
         adminId,

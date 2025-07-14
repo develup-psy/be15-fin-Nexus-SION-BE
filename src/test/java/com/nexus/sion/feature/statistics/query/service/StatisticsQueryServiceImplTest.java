@@ -168,20 +168,20 @@ class StatisticsQueryServiceImplTest {
   // 등급별 연봉 통계 조회 기능 테스트
   @Test
   void getGradeSalaryStats_returnsSalaryStats() {
-    List<GradeSalaryStatsDto> mockResult = List.of(
+    List<GradeSalaryStatsDto> mockResult =
+        List.of(
             GradeSalaryStatsDto.builder()
-                    .gradeCode(MemberGradeCode.S)
-                    .avgSalary(9000L)
-                    .minSalary(8000L)
-                    .maxSalary(10000L)
-                    .build(),
+                .gradeCode(MemberGradeCode.S)
+                .avgSalary(9000L)
+                .minSalary(8000L)
+                .maxSalary(10000L)
+                .build(),
             GradeSalaryStatsDto.builder()
-                    .gradeCode(MemberGradeCode.A)
-                    .avgSalary(7000L)
-                    .minSalary(6500L)
-                    .maxSalary(7500L)
-                    .build()
-    );
+                .gradeCode(MemberGradeCode.A)
+                .avgSalary(7000L)
+                .minSalary(6500L)
+                .maxSalary(7500L)
+                .build());
 
     when(statisticsQueryRepository.getGradeSalaryStatistics()).thenReturn(mockResult);
 
@@ -197,24 +197,24 @@ class StatisticsQueryServiceImplTest {
   @Test
   void getTechAdoptionTrendsByYear_returnsTrendList() {
     int year = 2025;
-    List<TechAdoptionTrendDto> mockResult = List.of(
+    List<TechAdoptionTrendDto> mockResult =
+        List.of(
             TechAdoptionTrendDto.builder()
-                    .techStackName("Spring Boot")
-                    .year(year)
-                    .quarter(1)
-                    .projectCount(12L)
-                    .percentage(35.5)
-                    .totalPercentage(60.0)
-                    .build(),
+                .techStackName("Spring Boot")
+                .year(year)
+                .quarter(1)
+                .projectCount(12L)
+                .percentage(35.5)
+                .totalPercentage(60.0)
+                .build(),
             TechAdoptionTrendDto.builder()
-                    .techStackName("Spring Boot")
-                    .year(year)
-                    .quarter(2)
-                    .projectCount(15L)
-                    .percentage(40.0)
-                    .totalPercentage(60.0)
-                    .build()
-    );
+                .techStackName("Spring Boot")
+                .year(year)
+                .quarter(2)
+                .projectCount(15L)
+                .percentage(40.0)
+                .totalPercentage(60.0)
+                .build());
 
     when(statisticsQueryRepository.findTechAdoptionTrendsByYear(year)).thenReturn(mockResult);
 
