@@ -77,7 +77,11 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
                           .employeeIdentificationNumber(freelancer.freelancerId())
                           .employeeName(freelancer.name())
                           .password(encodedPassword)
-                          .profileImageUrl(freelancer.profileImageUrl())
+                          .profileImageUrl(
+                              freelancer.profileImageUrl() != null
+                                  ? freelancer.profileImageUrl()
+                                  : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                                      + freelancer.freelancerId())
                           .phoneNumber(freelancer.phoneNumber())
                           .email(freelancer.email())
                           .birthday(freelancer.birthday())
