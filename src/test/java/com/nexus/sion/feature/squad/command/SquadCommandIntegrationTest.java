@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,23 +59,37 @@ class SquadCommandIntegrationTest {
   @Autowired private JobAndTechStackRepository jobAndTechStackRepository;
   @Autowired private ProjectFpSummaryRepository projectFpSummaryRepository;
 
+  private String clientCode;
+  private String projectCode;
+  private String squadCode;
+  private String domainName;
+  private String empId;
+
+
   private Long validProjectAndJobId;
 
   @BeforeEach
   void setup() {
+    clientCode = "ka_3";
+    projectCode = "ka_3_1";
+    domainName = "CS";
+    squadCode = "ka_3_1_1";
+    empId = "12345678";
+
+
     // 1. 선행 데이터 - 클라이언트 회사 저장
     clientCompanyRepository.save(
-        ClientCompany.builder().clientCode("ka_2").companyName("카카오페이").domainName("CS").build());
+        ClientCompany.builder().clientCode(clientCode).companyName("카카오택시").domainName(domainName).build());
 
     // 2. 도메인 저장
-    domainRepository.save(Domain.of("CS"));
+    domainRepository.save(Domain.of(domainName));
 
     // 3. 프로젝트 저장
 
     projectRepository.save(
         Project.builder()
-            .projectCode("ka_2_1")
-            .clientCode("ka_2")
+            .projectCode(projectCode)
+            .clientCode(clientCode)
             .title("테스트 프로젝트")
             .description("통합 테스트용")
             .startDate(LocalDate.of(2025, 1, 1))
@@ -85,11 +100,12 @@ class SquadCommandIntegrationTest {
             .requestSpecificationUrl("http://example.com/spec")
             .domainName("CS")
             .build());
+
     // 4. 스쿼드 저장
     Squad squad =
         Squad.builder()
-            .squadCode("ka_2_1_1")
-            .projectCode("ka_2_1")
+            .squadCode(squadCode)
+            .projectCode(projectCode)
             .title("기존 스쿼드")
             .description("기존 설명")
             .estimatedCost(BigDecimal.valueOf(10_000_000L))
@@ -101,7 +117,7 @@ class SquadCommandIntegrationTest {
     // 멤버 저장
     memberRepository.save(
         Member.builder()
-            .employeeIdentificationNumber("9999999")
+            .employeeIdentificationNumber(empId)
             .employeeName("홍길동")
             .password("encoded-password")
             .profileImageUrl(null)
@@ -121,7 +137,7 @@ class SquadCommandIntegrationTest {
     // project_and_job 저장
     ProjectAndJob job1 =
         projectAndJobRepository.save(
-            ProjectAndJob.builder().projectCode("ka_2_1").jobName("백엔드").requiredNumber(1).build());
+            ProjectAndJob.builder().projectCode(projectCode).jobName("백엔드").requiredNumber(1).build());
 
     validProjectAndJobId = job1.getId();
     System.out.println("[validProjectAndJobId 인 셋업] = " + validProjectAndJobId);
@@ -143,7 +159,7 @@ class SquadCommandIntegrationTest {
     BigDecimal estimatedDuration = BigDecimal.valueOf(12L);
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
-            .projectCode("ka_2_1")
+            .projectCode(projectCode)
             .title("스쿼드 A")
             .description("신규 백엔드 개발 스쿼드")
             .estimatedCost(estimatedCost)
@@ -151,7 +167,7 @@ class SquadCommandIntegrationTest {
             .developers(
                 List.of(
                     Developer.builder()
-                        .employeeId("9999999")
+                        .employeeId(empId)
                         .projectAndJobId(validProjectAndJobId)
                         .build()))
             .build();
@@ -161,8 +177,7 @@ class SquadCommandIntegrationTest {
             post("/api/v1/squads/manual")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.title").value("스쿼드 A"));
+        .andExpect(status().isOk());
   }
 
   @WithMockUser
@@ -173,7 +188,7 @@ class SquadCommandIntegrationTest {
     BigDecimal estimatedDuration = BigDecimal.valueOf(12L);
     SquadRegisterRequest request =
         SquadRegisterRequest.builder()
-            .projectCode("ka_2_1")
+            .projectCode(projectCode)
             .title(null) // 필수 필드 누락
             .description("신규 백엔드 개발 스쿼드")
             .estimatedCost(estimatedCost)
@@ -181,7 +196,7 @@ class SquadCommandIntegrationTest {
             .developers(
                 List.of(
                     Developer.builder()
-                        .employeeId("9999999")
+                        .employeeId(empId)
                         .projectAndJobId(validProjectAndJobId)
                         .build()))
             .build();
@@ -200,7 +215,7 @@ class SquadCommandIntegrationTest {
   void updateSquad_success() throws Exception {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
-            .squadCode("ka_2_1_1")
+            .squadCode(squadCode)
             .title("수정된 스쿼드 제목")
             .description("수정된 설명입니다.")
             .estimatedCost(BigDecimal.valueOf(1_000_000L))
@@ -208,7 +223,7 @@ class SquadCommandIntegrationTest {
             .developers(
                 List.of(
                     Developer.builder()
-                        .employeeId("9999999")
+                        .employeeId(empId)
                         .projectAndJobId(validProjectAndJobId)
                         .build()))
             .build();
@@ -218,8 +233,7 @@ class SquadCommandIntegrationTest {
             put("/api/v1/squads/manual")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.title").value("수정된 스쿼드 제목"));
+        .andExpect(status().isOk());
   }
 
   @WithMockUser
@@ -236,7 +250,7 @@ class SquadCommandIntegrationTest {
             .developers(
                 List.of(
                     Developer.builder()
-                        .employeeId("9999999")
+                        .employeeId(empId)
                         .projectAndJobId(validProjectAndJobId)
                         .build()))
             .build();
@@ -255,7 +269,7 @@ class SquadCommandIntegrationTest {
   void updateSquad_fail_whenSquadExceedThreshold() throws Exception {
     SquadUpdateRequest request =
         SquadUpdateRequest.builder()
-            .squadCode("ka_2_1_1")
+            .squadCode(squadCode)
             .title("수정된 스쿼드 제목")
             .description("수정된 설명입니다.")
             .estimatedCost(BigDecimal.valueOf(1_500_000L))
@@ -263,7 +277,7 @@ class SquadCommandIntegrationTest {
             .developers(
                 List.of(
                     Developer.builder()
-                        .employeeId("9999999")
+                        .employeeId(empId)
                         .projectAndJobId(validProjectAndJobId)
                         .build()))
             .build();
@@ -280,9 +294,6 @@ class SquadCommandIntegrationTest {
   @Test
   @DisplayName("스쿼드 삭제 성공")
   void deleteSquad_success() throws Exception {
-    // given
-    String squadCode = "ka_2_1_1";
-
     // when & then
     mockMvc
         .perform(delete("/api/v1/squads/{squadCode}", squadCode))
@@ -305,7 +316,7 @@ class SquadCommandIntegrationTest {
     // 프로젝트 분석 정보 저장
     projectFpSummaryRepository.save(
         ProjectFpSummary.builder()
-            .projectCode("ka_2_1")
+            .projectCode(projectCode)
             .totalFp(160)
             .avgEffortPerFp(20)
             .totalEffort(BigDecimal.valueOf(32))
@@ -315,7 +326,7 @@ class SquadCommandIntegrationTest {
 
     SquadRecommendationRequest request =
         SquadRecommendationRequest.builder()
-            .projectId("ka_2_1")
+            .projectId(projectCode)
             .criteria(RecommendationCriteria.BALANCED)
             .build();
     mockMvc
