@@ -150,6 +150,9 @@ public class MemberQueryServiceImpl implements MemberQueryService {
   @Override
   public List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId) {
     return memberQueryRepository.findMonthlyTechStackScoreTrend(employeeId);
+  }
+
+  @Override
   public DashboardSummaryResponse getDashboardSummary() {
     return new DashboardSummaryResponse(
             memberQueryRepository.findPendingProjects(),
