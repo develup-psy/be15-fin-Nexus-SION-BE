@@ -42,6 +42,8 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
     work.approve(adminId);
 
+    //점수 산정 로직 코드
+
     // ===== 승인 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber(); // 요청한 사원
     String receiverName =

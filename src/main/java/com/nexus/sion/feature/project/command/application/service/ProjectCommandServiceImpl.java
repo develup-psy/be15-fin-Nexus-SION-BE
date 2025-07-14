@@ -210,8 +210,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     ProjectFpSummary fpSummary =
         projectFpSummaryRepository.findByProjectCode(projectId).orElse(null);
 
-    projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
-    projectFpSummaryRepository.deleteByProjectCode(projectId);
+    if (fpSummary != null) {
+      projectFunctionEstimateRepository.deleteByProjectFpSummaryId(fpSummary.getId());
+      projectFpSummaryRepository.deleteByProjectCode(projectId);
+    }
 
     Project project =
         projectRepository

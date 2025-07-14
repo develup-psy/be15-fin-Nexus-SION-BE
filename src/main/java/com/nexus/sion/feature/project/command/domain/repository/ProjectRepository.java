@@ -17,6 +17,4 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
   @Query(
       "SELECT p.projectCode FROM Project p WHERE p.clientCode = :clientCode AND p.projectCode LIKE CONCAT(:clientCode, '_%')")
   List<String> findProjectCodesByClientCode(String clientCode);
-
-  boolean existsByProjectCode(@NotBlank(message = "프로젝트 코드는 필수입니다.") String projectCode);
 }

@@ -21,7 +21,6 @@ import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
 class SquadCommentCommandIntegrationTest {
 
