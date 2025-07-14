@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryAddRequestDto;
-import com.nexus.sion.feature.project.command.application.service.DeveloperProjectWorkService;
+import com.nexus.sion.feature.project.command.application.service.DeveloperProjectWorkCommandService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DeveloperProjectWorkCommandController {
 
-  private final DeveloperProjectWorkService developerProjectWorkService;
+  private final DeveloperProjectWorkCommandService developerProjectWorkService;
 
   @PutMapping("/{workId}/histories")
   public ResponseEntity<ApiResponse<Void>> addHistories(

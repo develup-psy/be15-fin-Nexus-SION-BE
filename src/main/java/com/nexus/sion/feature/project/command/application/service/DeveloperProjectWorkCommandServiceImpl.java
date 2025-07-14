@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkService {
+public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectWorkCommandService {
 
   private final DeveloperProjectWorkRepository workRepository;
   private final DeveloperProjectWorkHistoryRepository workHistoryRepository;
@@ -80,9 +80,9 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
     // ===== 거부 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber();
     String receiverName =
-            memberRepository
-                    .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
+        memberRepository
+            .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String statusMessage = "거부";
     String message =
@@ -105,7 +105,9 @@ public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkServ
     DeveloperProjectWork saved = workRepository.save(newWork);
 
     String requestAgainMessage =
-        NotificationType.TASK_APPROVAL_REQUEST_AGAIN.getMessage().replace("{username}", receiverName);
+        NotificationType.TASK_APPROVAL_REQUEST_AGAIN
+            .getMessage()
+            .replace("{username}", receiverName);
 
     notificationCommandService.createAndSendNotification(
         adminId,
