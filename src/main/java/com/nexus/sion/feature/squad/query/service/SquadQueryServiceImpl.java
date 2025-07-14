@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
@@ -34,22 +36,38 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
   @Override
   public SquadCandidateResponse findCandidatesByRoles(String projectId) {
-    List<JobInfo> jobList = squadQueryMapper.findJobsByProjectId(projectId);
+    try {
+      List<JobInfo> jobList = squadQueryMapper.findJobsByProjectId(projectId);
 
-    Map<String, List<DeveloperSummary>> result = new LinkedHashMap<>();
+      if (jobList == null || jobList.isEmpty()) {
+        throw new BusinessException(ErrorCode.JOB_NOT_FOUND,
+                String.format("No jobs found for projectId: %s", projectId));
+      }
 
-    for (JobInfo job : jobList) {
-      List<DeveloperSummary> developers =
-          squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
-      result.put(job.getJobName(), developers);
+      Map<String, List<DeveloperSummary>> result = new LinkedHashMap<>();
+
+      for (JobInfo job : jobList) {
+        List<DeveloperSummary> developers =
+                squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
+
+        result.put(job.getJobName(), developers != null ? developers : List.of());
+      }
+
+      calculateSquad.applyWeightToCandidates(result);
+
+      for (List<DeveloperSummary> list : result.values()) {
+        list.sort(Comparator.comparingDouble(
+                        (DeveloperSummary dev) -> Optional.ofNullable(dev.getWeight()).orElse(0.0))
+                .reversed());
+      }
+
+      return new SquadCandidateResponse(result);
+
+    } catch (BusinessException e) {
+      throw e; // 비즈니스 예외는 그대로 전파
+    } catch (Exception e) {
+      throw new BusinessException(ErrorCode.SQUAD_CANDIDATE_FETCH_FAILED);
     }
-
-    calculateSquad.applyWeightToCandidates(result);
-    for (List<DeveloperSummary> list : result.values()) {
-      list.sort(Comparator.comparingDouble(DeveloperSummary::getWeight).reversed());
-    }
-
-    return new SquadCandidateResponse(result);
   }
 
   @Override
