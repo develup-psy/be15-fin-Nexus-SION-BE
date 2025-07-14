@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DeveloperProjectWorkServiceImpl implements DeveloperProjectWorkService {
+public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectWorkCommandService {
 
   private final DeveloperProjectWorkRepository workRepository;
   private final DeveloperProjectWorkHistoryRepository workHistoryRepository;
