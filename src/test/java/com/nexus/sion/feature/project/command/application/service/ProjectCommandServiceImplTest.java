@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,8 @@ class ProjectCommandServiceImplTest {
   @Mock private ProjectCommandRepository projectCommandRepository;
   @Mock private ProjectAndJobRepository projectAndJobRepository;
   @Mock private JobAndTechStackRepository jobAndTechStackRepository;
+  @Mock private ProjectRepository projectRepository;
+  @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
   @InjectMocks private ProjectCommandServiceImpl projectCommandService;
 
@@ -42,32 +45,18 @@ class ProjectCommandServiceImplTest {
   void registerProject_Success() {
     // given
     ProjectRegisterRequest request = createRequest();
-
-    when(projectCommandRepository.existsByProjectCode(request.getProjectCode())).thenReturn(false);
+    when(projectRepository.findProjectCodesByClientCode(request.getClientCode()))
+            .thenReturn(List.of()); // ✅ 코드 생성 위한 mock
 
     // when
     ProjectRegisterResponse response = projectCommandService.registerProject(request);
 
     // then
     assertThat(response).isNotNull();
-    assertThat(response.projectCode()).isEqualTo("P123");
+    assertThat(response.projectCode()).startsWith(request.getClientCode());
     verify(projectCommandRepository).save(any(Project.class));
     verify(projectAndJobRepository, atLeastOnce()).save(any(ProjectAndJob.class));
     verify(jobAndTechStackRepository, atLeastOnce()).save(any(JobAndTechStack.class));
-  }
-
-  @Test
-  @DisplayName("중복 프로젝트 코드 등록 실패")
-  void registerProject_Fail_When_Duplicated_ProjectCode() {
-    // given
-    ProjectRegisterRequest request = createRequest();
-
-    when(projectCommandRepository.existsByProjectCode(request.getProjectCode())).thenReturn(true);
-
-    // when & then
-    assertThatThrownBy(() -> projectCommandService.registerProject(request))
-        .isInstanceOf(BusinessException.class)
-        .hasMessage(ErrorCode.PROJECT_CODE_DUPLICATED.getMessage());
   }
 
   @Test
@@ -142,9 +131,11 @@ class ProjectCommandServiceImplTest {
     // given
     String projectCode = "P123";
     Project project =
-        Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
+            Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(squadEmployeeCommandRepository.findByProjectCode(projectCode))
+            .thenReturn(List.of()); // ✅ 상태 변경 후 작업 요청 처리를 위한 mock
 
     // when
     projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
@@ -154,6 +145,7 @@ class ProjectCommandServiceImplTest {
     assertThat(project.getActualEndDate()).isNotNull();
     verify(projectCommandRepository).save(project);
   }
+
 
   @Test
   @DisplayName("프로젝트 상태 변경 실패 - 존재하지 않는 프로젝트")
