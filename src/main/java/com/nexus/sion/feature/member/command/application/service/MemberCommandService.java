@@ -67,6 +67,11 @@ public class MemberCommandService {
     }
 
     Member member = modelMapper.map(request, Member.class);
+    if (member.getProfileImageUrl() == null || member.getProfileImageUrl().isBlank()) {
+      String seed = member.getEmployeeIdentificationNumber();
+      member.setDefaultProfileImageUrl("https://api.dicebear.com/9.x/notionists/svg?seed=" + seed);
+    }
+
     member.setEncodedPassword(passwordEncoder.encode(request.getPassword()));
     member.setAdminRole();
     memberRepository.save(member);
@@ -145,7 +150,11 @@ public class MemberCommandService {
               .careerYears(request.careerYears())
               .positionName(request.positionName())
               .departmentName(request.departmentName())
-              .profileImageUrl(request.profileImageUrl())
+                  .profileImageUrl(
+                          request.profileImageUrl() != null
+                                  ? request.profileImageUrl()
+                                  : "https://api.dicebear.com/9.x/notionists/svg?seed=" + request.employeeIdentificationNumber()
+                  )
               .salary(request.salary())
               .gradeCode(gradeCode)
               .role(MemberRole.INSIDER)

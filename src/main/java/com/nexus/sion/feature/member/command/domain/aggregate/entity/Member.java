@@ -127,4 +127,8 @@ public class Member {
     this.profileImageUrl = profileImageUrl;
     this.salary = salary;
   }
+
+  public void setDefaultProfileImageUrl(String s) {
+    this.profileImageUrl = s;
+  }
 }
