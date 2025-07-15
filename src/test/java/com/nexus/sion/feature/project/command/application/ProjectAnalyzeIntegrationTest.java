@@ -92,11 +92,12 @@ class ProjectAnalyzeIntegrationTest {
   @DisplayName("프로젝트 분석 성공 → DB 결과 확인")
   void analyzeProject_success() throws Exception {
     // given
-    MockMultipartFile file = new MockMultipartFile(
-            "file", "requirement.pdf", "application/pdf", "dummy content".getBytes()
-    );
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "requirement.pdf", "application/pdf", "dummy content".getBytes());
 
-    String responseJson = """
+    String responseJson =
+        """
             {
               "project_id": "%s",
               "total_fp_score" : 160,
@@ -121,30 +122,32 @@ class ProjectAnalyzeIntegrationTest {
                 }
               ]
             }
-        """.formatted(testProjectCode);
+        """
+            .formatted(testProjectCode);
 
     ResponseEntity<String> fastApiResponse = ResponseEntity.ok(responseJson);
 
     given(fastApiClient.requestFpInference(anyString(), any(File.class)))
-            .willReturn(fastApiResponse);
+        .willReturn(fastApiResponse);
 
     // when
-    mockMvc.perform(
-            multipart("/api/v1/projects/{projectCode}/analyze", testProjectCode).file(file)
-    ).andExpect(status().isAccepted());
+    mockMvc
+        .perform(multipart("/api/v1/projects/{projectCode}/analyze", testProjectCode).file(file))
+        .andExpect(status().isAccepted());
 
     // then
     Project updated = projectRepository.findById(testProjectCode).orElseThrow();
     assertThat(updated.getAnalysisStatus()).isEqualTo(Project.AnalysisStatus.PROCEEDING);
 
-    ProjectFpSummary summary = projectFpSummaryRepository.findByProjectCode(testProjectCode).orElseThrow();
+    ProjectFpSummary summary =
+        projectFpSummaryRepository.findByProjectCode(testProjectCode).orElseThrow();
     assertThat(summary.getTotalFp()).isEqualTo(160);
 
     List<ProjectFunctionEstimate> functions = projectFunctionEstimateRepository.findAll();
     assertThat(functions).hasSize(2);
     assertThat(functions)
-            .extracting(ProjectFunctionEstimate::getFunctionName)
-            .containsExactlyInAnyOrder("로그인", "회원가입");
+        .extracting(ProjectFunctionEstimate::getFunctionName)
+        .containsExactlyInAnyOrder("로그인", "회원가입");
   }
 
   @TestConfiguration

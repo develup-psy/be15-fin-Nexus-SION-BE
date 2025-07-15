@@ -4,9 +4,10 @@ import static com.example.jooq.generated.Tables.TRAINING_PROGRAM;
 
 import java.util.List;
 
-import com.nexus.sion.feature.member.query.dto.response.TrainingRecommendationResponse;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
+
+import com.nexus.sion.feature.member.query.dto.response.TrainingRecommendationResponse;
 
 import lombok.RequiredArgsConstructor;
 

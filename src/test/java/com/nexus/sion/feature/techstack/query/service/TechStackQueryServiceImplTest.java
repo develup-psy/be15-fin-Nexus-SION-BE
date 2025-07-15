@@ -83,7 +83,7 @@ class TechStackQueryServiceImplTest {
     void givenRepositoryThrows_whenAutocomplete_thenThrowsException() {
       // given
       when(repository.findAutoCompleteTechStacks(keyword))
-              .thenThrow(new RuntimeException("DB Error"));
+          .thenThrow(new RuntimeException("DB Error"));
 
       // when & then
       assertThrows(RuntimeException.class, () -> service.autocomplete(keyword));

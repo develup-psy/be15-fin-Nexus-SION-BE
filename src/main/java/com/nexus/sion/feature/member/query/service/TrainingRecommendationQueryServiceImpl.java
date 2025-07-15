@@ -26,12 +26,12 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
 
     // 1. 기술 스택 점수 기반 추천
     List<MemberTechStackResponse> techStackList =
-            memberTechStackQueryRepository.findTechStacksByEmployeeId(employeeId);
+        memberTechStackQueryRepository.findTechStacksByEmployeeId(employeeId);
     Map<String, Integer> myScores =
-            techStackList.stream()
-                    .collect(
-                            Collectors.toMap(
-                                    MemberTechStackResponse::techStackName, MemberTechStackResponse::score));
+        techStackList.stream()
+            .collect(
+                Collectors.toMap(
+                    MemberTechStackResponse::techStackName, MemberTechStackResponse::score));
 
     for (Map.Entry<String, Integer> entry : myScores.entrySet()) {
       String tech = entry.getKey();
@@ -46,33 +46,33 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
       String level = getDifficultyLevel(percentile);
 
       List<TrainingRecommendationResponse> programs =
-              trainingRecommendationQueryRepository.findByCategory(tech + "-" + level);
+          trainingRecommendationQueryRepository.findByCategory(tech + "-" + level);
 
       recommendations.addAll(
-              programs.stream()
-                      .map(
-                              p ->
-                                      TrainingRecommendationResponse.from(
-                                              p.toEntity(), tech + " 점수 백분위 " + percentile + "%로 추천"))
-                      .collect(Collectors.toList()));
+          programs.stream()
+              .map(
+                  p ->
+                      TrainingRecommendationResponse.from(
+                          p.toEntity(), tech + " 점수 백분위 " + percentile + "%로 추천"))
+              .collect(Collectors.toList()));
     }
 
     // 2. 자격증 미보유 기반 추천
     List<String> allCerts = userCertificateHistoryQueryService.findAllCertificateNames();
     List<String> ownedCerts =
-            userCertificateHistoryQueryService.findOwnedCertificateNamesByEmployee(employeeId);
+        userCertificateHistoryQueryService.findOwnedCertificateNamesByEmployee(employeeId);
     List<String> missingCerts =
-            allCerts.stream().filter(cert -> !ownedCerts.contains(cert)).collect(Collectors.toList());
+        allCerts.stream().filter(cert -> !ownedCerts.contains(cert)).collect(Collectors.toList());
 
     List<TrainingRecommendationResponse> certPrograms =
-            trainingRecommendationQueryRepository.findByCategoryIn(missingCerts);
+        trainingRecommendationQueryRepository.findByCategoryIn(missingCerts);
     recommendations.addAll(
-            certPrograms.stream()
-                    .map(
-                            p ->
-                                    TrainingRecommendationResponse.from(
-                                            p.toEntity(), p.getTrainingCategory() + " 자격증 미보유로 추천"))
-                    .collect(Collectors.toList()));
+        certPrograms.stream()
+            .map(
+                p ->
+                    TrainingRecommendationResponse.from(
+                        p.toEntity(), p.getTrainingCategory() + " 자격증 미보유로 추천"))
+            .collect(Collectors.toList()));
 
     return recommendations;
   }

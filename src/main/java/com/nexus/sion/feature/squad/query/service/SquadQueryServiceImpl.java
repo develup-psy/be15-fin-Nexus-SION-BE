@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
@@ -42,7 +40,7 @@ public class SquadQueryServiceImpl implements SquadQueryService {
 
     for (JobInfo job : jobList) {
       List<DeveloperSummary> developers =
-              squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
+          squadQueryMapper.findDevelopersByStacksPerJob(job.getProjectAndJobId(), projectId);
       result.put(job.getJobName(), developers);
     }
 

@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.member.query.dto.response;
 
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.TrainingRecommendation;
+
 import lombok.*;
 
 @Getter
@@ -19,35 +20,35 @@ public class TrainingRecommendationResponse {
 
   public static TrainingRecommendationResponse from(TrainingRecommendation program) {
     return TrainingRecommendationResponse.builder()
-            .trainingId(program.getTrainingId())
-            .trainingName(program.getTrainingName())
-            .trainingDescription(program.getTrainingDescription())
-            .trainingCategory(program.getTrainingCategory())
-            .imageUrl(program.getImageUrl())
-            .videoUrl(program.getVideoUrl())
-            .build();
+        .trainingId(program.getTrainingId())
+        .trainingName(program.getTrainingName())
+        .trainingDescription(program.getTrainingDescription())
+        .trainingCategory(program.getTrainingCategory())
+        .imageUrl(program.getImageUrl())
+        .videoUrl(program.getVideoUrl())
+        .build();
   }
 
   public static TrainingRecommendationResponse from(TrainingRecommendation program, String reason) {
     return TrainingRecommendationResponse.builder()
-            .trainingId(program.getTrainingId())
-            .trainingName(program.getTrainingName())
-            .trainingDescription(program.getTrainingDescription())
-            .trainingCategory(program.getTrainingCategory())
-            .imageUrl(program.getImageUrl())
-            .videoUrl(program.getVideoUrl())
-            .recommendationReason(reason)
-            .build();
+        .trainingId(program.getTrainingId())
+        .trainingName(program.getTrainingName())
+        .trainingDescription(program.getTrainingDescription())
+        .trainingCategory(program.getTrainingCategory())
+        .imageUrl(program.getImageUrl())
+        .videoUrl(program.getVideoUrl())
+        .recommendationReason(reason)
+        .build();
   }
 
   public TrainingRecommendation toEntity() {
     return TrainingRecommendation.builder()
-            .trainingId(trainingId)
-            .trainingName(trainingName)
-            .trainingDescription(trainingDescription)
-            .trainingCategory(trainingCategory)
-            .imageUrl(imageUrl)
-            .videoUrl(videoUrl)
-            .build();
+        .trainingId(trainingId)
+        .trainingName(trainingName)
+        .trainingDescription(trainingDescription)
+        .trainingCategory(trainingCategory)
+        .imageUrl(imageUrl)
+        .videoUrl(videoUrl)
+        .build();
   }
 }

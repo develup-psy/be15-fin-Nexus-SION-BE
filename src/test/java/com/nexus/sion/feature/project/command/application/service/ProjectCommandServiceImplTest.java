@@ -9,32 +9,32 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
-import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
-import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
-import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
-import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
-import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
-import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
-import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.JobInfo;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectRegisterRequest.TechStackInfo;
 import com.nexus.sion.feature.project.command.application.dto.request.ProjectUpdateRequest;
+import com.nexus.sion.feature.project.command.application.dto.request.SquadReplacementRequest;
 import com.nexus.sion.feature.project.command.application.dto.response.ProjectRegisterResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
-import org.springframework.web.multipart.MultipartFile;
+import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
+import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
+import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
+import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
 
 class ProjectCommandServiceImplTest {
 
@@ -49,7 +49,6 @@ class ProjectCommandServiceImplTest {
   @Mock private ProjectAnalysisService projectAnalysisService;
   @Mock private ProjectRepository projectRepository;
 
-
   @InjectMocks private ProjectCommandServiceImpl projectCommandService;
 
   @BeforeEach
@@ -63,7 +62,7 @@ class ProjectCommandServiceImplTest {
     // given
     ProjectRegisterRequest request = createRequest();
     when(projectRepository.findProjectCodesByClientCode(request.getClientCode()))
-            .thenReturn(List.of()); // ✅ 코드 생성 위한 mock
+        .thenReturn(List.of()); // ✅ 코드 생성 위한 mock
 
     // when
     ProjectRegisterResponse response = projectCommandService.registerProject(request);
@@ -148,11 +147,11 @@ class ProjectCommandServiceImplTest {
     // given
     String projectCode = "P123";
     Project project =
-            Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
+        Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
 
     when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(squadEmployeeCommandRepository.findByProjectCode(projectCode))
-            .thenReturn(List.of()); // ✅ 상태 변경 후 작업 요청 처리를 위한 mock
+        .thenReturn(List.of()); // ✅ 상태 변경 후 작업 요청 처리를 위한 mock
 
     // when
     projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
@@ -162,7 +161,6 @@ class ProjectCommandServiceImplTest {
     assertThat(project.getActualEndDate()).isNotNull();
     verify(projectCommandRepository).save(project);
   }
-
 
   @Test
   @DisplayName("프로젝트 상태 변경 실패 - 존재하지 않는 프로젝트")
@@ -227,31 +225,35 @@ class ProjectCommandServiceImplTest {
     String oldEmployeeId = "OLD001";
     String newEmployeeId = "NEW001";
 
-    Squad squad = Squad.builder()
-            .squadCode(squadCode)
-            .projectCode("P123")
-            .build();
+    Squad squad = Squad.builder().squadCode(squadCode).projectCode("P123").build();
 
-    SquadEmployee oldMember = SquadEmployee.builder()
+    SquadEmployee oldMember =
+        SquadEmployee.builder()
             .squadCode(squadCode)
             .employeeIdentificationNumber(oldEmployeeId)
             .projectAndJobId(1001L)
             .isLeader(false)
             .build();
 
-    Member newMember = Member.builder()
+    Member newMember =
+        Member.builder()
             .employeeIdentificationNumber(newEmployeeId)
             .status(MemberStatus.AVAILABLE)
             .build();
 
     given(squadCommandRepository.findById(squadCode)).willReturn(Optional.of(squad));
-    given(squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(squadCode, oldEmployeeId))
-            .willReturn(Optional.of(oldMember));
-    given(squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(squadCode, newEmployeeId))
-            .willReturn(false);
+    given(
+            squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(
+                squadCode, oldEmployeeId))
+        .willReturn(Optional.of(oldMember));
+    given(
+            squadEmployeeCommandRepository.existsBySquadCodeAndEmployeeIdentificationNumber(
+                squadCode, newEmployeeId))
+        .willReturn(false);
     given(memberRepository.findById(newEmployeeId)).willReturn(Optional.of(newMember));
 
-    SquadReplacementRequest request = SquadReplacementRequest.builder()
+    SquadReplacementRequest request =
+        SquadReplacementRequest.builder()
             .squadCode(squadCode)
             .oldEmployeeId(oldEmployeeId)
             .newEmployeeId(newEmployeeId)
@@ -261,7 +263,8 @@ class ProjectCommandServiceImplTest {
     projectCommandService.replaceMember(request);
 
     // then
-    verify(squadEmployeeCommandRepository).deleteBySquadCodeAndEmployeeIdentificationNumber(squadCode, oldEmployeeId);
+    verify(squadEmployeeCommandRepository)
+        .deleteBySquadCodeAndEmployeeIdentificationNumber(squadCode, oldEmployeeId);
     verify(squadEmployeeCommandRepository).save(any(SquadEmployee.class));
   }
 
@@ -269,7 +272,8 @@ class ProjectCommandServiceImplTest {
   @DisplayName("인원 교체 실패 - 스쿼드 없음")
   void replaceMember_fail_squadNotFound() {
     String squadCode = "INVALID";
-    SquadReplacementRequest request = SquadReplacementRequest.builder()
+    SquadReplacementRequest request =
+        SquadReplacementRequest.builder()
             .squadCode(squadCode)
             .oldEmployeeId("OLD")
             .newEmployeeId("NEW")
@@ -278,8 +282,8 @@ class ProjectCommandServiceImplTest {
     given(squadCommandRepository.findById(squadCode)).willReturn(Optional.empty());
 
     assertThatThrownBy(() -> projectCommandService.replaceMember(request))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.SQUAD_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.SQUAD_NOT_FOUND.getMessage());
   }
 
   @Test
@@ -290,18 +294,21 @@ class ProjectCommandServiceImplTest {
     SquadEmployee leader = SquadEmployee.builder().isLeader(true).build();
 
     given(squadCommandRepository.findById(squadCode)).willReturn(Optional.of(squad));
-    given(squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(any(), any()))
-            .willReturn(Optional.of(leader));
+    given(
+            squadEmployeeCommandRepository.findBySquadCodeAndEmployeeIdentificationNumber(
+                any(), any()))
+        .willReturn(Optional.of(leader));
 
-    SquadReplacementRequest request = SquadReplacementRequest.builder()
+    SquadReplacementRequest request =
+        SquadReplacementRequest.builder()
             .squadCode(squadCode)
             .oldEmployeeId("OLD")
             .newEmployeeId("NEW")
             .build();
 
     assertThatThrownBy(() -> projectCommandService.replaceMember(request))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.INVALID_LEADER_REPLACEMENT.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.INVALID_LEADER_REPLACEMENT.getMessage());
   }
 
   @Test
@@ -312,23 +319,24 @@ class ProjectCommandServiceImplTest {
     String employeeId = "EMP001";
     MultipartFile mockFile = mock(MultipartFile.class);
 
-    Project project = Project.builder()
+    Project project =
+        Project.builder()
             .projectCode(projectId)
             .status(Project.ProjectStatus.WAITING)
             .analysisStatus(Project.AnalysisStatus.PENDING)
             .build();
 
-    ProjectFpSummary fpSummary = ProjectFpSummary.builder()
-            .id(1L)
-            .projectCode(projectId)
-            .build();
+    ProjectFpSummary fpSummary = ProjectFpSummary.builder().id(1L).projectCode(projectId).build();
 
-    given(projectFpSummaryRepository.findByProjectCode(projectId)).willReturn(Optional.of(fpSummary));
-    doNothing().when(projectFunctionEstimateRepository).deleteByProjectFpSummaryId(fpSummary.getId());
+    given(projectFpSummaryRepository.findByProjectCode(projectId))
+        .willReturn(Optional.of(fpSummary));
+    doNothing()
+        .when(projectFunctionEstimateRepository)
+        .deleteByProjectFpSummaryId(fpSummary.getId());
     doNothing().when(projectFpSummaryRepository).deleteByProjectCode(projectId);
     given(projectRepository.findById(projectId)).willReturn(Optional.of(project));
     given(projectAnalysisService.analyzeProject(eq(projectId), eq(mockFile), eq(employeeId)))
-            .willReturn(CompletableFuture.completedFuture(null));
+        .willReturn(CompletableFuture.completedFuture(null));
 
     // when
     projectCommandService.analyzeProject(projectId, mockFile, employeeId);
@@ -353,8 +361,7 @@ class ProjectCommandServiceImplTest {
 
     // when & then
     assertThatThrownBy(() -> projectCommandService.analyzeProject(projectId, mockFile, "EMP001"))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.PROJECT_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.PROJECT_NOT_FOUND.getMessage());
   }
-
 }

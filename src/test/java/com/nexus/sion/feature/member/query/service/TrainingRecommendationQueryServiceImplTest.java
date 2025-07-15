@@ -17,17 +17,13 @@ import com.nexus.sion.feature.member.query.repository.TrainingRecommendationQuer
 
 class TrainingRecommendationQueryServiceImplTest {
 
-  @Mock
-  private MemberTechStackQueryRepository techStackRepo;
+  @Mock private MemberTechStackQueryRepository techStackRepo;
 
-  @Mock
-  private UserCertificateHistoryQueryService certQueryService;
+  @Mock private UserCertificateHistoryQueryService certQueryService;
 
-  @Mock
-  private TrainingRecommendationQueryRepository trainingRepo;
+  @Mock private TrainingRecommendationQueryRepository trainingRepo;
 
-  @InjectMocks
-  private TrainingRecommendationQueryServiceImpl service;
+  @InjectMocks private TrainingRecommendationQueryServiceImpl service;
 
   @BeforeEach
   void setup() {
@@ -42,30 +38,27 @@ class TrainingRecommendationQueryServiceImplTest {
 
     // 기술 스택
     given(techStackRepo.findTechStacksByEmployeeId(employeeId))
-            .willReturn(List.of(new MemberTechStackResponse("Spring", 50)));
+        .willReturn(List.of(new MemberTechStackResponse("Spring", 50)));
 
     given(techStackRepo.findAllScoresForTech("Spring"))
-            .willReturn(List.of(10, 20, 30, 40, 50, 60, 70));
+        .willReturn(List.of(10, 20, 30, 40, 50, 60, 70));
 
     given(trainingRepo.findByCategory("Spring-INTERMEDIATE"))
-            .willReturn(List.of(
-                    new TrainingRecommendationResponse(
-                            1L, "Spring 중급", "중급 과정", "Spring-INTERMEDIATE", "img", "video", null
-                    )
-            ));
+        .willReturn(
+            List.of(
+                new TrainingRecommendationResponse(
+                    1L, "Spring 중급", "중급 과정", "Spring-INTERMEDIATE", "img", "video", null)));
 
     // 자격증
-    given(certQueryService.findAllCertificateNames())
-            .willReturn(List.of("SQLD", "정보처리기사"));
+    given(certQueryService.findAllCertificateNames()).willReturn(List.of("SQLD", "정보처리기사"));
     given(certQueryService.findOwnedCertificateNamesByEmployee(employeeId))
-            .willReturn(List.of("SQLD")); // 정보처리기사는 미보유
+        .willReturn(List.of("SQLD")); // 정보처리기사는 미보유
 
     given(trainingRepo.findByCategoryIn(List.of("정보처리기사")))
-            .willReturn(List.of(
-                    new TrainingRecommendationResponse(
-                            2L, "정보처리기사 대비", "준비 과정", "정보처리기사", "img2", "video2", null
-                    )
-            ));
+        .willReturn(
+            List.of(
+                new TrainingRecommendationResponse(
+                    2L, "정보처리기사 대비", "준비 과정", "정보처리기사", "img2", "video2", null)));
 
     // when
     List<TrainingRecommendationResponse> result = service.recommendTrainingsFor(employeeId);
@@ -73,8 +66,8 @@ class TrainingRecommendationQueryServiceImplTest {
     // then
     assertThat(result).hasSize(2);
     assertThat(result)
-            .extracting("trainingName")
-            .containsExactlyInAnyOrder("Spring 중급", "정보처리기사 대비");
+        .extracting("trainingName")
+        .containsExactlyInAnyOrder("Spring 중급", "정보처리기사 대비");
   }
 
   @Test
@@ -83,10 +76,9 @@ class TrainingRecommendationQueryServiceImplTest {
     // given
     String employeeId = "EMP002";
 
-    given(techStackRepo.findTechStacksByEmployeeId(employeeId))
-            .willReturn(Collections.emptyList());
+    given(techStackRepo.findTechStacksByEmployeeId(employeeId)).willReturn(Collections.emptyList());
     given(certQueryService.findOwnedCertificateNamesByEmployee(employeeId))
-            .willReturn(Collections.emptyList());
+        .willReturn(Collections.emptyList());
 
     // when
     List<TrainingRecommendationResponse> result = service.recommendTrainingsFor(employeeId);
@@ -102,15 +94,14 @@ class TrainingRecommendationQueryServiceImplTest {
     String employeeId = "EMP003";
 
     given(techStackRepo.findTechStacksByEmployeeId(employeeId))
-            .willReturn(List.of(new MemberTechStackResponse("Java", 70)));
+        .willReturn(List.of(new MemberTechStackResponse("Java", 70)));
 
-    given(techStackRepo.findAllScoresForTech("Java"))
-            .willReturn(Collections.emptyList());
+    given(techStackRepo.findAllScoresForTech("Java")).willReturn(Collections.emptyList());
 
     // when & then
     assertThatThrownBy(() -> service.recommendTrainingsFor(employeeId))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("Java 점수 분포가 없습니다");
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Java 점수 분포가 없습니다");
   }
 
   @Test
@@ -120,28 +111,25 @@ class TrainingRecommendationQueryServiceImplTest {
     String employeeId = "EMP004";
 
     given(techStackRepo.findTechStacksByEmployeeId(employeeId))
-            .willReturn(List.of(new MemberTechStackResponse("Spring", 50)));
+        .willReturn(List.of(new MemberTechStackResponse("Spring", 50)));
 
-    given(techStackRepo.findAllScoresForTech("Spring"))
-            .willReturn(List.of(30, 40, 50));
+    given(techStackRepo.findAllScoresForTech("Spring")).willReturn(List.of(30, 40, 50));
 
     given(trainingRepo.findByCategory("Spring-INTERMEDIATE"))
-            .willReturn(List.of(
-                    new TrainingRecommendationResponse(
-                            10L,
-                            "Spring 중급",
-                            "Spring 중급 과정",
-                            "Spring-INTERMEDIATE",
-                            "image",
-                            "video",
-                            "기술 기반 추천"
-                    )
-            ));
+        .willReturn(
+            List.of(
+                new TrainingRecommendationResponse(
+                    10L,
+                    "Spring 중급",
+                    "Spring 중급 과정",
+                    "Spring-INTERMEDIATE",
+                    "image",
+                    "video",
+                    "기술 기반 추천")));
 
-    given(certQueryService.findAllCertificateNames())
-            .willReturn(List.of("SQLD"));
+    given(certQueryService.findAllCertificateNames()).willReturn(List.of("SQLD"));
     given(certQueryService.findOwnedCertificateNamesByEmployee(employeeId))
-            .willReturn(List.of("SQLD"));
+        .willReturn(List.of("SQLD"));
 
     // when
     List<TrainingRecommendationResponse> result = service.recommendTrainingsFor(employeeId);

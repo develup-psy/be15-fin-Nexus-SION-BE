@@ -36,17 +36,17 @@ class ClientCompanyCommandServiceImplTest {
   void registerClientCompany_success() {
     // given
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder()
-                    .companyName("나이스")
-                    .email("test@example.com")
-                    .contactNumber("01012345678")
-                    .build();
+        ClientCompanyCreateRequest.builder()
+            .companyName("나이스")
+            .email("test@example.com")
+            .contactNumber("01012345678")
+            .build();
 
     ClientCompany mappedEntity = new ClientCompany();
     when(modelMapper.map(eq(request), eq(ClientCompany.class))).thenReturn(mappedEntity);
     when(clientCompanyRepository.findTopByClientCodeStartingWithOrderByClientCodeDesc(
             "나이".toLowerCase() + "_"))
-            .thenReturn(Optional.empty());
+        .thenReturn(Optional.empty());
 
     // when
     service.registerClientCompany(request);
@@ -61,16 +61,16 @@ class ClientCompanyCommandServiceImplTest {
     // given
     String companyName = "회사이름";
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder().companyName(companyName).domainName("도메인이름").build();
+        ClientCompanyCreateRequest.builder().companyName(companyName).domainName("도메인이름").build();
     when(clientCompanyRepository.existsByCompanyName(companyName)).thenReturn(true);
 
     // when
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      service.registerClientCompany(request);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              service.registerClientCompany(request);
+            });
 
     // then
     assertEquals(ErrorCode.CLIENT_COMPANY_ALREADY_EXIST, exception.getErrorCode());
@@ -81,11 +81,11 @@ class ClientCompanyCommandServiceImplTest {
   void registerClientCompany_이메일형식_잘못되었을때_예외발생() {
     // given
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder().companyName("나이스").email("invalid-email").build();
+        ClientCompanyCreateRequest.builder().companyName("나이스").email("invalid-email").build();
 
     // when & then
     BusinessException ex =
-            assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
+        assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
     assertEquals(ErrorCode.INVALID_EMAIL_FORMAT, ex.getErrorCode());
     verify(clientCompanyRepository, never()).save(any());
   }
@@ -94,15 +94,15 @@ class ClientCompanyCommandServiceImplTest {
   void registerClientCompany_전화번호형식_잘못되었을때_예외발생() {
     // given
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder()
-                    .companyName("나이스")
-                    .email("test@example.com")
-                    .contactNumber("12345")
-                    .build();
+        ClientCompanyCreateRequest.builder()
+            .companyName("나이스")
+            .email("test@example.com")
+            .contactNumber("12345")
+            .build();
 
     // when & then
     BusinessException ex =
-            assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
+        assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
     assertEquals(ErrorCode.INVALID_PHONE_NUMBER_FORMAT, ex.getErrorCode());
     verify(clientCompanyRepository, never()).save(any());
   }
@@ -111,7 +111,7 @@ class ClientCompanyCommandServiceImplTest {
   void generateClientCode_기존코드있을때_숫자증가() {
     // given
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder().companyName("나이스").build();
+        ClientCompanyCreateRequest.builder().companyName("나이스").build();
 
     String codePrefix = "나이".toLowerCase() + "_";
     ClientCompany existing = new ClientCompany();
@@ -119,7 +119,7 @@ class ClientCompanyCommandServiceImplTest {
 
     when(modelMapper.map(any(), eq(ClientCompany.class))).thenReturn(new ClientCompany());
     when(clientCompanyRepository.findTopByClientCodeStartingWithOrderByClientCodeDesc(codePrefix))
-            .thenReturn(Optional.of(existing));
+        .thenReturn(Optional.of(existing));
 
     // when
     service.registerClientCompany(request);
@@ -136,41 +136,41 @@ class ClientCompanyCommandServiceImplTest {
   void generateClientCode_숫자파싱실패시_예외() {
     // given
     ClientCompanyCreateRequest request =
-            ClientCompanyCreateRequest.builder().companyName("나이스").build();
+        ClientCompanyCreateRequest.builder().companyName("나이스").build();
 
     ClientCompany existing = new ClientCompany();
     existing.setClientCode("나이_abc"); // 숫자가 아님
 
     when(clientCompanyRepository.findTopByClientCodeStartingWithOrderByClientCodeDesc(
             "나이".toLowerCase() + "_"))
-            .thenReturn(Optional.of(existing));
+        .thenReturn(Optional.of(existing));
 
     // when & then
     BusinessException ex =
-            assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
+        assertThrows(BusinessException.class, () -> service.registerClientCompany(request));
     assertEquals(ErrorCode.INVALID_CLIENT_CODE_FORMAT, ex.getErrorCode());
   }
 
   // 고객사 정보 업데이트 테스트 코드
   ClientCompany getExistingClientCompany(String clientCode) {
     return ClientCompany.builder()
-            .clientCode(clientCode)
-            .companyName("Old")
-            .domainName("old.com")
-            .contactPerson("Old Person")
-            .email("old@email.com")
-            .contactNumber("010-0000-0000")
-            .build();
+        .clientCode(clientCode)
+        .companyName("Old")
+        .domainName("old.com")
+        .contactPerson("Old Person")
+        .email("old@email.com")
+        .contactNumber("010-0000-0000")
+        .build();
   }
 
   ClientCompanyUpdateRequest getUpdateRequest() {
     return ClientCompanyUpdateRequest.builder()
-            .companyName("New Company")
-            .domainName("new.com")
-            .contactPerson("New Person")
-            .email("new@email.com")
-            .contactNumber("010-1234-5678")
-            .build();
+        .companyName("New Company")
+        .domainName("new.com")
+        .contactPerson("New Person")
+        .email("new@email.com")
+        .contactNumber("010-1234-5678")
+        .build();
   }
 
   @Test
@@ -202,14 +202,14 @@ class ClientCompanyCommandServiceImplTest {
     // given
     String clientCode = "not_exist_code";
     ClientCompanyUpdateRequest request =
-            ClientCompanyUpdateRequest.builder().companyName("New Name").build();
+        ClientCompanyUpdateRequest.builder().companyName("New Name").build();
 
     when(clientCompanyRepository.findById(clientCode)).thenReturn(Optional.empty());
 
     // when & then
     assertThatThrownBy(() -> service.updateClientCompany(request, clientCode))
-            .isInstanceOf(BusinessException.class)
-            .hasMessageContaining(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage());
+        .isInstanceOf(BusinessException.class)
+        .hasMessageContaining(ErrorCode.CLIENT_COMPANY_NOT_FOUND.getMessage());
 
     verify(clientCompanyRepository).findById(clientCode);
   }
@@ -238,13 +238,13 @@ class ClientCompanyCommandServiceImplTest {
     // given
     ClientCompany clientCompany = getExistingClientCompany("co_002");
     ClientCompanyUpdateRequest request =
-            ClientCompanyUpdateRequest.builder()
-                    .companyName(null)
-                    .domainName("updated.com")
-                    .contactPerson(null)
-                    .email("updated@email.com")
-                    .contactNumber(null)
-                    .build();
+        ClientCompanyUpdateRequest.builder()
+            .companyName(null)
+            .domainName("updated.com")
+            .contactPerson(null)
+            .email("updated@email.com")
+            .contactNumber(null)
+            .build();
 
     // when
     clientCompany.update(request);
@@ -279,11 +279,11 @@ class ClientCompanyCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> {
-                      service.deleteClientCompany(clientCode);
-                    });
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              service.deleteClientCompany(clientCode);
+            });
 
     // then
     assertEquals(ErrorCode.CLIENT_COMPANY_NOT_FOUND, exception.getErrorCode());
