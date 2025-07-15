@@ -40,5 +40,6 @@ public class SquadDetailResponse {
     private int monthlyUnitPrice;
     private String memberId;
     private BigDecimal productivity;
+    private boolean isLeader;
   }
 }

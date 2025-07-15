@@ -165,7 +165,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setStatus(status);
-    if (status == Project.ProjectStatus.COMPLETE) {
+    if (status == Project.ProjectStatus.EVALUATION) {
       project.setActualEndDate(LocalDate.now());
       createDeveloperProjectWorks(projectCode);
     } else {
