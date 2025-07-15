@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nexus.sion.common.s3.service.DocumentS3Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -50,64 +52,68 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
   private final MemberScoreHistoryRepository memberScoreHistoryRepository;
   private final FastApiClient fastApiClient;
   private final TechStackRepository techStackRepository;
+  private final DocumentS3Service documentS3Service;
 
   @Override
-  public void registerFreelancerAsMember(String freelancerId, MultipartFile multipartFile) {
+  public void registerFreelancerAsMember(String freelancerId) {
     FreelancerDetailResponse freelancer =
-        freelancerQueryRepository.getFreelancerDetail(freelancerId);
+            freelancerQueryRepository.getFreelancerDetail(freelancerId);
 
     String rawPassword =
-        (freelancer.birthday() != null)
-            ? String.format(
-                "%02d%02d%02d",
-                freelancer.birthday().getYear() % 100,
-                freelancer.birthday().getMonthValue(),
-                freelancer.birthday().getDayOfMonth())
-            : "000000";
+            (freelancer.birthday() != null)
+                    ? String.format(
+                    "%02d%02d%02d",
+                    freelancer.birthday().getYear() % 100,
+                    freelancer.birthday().getMonthValue(),
+                    freelancer.birthday().getDayOfMonth())
+                    : "000000";
 
     String encodedPassword = passwordEncoder.encode(rawPassword);
 
     Member member =
-        memberRepository
-            .findById(freelancer.freelancerId())
-            .orElseGet(
-                () -> {
-                  Member newMember =
-                      Member.builder()
-                          .employeeIdentificationNumber(freelancer.freelancerId())
-                          .employeeName(freelancer.name())
-                          .password(encodedPassword)
-                          .profileImageUrl(
-                              freelancer.profileImageUrl() != null
-                                  ? freelancer.profileImageUrl()
-                                  : "https://api.dicebear.com/9.x/notionists/svg?seed="
-                                      + freelancer.freelancerId())
-                          .phoneNumber(freelancer.phoneNumber())
-                          .email(freelancer.email())
-                          .birthday(freelancer.birthday())
-                          .careerYears(freelancer.careerYears())
-                          .joinedAt(LocalDate.now())
-                          .role(MemberRole.OUTSIDER)
-                          .status(MemberStatus.AVAILABLE)
-                          .build();
-                  return memberRepository.save(newMember);
-                });
+            memberRepository
+                    .findById(freelancer.freelancerId())
+                    .orElseGet(
+                            () -> {
+                              Member newMember =
+                                      Member.builder()
+                                              .employeeIdentificationNumber(freelancer.freelancerId())
+                                              .employeeName(freelancer.name())
+                                              .password(encodedPassword)
+                                              .profileImageUrl(
+                                                      freelancer.profileImageUrl() != null
+                                                              ? freelancer.profileImageUrl()
+                                                              : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                                                              + freelancer.freelancerId())
+                                              .phoneNumber(freelancer.phoneNumber())
+                                              .email(freelancer.email())
+                                              .birthday(freelancer.birthday())
+                                              .careerYears(freelancer.careerYears())
+                                              .joinedAt(LocalDate.now())
+                                              .role(MemberRole.OUTSIDER)
+                                              .status(MemberStatus.AVAILABLE)
+                                              .build();
+                              return memberRepository.save(newMember);
+                            });
 
     memberRepository.save(member);
 
-    File tempFile;
+    File tempFile = null;
     List<FunctionScore> functions;
     try {
-      tempFile = File.createTempFile("input_", ".pdf");
-      multipartFile.transferTo(tempFile);
-
+      tempFile = documentS3Service.downloadFileFromUrl(freelancer.resumeUrl());
       functions = fastApiClient.requestFpFreelencerInference(tempFile);
-    } catch (IOException e) {
-      log.error("[FP 분석 실패] {}", e.getMessage(), e);
+    } catch (Exception e) {
+      log.error("[FP 분석 실패] 프리랜서 이력서 분석 중 오류 발생: {}", e.getMessage(), e);
       throw new BusinessException(ErrorCode.FP_ANALYZE_FAIL);
+    } finally {
+      if (tempFile != null && tempFile.exists()) {
+        if (!tempFile.delete()) {
+          log.warn("임시 파일 삭제 실패: {}", tempFile.getAbsolutePath());
+        }
+      }
     }
-
-    // FastAPI 분석 결과로 기술스택 점수 누적 계산
+      // FastAPI 분석 결과로 기술스택 점수 누적 계산
     Map<String, Integer> techStackTotalScoreMap = new HashMap<>();
     for (FunctionScore req : functions) {
       String complexity = classifyComplexity(req.getFpType(), req.getDet(), req.getFtrOrRet());
@@ -124,30 +130,30 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
       int addedScore = entry.getValue();
 
       techStackRepository
-          .findById(techStackName)
-          .orElseGet(
-              () ->
-                  techStackRepository.save(
-                      TechStack.builder().techStackName(techStackName).build()));
+              .findById(techStackName)
+              .orElseGet(
+                      () ->
+                              techStackRepository.save(
+                                      TechStack.builder().techStackName(techStackName).build()));
 
       DeveloperTechStack stack =
-          developerTechStackRepository
-              .findByEmployeeIdentificationNumberAndTechStackName(
-                  freelancer.freelancerId(), techStackName)
-              .orElseGet(
-                  () ->
-                      developerTechStackRepository.save(
-                          DeveloperTechStack.builder()
-                              .employeeIdentificationNumber(freelancer.freelancerId())
-                              .techStackName(techStackName)
-                              .totalScore(0)
-                              .build()));
+              developerTechStackRepository
+                      .findByEmployeeIdentificationNumberAndTechStackName(
+                              freelancer.freelancerId(), techStackName)
+                      .orElseGet(
+                              () ->
+                                      developerTechStackRepository.save(
+                                              DeveloperTechStack.builder()
+                                                      .employeeIdentificationNumber(freelancer.freelancerId())
+                                                      .techStackName(techStackName)
+                                                      .totalScore(0)
+                                                      .build()));
 
       developerTechStackHistoryRepository.save(
-          DeveloperTechStackHistory.builder()
-              .addedScore(addedScore)
-              .developerTechStackId(stack.getId())
-              .build());
+              DeveloperTechStackHistory.builder()
+                      .addedScore(addedScore)
+                      .developerTechStackId(stack.getId())
+                      .build());
 
       stack.setTotalScore(stack.getTotalScore() + addedScore);
       developerTechStackRepository.save(stack);
@@ -155,25 +161,26 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     // Member 점수 이력 갱신
     int totalStackScore =
-        developerTechStackRepository
-            .findAllByEmployeeIdentificationNumber(freelancer.freelancerId())
-            .stream()
-            .mapToInt(DeveloperTechStack::getTotalScore)
-            .sum();
+            developerTechStackRepository
+                    .findAllByEmployeeIdentificationNumber(freelancer.freelancerId())
+                    .stream()
+                    .mapToInt(DeveloperTechStack::getTotalScore)
+                    .sum();
 
     MemberScoreHistory scoreHistory =
-        memberScoreHistoryRepository
-            .findByEmployeeIdentificationNumber(freelancer.freelancerId())
-            .orElseGet(
-                () ->
-                    MemberScoreHistory.builder()
-                        .employeeIdentificationNumber(freelancer.freelancerId())
-                        .totalCertificateScores(0)
-                        .totalTechStackScores(0)
-                        .build());
+            memberScoreHistoryRepository
+                    .findByEmployeeIdentificationNumber(freelancer.freelancerId())
+                    .orElseGet(
+                            () ->
+                                    MemberScoreHistory.builder()
+                                            .employeeIdentificationNumber(freelancer.freelancerId())
+                                            .totalCertificateScores(0)
+                                            .totalTechStackScores(0)
+                                            .build());
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
 
     freelancerRepository.deleteById(freelancer.freelancerId());
   }
+
 }

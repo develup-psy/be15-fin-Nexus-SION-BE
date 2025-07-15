@@ -37,7 +37,7 @@ public record DashboardSummaryResponse(
       String profileUrl) {}
 
   public record FreelancerSummary(
-      String id, String name, int career_years, String grade, String profileUrl) {}
+      String id, String name, int careerYears, String grade, String profileUrl) {}
 
   public record DeveloperAvailability(
       int totalAvailable, List<GradeDistribution> gradeDistribution, List<String> availableStacks) {
