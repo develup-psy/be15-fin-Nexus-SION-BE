@@ -71,6 +71,6 @@ public class ImageS3Service {
   }
 
   private boolean isAllowedContentType(String contentType) {
-    return "image/jpg".equals(contentType) || "image/png".equals(contentType);
+    return "image/jpeg".equals(contentType) || "image/png".equals(contentType);
   }
 }
