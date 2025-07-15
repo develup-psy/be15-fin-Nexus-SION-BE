@@ -332,7 +332,7 @@ public class MemberCommandService {
     member.updateStatus(status);
   }
 
-  private GradeCode calculateGradeByScore(int totalScore) {
+  public GradeCode calculateGradeByScore(int totalScore) {
     List<Grade> grades = gradeRepository.findAllByOrderByScoreThresholdDesc();
 
     return grades.stream()

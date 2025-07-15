@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,7 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
   private final MemberScoreHistoryRepository memberScoreHistoryRepository;
   private final FastApiClient fastApiClient;
   private final TechStackRepository techStackRepository;
+  private final MemberCommandService memberCommandService;
 
   @Override
   public void registerFreelancerAsMember(String freelancerId, MultipartFile multipartFile) {
@@ -67,33 +69,6 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     String encodedPassword = passwordEncoder.encode(rawPassword);
 
-    Member member =
-        memberRepository
-            .findById(freelancer.freelancerId())
-            .orElseGet(
-                () -> {
-                  Member newMember =
-                      Member.builder()
-                          .employeeIdentificationNumber(freelancer.freelancerId())
-                          .employeeName(freelancer.name())
-                          .password(encodedPassword)
-                          .profileImageUrl(
-                              freelancer.profileImageUrl() != null
-                                  ? freelancer.profileImageUrl()
-                                  : "https://api.dicebear.com/9.x/notionists/svg?seed="
-                                      + freelancer.freelancerId())
-                          .phoneNumber(freelancer.phoneNumber())
-                          .email(freelancer.email())
-                          .birthday(freelancer.birthday())
-                          .careerYears(freelancer.careerYears())
-                          .joinedAt(LocalDate.now())
-                          .role(MemberRole.OUTSIDER)
-                          .status(MemberStatus.AVAILABLE)
-                          .build();
-                  return memberRepository.save(newMember);
-                });
-
-    memberRepository.save(member);
 
     File tempFile;
     List<FunctionScore> functions;
@@ -161,6 +136,8 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
             .mapToInt(DeveloperTechStack::getTotalScore)
             .sum();
 
+    GradeCode grade = memberCommandService.calculateGradeByScore(totalStackScore);
+
     MemberScoreHistory scoreHistory =
         memberScoreHistoryRepository
             .findByEmployeeIdentificationNumber(freelancer.freelancerId())
@@ -173,6 +150,36 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
                         .build());
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
+
+    Member member =
+            memberRepository
+                    .findById(freelancer.freelancerId())
+                    .orElseGet(
+                            () -> {
+                              Member newMember =
+                                      Member.builder()
+                                              .employeeIdentificationNumber(freelancer.freelancerId())
+                                              .employeeName(freelancer.name())
+                                              .password(encodedPassword)
+                                              .profileImageUrl(
+                                                      freelancer.profileImageUrl() != null
+                                                              ? freelancer.profileImageUrl()
+                                                              : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                                                              + freelancer.freelancerId())
+                                              .phoneNumber(freelancer.phoneNumber())
+                                              .email(freelancer.email())
+                                              .birthday(freelancer.birthday())
+                                              .careerYears(freelancer.careerYears())
+                                              .joinedAt(LocalDate.now())
+                                              .role(MemberRole.OUTSIDER)
+                                              .gradeCode(grade)
+                                              .status(MemberStatus.AVAILABLE)
+                                              .build();
+                              return memberRepository.save(newMember);
+                            });
+
+    memberRepository.save(member);
+
 
     freelancerRepository.deleteById(freelancer.freelancerId());
   }
