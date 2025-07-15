@@ -85,19 +85,23 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     emitter.onCompletion(
         () -> {
           sseEmitterRepository.deleteById(emitterId);
-          System.out.println("onCompletion - emitter 삭제: " + emitterId);
+          log.info("onCompletion - emitter 삭제: {}", emitterId);
         });
 
     emitter.onTimeout(
         () -> {
           sseEmitterRepository.deleteById(emitterId);
-          System.out.println("onTimeout - emitter 삭제: " + emitterId);
+          log.info("onTimeout - emitter 삭제: {}", emitterId);
         });
 
     emitter.onError(
         (e) -> {
-          sseEmitterRepository.deleteById(emitterId);
-          System.out.println("onError - emitter 삭제: " + emitterId);
+            if (e instanceof IOException) {
+                log.info("✅ onError - SSE 연결 끊김: {}", emitterId);
+            } else {
+                log.warn("⚠️ onError - 예기치 않은 오류: {}", emitterId, e);
+            }
+            emitter.complete();
         });
 
     sendToClient(
@@ -112,8 +116,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
           try {
             emitter.send(SseEmitter.event().name("ping").data("ping"));
           } catch (IOException e) {
-            sseEmitterRepository.deleteById(emitterId);
-            System.out.println("ping 전송 실패 - emitter 삭제: " + emitterId);
+              sseEmitterRepository.deleteById(emitterId);
+              log.info("✅ ping 전송 실패 - emitter 삭제: {}", emitterId);
+          } catch (Exception e) {
+              sseEmitterRepository.deleteById(emitterId);
+              log.error("🚨 ping 전송 중 예기치 않은 오류: emitterId={}, error={}", emitterId, e.getMessage(), e);
           }
         },
         30,
@@ -224,8 +231,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     try {
       emitter.send(SseEmitter.event().id(emitterId).name(name).data(data));
     } catch (IOException e) {
-      sseEmitterRepository.deleteById(emitterId);
-      log.error("SSE 연결 오류: emitterId={}, error={}", emitterId, e.getMessage());
+        sseEmitterRepository.deleteById(emitterId);
+        log.info("✅ SSE 연결 끊김: emitterId={}, reason={}", emitterId, e.getMessage());
+    } catch (Exception e) {
+        sseEmitterRepository.deleteById(emitterId);
+        log.error("🚨 SSE 예기치 않은 오류: emitterId={}, error={}", emitterId, e.getMessage(), e);
     }
   }
 }
