@@ -90,18 +90,16 @@ public class DocumentS3Service {
       if (!"application/pdf".equalsIgnoreCase(contentType)) {
         throw new IllegalArgumentException("PDF 파일만 다운로드할 수 있습니다.");
       }
-
-      InputStream inputStream = connection.getInputStream();
-
+      
       File tempFile = Files.createTempFile("resume_", ".pdf").toFile();
-      try (FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+      try (InputStream inputStream = connection.getInputStream();
+           FileOutputStream outputStream = new FileOutputStream(tempFile)) {
         byte[] buffer = new byte[8192];
         int bytesRead;
         while ((bytesRead = inputStream.read(buffer)) != -1) {
           outputStream.write(buffer, 0, bytesRead);
         }
       }
-      inputStream.close();
 
       return tempFile;
     } catch (IOException e) {

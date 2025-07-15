@@ -58,7 +58,7 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
 
     List<DeveloperProjectWorkHistoryTechStack> techStacks = workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
 
-    Map<Long, List<String>> historyIdToStacksMap = techStacks.stream()
+    Map<Long, List<String>> historyIdToStackNamesMap = techStacks.stream()
             .collect(Collectors.groupingBy(
                     DeveloperProjectWorkHistoryTechStack::getDeveloperProjectWorkHistoryId,
                     Collectors.mapping(DeveloperProjectWorkHistoryTechStack::getTechStackName, Collectors.toList())
@@ -71,7 +71,7 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
                     history.getFunctionType().name(),
                     history.getDet(),
                     history.getFtr(),
-                    historyIdToStacksMap.getOrDefault(history.getId(), List.of())
+                    historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())
             ))
             .toList();
 

@@ -35,7 +35,6 @@ import com.nexus.sion.feature.techstack.command.repository.TechStackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.swing.text.Document;
 
 @Service
 @RequiredArgsConstructor
@@ -99,11 +98,21 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     memberRepository.save(member);
 
-    File tempFile;
+    File tempFile = null;
     List<FunctionScore> functions;
+    try {
       tempFile = documentS3Service.downloadFileFromUrl(freelancer.resumeUrl());
       functions = fastApiClient.requestFpFreelencerInference(tempFile);
-
+    } catch (Exception e) {
+      log.error("[FP 분석 실패] 프리랜서 이력서 분석 중 오류 발생: {}", e.getMessage(), e);
+      throw new BusinessException(ErrorCode.FP_ANALYZE_FAIL);
+    } finally {
+      if (tempFile != null && tempFile.exists()) {
+        if (!tempFile.delete()) {
+          log.warn("임시 파일 삭제 실패: {}", tempFile.getAbsolutePath());
+        }
+      }
+    }
       // FastAPI 분석 결과로 기술스택 점수 누적 계산
     Map<String, Integer> techStackTotalScoreMap = new HashMap<>();
     for (FunctionScore req : functions) {
