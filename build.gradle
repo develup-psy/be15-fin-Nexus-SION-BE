@@ -143,10 +143,16 @@ tasks.named('test') {
 }
 
 def env = new Properties()
-file(".env").withInputStream { stream -> env.load(stream) }
-def dbHost = env.getProperty("DB_HOST")
-def dbPort = env.getProperty("DB_PORT")
-def dbName = env.getProperty("DB_NAME")
+def envFile = file(".env")
+if (envFile.exists()) {
+    envFile.withInputStream { stream -> env.load(stream) }
+} else {
+    println ".env 파일이 존재하지 않아 기본값을 사용합니다."
+}
+def dbHost = env.getProperty("DB_HOST", "localhost")
+def dbPort = env.getProperty("DB_PORT", "3306")
+def dbName = env.getProperty("DB_NAME", "sion")
+
 def dbUrl = "jdbc:mariadb://${dbHost}:${dbPort}/${dbName}"
 
 jooq {
