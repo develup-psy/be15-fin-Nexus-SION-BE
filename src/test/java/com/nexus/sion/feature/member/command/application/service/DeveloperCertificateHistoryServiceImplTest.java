@@ -19,6 +19,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.application.dto.request.UserCertificateHistoryRequest;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Certificate;
 import com.nexus.sion.feature.member.command.domain.repository.CertificateRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHistoryRepository;
 
 class DeveloperCertificateHistoryServiceImplTest {
@@ -30,6 +31,8 @@ class DeveloperCertificateHistoryServiceImplTest {
   @Mock private UserCertificateHistoryRepository userCertificateHistoryRepository;
 
   @Mock private DocumentS3Service documentS3Service;
+
+  @Mock private MemberRepository memberRepository;
 
   @BeforeEach
   void setUp() {

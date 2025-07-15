@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.feature.member.query.dto.response.MemberTechStackResponse;
-import com.nexus.sion.feature.member.query.dto.response.TrainingProgramResponse;
 import com.nexus.sion.feature.member.query.dto.response.TrainingRecommendationResponse;
 import com.nexus.sion.feature.member.query.repository.MemberTechStackQueryRepository;
-import com.nexus.sion.feature.member.query.repository.TrainingProgramQueryRepository;
+import com.nexus.sion.feature.member.query.repository.TrainingRecommendationQueryRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +18,7 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
 
   private final MemberTechStackQueryRepository memberTechStackQueryRepository;
   private final UserCertificateHistoryQueryService userCertificateHistoryQueryService;
-  private final TrainingProgramQueryRepository trainingProgramQueryRepository;
+  private final TrainingRecommendationQueryRepository trainingRecommendationQueryRepository;
 
   @Override
   public List<TrainingRecommendationResponse> recommendTrainingsFor(String employeeId) {
@@ -39,20 +38,22 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
       int myScore = entry.getValue();
       List<Integer> allScores = memberTechStackQueryRepository.findAllScoresForTech(tech);
 
-      if (allScores.isEmpty()) continue;
+      if (allScores.isEmpty()) {
+        throw new IllegalStateException(tech + " 점수 분포가 없습니다");
+      }
 
       int percentile = calculatePercentile(myScore, allScores);
       String level = getDifficultyLevel(percentile);
 
-      List<TrainingProgramResponse> programs =
-          trainingProgramQueryRepository.findByCategory(tech + "-" + level);
+      List<TrainingRecommendationResponse> programs =
+          trainingRecommendationQueryRepository.findByCategory(tech + "-" + level);
 
       recommendations.addAll(
           programs.stream()
               .map(
                   p ->
                       TrainingRecommendationResponse.from(
-                          p, tech + " 점수 백분위 " + percentile + "%로 추천"))
+                          p.toEntity(), tech + " 점수 백분위 " + percentile + "%로 추천"))
               .collect(Collectors.toList()));
     }
 
@@ -63,14 +64,14 @@ public class TrainingRecommendationQueryServiceImpl implements TrainingRecommend
     List<String> missingCerts =
         allCerts.stream().filter(cert -> !ownedCerts.contains(cert)).collect(Collectors.toList());
 
-    List<TrainingProgramResponse> certPrograms =
-        trainingProgramQueryRepository.findByCategoryIn(missingCerts);
+    List<TrainingRecommendationResponse> certPrograms =
+        trainingRecommendationQueryRepository.findByCategoryIn(missingCerts);
     recommendations.addAll(
         certPrograms.stream()
             .map(
                 p ->
                     TrainingRecommendationResponse.from(
-                        p, p.getTrainingCategory() + " 자격증 미보유로 추천"))
+                        p.toEntity(), p.getTrainingCategory() + " 자격증 미보유로 추천"))
             .collect(Collectors.toList()));
 
     return recommendations;

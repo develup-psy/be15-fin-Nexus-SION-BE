@@ -41,7 +41,7 @@ class InitialScoreCommandServiceImplTest {
 
     // then
     verify(initialScoreRepository, times(1)).deleteAll();
-    verify(initialScoreRepository, times(1)).saveAll(any());
+    verify(initialScoreRepository).saveAll(anyList());
   }
 
   @Test

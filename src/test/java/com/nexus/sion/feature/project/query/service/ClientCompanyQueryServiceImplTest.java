@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import org.jooq.Condition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,16 +84,16 @@ class ClientCompanyQueryServiceImplTest {
     ClientCompanySearchRequest request = new ClientCompanySearchRequest();
     request.setPage(page);
     request.setSize(size);
-    request.setCompanyName(""); // 비어있는 조건
+    request.setCompanyName(""); // 조건 없음 (전체 조회)
 
     List<ClientCompanyDto> mockList =
         List.of(
             ClientCompanyDto.builder().clientCode("a1").companyName("Alpha").build(),
             ClientCompanyDto.builder().clientCode("b1").companyName("Beta").build());
 
-    when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(2L);
+    when(clientCompanyQueryRepository.countByCondition(any(Condition.class))).thenReturn(2L);
     when(clientCompanyQueryRepository.findClientCompaniesByCondition(
-            isNull(), any(), eq(page), eq(size)))
+            any(Condition.class), any(), eq(page), eq(size)))
         .thenReturn(mockList);
 
     // when
@@ -102,9 +103,10 @@ class ClientCompanyQueryServiceImplTest {
     // then
     assertThat(response.getTotalElements()).isEqualTo(2L);
     assertThat(response.getContent()).hasSize(2);
-    verify(clientCompanyQueryRepository).countByCondition(isNull());
+
+    verify(clientCompanyQueryRepository).countByCondition(any(Condition.class));
     verify(clientCompanyQueryRepository)
-        .findClientCompaniesByCondition(isNull(), any(), eq(page), eq(size));
+        .findClientCompaniesByCondition(any(Condition.class), any(), eq(page), eq(size));
   }
 
   @Test
