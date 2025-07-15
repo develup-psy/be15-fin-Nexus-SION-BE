@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import org.jooq.Condition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,40 +38,40 @@ class ClientCompanyQueryServiceImplTest {
     request.setCompanyName("company"); // 필터링 조건
 
     List<ClientCompanyDto> mockCompanyList =
-        List.of(
-            ClientCompanyDto.builder()
-                .clientCode("test1")
-                .companyName("company1")
-                .domainName("domain1")
-                .build(),
-            ClientCompanyDto.builder()
-                .clientCode("test2")
-                .companyName("company2")
-                .domainName("domain2")
-                .build());
+            List.of(
+                    ClientCompanyDto.builder()
+                            .clientCode("test1")
+                            .companyName("company1")
+                            .domainName("domain1")
+                            .build(),
+                    ClientCompanyDto.builder()
+                            .clientCode("test2")
+                            .companyName("company2")
+                            .domainName("domain2")
+                            .build());
 
     long totalCount = 2L;
 
     when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(totalCount);
     when(clientCompanyQueryRepository.findClientCompaniesByCondition(
             any(), any(), eq(page), eq(size)))
-        .thenReturn(mockCompanyList);
+            .thenReturn(mockCompanyList);
 
     // when
     PageResponse<ClientCompanyDto> response =
-        clientCompanyQueryService.findClientCompanies(request);
+            clientCompanyQueryService.findClientCompanies(request);
 
     // then
     assertThat(response).isNotNull();
     assertThat(response.getTotalElements()).isEqualTo(totalCount);
     assertThat(response.getContent()).hasSize(2);
     assertThat(response.getContent())
-        .extracting(ClientCompanyDto::getCompanyName)
-        .containsExactly("company1", "company2");
+            .extracting(ClientCompanyDto::getCompanyName)
+            .containsExactly("company1", "company2");
 
     verify(clientCompanyQueryRepository).countByCondition(any());
     verify(clientCompanyQueryRepository)
-        .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
+            .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
   }
 
   @Test
@@ -83,28 +84,26 @@ class ClientCompanyQueryServiceImplTest {
     ClientCompanySearchRequest request = new ClientCompanySearchRequest();
     request.setPage(page);
     request.setSize(size);
-    request.setCompanyName(""); // 비어있는 조건
+    request.setCompanyName(""); // 조건 없음 (전체 조회)
 
-    List<ClientCompanyDto> mockList =
-        List.of(
+    List<ClientCompanyDto> mockList = List.of(
             ClientCompanyDto.builder().clientCode("a1").companyName("Alpha").build(),
-            ClientCompanyDto.builder().clientCode("b1").companyName("Beta").build());
+            ClientCompanyDto.builder().clientCode("b1").companyName("Beta").build()
+    );
 
-    when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(2L);
-    when(clientCompanyQueryRepository.findClientCompaniesByCondition(
-            isNull(), any(), eq(page), eq(size)))
-        .thenReturn(mockList);
+    when(clientCompanyQueryRepository.countByCondition(any(Condition.class))).thenReturn(2L);
+    when(clientCompanyQueryRepository.findClientCompaniesByCondition(any(Condition.class), any(), eq(page), eq(size)))
+            .thenReturn(mockList);
 
     // when
-    PageResponse<ClientCompanyDto> response =
-        clientCompanyQueryService.findClientCompanies(request);
+    PageResponse<ClientCompanyDto> response = clientCompanyQueryService.findClientCompanies(request);
 
     // then
     assertThat(response.getTotalElements()).isEqualTo(2L);
     assertThat(response.getContent()).hasSize(2);
-    verify(clientCompanyQueryRepository).countByCondition(isNull());
-    verify(clientCompanyQueryRepository)
-        .findClientCompaniesByCondition(isNull(), any(), eq(page), eq(size));
+
+    verify(clientCompanyQueryRepository).countByCondition(any(Condition.class));
+    verify(clientCompanyQueryRepository).findClientCompaniesByCondition(any(Condition.class), any(), eq(page), eq(size));
   }
 
   @Test
@@ -120,22 +119,22 @@ class ClientCompanyQueryServiceImplTest {
     request.setCompanyName("test");
 
     List<ClientCompanyDto> mockList =
-        List.of(ClientCompanyDto.builder().clientCode("t1").companyName("test1").build());
+            List.of(ClientCompanyDto.builder().clientCode("t1").companyName("test1").build());
 
     when(clientCompanyQueryRepository.countByCondition(any())).thenReturn(11L);
     when(clientCompanyQueryRepository.findClientCompaniesByCondition(
             any(), any(), eq(page), eq(size)))
-        .thenReturn(mockList);
+            .thenReturn(mockList);
 
     // when
     PageResponse<ClientCompanyDto> response =
-        clientCompanyQueryService.findClientCompanies(request);
+            clientCompanyQueryService.findClientCompanies(request);
 
     // then
     assertThat(response.getTotalElements()).isEqualTo(11L);
     assertThat(response.getContent()).hasSize(1);
     verify(clientCompanyQueryRepository).countByCondition(any());
     verify(clientCompanyQueryRepository)
-        .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
+            .findClientCompaniesByCondition(any(), any(), eq(page), eq(size));
   }
 }

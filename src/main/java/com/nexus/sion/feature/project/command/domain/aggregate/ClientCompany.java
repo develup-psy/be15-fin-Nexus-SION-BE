@@ -42,13 +42,13 @@ public class ClientCompany extends BaseTimeEntity {
     String clientCode = String.format("%s_%03d", prefix, serialNumber);
 
     return ClientCompany.builder()
-        .clientCode(clientCode)
-        .companyName(request.getCompanyName())
-        .contactPerson(request.getContactPerson())
-        .email(request.getEmail())
-        .contactNumber(request.getContactNumber())
-        .domainName(request.getDomainName())
-        .build();
+            .clientCode(clientCode)
+            .companyName(request.getCompanyName())
+            .contactPerson(request.getContactPerson())
+            .email(request.getEmail())
+            .contactNumber(request.getContactNumber())
+            .domainName(request.getDomainName())
+            .build();
   }
 
   public void update(ClientCompanyUpdateRequest request) {
@@ -58,8 +58,14 @@ public class ClientCompany extends BaseTimeEntity {
     if (request.getDomainName() != null) {
       this.domainName = request.getDomainName();
     }
-    this.contactPerson = request.getContactPerson();
-    this.email = request.getEmail();
-    this.contactNumber = request.getContactNumber();
+    if (request.getContactPerson() != null) {
+      this.contactPerson = request.getContactPerson();
+    }
+    if (request.getEmail() != null) {
+      this.email = request.getEmail();
+    }
+    if (request.getContactNumber() != null) {
+      this.contactNumber = request.getContactNumber();
+    }
   }
 }
