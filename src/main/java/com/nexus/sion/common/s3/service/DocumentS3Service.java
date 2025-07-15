@@ -90,7 +90,7 @@ public class DocumentS3Service {
       if (!"application/pdf".equalsIgnoreCase(contentType)) {
         throw new IllegalArgumentException("PDF 파일만 다운로드할 수 있습니다.");
       }
-      
+
       File tempFile = Files.createTempFile("resume_", ".pdf").toFile();
       try (InputStream inputStream = connection.getInputStream();
            FileOutputStream outputStream = new FileOutputStream(tempFile)) {
