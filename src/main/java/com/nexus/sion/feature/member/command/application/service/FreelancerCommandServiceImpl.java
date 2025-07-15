@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +22,7 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTe
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStackHistory;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.MemberScoreHistory;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import com.nexus.sion.feature.member.command.domain.repository.*;
@@ -68,7 +68,6 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
             : "000000";
 
     String encodedPassword = passwordEncoder.encode(rawPassword);
-
 
     File tempFile;
     List<FunctionScore> functions;
@@ -152,34 +151,33 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
     memberScoreHistoryRepository.save(scoreHistory);
 
     Member member =
-            memberRepository
-                    .findById(freelancer.freelancerId())
-                    .orElseGet(
-                            () -> {
-                              Member newMember =
-                                      Member.builder()
-                                              .employeeIdentificationNumber(freelancer.freelancerId())
-                                              .employeeName(freelancer.name())
-                                              .password(encodedPassword)
-                                              .profileImageUrl(
-                                                      freelancer.profileImageUrl() != null
-                                                              ? freelancer.profileImageUrl()
-                                                              : "https://api.dicebear.com/9.x/notionists/svg?seed="
-                                                              + freelancer.freelancerId())
-                                              .phoneNumber(freelancer.phoneNumber())
-                                              .email(freelancer.email())
-                                              .birthday(freelancer.birthday())
-                                              .careerYears(freelancer.careerYears())
-                                              .joinedAt(LocalDate.now())
-                                              .role(MemberRole.OUTSIDER)
-                                              .gradeCode(grade)
-                                              .status(MemberStatus.AVAILABLE)
-                                              .build();
-                              return memberRepository.save(newMember);
-                            });
+        memberRepository
+            .findById(freelancer.freelancerId())
+            .orElseGet(
+                () -> {
+                  Member newMember =
+                      Member.builder()
+                          .employeeIdentificationNumber(freelancer.freelancerId())
+                          .employeeName(freelancer.name())
+                          .password(encodedPassword)
+                          .profileImageUrl(
+                              freelancer.profileImageUrl() != null
+                                  ? freelancer.profileImageUrl()
+                                  : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                                      + freelancer.freelancerId())
+                          .phoneNumber(freelancer.phoneNumber())
+                          .email(freelancer.email())
+                          .birthday(freelancer.birthday())
+                          .careerYears(freelancer.careerYears())
+                          .joinedAt(LocalDate.now())
+                          .role(MemberRole.OUTSIDER)
+                          .gradeCode(grade)
+                          .status(MemberStatus.AVAILABLE)
+                          .build();
+                  return memberRepository.save(newMember);
+                });
 
     memberRepository.save(member);
-
 
     freelancerRepository.deleteById(freelancer.freelancerId());
   }
