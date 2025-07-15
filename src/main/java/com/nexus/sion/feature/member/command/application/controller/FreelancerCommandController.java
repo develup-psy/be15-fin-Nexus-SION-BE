@@ -18,8 +18,8 @@ public class FreelancerCommandController {
 
   @PostMapping("/{freelancerId}/register")
   public ResponseEntity<ApiResponse<Void>> registerAsMember(
-      @PathVariable String freelancerId, @RequestParam("file") MultipartFile multipartFile) {
-    freelancerCommandService.registerFreelancerAsMember(freelancerId, multipartFile);
+      @PathVariable String freelancerId) {
+    freelancerCommandService.registerFreelancerAsMember(freelancerId);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }
