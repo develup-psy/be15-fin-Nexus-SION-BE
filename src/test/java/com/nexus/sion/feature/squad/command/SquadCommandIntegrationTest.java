@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +64,6 @@ class SquadCommandIntegrationTest {
   private String domainName;
   private String empId;
 
-
   private Long validProjectAndJobId;
 
   @BeforeEach
@@ -76,10 +74,13 @@ class SquadCommandIntegrationTest {
     squadCode = "ka_3_1_1";
     empId = "12345678";
 
-
     // 1. 선행 데이터 - 클라이언트 회사 저장
     clientCompanyRepository.save(
-        ClientCompany.builder().clientCode(clientCode).companyName("카카오택시").domainName(domainName).build());
+        ClientCompany.builder()
+            .clientCode(clientCode)
+            .companyName("카카오택시")
+            .domainName(domainName)
+            .build());
 
     // 2. 도메인 저장
     domainRepository.save(Domain.of(domainName));
@@ -137,7 +138,11 @@ class SquadCommandIntegrationTest {
     // project_and_job 저장
     ProjectAndJob job1 =
         projectAndJobRepository.save(
-            ProjectAndJob.builder().projectCode(projectCode).jobName("백엔드").requiredNumber(1).build());
+            ProjectAndJob.builder()
+                .projectCode(projectCode)
+                .jobName("백엔드")
+                .requiredNumber(1)
+                .build());
 
     validProjectAndJobId = job1.getId();
     System.out.println("[validProjectAndJobId 인 셋업] = " + validProjectAndJobId);

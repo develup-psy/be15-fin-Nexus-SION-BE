@@ -135,9 +135,7 @@ public class MemberQueryController {
   }
 
   @GetMapping("/{employeeId}/profile-image")
-  public ResponseEntity<ApiResponse<String>> getProfileImage(
-          @PathVariable String employeeId
-  ) {
+  public ResponseEntity<ApiResponse<String>> getProfileImage(@PathVariable String employeeId) {
     String profileImageUrl = memberQueryService.getMyProfileImage(employeeId);
     return ResponseEntity.ok(ApiResponse.success(profileImageUrl));
   }

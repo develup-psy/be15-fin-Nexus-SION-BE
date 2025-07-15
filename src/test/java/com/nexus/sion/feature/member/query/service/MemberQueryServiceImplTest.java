@@ -220,7 +220,6 @@ class MemberQueryServiceImplTest {
       baseSortField = MEMBER.EMPLOYEE_NAME.asc();
     }
 
-
     @Test
     @DisplayName("성공: 상태 + 등급 + 기술스택 조건으로 정상 조회")
     void givenValidFilters_whenSearch_thenReturnsPagedResult() {
@@ -259,26 +258,27 @@ class MemberQueryServiceImplTest {
     void givenFilters_whenNoMatchingMembers_thenReturnsEmptyList() {
       // given
       MemberListQuery noMatchQuery =
-              new MemberListQuery(
-                      "존재하지않는키워드",
-                      MemberStatus.AVAILABLE,
-                      List.of(GradeGradeCode.S),
-                      List.of("UnknownStack"),
-                      "employeeName",
-                      "asc",
-                      1,
-                      10,
-                      List.of("INSIDER"));
+          new MemberListQuery(
+              "존재하지않는키워드",
+              MemberStatus.AVAILABLE,
+              List.of(GradeGradeCode.S),
+              List.of("UnknownStack"),
+              "employeeName",
+              "asc",
+              1,
+              10,
+              List.of("INSIDER"));
 
       when(memberConditionBuilder.build(noMatchQuery)).thenReturn(baseCondition);
       when(sortFieldSelector.select(eq("employeeName"), eq("asc")))
-              .thenAnswer(invocation -> baseSortField);
+          .thenAnswer(invocation -> baseSortField);
       when(memberQueryRepository.countMembers(baseCondition)).thenReturn(0L);
       when(memberQueryRepository.findAllSquadMembers(noMatchQuery, baseCondition, baseSortField))
-              .thenReturn(List.of());
+          .thenReturn(List.of());
 
       // when
-      PageResponse<MemberSquadListResponse> result = memberQueryService.squadSearchMembers(noMatchQuery);
+      PageResponse<MemberSquadListResponse> result =
+          memberQueryService.squadSearchMembers(noMatchQuery);
 
       // then
       assertThat(result.getTotalElements()).isEqualTo(0L);

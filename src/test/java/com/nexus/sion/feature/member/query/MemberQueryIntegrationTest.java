@@ -203,28 +203,28 @@ class MemberQueryIntegrationTest {
     String profileImageUrl = "https://sion-bucket.s3.amazonaws.com/profile/sample-profile.png";
 
     Member saved =
-            memberRepository.save(
-                    Member.builder()
-                            .employeeIdentificationNumber(employeeId)
-                            .employeeName("이미지유저")
-                            .password("encoded_password")
-                            .email("profile@example.com")
-                            .phoneNumber("01022223333")
-                            .role(MemberRole.INSIDER)
-                            .status(MemberStatus.AVAILABLE)
-                            .gradeCode(GradeCode.A)
-                            .birthday(LocalDate.of(1995, 5, 5))
-                            .salary(70000000L)
-                            .profileImageUrl(profileImageUrl)
-                            .build());
+        memberRepository.save(
+            Member.builder()
+                .employeeIdentificationNumber(employeeId)
+                .employeeName("이미지유저")
+                .password("encoded_password")
+                .email("profile@example.com")
+                .phoneNumber("01022223333")
+                .role(MemberRole.INSIDER)
+                .status(MemberStatus.AVAILABLE)
+                .gradeCode(GradeCode.A)
+                .birthday(LocalDate.of(1995, 5, 5))
+                .salary(70000000L)
+                .profileImageUrl(profileImageUrl)
+                .build());
 
     memberRepository.flush();
 
     // when & then
     mockMvc
-            .perform(get("/api/v1/members/{employeeId}/profile-image", employeeId))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data").value(profileImageUrl));
+        .perform(get("/api/v1/members/{employeeId}/profile-image", employeeId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.data").value(profileImageUrl));
   }
 }
