@@ -555,4 +555,12 @@ public class MemberQueryRepository {
         .orderBy(monthField, DEVELOPER_TECH_STACK.TECH_STACK_NAME)
         .fetchInto(ScoreTrendDto.class);
   }
+
+  public String findProfileImageUrlById(String employeeId) {
+    return dsl
+            .select(MEMBER.PROFILE_IMAGE_URL)
+            .from(MEMBER)
+            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+            .fetchOneInto(String.class);
+  }
 }

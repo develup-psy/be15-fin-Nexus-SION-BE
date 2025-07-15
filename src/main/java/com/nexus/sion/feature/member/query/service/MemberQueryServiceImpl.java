@@ -161,4 +161,9 @@ public class MemberQueryServiceImpl implements MemberQueryService {
         memberQueryRepository.fetchDeveloperAvailability(),
         memberQueryRepository.fetchTopTechStacks());
   }
+
+  @Override
+  public String getMyProfileImage(String employeeId) {
+    return memberQueryRepository.findProfileImageUrlById(employeeId);
+  }
 }
