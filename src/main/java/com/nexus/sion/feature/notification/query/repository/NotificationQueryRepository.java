@@ -50,4 +50,31 @@ public class NotificationQueryRepository {
                 .fetchOne(0, Long.class))
         .orElse(0L);
   }
+
+  public List<NotificationDTO> selectAllNotifications(int page, int size) {
+    int offset = Math.max(page, 0) * size;
+
+    return dsl.select(
+            NOTIFICATION.NOTIFICATION_ID,
+            NOTIFICATION.NOTIFICATION_TYPE,
+            NOTIFICATION.LINKED_CONTENT_ID,
+            NOTIFICATION.MESSAGE,
+            NOTIFICATION.IS_READ,
+            NOTIFICATION.CREATED_AT,
+            NOTIFICATION.SENDER_ID,
+            MEMBER.EMPLOYEE_NAME.as("senderName"),
+            NOTIFICATION.RECEIVER_ID)
+        .from(NOTIFICATION)
+        .join(MEMBER)
+        .on(NOTIFICATION.SENDER_ID.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+        .orderBy(NOTIFICATION.CREATED_AT.desc())
+        .limit(size)
+        .offset(offset)
+        .fetchInto(NotificationDTO.class);
+  }
+
+  public long countTotalAllNotifications() {
+    return Optional.ofNullable(dsl.selectCount().from(NOTIFICATION).fetchOne(0, Long.class))
+        .orElse(0L);
+  }
 }

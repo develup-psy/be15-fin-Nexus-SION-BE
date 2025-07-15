@@ -23,15 +23,20 @@ public class NotificationQueryService {
   /* 알림 목록 조회 */
   @Transactional(readOnly = true)
   public PageResponse<NotificationDTO> getNotifications(String memberId, int page, int size) {
-
-    log.info("memberId" + memberId);
-    log.info("page" + page);
-    log.info("size" + size);
-
     List<NotificationDTO> notifications =
         notificationQueryRepository.selectNotifications(page, size, memberId);
 
     long totalElements = notificationQueryRepository.countTotalNotifications(memberId);
+
+    return PageResponse.fromJooq(notifications, totalElements, page, size);
+  }
+
+  @Transactional(readOnly = true)
+  public PageResponse<NotificationDTO> getAllNotifications(int page, int size) {
+    List<NotificationDTO> notifications =
+        notificationQueryRepository.selectAllNotifications(page, size);
+
+    long totalElements = notificationQueryRepository.countTotalAllNotifications();
 
     return PageResponse.fromJooq(notifications, totalElements, page, size);
   }
