@@ -69,7 +69,8 @@ public class Project extends BaseTimeEntity {
     WAITING,
     IN_PROGRESS,
     COMPLETE,
-    INCOMPLETE
+    INCOMPLETE,
+    EVALUATION
   }
 
   public enum AnalysisStatus {
