@@ -31,6 +31,7 @@ public class NotificationQueryService {
     return PageResponse.fromJooq(notifications, totalElements, page, size);
   }
 
+  @Transactional(readOnly = true)
   public PageResponse<NotificationDTO> getAllNotifications(int page, int size) {
     List<NotificationDTO> notifications =
         notificationQueryRepository.selectAllNotifications(page, size);
