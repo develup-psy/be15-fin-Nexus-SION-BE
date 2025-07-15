@@ -4,16 +4,15 @@ import static com.example.jooq.generated.Tables.TRAINING_PROGRAM;
 
 import java.util.List;
 
+import com.nexus.sion.feature.member.query.dto.response.TrainingRecommendationResponse;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-
-import com.nexus.sion.feature.member.query.dto.response.TrainingProgramResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class TrainingProgramQueryRepository {
+public class TrainingRecommendationQueryRepository {
 
   private final DSLContext dsl;
 
@@ -25,22 +24,22 @@ public class TrainingProgramQueryRepository {
   }
 
   // 특정 카테고리의 교육 목록
-  public List<TrainingProgramResponse> findByCategory(String category) {
+  public List<TrainingRecommendationResponse> findByCategory(String category) {
     return baseSelect()
         .where(TRAINING_PROGRAM.TRAINING_CATEGORY.eq(category))
-        .fetchInto(TrainingProgramResponse.class);
+        .fetchInto(TrainingRecommendationResponse.class);
   }
 
   // 여러 카테고리 조건 (자격증 기반 추천용)
-  public List<TrainingProgramResponse> findByCategoryIn(List<String> categories) {
+  public List<TrainingRecommendationResponse> findByCategoryIn(List<String> categories) {
     return baseSelect()
         .where(TRAINING_PROGRAM.TRAINING_CATEGORY.in(categories))
-        .fetchInto(TrainingProgramResponse.class);
+        .fetchInto(TrainingRecommendationResponse.class);
   }
 
   // 전체 교육 목록
-  public List<TrainingProgramResponse> findAll() {
-    return baseSelect().fetchInto(TrainingProgramResponse.class);
+  public List<TrainingRecommendationResponse> findAll() {
+    return baseSelect().fetchInto(TrainingRecommendationResponse.class);
   }
 
   // 공통 SELECT 로직
