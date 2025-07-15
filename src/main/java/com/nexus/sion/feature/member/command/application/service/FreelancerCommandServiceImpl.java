@@ -23,6 +23,7 @@ import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTe
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.DeveloperTechStackHistory;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.MemberScoreHistory;
+import com.nexus.sion.feature.member.command.domain.aggregate.enums.GradeCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberStatus;
 import com.nexus.sion.feature.member.command.domain.repository.*;
@@ -52,7 +53,9 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
   private final MemberScoreHistoryRepository memberScoreHistoryRepository;
   private final FastApiClient fastApiClient;
   private final TechStackRepository techStackRepository;
+  private final MemberCommandService memberCommandService;
   private final DocumentS3Service documentS3Service;
+
 
   @Override
   public void registerFreelancerAsMember(String freelancerId) {
@@ -70,35 +73,8 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     String encodedPassword = passwordEncoder.encode(rawPassword);
 
-    Member member =
-            memberRepository
-                    .findById(freelancer.freelancerId())
-                    .orElseGet(
-                            () -> {
-                              Member newMember =
-                                      Member.builder()
-                                              .employeeIdentificationNumber(freelancer.freelancerId())
-                                              .employeeName(freelancer.name())
-                                              .password(encodedPassword)
-                                              .profileImageUrl(
-                                                      freelancer.profileImageUrl() != null
-                                                              ? freelancer.profileImageUrl()
-                                                              : "https://api.dicebear.com/9.x/notionists/svg?seed="
-                                                              + freelancer.freelancerId())
-                                              .phoneNumber(freelancer.phoneNumber())
-                                              .email(freelancer.email())
-                                              .birthday(freelancer.birthday())
-                                              .careerYears(freelancer.careerYears())
-                                              .joinedAt(LocalDate.now())
-                                              .role(MemberRole.OUTSIDER)
-                                              .status(MemberStatus.AVAILABLE)
-                                              .build();
-                              return memberRepository.save(newMember);
-                            });
-
-    memberRepository.save(member);
-
     File tempFile = null;
+
     List<FunctionScore> functions;
     try {
       tempFile = documentS3Service.downloadFileFromUrl(freelancer.resumeUrl());
@@ -167,6 +143,8 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
                     .mapToInt(DeveloperTechStack::getTotalScore)
                     .sum();
 
+    GradeCode grade = memberCommandService.calculateGradeByScore(totalStackScore);
+
     MemberScoreHistory scoreHistory =
             memberScoreHistoryRepository
                     .findByEmployeeIdentificationNumber(freelancer.freelancerId())
@@ -179,6 +157,35 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
                                             .build());
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
+
+    Member member =
+        memberRepository
+            .findById(freelancer.freelancerId())
+            .orElseGet(
+                () -> {
+                  Member newMember =
+                      Member.builder()
+                          .employeeIdentificationNumber(freelancer.freelancerId())
+                          .employeeName(freelancer.name())
+                          .password(encodedPassword)
+                          .profileImageUrl(
+                              freelancer.profileImageUrl() != null
+                                  ? freelancer.profileImageUrl()
+                                  : "https://api.dicebear.com/9.x/notionists/svg?seed="
+                                      + freelancer.freelancerId())
+                          .phoneNumber(freelancer.phoneNumber())
+                          .email(freelancer.email())
+                          .birthday(freelancer.birthday())
+                          .careerYears(freelancer.careerYears())
+                          .joinedAt(LocalDate.now())
+                          .role(MemberRole.OUTSIDER)
+                          .gradeCode(grade)
+                          .status(MemberStatus.AVAILABLE)
+                          .build();
+                  return memberRepository.save(newMember);
+                });
+
+    memberRepository.save(member);
 
     freelancerRepository.deleteById(freelancer.freelancerId());
   }
