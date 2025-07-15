@@ -72,12 +72,6 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
       throw new IllegalArgumentException("projectCode는 필수 입력값입니다.");
     }
 
-    List<DeveloperApprovalResponse> approvals = developerProjectWorkQueryRepository.findDeveloperApprovalsByProjectCode(projectCode);
-
-    if (approvals.isEmpty()) {
-      throw new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND);
-    }
-
-    return approvals;
+      return developerProjectWorkQueryRepository.findDeveloperApprovalsByProjectCode(projectCode);
   }
 }

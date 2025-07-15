@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class DeveloperApprovalResponse {
-    private String developerProjectWorkId;
+    private Long developerProjectWorkId;
     private String employeeIdentificationNumber;
     private String approvalStatus;
     private String approvedBy;

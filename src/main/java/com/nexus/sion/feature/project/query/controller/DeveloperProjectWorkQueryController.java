@@ -65,9 +65,6 @@ public class DeveloperProjectWorkQueryController {
   @GetMapping("/{projectCode}/developer-approvals")
   public ResponseEntity<ApiResponse<List<DeveloperApprovalResponse>>> getDeveloperApprovals(
           @PathVariable String projectCode) {
-    if(projectCode == null) {
-      throw new BusinessException(ErrorCode.PROJECT_CODE_INVALID);
-    }
     List<DeveloperApprovalResponse>
             approvals = developerProjectWorkQueryService.getDeveloperApprovals(projectCode);
     return ResponseEntity.ok(ApiResponse.success(approvals));

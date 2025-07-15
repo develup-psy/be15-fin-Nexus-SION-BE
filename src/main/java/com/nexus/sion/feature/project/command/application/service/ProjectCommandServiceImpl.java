@@ -166,6 +166,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       List<DeveloperProjectWork> works =
               developerProjectWorkRepository.findByProjectCode(projectCode);
 
+      if (works.isEmpty()) {
+        throw new BusinessException(ErrorCode.WORK_NOT_FOUND);
+      }
+
       boolean allApproved = works.stream()
               .allMatch(work -> work.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
 
