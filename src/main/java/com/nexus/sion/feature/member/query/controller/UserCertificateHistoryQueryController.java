@@ -20,12 +20,11 @@ public class UserCertificateHistoryQueryController {
 
   private final UserCertificateHistoryQueryService userCertificateHistoryQueryService;
 
-  @GetMapping("/me")
-  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>> getMyCertificates(
-      @AuthenticationPrincipal UserDetails userDetails) {
-    String memberId = userDetails.getUsername();
+  @GetMapping("/{employeeId}")
+  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>> getCertificatesByEmployeeId(
+          @PathVariable String employeeId) {
     List<UserCertificateHistoryResponse> result =
-        userCertificateHistoryQueryService.getMyCertificates(memberId);
+            userCertificateHistoryQueryService.getMyCertificates(employeeId);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 }
