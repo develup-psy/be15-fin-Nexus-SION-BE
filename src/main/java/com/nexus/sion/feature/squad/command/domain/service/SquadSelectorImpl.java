@@ -52,10 +52,10 @@ public class SquadSelectorImpl {
     double duration = durationScores.getOrDefault(squad, 0.0);
 
     // 기본 가중치
-    double techWeight = 0.1;
-    double domainWeight = 0.1;
-    double costWeight = 0.1;
-    double durationWeight = 0.1;
+    double techWeight = 0;
+    double domainWeight = 0;
+    double costWeight = 0;
+    double durationWeight = 0;
 
     // 선택 기준에 따라 특정 항목 가중치 조정
     switch (criteria) {
