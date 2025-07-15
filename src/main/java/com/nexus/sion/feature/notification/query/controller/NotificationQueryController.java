@@ -36,11 +36,11 @@ public class NotificationQueryController {
 
   @GetMapping
   public ResponseEntity<ApiResponse<PageResponse<NotificationDTO>>> getAllNotificationList(
-          @RequestParam(defaultValue = "0") int page, // 기본값 0
-          @RequestParam(defaultValue = "10") int size // 기본값 10
-  ) {
+      @RequestParam(defaultValue = "0") int page, // 기본값 0
+      @RequestParam(defaultValue = "10") int size // 기본값 10
+      ) {
     PageResponse<NotificationDTO> notifications =
-            notificationQueryService.getAllNotifications(page, size);
+        notificationQueryService.getAllNotifications(page, size);
     return ResponseEntity.ok(ApiResponse.success(notifications));
   }
 }

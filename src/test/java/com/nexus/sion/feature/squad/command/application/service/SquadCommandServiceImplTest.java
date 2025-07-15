@@ -9,16 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
-import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
-import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
-import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
-import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
-import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
-import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
-import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
-import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
-import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,15 +17,25 @@ import org.mockito.*;
 
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
+import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
+import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
 import com.nexus.sion.feature.squad.command.application.dto.request.Developer;
+import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecommendationRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
+import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
+import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
 import com.nexus.sion.feature.squad.command.domain.service.*;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadCommentRepository;
 import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepository;
+import com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary;
+import com.nexus.sion.feature.squad.query.dto.response.SquadCandidateResponse;
+import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 class SquadCommandServiceImplTest {
 
@@ -255,24 +255,22 @@ class SquadCommandServiceImplTest {
     void setup() {
       MockitoAnnotations.openMocks(this);
 
-      request = SquadRecommendationRequest.builder()
+      request =
+          SquadRecommendationRequest.builder()
               .projectId(projectId)
               .criteria(RecommendationCriteria.BALANCED)
               .build();
 
-      developer = new DeveloperSummary().builder()
-              .weight(0.9)
-              .id("DEV001")
-              .name("홍길동")
-              .grade("A")
-              .build();
+      developer =
+          new DeveloperSummary().builder().weight(0.9).id("DEV001").name("홍길동").grade("A").build();
 
       candidates = Map.of("백엔드", List.of(developer));
       requiredCount = Map.of("백엔드", 1);
       filteredCandidates = candidates;
       combinations = List.of(candidates);
 
-      CandidateSummary candidateSummary = CandidateSummary.builder()
+      CandidateSummary candidateSummary =
+          CandidateSummary.builder()
               .memberId("DEV001")
               .name("홍길동")
               .jobName("백엔드")
@@ -290,14 +288,17 @@ class SquadCommandServiceImplTest {
       evaluatedSquad.setEstimatedDuration(3);
 
       // 공통 Mock 설정
-      given(squadQueryService.findCandidatesByRoles(projectId)).willReturn(new SquadCandidateResponse(candidates));
+      given(squadQueryService.findCandidatesByRoles(projectId))
+          .willReturn(new SquadCandidateResponse(candidates));
       given(squadQueryService.findRequiredMemberCountByRoles(projectId)).willReturn(requiredCount);
       given(squadCombinationGenerator.generate(any(), any())).willReturn(combinations);
       given(squadEvaluator.evaluateAll(eq(projectId), any())).willReturn(List.of(evaluatedSquad));
-      given(squadSelector.selectBest(anyList(), eq(RecommendationCriteria.BALANCED))).willReturn(evaluatedSquad);
+      given(squadSelector.selectBest(anyList(), eq(RecommendationCriteria.BALANCED)))
+          .willReturn(evaluatedSquad);
       given(gradeDomainService.getMonthlyUnitPrice(any())).willReturn(5000000);
       given(gradeDomainService.getProductivityFactor(any())).willReturn(1.1);
-      given(projectCommandService.findProjectAndJobIdMap(projectId)).willReturn(Map.of("백엔드", 100L));
+      given(projectCommandService.findProjectAndJobIdMap(projectId))
+          .willReturn(Map.of("백엔드", 100L));
       given(squadDomainService.buildRecommendationReason(any(), any())).willReturn("기준: BALANCED");
       given(squadCommandRepository.countByProjectCode(projectId)).willReturn(2L);
     }
@@ -323,8 +324,8 @@ class SquadCommandServiceImplTest {
 
       // when & then
       assertThatThrownBy(() -> squadCommandService.recommendSquad(request))
-              .isInstanceOf(IllegalStateException.class)
-              .hasMessageContaining("생성 가능한 스쿼드 조합이 없습니다.");
+          .isInstanceOf(IllegalStateException.class)
+          .hasMessageContaining("생성 가능한 스쿼드 조합이 없습니다.");
     }
 
     @Test
@@ -332,12 +333,12 @@ class SquadCommandServiceImplTest {
     void recommendSquad_candidateFetchFails() {
       // given
       given(squadQueryService.findCandidatesByRoles(projectId))
-              .willThrow(new RuntimeException("DB 실패"));
+          .willThrow(new RuntimeException("DB 실패"));
 
       // when & then
       assertThatThrownBy(() -> squadCommandService.recommendSquad(request))
-              .isInstanceOf(RuntimeException.class)
-              .hasMessageContaining("DB 실패");
+          .isInstanceOf(RuntimeException.class)
+          .hasMessageContaining("DB 실패");
       then(squadCommandRepository).shouldHaveNoInteractions();
     }
   }

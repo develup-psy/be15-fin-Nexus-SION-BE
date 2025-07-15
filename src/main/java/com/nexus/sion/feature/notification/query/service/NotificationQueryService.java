@@ -33,7 +33,7 @@ public class NotificationQueryService {
 
   public PageResponse<NotificationDTO> getAllNotifications(int page, int size) {
     List<NotificationDTO> notifications =
-            notificationQueryRepository.selectAllNotifications(page, size);
+        notificationQueryRepository.selectAllNotifications(page, size);
 
     long totalElements = notificationQueryRepository.countTotalAllNotifications();
 
