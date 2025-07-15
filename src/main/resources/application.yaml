@@ -7,14 +7,14 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB       # 업로드 파일 하나의 최대 크기
-      max-request-size: 10MB    # 요청 전체 크기 제한
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:sion}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
 
   jpa:
     hibernate:
@@ -26,16 +26,16 @@ spring:
 
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
-      timeout : 6000ms # 연결 타임아웃
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 6000ms
       lettuce:
         pool:
-          max-active: 10  # 최대 활성 연결 수
-          max-idle: 5  # 최대 유휴 연결 수
-          min-idle: 1  # 최소 유휴 연결 수
-          max-wait: 2000ms  # 최대 대기 시간
+          max-active: 10
+          max-idle: 5
+          min-idle: 1
+          max-wait: 2000ms
 
 mybatis:
   mapper-locations: classpath:/mappers/**/*.xml
@@ -53,9 +53,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${JWT_ACCESS_EXPIRATION}
-  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+  secret: ${JWT_SECRET:this-is-a-secret}
+  expiration: ${JWT_ACCESS_EXPIRATION:3600000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
 
 springdoc:
   swagger-ui:
@@ -70,12 +70,12 @@ cloud:
   aws:
     active: true
     credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
+      access-key: ${AWS_ACCESS_KEY:dummy-access-key}
+      secret-key: ${AWS_SECRET_KEY:dummy-secret-key}
     region:
       static: ap-northeast-2
     s3:
-      bucket: ${AWS_BUCKET}
+      bucket: ${AWS_BUCKET:dummy-bucket-name}
 
 logging:
   level:
