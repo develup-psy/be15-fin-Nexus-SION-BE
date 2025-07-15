@@ -126,7 +126,7 @@ public class SquadQueryRepository {
                 GRADE.MONTHLY_UNIT_PRICE,
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
                 GRADE.PRODUCTIVITY,
-                        SQUAD_EMPLOYEE.IS_LEADER)
+                SQUAD_EMPLOYEE.IS_LEADER)
             .from(SQUAD_EMPLOYEE)
             .join(MEMBER)
             .on(
@@ -163,7 +163,9 @@ public class SquadQueryRepository {
                         .monthlyUnitPrice(r.get(GRADE.MONTHLY_UNIT_PRICE))
                         .memberId(r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
                         .productivity(r.get(GRADE.PRODUCTIVITY))
-                            .isLeader(r.get(SQUAD_EMPLOYEE.IS_LEADER) != null && r.get(SQUAD_EMPLOYEE.IS_LEADER) == 1)
+                        .isLeader(
+                            r.get(SQUAD_EMPLOYEE.IS_LEADER) != null
+                                && r.get(SQUAD_EMPLOYEE.IS_LEADER) == 1)
                         .build())
             .toList();
 

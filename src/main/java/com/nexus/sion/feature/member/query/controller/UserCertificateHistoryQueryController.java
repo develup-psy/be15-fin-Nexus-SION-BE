@@ -3,8 +3,6 @@ package com.nexus.sion.feature.member.query.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
@@ -21,10 +19,10 @@ public class UserCertificateHistoryQueryController {
   private final UserCertificateHistoryQueryService userCertificateHistoryQueryService;
 
   @GetMapping("/{employeeId}")
-  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>> getCertificatesByEmployeeId(
-          @PathVariable String employeeId) {
+  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>>
+      getCertificatesByEmployeeId(@PathVariable String employeeId) {
     List<UserCertificateHistoryResponse> result =
-            userCertificateHistoryQueryService.getMyCertificates(employeeId);
+        userCertificateHistoryQueryService.getMyCertificates(employeeId);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 }

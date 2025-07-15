@@ -18,7 +18,8 @@ public enum ProjectStatus implements EnumType {
 
   INCOMPLETE("INCOMPLETE"),
 
-  EVALUATION("EVALUATION");;
+  EVALUATION("EVALUATION");
+  ;
 
   private final String literal;
 
