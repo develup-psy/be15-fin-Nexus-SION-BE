@@ -351,5 +351,22 @@ class MemberQueryServiceImplTest {
       verify(sortFieldSelector).select(eq("invalidField"), eq("asc"));
       verifyNoInteractions(memberConditionBuilder, memberQueryRepository);
     }
+
+    @DisplayName("사번으로 프로필 이미지 URL 조회 성공")
+    @Test
+    void getMyProfileImage_success() {
+      // given
+      String employeeId = "DEV001";
+      String expectedImageUrl = "https://sion-bucket.s3.amazonaws.com/profile/abcd.png";
+
+      when(memberQueryRepository.findProfileImageUrlById(employeeId)).thenReturn(expectedImageUrl);
+
+      // when
+      String actualImageUrl = memberQueryService.getMyProfileImage(employeeId);
+
+      // then
+      assertThat(actualImageUrl).isEqualTo(expectedImageUrl);
+      verify(memberQueryRepository, times(1)).findProfileImageUrlById(employeeId);
+    }
   }
 }

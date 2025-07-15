@@ -161,4 +161,11 @@ public class MemberQueryServiceImpl implements MemberQueryService {
         memberQueryRepository.fetchDeveloperAvailability(),
         memberQueryRepository.fetchTopTechStacks());
   }
+
+  @Override
+  public String getMyProfileImage(String employeeId) {
+    return memberQueryRepository
+            .findProfileImageUrlById(employeeId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+  }
 }

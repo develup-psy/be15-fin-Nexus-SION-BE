@@ -23,4 +23,6 @@ public interface MemberQueryService {
   List<ScoreTrendDto> getMonthlyTechStackScoreTrend(String employeeId);
 
   DashboardSummaryResponse getDashboardSummary();
+
+  String getMyProfileImage(String employeeId);
 }
