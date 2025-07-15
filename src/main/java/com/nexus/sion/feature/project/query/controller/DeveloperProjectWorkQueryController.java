@@ -2,6 +2,9 @@ package com.nexus.sion.feature.project.query.controller;
 
 import java.util.List;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -57,5 +60,16 @@ public class DeveloperProjectWorkQueryController {
   public ApiResponse<List<FunctionTypeDto>> getFunctionTypes() {
     List<FunctionTypeDto> functionTypes = developerProjectWorkQueryService.getFunctionTypes();
     return ApiResponse.success(functionTypes);
+  }
+
+  @GetMapping("/{projectCode}/developer-approvals")
+  public ResponseEntity<ApiResponse<List<DeveloperApprovalResponse>>> getDeveloperApprovals(
+          @PathVariable String projectCode) {
+    if(projectCode == null) {
+      throw new BusinessException(ErrorCode.PROJECT_CODE_INVALID);
+    }
+    List<DeveloperApprovalResponse>
+            approvals = developerProjectWorkQueryService.getDeveloperApprovals(projectCode);
+    return ResponseEntity.ok(ApiResponse.success(approvals));
   }
 }
