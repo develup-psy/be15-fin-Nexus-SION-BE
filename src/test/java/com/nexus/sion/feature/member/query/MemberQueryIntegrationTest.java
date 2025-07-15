@@ -193,4 +193,38 @@ class MemberQueryIntegrationTest {
         .andExpect(jsonPath("$.data.content[0].monthlyUnitPrice").isNumber())
         .andExpect(jsonPath("$.data.content[0].productivity").isNumber());
   }
+
+  @DisplayName("사번으로 프로필 이미지 조회에 성공한다")
+  @WithMockUser(username = "testuser")
+  @Test
+  void getProfileImage_success() throws Exception {
+    // given
+    String employeeId = "EMP002";
+    String profileImageUrl = "https://sion-bucket.s3.amazonaws.com/profile/sample-profile.png";
+
+    Member saved =
+            memberRepository.save(
+                    Member.builder()
+                            .employeeIdentificationNumber(employeeId)
+                            .employeeName("이미지유저")
+                            .password("encoded_password")
+                            .email("profile@example.com")
+                            .phoneNumber("01022223333")
+                            .role(MemberRole.INSIDER)
+                            .status(MemberStatus.AVAILABLE)
+                            .gradeCode(GradeCode.A)
+                            .birthday(LocalDate.of(1995, 5, 5))
+                            .salary(70000000L)
+                            .profileImageUrl(profileImageUrl)
+                            .build());
+
+    memberRepository.flush();
+
+    // when & then
+    mockMvc
+            .perform(get("/api/v1/members/{employeeId}/profile-image", employeeId))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data").value(profileImageUrl));
+  }
 }
