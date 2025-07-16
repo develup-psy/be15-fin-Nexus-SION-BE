@@ -15,4 +15,4 @@ COPY --from=build /app/build/libs/*.jar ./
 RUN mv $(ls *.jar | grep -v plain) app.jar
 
 EXPOSE 8000
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
