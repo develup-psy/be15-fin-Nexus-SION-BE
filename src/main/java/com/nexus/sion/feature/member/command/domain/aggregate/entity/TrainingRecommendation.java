@@ -37,9 +37,6 @@ public class TrainingRecommendation {
   @Column(name = "video_url", nullable = false, columnDefinition = "TEXT")
   private String videoUrl;
 
-  @Column(name = "employee_identification_number", nullable = false, length = 30)
-  private String employeeIdentificationNumber;
-
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
