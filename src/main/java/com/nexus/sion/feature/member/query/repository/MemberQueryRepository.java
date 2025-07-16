@@ -34,6 +34,8 @@ public class MemberQueryRepository {
   private final DSLContext dsl;
   private final TopTechStackSubqueryProvider topTechStackSubqueryProvider;
 
+  private static final int PENDING_APPROVAL_LIMIT = 10;
+
   public List<DashboardSummaryResponse.PendingProject> findPendingProjects() {
     // 하위 쿼리: PENDING 프로젝트 5개만 추출
     var projects =
@@ -112,7 +114,7 @@ public class MemberQueryRepository {
             .join(MEMBER).on(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .where(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(DeveloperProjectWorkApprovalStatus.PENDING))
             .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.asc())
-            .limit(10)
+            .limit(PENDING_APPROVAL_LIMIT)
             .fetch();
 
     return records.stream()
@@ -129,22 +131,27 @@ public class MemberQueryRepository {
 
   public List<DashboardSummaryResponse.TopDeveloper> fetchTopDevelopers() {
 
-    MemberScoreHistory mshOuter = MEMBER_SCORE_HISTORY.as("msh_outer");
-    MemberScoreHistory mshInner = MEMBER_SCORE_HISTORY.as("msh_inner");
-
-    var latestScores = DSL.select(
-                    mshOuter.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    mshOuter.TOTAL_TECH_STACK_SCORES,
-                    mshOuter.TOTAL_CERTIFICATE_SCORES,
-                    mshOuter.CREATED_AT
+    // 윈도우 함수를 사용하여 각 개발자별 최신 점수 기록을 효율적으로 조회
+    Table<?> rankedScores = dsl.select(
+                    MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    MEMBER_SCORE_HISTORY.TOTAL_TECH_STACK_SCORES,
+                    MEMBER_SCORE_HISTORY.TOTAL_CERTIFICATE_SCORES,
+                    rowNumber().over(
+                            partitionBy(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER)
+                                    .orderBy(MEMBER_SCORE_HISTORY.CREATED_AT.desc())
+                    ).as("rn")
             )
-            .from(mshOuter)
-            .where(mshOuter.CREATED_AT.eq(
-                    dsl.select(DSL.max(mshInner.CREATED_AT))
-                            .from(mshInner)
-                            .where(mshInner.EMPLOYEE_IDENTIFICATION_NUMBER.eq(mshOuter.EMPLOYEE_IDENTIFICATION_NUMBER))
-            ))
-            .asTable("latest_score");
+            .from(MEMBER_SCORE_HISTORY)
+            .asTable("ranked_scores");
+
+    var latestScores =
+            dsl.select(
+                            rankedScores.field(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER),
+                            rankedScores.field(MEMBER_SCORE_HISTORY.TOTAL_TECH_STACK_SCORES),
+                            rankedScores.field(MEMBER_SCORE_HISTORY.TOTAL_CERTIFICATE_SCORES))
+                    .from(rankedScores)
+                    .where(rankedScores.field("rn", Integer.class).eq(1))
+                    .asTable("latest_score");
 
     var topDevelopers = dsl
             .select(
@@ -159,7 +166,7 @@ public class MemberQueryRepository {
             .from(MEMBER)
             .leftJoin(latestScores)
             .on(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(latestScores.field(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER)))
-            .orderBy(DSL.field("total_score").desc())
+            .orderBy(DSL.field("total_score").desc().nullsLast())
             .limit(10)
             .fetch();
 
