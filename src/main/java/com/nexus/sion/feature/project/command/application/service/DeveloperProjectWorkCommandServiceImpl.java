@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
-import com.nexus.sion.feature.project.command.application.dto.FunctionScoreDTO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +14,8 @@ import com.nexus.sion.feature.member.command.domain.aggregate.enums.MemberRole;
 import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
 import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
+import com.nexus.sion.feature.project.command.application.dto.FunctionScore;
+import com.nexus.sion.feature.project.command.application.dto.FunctionScoreDTO;
 import com.nexus.sion.feature.project.command.application.dto.request.WorkHistoryAddRequestDto;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
@@ -26,6 +25,7 @@ import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkHis
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -49,40 +49,42 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
     work.approve(adminId);
 
-    //점수 산정 로직 코드
-    List<DeveloperProjectWorkHistory> histories = workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
+    // 점수 산정 로직 코드
+    List<DeveloperProjectWorkHistory> histories =
+        workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
 
-    List<Long> historyIds = histories.stream()
-            .map(DeveloperProjectWorkHistory::getId)
-            .toList();
+    List<Long> historyIds = histories.stream().map(DeveloperProjectWorkHistory::getId).toList();
 
-    List<DeveloperProjectWorkHistoryTechStack> techStacks = workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
+    List<DeveloperProjectWorkHistoryTechStack> techStacks =
+        workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
 
-    Map<Long, List<String>> historyIdToStackNamesMap = techStacks.stream()
-            .collect(Collectors.groupingBy(
+    Map<Long, List<String>> historyIdToStackNamesMap =
+        techStacks.stream()
+            .collect(
+                Collectors.groupingBy(
                     DeveloperProjectWorkHistoryTechStack::getDeveloperProjectWorkHistoryId,
-                    Collectors.mapping(DeveloperProjectWorkHistoryTechStack::getTechStackName, Collectors.toList())
-            ));
+                    Collectors.mapping(
+                        DeveloperProjectWorkHistoryTechStack::getTechStackName,
+                        Collectors.toList())));
 
-    List<FunctionScore> functionScores = histories.stream()
-            .map(history -> new FunctionScore(
-                    history.getFunctionName(),
-                    history.getFunctionDescription(),
-                    history.getFunctionType().name(),
-                    history.getDet(),
-                    history.getFtr(),
-                    historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())
-            ))
+    List<FunctionScore> functionScores =
+        histories.stream()
+            .map(
+                history ->
+                    new FunctionScore(
+                        history.getFunctionName(),
+                        history.getFunctionDescription(),
+                        history.getFunctionType().name(),
+                        history.getDet(),
+                        history.getFtr(),
+                        historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())))
             .toList();
 
-    FunctionScoreDTO dto = new FunctionScoreDTO(
-            work.getEmployeeIdentificationNumber(),
-            work.getProjectCode(),
-            functionScores
-    );
+    FunctionScoreDTO dto =
+        new FunctionScoreDTO(
+            work.getEmployeeIdentificationNumber(), work.getProjectCode(), functionScores);
 
     projectEvaluateCommandService.evaluateFunctionScores(dto);
-
 
     // ===== 승인 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber(); // 요청한 사원

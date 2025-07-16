@@ -30,14 +30,15 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
   @Transactional
   public List<UserCertificateHistoryResponse> getAllCertificates() {
     return userCertificateHistoryRepository.findAll().stream()
-            .map(UserCertificateHistoryResponse::fromEntity)
-            .toList();
+        .map(UserCertificateHistoryResponse::fromEntity)
+        .toList();
   }
 
   @Override
   @Transactional
   public void approveUserCertificate(Long id) {
-    UserCertificateHistory history = userCertificateHistoryRepository
+    UserCertificateHistory history =
+        userCertificateHistoryRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
 
@@ -45,19 +46,23 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
     userCertificateHistoryRepository.save(history);
 
     // 자격증 점수 가져오기
-    Certificate certificate = certificateRepository.findById(history.getCertificateName())
+    Certificate certificate =
+        certificateRepository
+            .findById(history.getCertificateName())
             .orElseThrow(() -> new BusinessException(ErrorCode.CERTIFICATE_NOT_FOUND));
     int certificateScore = certificate.getScore();
 
     String employeeId = history.getEmployeeIdentificationNumber();
 
     // 기존 최신 점수 이력 조회
-    MemberScoreHistory latest = memberScoreHistoryRepository
+    MemberScoreHistory latest =
+        memberScoreHistoryRepository
             .findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(employeeId)
             .orElseGet(() -> MemberScoreHistory.initial(employeeId));
 
     // 새로운 점수 이력 저장
-    MemberScoreHistory newHistory = MemberScoreHistory.builder()
+    MemberScoreHistory newHistory =
+        MemberScoreHistory.builder()
             .employeeIdentificationNumber(employeeId)
             .totalTechStackScores(latest.getTotalTechStackScores())
             .totalCertificateScores(latest.getTotalCertificateScores() + certificateScore)
@@ -69,7 +74,8 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
   @Override
   @Transactional
   public void rejectUserCertificate(Long id, CertificateRejectRequest request) {
-    UserCertificateHistory history = userCertificateHistoryRepository
+    UserCertificateHistory history =
+        userCertificateHistoryRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_CERTIFICATE_NOT_FOUND));
 

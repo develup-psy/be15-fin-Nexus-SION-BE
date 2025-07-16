@@ -31,9 +31,9 @@ public class MemberScoreHistory extends BaseTimeEntity {
 
   public static MemberScoreHistory initial(String employeeId) {
     return MemberScoreHistory.builder()
-            .employeeIdentificationNumber(employeeId)
-            .totalTechStackScores(0)
-            .totalCertificateScores(0)
-            .build();
+        .employeeIdentificationNumber(employeeId)
+        .totalTechStackScores(0)
+        .totalCertificateScores(0)
+        .build();
   }
 }
