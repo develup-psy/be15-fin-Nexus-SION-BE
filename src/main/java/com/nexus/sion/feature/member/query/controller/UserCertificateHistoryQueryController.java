@@ -3,8 +3,7 @@ package com.nexus.sion.feature.member.query.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.nexus.sion.common.dto.ApiResponse;
@@ -20,12 +19,12 @@ public class UserCertificateHistoryQueryController {
 
   private final UserCertificateHistoryQueryService userCertificateHistoryQueryService;
 
-  @GetMapping("/me")
-  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>> getMyCertificates(
-      @AuthenticationPrincipal UserDetails userDetails) {
-    String memberId = userDetails.getUsername();
+  @PreAuthorize("hasRole('ADMIN') or #employeeId == authentication.principal.username")
+  @GetMapping("/{employeeId}")
+  public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>>
+      getCertificatesByEmployeeId(@PathVariable String employeeId) {
     List<UserCertificateHistoryResponse> result =
-        userCertificateHistoryQueryService.getMyCertificates(memberId);
+        userCertificateHistoryQueryService.getMyCertificates(employeeId);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 }

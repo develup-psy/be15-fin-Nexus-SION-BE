@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.UUID;
-import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -93,7 +93,7 @@ public class DocumentS3Service {
 
       File tempFile = Files.createTempFile("resume_", ".pdf").toFile();
       try (InputStream inputStream = connection.getInputStream();
-           FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+          FileOutputStream outputStream = new FileOutputStream(tempFile)) {
         byte[] buffer = new byte[8192];
         int bytesRead;
         while ((bytesRead = inputStream.read(buffer)) != -1) {
