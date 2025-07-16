@@ -38,8 +38,7 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
   private final ModelMapper modelMapper;
   private final Map<String, ScheduledFuture<?>> pingFutures = new ConcurrentHashMap<>();
 
-
-    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 1시간
+  private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60; // 1시간
 
   @Override
   @Transactional
@@ -86,26 +85,24 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     emitter.onCompletion(
         () -> {
           sseEmitterRepository.deleteById(emitterId);
-            cancelPing(emitterId);
-          log.info("onCompletion - emitter 삭제: {}", emitterId);
+          cancelPing(emitterId);
+          log.info("onCompletion - emitter 정리 완료: {}", emitterId);
         });
 
     emitter.onTimeout(
         () -> {
-          sseEmitterRepository.deleteById(emitterId);
-            cancelPing(emitterId);
-          log.info("onTimeout - emitter 삭제: {}", emitterId);
+            log.info("onTimeout 발생: {}", emitterId);
+            emitter.complete();
         });
 
     emitter.onError(
         (e) -> {
-            cancelPing(emitterId);
-            if (e instanceof IOException) {
-                log.info("✅ onError - SSE 연결 끊김: {}", emitterId);
-            } else {
-                log.warn("⚠️ onError - 예기치 않은 오류: {}", emitterId, e);
-            }
-            emitter.complete();
+          if (e instanceof IOException) {
+            log.info("✅ onError - SSE 연결 끊김: {}", emitterId);
+          } else {
+            log.warn("⚠️ onError - 예기치 않은 오류: {}", emitterId, e);
+          }
+          emitter.complete();
         });
 
     sendToClient(
@@ -115,19 +112,21 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         "알림 서버 연결 성공. [memberId = " + employeeIdentificationNumber + "]");
 
     // ping 이벤트 30초마다 보내기
-      ScheduledFuture<?> pingFuture = scheduler.scheduleAtFixedRate(
-              () -> {
-                  try {
-                      emitter.send(SseEmitter.event().name("ping").data("ping"));
-                  } catch (IOException | IllegalStateException e) {
-                      sseEmitterRepository.deleteById(emitterId);
-                      cancelPing(emitterId);
-                      log.info("✅ ping 전송 실패 - emitter 삭제: {}", emitterId);
-                  }
-              },
-              30, 30, TimeUnit.SECONDS);
+    ScheduledFuture<?> pingFuture =
+        scheduler.scheduleAtFixedRate(
+            () -> {
+              try {
+                emitter.send(SseEmitter.event().name("ping").data("ping"));
+              } catch (IOException | IllegalStateException e) {
+                log.info("✅ ping 전송 실패 - emitter 정리 시작: {}", emitterId);
+                emitter.complete();
+              }
+            },
+            30,
+            30,
+            TimeUnit.SECONDS);
 
-      pingFutures.put(emitterId, pingFuture);
+    pingFutures.put(emitterId, pingFuture);
 
     // 기존 last event 복구 로직
     if (!lastEventId.isEmpty()) {
@@ -233,26 +232,24 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     try {
       emitter.send(SseEmitter.event().id(emitterId).name(name).data(data));
     } catch (IOException e) {
-        sseEmitterRepository.deleteById(emitterId);
-        cancelPing(emitterId);
-        log.info("✅ SSE 연결 끊김: emitterId={}, reason={}", emitterId, e.getMessage());
+      log.info("✅ SSE 연결 끊김으로 emitter 정리 시작: emitterId={}, reason={}", emitterId, e.getMessage());
+      emitter.complete();
     } catch (Exception e) {
-        sseEmitterRepository.deleteById(emitterId);
-        cancelPing(emitterId);
-        log.error("🚨 SSE 예기치 않은 오류: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      log.error("🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      emitter.complete();
     }
   }
 
-    private void cancelPing(String emitterId) {
-        ScheduledFuture<?> future = pingFutures.remove(emitterId);
-        if (future != null) {
-            future.cancel(true);
-        }
+  private void cancelPing(String emitterId) {
+    ScheduledFuture<?> future = pingFutures.remove(emitterId);
+    if (future != null) {
+      future.cancel(true);
     }
+  }
 
-    @PreDestroy
-    public void shutdown() {
-        scheduler.shutdown();
-        log.info("✅ SSE Ping Scheduler 종료");
-    }
+  @PreDestroy
+  public void shutdown() {
+    scheduler.shutdown();
+    log.info("✅ SSE Ping Scheduler 종료");
+  }
 }
