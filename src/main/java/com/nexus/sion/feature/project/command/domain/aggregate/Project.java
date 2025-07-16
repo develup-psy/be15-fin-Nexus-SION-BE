@@ -48,7 +48,7 @@ public class Project extends BaseTimeEntity {
   @Column(nullable = false, length = 20)
   private ProjectStatus status;
 
-  @Column(name = "number_of_members")
+  @Column(name = "number_of_members", nullable = false)
   private Integer numberOfMembers;
 
   @Column(name = "deleted_at")

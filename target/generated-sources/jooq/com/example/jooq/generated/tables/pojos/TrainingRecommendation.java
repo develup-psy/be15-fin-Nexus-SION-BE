@@ -13,32 +13,48 @@ public class TrainingRecommendation implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Long trainingRecommendationId;
-  private String employeeIdentificationNumber;
-  private Long trainingId;
-  private String recommendationReason;
+  private String trainingName;
+  private String trainingDescription;
+  private String trainingCategory;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private String imageUrl;
+  private String videoUrl;
+  private String employeeIdentificationNumber;
 
   public TrainingRecommendation() {}
 
   public TrainingRecommendation(TrainingRecommendation value) {
     this.trainingRecommendationId = value.trainingRecommendationId;
-    this.employeeIdentificationNumber = value.employeeIdentificationNumber;
-    this.trainingId = value.trainingId;
-    this.recommendationReason = value.recommendationReason;
+    this.trainingName = value.trainingName;
+    this.trainingDescription = value.trainingDescription;
+    this.trainingCategory = value.trainingCategory;
     this.createdAt = value.createdAt;
+    this.updatedAt = value.updatedAt;
+    this.imageUrl = value.imageUrl;
+    this.videoUrl = value.videoUrl;
+    this.employeeIdentificationNumber = value.employeeIdentificationNumber;
   }
 
   public TrainingRecommendation(
       Long trainingRecommendationId,
-      String employeeIdentificationNumber,
-      Long trainingId,
-      String recommendationReason,
-      LocalDateTime createdAt) {
+      String trainingName,
+      String trainingDescription,
+      String trainingCategory,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt,
+      String imageUrl,
+      String videoUrl,
+      String employeeIdentificationNumber) {
     this.trainingRecommendationId = trainingRecommendationId;
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
-    this.trainingId = trainingId;
-    this.recommendationReason = recommendationReason;
+    this.trainingName = trainingName;
+    this.trainingDescription = trainingDescription;
+    this.trainingCategory = trainingCategory;
     this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.imageUrl = imageUrl;
+    this.videoUrl = videoUrl;
+    this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
   /** Getter for <code>sion.training_recommendation.training_recommendation_id</code>. */
@@ -51,34 +67,34 @@ public class TrainingRecommendation implements Serializable {
     this.trainingRecommendationId = trainingRecommendationId;
   }
 
-  /** Getter for <code>sion.training_recommendation.employee_identification_number</code>. */
-  public String getEmployeeIdentificationNumber() {
-    return this.employeeIdentificationNumber;
+  /** Getter for <code>sion.training_recommendation.training_name</code>. */
+  public String getTrainingName() {
+    return this.trainingName;
   }
 
-  /** Setter for <code>sion.training_recommendation.employee_identification_number</code>. */
-  public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
+  /** Setter for <code>sion.training_recommendation.training_name</code>. */
+  public void setTrainingName(String trainingName) {
+    this.trainingName = trainingName;
   }
 
-  /** Getter for <code>sion.training_recommendation.training_id</code>. */
-  public Long getTrainingId() {
-    return this.trainingId;
+  /** Getter for <code>sion.training_recommendation.training_description</code>. */
+  public String getTrainingDescription() {
+    return this.trainingDescription;
   }
 
-  /** Setter for <code>sion.training_recommendation.training_id</code>. */
-  public void setTrainingId(Long trainingId) {
-    this.trainingId = trainingId;
+  /** Setter for <code>sion.training_recommendation.training_description</code>. */
+  public void setTrainingDescription(String trainingDescription) {
+    this.trainingDescription = trainingDescription;
   }
 
-  /** Getter for <code>sion.training_recommendation.recommendation_reason</code>. */
-  public String getRecommendationReason() {
-    return this.recommendationReason;
+  /** Getter for <code>sion.training_recommendation.training_category</code>. */
+  public String getTrainingCategory() {
+    return this.trainingCategory;
   }
 
-  /** Setter for <code>sion.training_recommendation.recommendation_reason</code>. */
-  public void setRecommendationReason(String recommendationReason) {
-    this.recommendationReason = recommendationReason;
+  /** Setter for <code>sion.training_recommendation.training_category</code>. */
+  public void setTrainingCategory(String trainingCategory) {
+    this.trainingCategory = trainingCategory;
   }
 
   /** Getter for <code>sion.training_recommendation.created_at</code>. */
@@ -91,6 +107,46 @@ public class TrainingRecommendation implements Serializable {
     this.createdAt = createdAt;
   }
 
+  /** Getter for <code>sion.training_recommendation.updated_at</code>. */
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  /** Setter for <code>sion.training_recommendation.updated_at</code>. */
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  /** Getter for <code>sion.training_recommendation.image_url</code>. */
+  public String getImageUrl() {
+    return this.imageUrl;
+  }
+
+  /** Setter for <code>sion.training_recommendation.image_url</code>. */
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  /** Getter for <code>sion.training_recommendation.video_url</code>. */
+  public String getVideoUrl() {
+    return this.videoUrl;
+  }
+
+  /** Setter for <code>sion.training_recommendation.video_url</code>. */
+  public void setVideoUrl(String videoUrl) {
+    this.videoUrl = videoUrl;
+  }
+
+  /** Getter for <code>sion.training_recommendation.employee_identification_number</code>. */
+  public String getEmployeeIdentificationNumber() {
+    return this.employeeIdentificationNumber;
+  }
+
+  /** Setter for <code>sion.training_recommendation.employee_identification_number</code>. */
+  public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
+    this.employeeIdentificationNumber = employeeIdentificationNumber;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -100,19 +156,31 @@ public class TrainingRecommendation implements Serializable {
     if (this.trainingRecommendationId == null) {
       if (other.trainingRecommendationId != null) return false;
     } else if (!this.trainingRecommendationId.equals(other.trainingRecommendationId)) return false;
+    if (this.trainingName == null) {
+      if (other.trainingName != null) return false;
+    } else if (!this.trainingName.equals(other.trainingName)) return false;
+    if (this.trainingDescription == null) {
+      if (other.trainingDescription != null) return false;
+    } else if (!this.trainingDescription.equals(other.trainingDescription)) return false;
+    if (this.trainingCategory == null) {
+      if (other.trainingCategory != null) return false;
+    } else if (!this.trainingCategory.equals(other.trainingCategory)) return false;
+    if (this.createdAt == null) {
+      if (other.createdAt != null) return false;
+    } else if (!this.createdAt.equals(other.createdAt)) return false;
+    if (this.updatedAt == null) {
+      if (other.updatedAt != null) return false;
+    } else if (!this.updatedAt.equals(other.updatedAt)) return false;
+    if (this.imageUrl == null) {
+      if (other.imageUrl != null) return false;
+    } else if (!this.imageUrl.equals(other.imageUrl)) return false;
+    if (this.videoUrl == null) {
+      if (other.videoUrl != null) return false;
+    } else if (!this.videoUrl.equals(other.videoUrl)) return false;
     if (this.employeeIdentificationNumber == null) {
       if (other.employeeIdentificationNumber != null) return false;
     } else if (!this.employeeIdentificationNumber.equals(other.employeeIdentificationNumber))
       return false;
-    if (this.trainingId == null) {
-      if (other.trainingId != null) return false;
-    } else if (!this.trainingId.equals(other.trainingId)) return false;
-    if (this.recommendationReason == null) {
-      if (other.recommendationReason != null) return false;
-    } else if (!this.recommendationReason.equals(other.recommendationReason)) return false;
-    if (this.createdAt == null) {
-      if (other.createdAt != null) return false;
-    } else if (!this.createdAt.equals(other.createdAt)) return false;
     return true;
   }
 
@@ -125,16 +193,21 @@ public class TrainingRecommendation implements Serializable {
             + ((this.trainingRecommendationId == null)
                 ? 0
                 : this.trainingRecommendationId.hashCode());
+    result = prime * result + ((this.trainingName == null) ? 0 : this.trainingName.hashCode());
+    result =
+        prime * result
+            + ((this.trainingDescription == null) ? 0 : this.trainingDescription.hashCode());
+    result =
+        prime * result + ((this.trainingCategory == null) ? 0 : this.trainingCategory.hashCode());
+    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
+    result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
+    result = prime * result + ((this.imageUrl == null) ? 0 : this.imageUrl.hashCode());
+    result = prime * result + ((this.videoUrl == null) ? 0 : this.videoUrl.hashCode());
     result =
         prime * result
             + ((this.employeeIdentificationNumber == null)
                 ? 0
                 : this.employeeIdentificationNumber.hashCode());
-    result = prime * result + ((this.trainingId == null) ? 0 : this.trainingId.hashCode());
-    result =
-        prime * result
-            + ((this.recommendationReason == null) ? 0 : this.recommendationReason.hashCode());
-    result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     return result;
   }
 
@@ -143,10 +216,14 @@ public class TrainingRecommendation implements Serializable {
     StringBuilder sb = new StringBuilder("TrainingRecommendation (");
 
     sb.append(trainingRecommendationId);
-    sb.append(", ").append(employeeIdentificationNumber);
-    sb.append(", ").append(trainingId);
-    sb.append(", ").append(recommendationReason);
+    sb.append(", ").append(trainingName);
+    sb.append(", ").append(trainingDescription);
+    sb.append(", ").append(trainingCategory);
     sb.append(", ").append(createdAt);
+    sb.append(", ").append(updatedAt);
+    sb.append(", ").append(imageUrl);
+    sb.append(", ").append(videoUrl);
+    sb.append(", ").append(employeeIdentificationNumber);
 
     sb.append(")");
     return sb.toString();

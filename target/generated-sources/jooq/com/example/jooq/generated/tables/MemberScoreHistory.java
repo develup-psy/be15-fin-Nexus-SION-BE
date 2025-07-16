@@ -4,6 +4,8 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -141,6 +143,20 @@ public class MemberScoreHistory extends TableImpl<MemberScoreHistoryRecord> {
   @Override
   public UniqueKey<MemberScoreHistoryRecord> getPrimaryKey() {
     return Keys.KEY_MEMBER_SCORE_HISTORY_PRIMARY;
+  }
+
+  @Override
+  public List<ForeignKey<MemberScoreHistoryRecord, ?>> getReferences() {
+    return Arrays.asList(Keys.FK_MSH_MEMBER);
+  }
+
+  private transient Member _member;
+
+  /** Get the implicit join path to the <code>sion.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_MSH_MEMBER);
+
+    return _member;
   }
 
   @Override

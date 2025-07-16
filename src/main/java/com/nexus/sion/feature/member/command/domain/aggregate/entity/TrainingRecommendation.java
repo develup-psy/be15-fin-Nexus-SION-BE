@@ -18,8 +18,9 @@ import lombok.*;
 public class TrainingRecommendation {
 
   @Id
-  @Column(name = "training_id")
-  private Long trainingId;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "training_recommendation_id")
+  private Long trainingRecommendationId;
 
   @Column(name = "training_name", nullable = false, length = 30)
   private String trainingName;
@@ -35,6 +36,9 @@ public class TrainingRecommendation {
 
   @Column(name = "video_url", nullable = false, columnDefinition = "TEXT")
   private String videoUrl;
+
+  @Column(name = "employee_identification_number", nullable = false, length = 30)
+  private String employeeIdentificationNumber;
 
   @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)

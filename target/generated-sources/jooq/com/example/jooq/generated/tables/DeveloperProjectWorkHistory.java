@@ -4,6 +4,8 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -167,6 +169,21 @@ public class DeveloperProjectWorkHistory extends TableImpl<DeveloperProjectWorkH
   @Override
   public UniqueKey<DeveloperProjectWorkHistoryRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_PROJECT_WORK_HISTORY_PRIMARY;
+  }
+
+  @Override
+  public List<ForeignKey<DeveloperProjectWorkHistoryRecord, ?>> getReferences() {
+    return Arrays.asList(Keys.FK_DPWH_DPWORK);
+  }
+
+  private transient DeveloperProjectWork _developerProjectWork;
+
+  /** Get the implicit join path to the <code>sion.developer_project_work</code> table. */
+  public DeveloperProjectWork developerProjectWork() {
+    if (_developerProjectWork == null)
+      _developerProjectWork = new DeveloperProjectWork(this, Keys.FK_DPWH_DPWORK);
+
+    return _developerProjectWork;
   }
 
   @Override

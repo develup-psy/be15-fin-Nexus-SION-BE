@@ -38,7 +38,6 @@ import com.example.jooq.generated.tables.Squad;
 import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
-import com.example.jooq.generated.tables.TrainingProgram;
 import com.example.jooq.generated.tables.TrainingRecommendation;
 import com.example.jooq.generated.tables.UserCertificateHistory;
 
@@ -140,9 +139,6 @@ public class Sion extends SchemaImpl {
   /** The table <code>sion.tech_stack</code>. */
   public final TechStack TECH_STACK = TechStack.TECH_STACK;
 
-  /** The table <code>sion.training_program</code>. */
-  public final TrainingProgram TRAINING_PROGRAM = TrainingProgram.TRAINING_PROGRAM;
-
   /** The table <code>sion.training_recommendation</code>. */
   public final TrainingRecommendation TRAINING_RECOMMENDATION =
       TrainingRecommendation.TRAINING_RECOMMENDATION;
@@ -192,7 +188,6 @@ public class Sion extends SchemaImpl {
         SquadComment.SQUAD_COMMENT,
         SquadEmployee.SQUAD_EMPLOYEE,
         TechStack.TECH_STACK,
-        TrainingProgram.TRAINING_PROGRAM,
         TrainingRecommendation.TRAINING_RECOMMENDATION,
         UserCertificateHistory.USER_CERTIFICATE_HISTORY);
   }
