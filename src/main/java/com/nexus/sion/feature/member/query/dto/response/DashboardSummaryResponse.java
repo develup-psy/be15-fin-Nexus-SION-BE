@@ -2,6 +2,7 @@ package com.nexus.sion.feature.member.query.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import lombok.Builder;
 @Builder
 public record DashboardSummaryResponse(
     List<PendingProject> pendingProjects,
-    List<AnalyzingProject> analyzingProjects,
+    List<PendingApprovalProject> pendingApprovalProjects,
     List<TopDeveloper> topDevelopers,
     List<FreelancerSummary> freelancerTop5,
     DeveloperAvailability developerAvailability,
@@ -25,14 +26,22 @@ public record DashboardSummaryResponse(
       String domainName,
       LocalDate startDate) {}
 
-  public record AnalyzingProject(String id, String name, LocalDate analysisStartTime) {}
+  @Builder
+  public record PendingApprovalProject(
+          Long id,
+          String projectCode,
+          String projectTitle,
+          String developerId,
+          String developerName,
+          LocalDateTime createdAt
+  ) {}
 
   @Builder
   public record TopDeveloper(
       String id,
       String name,
       String grade,
-      BigDecimal productivity,
+      Integer totalScores,
       List<String> techStacks,
       String profileUrl) {}
 

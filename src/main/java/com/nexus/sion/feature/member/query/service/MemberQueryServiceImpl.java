@@ -155,7 +155,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
   public DashboardSummaryResponse getDashboardSummary() {
     return new DashboardSummaryResponse(
         memberQueryRepository.findPendingProjects(),
-        memberQueryRepository.findAnalyzingProjects(),
+        memberQueryRepository.findPendingApprovalProjects(),
         memberQueryRepository.fetchTopDevelopers(),
         memberQueryRepository.fetchTopFreelancers(),
         memberQueryRepository.fetchDeveloperAvailability(),
