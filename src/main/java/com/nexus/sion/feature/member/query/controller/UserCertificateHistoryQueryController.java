@@ -19,7 +19,7 @@ public class UserCertificateHistoryQueryController {
 
   private final UserCertificateHistoryQueryService userCertificateHistoryQueryService;
 
-  @PreAuthorize("hasRole('ADMIN') or #employeeId == authentication.principal.username")
+  @PreAuthorize("hasAuthority('ADMIN') or #employeeId == authentication.principal.username")
   @GetMapping("/{employeeId}")
   public ResponseEntity<ApiResponse<List<UserCertificateHistoryResponse>>>
       getCertificatesByEmployeeId(@PathVariable String employeeId) {
