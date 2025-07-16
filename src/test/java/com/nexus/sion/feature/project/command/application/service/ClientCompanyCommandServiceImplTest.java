@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,8 @@ class ClientCompanyCommandServiceImplTest {
   @Mock private ModelMapper modelMapper;
 
   @Mock private ClientCompanyRepository clientCompanyRepository;
+
+  @Mock private ProjectRepository projectRepository;
 
   @Test
   void registerClientCompany_success() {
@@ -289,5 +292,21 @@ class ClientCompanyCommandServiceImplTest {
     assertEquals(ErrorCode.CLIENT_COMPANY_NOT_FOUND, exception.getErrorCode());
 
     verify(clientCompanyRepository, never()).deleteById(any());
+  }
+
+  @Test
+  void removeClientCompany_연결된_프로젝트가_있으면_예외발생() {
+    // given
+    String clientCode = "고객사코드";
+    when(clientCompanyRepository.existsById(clientCode)).thenReturn(true);
+    when(projectRepository.existsByClientCode(clientCode)).thenReturn(true);
+
+    // when & then
+    BusinessException exception =
+            assertThrows(
+                    BusinessException.class,
+                    () -> service.deleteClientCompany(clientCode));
+
+    assertEquals(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT, exception.getErrorCode());
   }
 }
