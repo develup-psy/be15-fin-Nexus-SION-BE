@@ -100,9 +100,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void updateProject(ProjectUpdateRequest request) {
     Project project =
-            projectCommandRepository
-                    .findById(request.getProjectCode())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        projectCommandRepository
+            .findById(request.getProjectCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
@@ -118,7 +118,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
     projectCommandRepository.save(project);
   }
-
 
   private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
     request
@@ -163,19 +162,23 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
-    Project project = projectCommandRepository.findById(projectCode)
+    Project project =
+        projectCommandRepository
+            .findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     if (status == Project.ProjectStatus.COMPLETE) {
       List<DeveloperProjectWork> works =
-              developerProjectWorkRepository.findByProjectCode(projectCode);
+          developerProjectWorkRepository.findByProjectCode(projectCode);
 
       if (works.isEmpty()) {
         throw new BusinessException(ErrorCode.WORK_NOT_FOUND);
       }
 
-      boolean allApproved = works.stream()
-              .allMatch(work -> work.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
+      boolean allApproved =
+          works.stream()
+              .allMatch(
+                  work -> work.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
 
       if (!allApproved) {
         throw new BusinessException(ErrorCode.PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED);

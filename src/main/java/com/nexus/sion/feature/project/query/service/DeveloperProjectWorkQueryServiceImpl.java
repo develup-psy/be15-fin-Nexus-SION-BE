@@ -4,15 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
-import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
 import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
+import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.ProjectInfoDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
@@ -72,6 +69,6 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
       throw new IllegalArgumentException("projectCode는 필수 입력값입니다.");
     }
 
-      return developerProjectWorkQueryRepository.findDeveloperApprovalsByProjectCode(projectCode);
+    return developerProjectWorkQueryRepository.findDeveloperApprovalsByProjectCode(projectCode);
   }
 }
