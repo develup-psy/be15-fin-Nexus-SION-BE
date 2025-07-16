@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import lombok.*;
 
 @Entity
-@Table(name = "training_program")
+@Table(name = "training_recommendation")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
