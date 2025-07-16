@@ -558,8 +558,8 @@ public class MemberQueryRepository {
 
   public Optional<String> findProfileImageUrlById(String employeeId) {
     return dsl.select(MEMBER.PROFILE_IMAGE_URL)
-            .from(MEMBER)
-            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
-            .fetchOptionalInto(String.class);
+        .from(MEMBER)
+        .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))
+        .fetchOptionalInto(String.class);
   }
 }
