@@ -100,23 +100,23 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
     return (LocalDateTime) get(6);
   }
 
-  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
-  public void setEmployeeIdentificationNumber(String value) {
-    set(7, value);
-  }
-
-  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
-  public String getEmployeeIdentificationNumber() {
-    return (String) get(7);
-  }
-
   /** Setter for <code>sion.user_certificate_history.certificate_name</code>. */
   public void setCertificateName(String value) {
-    set(8, value);
+    set(7, value);
   }
 
   /** Getter for <code>sion.user_certificate_history.certificate_name</code>. */
   public String getCertificateName() {
+    return (String) get(7);
+  }
+
+  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  public void setEmployeeIdentificationNumber(String value) {
+    set(8, value);
+  }
+
+  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  public String getEmployeeIdentificationNumber() {
     return (String) get(8);
   }
 
@@ -200,12 +200,12 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
 
   @Override
   public Field<String> field8() {
-    return UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER;
+    return UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME;
   }
 
   @Override
   public Field<String> field9() {
-    return UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME;
+    return UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER;
   }
 
   @Override
@@ -245,12 +245,12 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
 
   @Override
   public String component8() {
-    return getEmployeeIdentificationNumber();
+    return getCertificateName();
   }
 
   @Override
   public String component9() {
-    return getCertificateName();
+    return getEmployeeIdentificationNumber();
   }
 
   @Override
@@ -290,12 +290,12 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
 
   @Override
   public String value8() {
-    return getEmployeeIdentificationNumber();
+    return getCertificateName();
   }
 
   @Override
   public String value9() {
-    return getCertificateName();
+    return getEmployeeIdentificationNumber();
   }
 
   @Override
@@ -342,13 +342,13 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
 
   @Override
   public UserCertificateHistoryRecord value8(String value) {
-    setEmployeeIdentificationNumber(value);
+    setCertificateName(value);
     return this;
   }
 
   @Override
   public UserCertificateHistoryRecord value9(String value) {
-    setCertificateName(value);
+    setEmployeeIdentificationNumber(value);
     return this;
   }
 
@@ -393,8 +393,8 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
       String rejectedReason,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
-      String employeeIdentificationNumber,
-      String certificateName) {
+      String certificateName,
+      String employeeIdentificationNumber) {
     super(UserCertificateHistory.USER_CERTIFICATE_HISTORY);
 
     setUserCertificateHistoryId(userCertificateHistoryId);
@@ -404,8 +404,8 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
     setRejectedReason(rejectedReason);
     setCreatedAt(createdAt);
     setUpdatedAt(updatedAt);
-    setEmployeeIdentificationNumber(employeeIdentificationNumber);
     setCertificateName(certificateName);
+    setEmployeeIdentificationNumber(employeeIdentificationNumber);
     resetChangedOnNotNull();
   }
 
@@ -422,8 +422,8 @@ public class UserCertificateHistoryRecord extends UpdatableRecordImpl<UserCertif
       setRejectedReason(value.getRejectedReason());
       setCreatedAt(value.getCreatedAt());
       setUpdatedAt(value.getUpdatedAt());
-      setEmployeeIdentificationNumber(value.getEmployeeIdentificationNumber());
       setCertificateName(value.getCertificateName());
+      setEmployeeIdentificationNumber(value.getEmployeeIdentificationNumber());
       resetChangedOnNotNull();
     }
   }

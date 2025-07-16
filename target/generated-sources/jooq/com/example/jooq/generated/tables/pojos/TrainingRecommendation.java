@@ -20,7 +20,6 @@ public class TrainingRecommendation implements Serializable {
   private LocalDateTime updatedAt;
   private String imageUrl;
   private String videoUrl;
-  private String employeeIdentificationNumber;
 
   public TrainingRecommendation() {}
 
@@ -33,7 +32,6 @@ public class TrainingRecommendation implements Serializable {
     this.updatedAt = value.updatedAt;
     this.imageUrl = value.imageUrl;
     this.videoUrl = value.videoUrl;
-    this.employeeIdentificationNumber = value.employeeIdentificationNumber;
   }
 
   public TrainingRecommendation(
@@ -44,8 +42,7 @@ public class TrainingRecommendation implements Serializable {
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
       String imageUrl,
-      String videoUrl,
-      String employeeIdentificationNumber) {
+      String videoUrl) {
     this.trainingRecommendationId = trainingRecommendationId;
     this.trainingName = trainingName;
     this.trainingDescription = trainingDescription;
@@ -54,7 +51,6 @@ public class TrainingRecommendation implements Serializable {
     this.updatedAt = updatedAt;
     this.imageUrl = imageUrl;
     this.videoUrl = videoUrl;
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
   /** Getter for <code>sion.training_recommendation.training_recommendation_id</code>. */
@@ -137,16 +133,6 @@ public class TrainingRecommendation implements Serializable {
     this.videoUrl = videoUrl;
   }
 
-  /** Getter for <code>sion.training_recommendation.employee_identification_number</code>. */
-  public String getEmployeeIdentificationNumber() {
-    return this.employeeIdentificationNumber;
-  }
-
-  /** Setter for <code>sion.training_recommendation.employee_identification_number</code>. */
-  public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
-  }
-
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -177,10 +163,6 @@ public class TrainingRecommendation implements Serializable {
     if (this.videoUrl == null) {
       if (other.videoUrl != null) return false;
     } else if (!this.videoUrl.equals(other.videoUrl)) return false;
-    if (this.employeeIdentificationNumber == null) {
-      if (other.employeeIdentificationNumber != null) return false;
-    } else if (!this.employeeIdentificationNumber.equals(other.employeeIdentificationNumber))
-      return false;
     return true;
   }
 
@@ -203,11 +185,6 @@ public class TrainingRecommendation implements Serializable {
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     result = prime * result + ((this.imageUrl == null) ? 0 : this.imageUrl.hashCode());
     result = prime * result + ((this.videoUrl == null) ? 0 : this.videoUrl.hashCode());
-    result =
-        prime * result
-            + ((this.employeeIdentificationNumber == null)
-                ? 0
-                : this.employeeIdentificationNumber.hashCode());
     return result;
   }
 
@@ -223,7 +200,6 @@ public class TrainingRecommendation implements Serializable {
     sb.append(", ").append(updatedAt);
     sb.append(", ").append(imageUrl);
     sb.append(", ").append(videoUrl);
-    sb.append(", ").append(employeeIdentificationNumber);
 
     sb.append(")");
     return sb.toString();

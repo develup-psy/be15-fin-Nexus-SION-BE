@@ -14,11 +14,11 @@ public enum ProjectStatus implements EnumType {
 
   IN_PROGRESS("IN_PROGRESS"),
 
-  EVALUATION("EVALUATION"),
-
   COMPLETE("COMPLETE"),
 
-  INCOMPLETE("INCOMPLETE");
+  INCOMPLETE("INCOMPLETE"),
+
+  EVALUATION("EVALUATION");
 
   private final String literal;
 

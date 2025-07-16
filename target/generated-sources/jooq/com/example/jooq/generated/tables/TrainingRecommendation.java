@@ -4,18 +4,16 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function9;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -94,14 +92,6 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   public final TableField<TrainingRecommendationRecord, String> VIDEO_URL =
       createField(DSL.name("video_url"), SQLDataType.CLOB.nullable(false), this, "");
 
-  /** The column <code>sion.training_recommendation.employee_identification_number</code>. */
-  public final TableField<TrainingRecommendationRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
-      createField(
-          DSL.name("employee_identification_number"),
-          SQLDataType.VARCHAR(30).nullable(false),
-          this,
-          "");
-
   private TrainingRecommendation(Name alias, Table<TrainingRecommendationRecord> aliased) {
     this(alias, aliased, null);
   }
@@ -147,20 +137,6 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   }
 
   @Override
-  public List<ForeignKey<TrainingRecommendationRecord, ?>> getReferences() {
-    return Arrays.asList(Keys.FK_TR_MEMBER);
-  }
-
-  private transient Member _member;
-
-  /** Get the implicit join path to the <code>sion.member</code> table. */
-  public Member member() {
-    if (_member == null) _member = new Member(this, Keys.FK_TR_MEMBER);
-
-    return _member;
-  }
-
-  @Override
   public TrainingRecommendation as(String alias) {
     return new TrainingRecommendation(DSL.name(alias), this);
   }
@@ -194,25 +170,24 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   }
 
   // -------------------------------------------------------------------------
-  // Row9 type methods
+  // Row8 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row9<Long, String, String, String, LocalDateTime, LocalDateTime, String, String, String>
+  public Row8<Long, String, String, String, LocalDateTime, LocalDateTime, String, String>
       fieldsRow() {
-    return (Row9) super.fieldsRow();
+    return (Row8) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function9<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
-              ? super String,
               ? super String,
               ? super String,
               ? extends U>
@@ -223,14 +198,13 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function9<
+      Function8<
               ? super Long,
               ? super String,
               ? super String,
               ? super String,
               ? super LocalDateTime,
               ? super LocalDateTime,
-              ? super String,
               ? super String,
               ? super String,
               ? extends U>

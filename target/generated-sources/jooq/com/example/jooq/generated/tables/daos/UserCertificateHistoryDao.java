@@ -189,6 +189,24 @@ public class UserCertificateHistoryDao
   }
 
   /**
+   * Fetch records that have <code>certificate_name BETWEEN lowerInclusive AND
+   * upperInclusive</code>
+   */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchRangeOfCertificateName(String lowerInclusive, String upperInclusive) {
+    return fetchRange(
+        UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME,
+        lowerInclusive,
+        upperInclusive);
+  }
+
+  /** Fetch records that have <code>certificate_name IN (values)</code> */
+  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
+      fetchByCertificateName(String... values) {
+    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME, values);
+  }
+
+  /**
    * Fetch records that have <code>employee_identification_number BETWEEN
    * lowerInclusive AND upperInclusive</code>
    */
@@ -208,23 +226,5 @@ public class UserCertificateHistoryDao
       fetchByEmployeeIdentificationNumber(String... values) {
     return fetch(
         UserCertificateHistory.USER_CERTIFICATE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER, values);
-  }
-
-  /**
-   * Fetch records that have <code>certificate_name BETWEEN lowerInclusive AND
-   * upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
-      fetchRangeOfCertificateName(String lowerInclusive, String upperInclusive) {
-    return fetchRange(
-        UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /** Fetch records that have <code>certificate_name IN (values)</code> */
-  public List<com.example.jooq.generated.tables.pojos.UserCertificateHistory>
-      fetchByCertificateName(String... values) {
-    return fetch(UserCertificateHistory.USER_CERTIFICATE_HISTORY.CERTIFICATE_NAME, values);
   }
 }

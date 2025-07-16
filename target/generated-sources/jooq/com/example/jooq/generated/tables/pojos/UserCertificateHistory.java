@@ -21,8 +21,8 @@ public class UserCertificateHistory implements Serializable {
   private String rejectedReason;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private String employeeIdentificationNumber;
   private String certificateName;
+  private String employeeIdentificationNumber;
 
   public UserCertificateHistory() {}
 
@@ -34,8 +34,8 @@ public class UserCertificateHistory implements Serializable {
     this.rejectedReason = value.rejectedReason;
     this.createdAt = value.createdAt;
     this.updatedAt = value.updatedAt;
-    this.employeeIdentificationNumber = value.employeeIdentificationNumber;
     this.certificateName = value.certificateName;
+    this.employeeIdentificationNumber = value.employeeIdentificationNumber;
   }
 
   public UserCertificateHistory(
@@ -46,8 +46,8 @@ public class UserCertificateHistory implements Serializable {
       String rejectedReason,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
-      String employeeIdentificationNumber,
-      String certificateName) {
+      String certificateName,
+      String employeeIdentificationNumber) {
     this.userCertificateHistoryId = userCertificateHistoryId;
     this.issueDate = issueDate;
     this.pdfFileUrl = pdfFileUrl;
@@ -55,8 +55,8 @@ public class UserCertificateHistory implements Serializable {
     this.rejectedReason = rejectedReason;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
     this.certificateName = certificateName;
+    this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
   /** Getter for <code>sion.user_certificate_history.user_certificate_history_id</code>. */
@@ -129,16 +129,6 @@ public class UserCertificateHistory implements Serializable {
     this.updatedAt = updatedAt;
   }
 
-  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
-  public String getEmployeeIdentificationNumber() {
-    return this.employeeIdentificationNumber;
-  }
-
-  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
-  public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
-    this.employeeIdentificationNumber = employeeIdentificationNumber;
-  }
-
   /** Getter for <code>sion.user_certificate_history.certificate_name</code>. */
   public String getCertificateName() {
     return this.certificateName;
@@ -147,6 +137,16 @@ public class UserCertificateHistory implements Serializable {
   /** Setter for <code>sion.user_certificate_history.certificate_name</code>. */
   public void setCertificateName(String certificateName) {
     this.certificateName = certificateName;
+  }
+
+  /** Getter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  public String getEmployeeIdentificationNumber() {
+    return this.employeeIdentificationNumber;
+  }
+
+  /** Setter for <code>sion.user_certificate_history.employee_identification_number</code>. */
+  public void setEmployeeIdentificationNumber(String employeeIdentificationNumber) {
+    this.employeeIdentificationNumber = employeeIdentificationNumber;
   }
 
   @Override
@@ -176,13 +176,13 @@ public class UserCertificateHistory implements Serializable {
     if (this.updatedAt == null) {
       if (other.updatedAt != null) return false;
     } else if (!this.updatedAt.equals(other.updatedAt)) return false;
+    if (this.certificateName == null) {
+      if (other.certificateName != null) return false;
+    } else if (!this.certificateName.equals(other.certificateName)) return false;
     if (this.employeeIdentificationNumber == null) {
       if (other.employeeIdentificationNumber != null) return false;
     } else if (!this.employeeIdentificationNumber.equals(other.employeeIdentificationNumber))
       return false;
-    if (this.certificateName == null) {
-      if (other.certificateName != null) return false;
-    } else if (!this.certificateName.equals(other.certificateName)) return false;
     return true;
   }
 
@@ -203,12 +203,12 @@ public class UserCertificateHistory implements Serializable {
     result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
     result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
     result =
+        prime * result + ((this.certificateName == null) ? 0 : this.certificateName.hashCode());
+    result =
         prime * result
             + ((this.employeeIdentificationNumber == null)
                 ? 0
                 : this.employeeIdentificationNumber.hashCode());
-    result =
-        prime * result + ((this.certificateName == null) ? 0 : this.certificateName.hashCode());
     return result;
   }
 
@@ -223,8 +223,8 @@ public class UserCertificateHistory implements Serializable {
     sb.append(", ").append(rejectedReason);
     sb.append(", ").append(createdAt);
     sb.append(", ").append(updatedAt);
-    sb.append(", ").append(employeeIdentificationNumber);
     sb.append(", ").append(certificateName);
+    sb.append(", ").append(employeeIdentificationNumber);
 
     sb.append(")");
     return sb.toString();
