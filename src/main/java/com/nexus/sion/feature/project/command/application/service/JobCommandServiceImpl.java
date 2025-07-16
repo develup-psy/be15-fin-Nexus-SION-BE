@@ -37,7 +37,7 @@ public class JobCommandServiceImpl implements JobCommandService {
       throw new BusinessException(ErrorCode.JOB_NOT_FOUND);
     }
 
-    // 해당 도메인 삭제
+// 해당 직무 삭제
     try {
       jobRepository.deleteById(jobName);
     } catch (DataIntegrityViolationException e) {
