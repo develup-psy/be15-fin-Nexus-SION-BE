@@ -92,4 +92,6 @@ public class ProjectQueryController {
             request.getProjectCode(), request.getLeavingMember());
     return ResponseEntity.ok(ApiResponse.success(candidates));
   }
+
+
 }

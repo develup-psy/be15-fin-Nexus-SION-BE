@@ -19,7 +19,9 @@ public interface SquadEmployeeCommandRepository extends JpaRepository<SquadEmplo
     SELECT se
     FROM SquadEmployee se
     JOIN ProjectAndJob pj ON se.projectAndJobId = pj.id
+    JOIN Squad s ON se.squadCode = s.squadCode
     WHERE pj.projectCode = :projectCode
+    AND s.isActive = true
 """)
   List<SquadEmployee> findByProjectCode(@Param("projectCode") String projectCode);
 

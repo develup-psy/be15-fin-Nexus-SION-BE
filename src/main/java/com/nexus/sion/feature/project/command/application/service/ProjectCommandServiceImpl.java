@@ -159,18 +159,33 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
-    Project project =
-        projectCommandRepository
-            .findById(projectCode)
+    Project project = projectCommandRepository.findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    project.setStatus(status);
-    if (status == Project.ProjectStatus.EVALUATION) {
+    if (status == Project.ProjectStatus.COMPLETE) {
+      List<DeveloperProjectWork> works =
+              developerProjectWorkRepository.findByProjectCode(projectCode);
+
+      if (works.isEmpty()) {
+        throw new BusinessException(ErrorCode.WORK_NOT_FOUND);
+      }
+
+      boolean allApproved = works.stream()
+              .allMatch(work -> work.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
+
+      if (!allApproved) {
+        throw new BusinessException(ErrorCode.PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED);
+      }
+
+      project.setActualEndDate(LocalDate.now());
+    } else if (status == Project.ProjectStatus.EVALUATION) {
       project.setActualEndDate(LocalDate.now());
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
     }
+
+    project.setStatus(status);
     projectCommandRepository.save(project);
   }
 

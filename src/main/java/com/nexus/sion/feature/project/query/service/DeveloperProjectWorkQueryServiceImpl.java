@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.exception.BusinessException;
+import com.nexus.sion.exception.ErrorCode;
+import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
+import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.common.dto.PageResponse;
@@ -60,5 +64,14 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
     return Arrays.stream(DeveloperProjectWorkHistory.FunctionType.values())
         .map(type -> new FunctionTypeDto(type.name(), type.name()))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DeveloperApprovalResponse> getDeveloperApprovals(String projectCode) {
+    if (projectCode == null || projectCode.isBlank()) {
+      throw new IllegalArgumentException("projectCode는 필수 입력값입니다.");
+    }
+
+      return developerProjectWorkQueryRepository.findDeveloperApprovalsByProjectCode(projectCode);
   }
 }
