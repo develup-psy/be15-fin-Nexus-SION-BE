@@ -58,8 +58,9 @@ public enum ErrorCode {
   CLIENT_COMPANY_NOT_FOUND("30009", "해당 고객사가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   CLIENT_COMPANY_DELETE_CONSTRAINT(
       "30010", "해당 고객사는 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
-  PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED(
-      "30011", "모든 구성원의 프로젝트 이력 등록이 완료되지 않았습니다", HttpStatus.BAD_REQUEST),
+  PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED("30011","모든 구성원의 프로젝트 이력 등록이 완료되지 않았습니다",HttpStatus.BAD_REQUEST ),
+  JOB_DELETE_CONSTRAINT("30012", "해당 직무는 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
+  DOMAIN_DELETE_CONSTRAINT("30013", "해당 도메인은 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
@@ -86,6 +87,7 @@ public enum ErrorCode {
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
   TECH_STACK_ALREADY_EXIST("50002", "이미 존재하는 기술스택입니다.", HttpStatus.CONFLICT),
+  TECH_STACK_DELETE_CONSTRAINT("50003", "해당 기술스택은 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
 
   // statistics
   INVALID_PERIOD("60001", "지원하지 않는 기간 값입니다. (1m, 6m, 1y, 5y 중 선택)", HttpStatus.BAD_REQUEST),

@@ -36,7 +36,6 @@ import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.project.command.domain.aggregate.ProjectAndJob;
 import com.nexus.sion.feature.project.command.domain.repository.JobAndTechStackRepository;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectCommandRepository;
 import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
@@ -54,12 +53,11 @@ class ProjectCommandServiceIntegrationTest {
 
   @Autowired private ObjectMapper objectMapper;
 
-  @Autowired private ProjectCommandRepository projectCommandRepository;
+  @Autowired private ProjectRepository projectRepository;
 
   @Autowired private SquadCommandRepository squadCommandRepository;
   @Autowired private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
   @Autowired private MemberRepository memberRepository;
-  @Autowired private ProjectRepository projectRepository;
   @Autowired private ClientCompanyRepository clientCompanyRepository;
   @Autowired private ProjectAndJobRepository projectAndJobRepository;
   @Autowired private JobAndTechStackRepository jobAndTechStackRepository;
@@ -82,7 +80,7 @@ class ProjectCommandServiceIntegrationTest {
         .andExpect(jsonPath("$.errorCode").doesNotExist());
 
     // DB 저장 검증
-    assertThat(projectCommandRepository.existsByProjectCode(request.getProjectCode())).isTrue();
+    assertThat(projectRepository.existsByProjectCode(request.getProjectCode())).isTrue();
   }
 
   @Test
@@ -133,7 +131,7 @@ class ProjectCommandServiceIntegrationTest {
         .andExpect(jsonPath("$.success").value(true));
 
     // DB 검증 (삭제되었는지 확인)
-    assertThat(projectCommandRepository.existsByProjectCode(request.getProjectCode())).isFalse();
+    assertThat(projectRepository.existsByProjectCode(request.getProjectCode())).isFalse();
   }
 
   @Test

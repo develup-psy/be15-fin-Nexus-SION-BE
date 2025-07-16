@@ -19,4 +19,6 @@ public interface ProjectAndJobRepository extends JpaRepository<ProjectAndJob, Lo
           + "FROM ProjectAndJob pj "
           + "WHERE pj.projectCode = :projectCode")
   List<RequiredJobDto> findRequiredJobsByProjectCode(@Param("projectCode") String projectCode);
+
+  boolean existsByJobName(String jobName);
 }
