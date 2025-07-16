@@ -38,11 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProjectCommandServiceImpl implements ProjectCommandService {
 
-  private final ProjectCommandRepository projectCommandRepository;
+  private final ProjectRepository projectRepository;
   private final ProjectAndJobRepository projectAndJobRepository;
   private final JobAndTechStackRepository jobAndTechStackRepository;
   private final ProjectAnalysisService projectAnalysisService;
-  private final ProjectRepository projectRepository;
   private final NotificationCommandService notificationCommandService;
   private final SquadCommandRepository squadCommandRepository;
   private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
@@ -71,7 +70,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
             .clientCode(request.getClientCode())
             .requestSpecificationUrl(request.getRequestSpecificationUrl())
             .build();
-    projectCommandRepository.save(project);
+    projectRepository.save(project);
 
     ProjectRegisterRequest copyRequest =
         ProjectRegisterRequest.copyWithProjectCode(request, newProjectCode);
@@ -100,7 +99,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void updateProject(ProjectUpdateRequest request) {
     Project project =
-            projectCommandRepository
+            projectRepository
                     .findById(request.getProjectCode())
                     .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -116,7 +115,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
     project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
-    projectCommandRepository.save(project);
+    projectRepository.save(project);
   }
 
 
@@ -150,7 +149,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void deleteProject(String projectCode) {
     Project project =
-        projectCommandRepository
+            projectRepository
             .findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -158,12 +157,12 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectAndJobs.forEach(job -> jobAndTechStackRepository.deleteByProjectJobId(job.getId()));
     projectAndJobRepository.deleteByProjectCode(projectCode);
 
-    projectCommandRepository.delete(project);
+    projectRepository.delete(project);
   }
 
   @Override
   public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
-    Project project = projectCommandRepository.findById(projectCode)
+    Project project = projectRepository.findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     if (status == Project.ProjectStatus.COMPLETE) {
@@ -190,7 +189,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     }
 
     project.setStatus(status);
-    projectCommandRepository.save(project);
+    projectRepository.save(project);
   }
 
   private String findActiveSquadCode(String projectCode) {

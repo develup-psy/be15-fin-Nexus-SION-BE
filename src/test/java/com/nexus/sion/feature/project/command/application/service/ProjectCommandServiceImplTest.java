@@ -5,10 +5,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +40,6 @@ import com.nexus.sion.feature.squad.command.repository.SquadEmployeeCommandRepos
 
 class ProjectCommandServiceImplTest {
 
-  @Mock private ProjectCommandRepository projectCommandRepository;
   @Mock private ProjectAndJobRepository projectAndJobRepository;
   @Mock private JobAndTechStackRepository jobAndTechStackRepository;
   @Mock private SquadCommandRepository squadCommandRepository;
@@ -48,6 +49,7 @@ class ProjectCommandServiceImplTest {
   @Mock private ProjectFunctionEstimateRepository projectFunctionEstimateRepository;
   @Mock private ProjectAnalysisService projectAnalysisService;
   @Mock private ProjectRepository projectRepository;
+  @Mock private DeveloperProjectWorkRepository developerProjectWorkRepository;
 
   @InjectMocks private ProjectCommandServiceImpl projectCommandService;
 
@@ -70,7 +72,7 @@ class ProjectCommandServiceImplTest {
     // then
     assertThat(response).isNotNull();
     assertThat(response.projectCode()).startsWith(request.getClientCode());
-    verify(projectCommandRepository).save(any(Project.class));
+    verify(projectRepository).save(any(Project.class));
     verify(projectAndJobRepository, atLeastOnce()).save(any(ProjectAndJob.class));
     verify(jobAndTechStackRepository, atLeastOnce()).save(any(JobAndTechStack.class));
   }
@@ -83,14 +85,14 @@ class ProjectCommandServiceImplTest {
 
     Project existingProject = Project.builder().projectCode(request.getProjectCode()).build();
 
-    when(projectCommandRepository.findById(request.getProjectCode()))
+    when(projectRepository.findById(request.getProjectCode()))
         .thenReturn(Optional.of(existingProject));
 
     // when
     projectCommandService.updateProject(request);
 
     // then
-    verify(projectCommandRepository).save(existingProject);
+    verify(projectRepository).save(existingProject);
     verifyNoInteractions(jobAndTechStackRepository); // 기술스택 저장/삭제 없음
     verifyNoInteractions(projectAndJobRepository); // 직무 변경도 없음
   }
@@ -100,7 +102,7 @@ class ProjectCommandServiceImplTest {
   void updateProject_Fail_When_ProjectNotFound() {
     // given
     ProjectUpdateRequest request = createUpdateRequest();
-    when(projectCommandRepository.findById(request.getProjectCode())).thenReturn(Optional.empty());
+    when(projectRepository.findById(request.getProjectCode())).thenReturn(Optional.empty());
 
     // when & then
     assertThatThrownBy(() -> projectCommandService.updateProject(request))
@@ -115,7 +117,7 @@ class ProjectCommandServiceImplTest {
     String projectCode = "P123";
     Project existingProject = Project.builder().projectCode(projectCode).build();
 
-    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(existingProject));
     when(projectAndJobRepository.findByProjectCode(projectCode))
         .thenReturn(List.of(ProjectAndJob.builder().id(1L).build()));
 
@@ -125,7 +127,7 @@ class ProjectCommandServiceImplTest {
     // then
     verify(jobAndTechStackRepository).deleteByProjectJobId(anyLong());
     verify(projectAndJobRepository).deleteByProjectCode(projectCode);
-    verify(projectCommandRepository).delete(existingProject);
+    verify(projectRepository).delete(existingProject);
   }
 
   @Test
@@ -133,7 +135,7 @@ class ProjectCommandServiceImplTest {
   void deleteProject_Fail_When_ProjectNotFound() {
     // given
     String projectCode = "P123";
-    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.empty());
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.empty());
 
     // when & then
     assertThatThrownBy(() -> projectCommandService.deleteProject(projectCode))
@@ -149,9 +151,18 @@ class ProjectCommandServiceImplTest {
     Project project =
         Project.builder().projectCode(projectCode).status(Project.ProjectStatus.WAITING).build();
 
-    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.of(project));
-    when(squadEmployeeCommandRepository.findByProjectCode(projectCode))
-        .thenReturn(List.of()); // ✅ 상태 변경 후 작업 요청 처리를 위한 mock
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
+    when(developerProjectWorkRepository.findByProjectCode(projectCode))
+            .thenReturn(List.of(
+                    DeveloperProjectWork.builder()
+                            .id(1L)
+                            .employeeIdentificationNumber("test01")
+                            .projectCode(projectCode)
+                            .approvalStatus(DeveloperProjectWork.ApprovalStatus.APPROVED)
+                            .approvedBy("test02")
+                            .approvedAt(LocalDateTime.now())
+                            .build()
+            ));
 
     // when
     projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
@@ -159,7 +170,7 @@ class ProjectCommandServiceImplTest {
     // then
     assertThat(project.getStatus()).isEqualTo(Project.ProjectStatus.COMPLETE);
     assertThat(project.getActualEndDate()).isNotNull();
-    verify(projectCommandRepository).save(project);
+    verify(projectRepository).save(project);
   }
 
   @Test
@@ -167,7 +178,7 @@ class ProjectCommandServiceImplTest {
   void updateProjectStatus_Fail_NotFound() {
     // given
     String projectCode = "NOT_EXIST";
-    when(projectCommandRepository.findById(projectCode)).thenReturn(Optional.empty());
+    when(projectRepository.findById(projectCode)).thenReturn(Optional.empty());
 
     // when & then
     assertThatThrownBy(
