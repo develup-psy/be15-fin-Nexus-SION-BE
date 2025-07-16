@@ -28,4 +28,12 @@ public class MemberScoreHistory extends BaseTimeEntity {
 
   @Column(name = "total_certificate_scores", nullable = false)
   private int totalCertificateScores;
+
+  public static MemberScoreHistory initial(String employeeId) {
+    return MemberScoreHistory.builder()
+        .employeeIdentificationNumber(employeeId)
+        .totalTechStackScores(0)
+        .totalCertificateScores(0)
+        .build();
+  }
 }
