@@ -100,9 +100,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void updateProject(ProjectUpdateRequest request) {
     Project project =
-        projectCommandRepository
-            .findById(request.getProjectCode())
-            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+            projectCommandRepository
+                    .findById(request.getProjectCode())
+                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
@@ -110,11 +110,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     project.setBudget(request.getBudget());
     project.setStartDate(request.getStartDate());
     project.setExpectedEndDate(request.getExpectedEndDate());
-    project.setNumberOfMembers(request.getNumberOfMembers());
-    project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
 
+    if (request.getNumberOfMembers() != null) {
+      project.setNumberOfMembers(request.getNumberOfMembers());
+    }
+
+    project.setRequestSpecificationUrl(request.getRequestSpecificationUrl());
     projectCommandRepository.save(project);
   }
+
 
   private void saveJobsAndTechStacks(ProjectRegisterRequest request) {
     request
