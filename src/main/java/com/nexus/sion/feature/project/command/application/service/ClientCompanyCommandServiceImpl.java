@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,7 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
 
   private final ModelMapper modelMapper;
   private final ClientCompanyRepository clientCompanyRepository;
+  private final ProjectRepository projectRepository;
 
   @Transactional
   @Override
@@ -71,12 +73,11 @@ public class ClientCompanyCommandServiceImpl implements ClientCompanyCommandServ
       throw new BusinessException(ErrorCode.CLIENT_COMPANY_NOT_FOUND);
     }
 
-    try {
-      clientCompanyRepository.deleteById(clientCode);
-    } catch (DataIntegrityViolationException e) {
-      // FK 제약 위반인 경우만 처리
+    if (projectRepository.existsByClientCode(clientCode)) {
       throw new BusinessException(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT);
     }
+
+    clientCompanyRepository.deleteById(clientCode);
   }
 
   private String generateClientCode(String companyName) {

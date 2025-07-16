@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +25,8 @@ class DomainCommandServiceImplTest {
   @Mock private DomainRepository domainRepository;
 
   @Mock private ModelMapper modelMapper;
+
+  @Mock private ProjectRepository projectRepository;
 
   String domainName = "제조";
 
@@ -64,6 +67,7 @@ class DomainCommandServiceImplTest {
   void deleteDomain_존재하면삭제() {
     // given
     when(domainRepository.existsById(domainName)).thenReturn(true);
+    when(projectRepository.existsByDomainName(domainName)).thenReturn(false);
     doNothing().when(domainRepository).deleteById(domainName);
 
     // when
@@ -90,5 +94,20 @@ class DomainCommandServiceImplTest {
     assertEquals(ErrorCode.DOMAIN_NOT_FOUND, exception.getErrorCode());
 
     verify(domainRepository, never()).deleteById(any());
+  }
+
+  @Test
+  void removeDomain_연결된_프로젝트가_있으면_예외발생() {
+    // given
+    when(domainRepository.existsById(domainName)).thenReturn(true);
+    when(projectRepository.existsByDomainName(domainName)).thenReturn(true);
+
+    // when & then
+    BusinessException exception =
+            assertThrows(
+                    BusinessException.class,
+                    () -> domainCommandService.removeDomain(domainName));
+
+    assertEquals(ErrorCode.DOMAIN_DELETE_CONSTRAINT, exception.getErrorCode());
   }
 }

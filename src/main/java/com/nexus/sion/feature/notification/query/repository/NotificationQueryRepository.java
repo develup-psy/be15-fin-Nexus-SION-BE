@@ -33,7 +33,7 @@ public class NotificationQueryRepository {
             MEMBER.EMPLOYEE_NAME.as("senderName"),
             NOTIFICATION.RECEIVER_ID)
         .from(NOTIFICATION)
-        .join(MEMBER)
+        .leftJoin(MEMBER)
         .on(NOTIFICATION.SENDER_ID.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
         .where(NOTIFICATION.RECEIVER_ID.eq(employeeIdentificationNumber))
         .orderBy(NOTIFICATION.CREATED_AT.desc())
@@ -65,7 +65,7 @@ public class NotificationQueryRepository {
             MEMBER.EMPLOYEE_NAME.as("senderName"),
             NOTIFICATION.RECEIVER_ID)
         .from(NOTIFICATION)
-        .join(MEMBER)
+        .leftJoin(MEMBER)
         .on(NOTIFICATION.SENDER_ID.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
         .orderBy(NOTIFICATION.CREATED_AT.desc())
         .limit(size)

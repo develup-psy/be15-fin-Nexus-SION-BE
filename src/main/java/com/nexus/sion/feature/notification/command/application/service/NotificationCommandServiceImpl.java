@@ -82,6 +82,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         employeeIdentificationNumber + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis();
     SseEmitter emitter = sseEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
+    log.info("✅ SSE 구독 시작: memberId={}, emitterId={}", employeeIdentificationNumber, emitterId);
+
     emitter.onCompletion(
         () -> {
           sseEmitterRepository.deleteById(emitterId);
