@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class JobCommandServiceImpl implements JobCommandService {
 
   private final ModelMapper modelMapper;
   private final JobRepository jobRepository;
+  private final ProjectAndJobRepository projectAndJobRepository;
 
   @Override
   public void registerJob(JobRequest request) {
@@ -37,12 +39,10 @@ public class JobCommandServiceImpl implements JobCommandService {
       throw new BusinessException(ErrorCode.JOB_NOT_FOUND);
     }
 
-    // 해당 도메인 삭제
-    try {
-      jobRepository.deleteById(jobName);
-    } catch (DataIntegrityViolationException e) {
-      // FK 제약 위반인 경우만 처리
+    if(projectAndJobRepository.existsByJobName(jobName)) {
       throw new BusinessException(ErrorCode.JOB_DELETE_CONSTRAINT);
     }
+
+    jobRepository.deleteById(jobName);
   }
 }
