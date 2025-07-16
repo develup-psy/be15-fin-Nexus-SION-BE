@@ -91,11 +91,7 @@ public class Project extends TableImpl<ProjectRecord> {
 
   /** The column <code>sion.project.number_of_members</code>. */
   public final TableField<ProjectRecord, Integer> NUMBER_OF_MEMBERS =
-      createField(
-          DSL.name("number_of_members"),
-          SQLDataType.INTEGER.defaultValue(DSL.field(DSL.raw("NULL"), SQLDataType.INTEGER)),
-          this,
-          "");
+      createField(DSL.name("number_of_members"), SQLDataType.INTEGER.nullable(false), this, "");
 
   /** The column <code>sion.project.created_at</code>. */
   public final TableField<ProjectRecord, LocalDateTime> CREATED_AT =
@@ -147,6 +143,7 @@ public class Project extends TableImpl<ProjectRecord> {
       createField(
           DSL.name("analysis_status"),
           SQLDataType.VARCHAR(10)
+              .nullable(false)
               .defaultValue(DSL.field(DSL.raw("'PENDING'"), SQLDataType.VARCHAR))
               .asEnumDataType(com.example.jooq.generated.enums.ProjectAnalysisStatus.class),
           this,

@@ -4,15 +4,18 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function9;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -45,23 +48,23 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   /** The column <code>sion.training_recommendation.training_recommendation_id</code>. */
   public final TableField<TrainingRecommendationRecord, Long> TRAINING_RECOMMENDATION_ID =
       createField(
-          DSL.name("training_recommendation_id"), SQLDataType.BIGINT.nullable(false), this, "");
-
-  /** The column <code>sion.training_recommendation.employee_identification_number</code>. */
-  public final TableField<TrainingRecommendationRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
-      createField(
-          DSL.name("employee_identification_number"),
-          SQLDataType.VARCHAR(30).nullable(false),
+          DSL.name("training_recommendation_id"),
+          SQLDataType.BIGINT.nullable(false).identity(true),
           this,
           "");
 
-  /** The column <code>sion.training_recommendation.training_id</code>. */
-  public final TableField<TrainingRecommendationRecord, Long> TRAINING_ID =
-      createField(DSL.name("training_id"), SQLDataType.BIGINT.nullable(false), this, "");
+  /** The column <code>sion.training_recommendation.training_name</code>. */
+  public final TableField<TrainingRecommendationRecord, String> TRAINING_NAME =
+      createField(DSL.name("training_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
-  /** The column <code>sion.training_recommendation.recommendation_reason</code>. */
-  public final TableField<TrainingRecommendationRecord, String> RECOMMENDATION_REASON =
-      createField(DSL.name("recommendation_reason"), SQLDataType.CLOB.nullable(false), this, "");
+  /** The column <code>sion.training_recommendation.training_description</code>. */
+  public final TableField<TrainingRecommendationRecord, String> TRAINING_DESCRIPTION =
+      createField(
+          DSL.name("training_description"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+  /** The column <code>sion.training_recommendation.training_category</code>. */
+  public final TableField<TrainingRecommendationRecord, String> TRAINING_CATEGORY =
+      createField(DSL.name("training_category"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   /** The column <code>sion.training_recommendation.created_at</code>. */
   public final TableField<TrainingRecommendationRecord, LocalDateTime> CREATED_AT =
@@ -70,6 +73,32 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
           SQLDataType.LOCALDATETIME(0)
               .nullable(false)
               .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
+  /** The column <code>sion.training_recommendation.updated_at</code>. */
+  public final TableField<TrainingRecommendationRecord, LocalDateTime> UPDATED_AT =
+      createField(
+          DSL.name("updated_at"),
+          SQLDataType.LOCALDATETIME(0)
+              .nullable(false)
+              .defaultValue(DSL.field(DSL.raw("current_timestamp()"), SQLDataType.LOCALDATETIME)),
+          this,
+          "");
+
+  /** The column <code>sion.training_recommendation.image_url</code>. */
+  public final TableField<TrainingRecommendationRecord, String> IMAGE_URL =
+      createField(DSL.name("image_url"), SQLDataType.CLOB.nullable(false), this, "");
+
+  /** The column <code>sion.training_recommendation.video_url</code>. */
+  public final TableField<TrainingRecommendationRecord, String> VIDEO_URL =
+      createField(DSL.name("video_url"), SQLDataType.CLOB.nullable(false), this, "");
+
+  /** The column <code>sion.training_recommendation.employee_identification_number</code>. */
+  public final TableField<TrainingRecommendationRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
+      createField(
+          DSL.name("employee_identification_number"),
+          SQLDataType.VARCHAR(30).nullable(false),
           this,
           "");
 
@@ -108,8 +137,27 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   }
 
   @Override
+  public Identity<TrainingRecommendationRecord, Long> getIdentity() {
+    return (Identity<TrainingRecommendationRecord, Long>) super.getIdentity();
+  }
+
+  @Override
   public UniqueKey<TrainingRecommendationRecord> getPrimaryKey() {
     return Keys.KEY_TRAINING_RECOMMENDATION_PRIMARY;
+  }
+
+  @Override
+  public List<ForeignKey<TrainingRecommendationRecord, ?>> getReferences() {
+    return Arrays.asList(Keys.FK_TR_MEMBER);
+  }
+
+  private transient Member _member;
+
+  /** Get the implicit join path to the <code>sion.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_TR_MEMBER);
+
+    return _member;
   }
 
   @Override
@@ -146,22 +194,27 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   }
 
   // -------------------------------------------------------------------------
-  // Row5 type methods
+  // Row9 type methods
   // -------------------------------------------------------------------------
 
   @Override
-  public Row5<Long, String, Long, String, LocalDateTime> fieldsRow() {
-    return (Row5) super.fieldsRow();
+  public Row9<Long, String, String, String, LocalDateTime, LocalDateTime, String, String, String>
+      fieldsRow() {
+    return (Row9) super.fieldsRow();
   }
 
   /** Convenience mapping calling {@link SelectField#convertFrom(Function)}. */
   public <U> SelectField<U> mapping(
-      Function5<
+      Function9<
               ? super Long,
               ? super String,
-              ? super Long,
+              ? super String,
               ? super String,
               ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
+              ? super String,
+              ? super String,
               ? extends U>
           from) {
     return convertFrom(Records.mapping(from));
@@ -170,12 +223,16 @@ public class TrainingRecommendation extends TableImpl<TrainingRecommendationReco
   /** Convenience mapping calling {@link SelectField#convertFrom(Class, Function)}. */
   public <U> SelectField<U> mapping(
       Class<U> toType,
-      Function5<
+      Function9<
               ? super Long,
               ? super String,
-              ? super Long,
+              ? super String,
               ? super String,
               ? super LocalDateTime,
+              ? super LocalDateTime,
+              ? super String,
+              ? super String,
+              ? super String,
               ? extends U>
           from) {
     return convertFrom(toType, Records.mapping(from));

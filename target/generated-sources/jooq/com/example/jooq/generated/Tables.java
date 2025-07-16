@@ -31,7 +31,6 @@ import com.example.jooq.generated.tables.Squad;
 import com.example.jooq.generated.tables.SquadComment;
 import com.example.jooq.generated.tables.SquadEmployee;
 import com.example.jooq.generated.tables.TechStack;
-import com.example.jooq.generated.tables.TrainingProgram;
 import com.example.jooq.generated.tables.TrainingRecommendation;
 import com.example.jooq.generated.tables.UserCertificateHistory;
 
@@ -130,9 +129,6 @@ public class Tables {
 
   /** The table <code>sion.tech_stack</code>. */
   public static final TechStack TECH_STACK = TechStack.TECH_STACK;
-
-  /** The table <code>sion.training_program</code>. */
-  public static final TrainingProgram TRAINING_PROGRAM = TrainingProgram.TRAINING_PROGRAM;
 
   /** The table <code>sion.training_recommendation</code>. */
   public static final TrainingRecommendation TRAINING_RECOMMENDATION =

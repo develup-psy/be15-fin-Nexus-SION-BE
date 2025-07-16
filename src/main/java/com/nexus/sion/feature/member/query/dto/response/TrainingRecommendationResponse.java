@@ -20,7 +20,7 @@ public class TrainingRecommendationResponse {
 
   public static TrainingRecommendationResponse from(TrainingRecommendation program) {
     return TrainingRecommendationResponse.builder()
-        .trainingId(program.getTrainingId())
+        .trainingId(program.getTrainingRecommendationId())
         .trainingName(program.getTrainingName())
         .trainingDescription(program.getTrainingDescription())
         .trainingCategory(program.getTrainingCategory())
@@ -31,7 +31,7 @@ public class TrainingRecommendationResponse {
 
   public static TrainingRecommendationResponse from(TrainingRecommendation program, String reason) {
     return TrainingRecommendationResponse.builder()
-        .trainingId(program.getTrainingId())
+        .trainingId(program.getTrainingRecommendationId())
         .trainingName(program.getTrainingName())
         .trainingDescription(program.getTrainingDescription())
         .trainingCategory(program.getTrainingCategory())
@@ -43,7 +43,6 @@ public class TrainingRecommendationResponse {
 
   public TrainingRecommendation toEntity() {
     return TrainingRecommendation.builder()
-        .trainingId(trainingId)
         .trainingName(trainingName)
         .trainingDescription(trainingDescription)
         .trainingCategory(trainingCategory)
