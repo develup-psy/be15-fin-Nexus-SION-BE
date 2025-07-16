@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.project.command.application.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -37,6 +38,11 @@ public class JobCommandServiceImpl implements JobCommandService {
     }
 
     // 해당 도메인 삭제
-    jobRepository.deleteById(jobName);
+    try {
+      jobRepository.deleteById(jobName);
+    } catch (DataIntegrityViolationException e) {
+      // FK 제약 위반인 경우만 처리
+      throw new BusinessException(ErrorCode.JOB_DELETE_CONSTRAINT);
+    }
   }
 }

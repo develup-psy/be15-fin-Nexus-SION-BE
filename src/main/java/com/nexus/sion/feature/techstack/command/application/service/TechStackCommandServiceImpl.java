@@ -1,6 +1,7 @@
 package com.nexus.sion.feature.techstack.command.application.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.nexus.sion.exception.BusinessException;
@@ -36,6 +37,12 @@ public class TechStackCommandServiceImpl implements TechStackCommandService {
     }
 
     // 해당 기술스택 삭제
-    techStackRepository.deleteById(techStackName);
+    try {
+      techStackRepository.deleteById(techStackName);
+    } catch (DataIntegrityViolationException e) {
+      // FK 제약 위반인 경우만 처리
+      throw new BusinessException(ErrorCode.TECH_STACK_DELETE_CONSTRAINT);
+    }
+
   }
 }
