@@ -82,6 +82,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         employeeIdentificationNumber + "_" + UUID.randomUUID() + "_" + System.currentTimeMillis();
     SseEmitter emitter = sseEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
+    log.info("✅ SSE 구독 시작: memberId={}, emitterId={}", employeeIdentificationNumber, emitterId);
+
     emitter.onCompletion(
         () -> {
           sseEmitterRepository.deleteById(emitterId);
@@ -91,8 +93,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
     emitter.onTimeout(
         () -> {
-            log.info("onTimeout 발생: {}", emitterId);
-            emitter.complete();
+          log.info("onTimeout 발생: {}", emitterId);
+          emitter.complete();
         });
 
     emitter.onError(
@@ -235,7 +237,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
       log.info("✅ SSE 연결 끊김으로 emitter 정리 시작: emitterId={}, reason={}", emitterId, e.getMessage());
       emitter.complete();
     } catch (Exception e) {
-      log.error("🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      log.error(
+          "🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
       emitter.complete();
     }
   }

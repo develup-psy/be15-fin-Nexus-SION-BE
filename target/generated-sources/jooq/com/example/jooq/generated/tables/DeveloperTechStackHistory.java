@@ -4,6 +4,8 @@
 package com.example.jooq.generated.tables;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -131,6 +133,49 @@ public class DeveloperTechStackHistory extends TableImpl<DeveloperTechStackHisto
   @Override
   public UniqueKey<DeveloperTechStackHistoryRecord> getPrimaryKey() {
     return Keys.KEY_DEVELOPER_TECH_STACK_HISTORY_PRIMARY;
+  }
+
+  @Override
+  public List<ForeignKey<DeveloperTechStackHistoryRecord, ?>> getReferences() {
+    return Arrays.asList(
+        Keys.FK_DTSH_PROJECT,
+        Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1,
+        Keys.FK_DTSH_TECH_STACK);
+  }
+
+  private transient Project _project;
+  private transient DeveloperTechStack _fkDeveloperTechStackToDeveloperTechStackHistory_1;
+  private transient DeveloperTechStack _fkDtshTechStack;
+
+  /** Get the implicit join path to the <code>sion.project</code> table. */
+  public Project project() {
+    if (_project == null) _project = new Project(this, Keys.FK_DTSH_PROJECT);
+
+    return _project;
+  }
+
+  /**
+   * Get the implicit join path to the <code>sion.developer_tech_stack</code> table, via the <code>
+   * FK_developer_tech_stack_TO_developer_tech_stack_history_1</code> key.
+   */
+  public DeveloperTechStack fkDeveloperTechStackToDeveloperTechStackHistory_1() {
+    if (_fkDeveloperTechStackToDeveloperTechStackHistory_1 == null)
+      _fkDeveloperTechStackToDeveloperTechStackHistory_1 =
+          new DeveloperTechStack(
+              this, Keys.FK_DEVELOPER_TECH_STACK_TO_DEVELOPER_TECH_STACK_HISTORY_1);
+
+    return _fkDeveloperTechStackToDeveloperTechStackHistory_1;
+  }
+
+  /**
+   * Get the implicit join path to the <code>sion.developer_tech_stack</code> table, via the <code>
+   * FK_DTSH_TECH_STACK</code> key.
+   */
+  public DeveloperTechStack fkDtshTechStack() {
+    if (_fkDtshTechStack == null)
+      _fkDtshTechStack = new DeveloperTechStack(this, Keys.FK_DTSH_TECH_STACK);
+
+    return _fkDtshTechStack;
   }
 
   @Override
