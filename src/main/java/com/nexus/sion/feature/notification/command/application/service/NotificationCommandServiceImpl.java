@@ -91,8 +91,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
 
     emitter.onTimeout(
         () -> {
-            log.info("onTimeout 발생: {}", emitterId);
-            emitter.complete();
+          log.info("onTimeout 발생: {}", emitterId);
+          emitter.complete();
         });
 
     emitter.onError(
@@ -235,7 +235,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
       log.info("✅ SSE 연결 끊김으로 emitter 정리 시작: emitterId={}, reason={}", emitterId, e.getMessage());
       emitter.complete();
     } catch (Exception e) {
-      log.error("🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      log.error(
+          "🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
       emitter.complete();
     }
   }

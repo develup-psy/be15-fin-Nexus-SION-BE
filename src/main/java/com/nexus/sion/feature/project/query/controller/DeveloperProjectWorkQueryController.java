@@ -2,9 +2,6 @@ package com.nexus.sion.feature.project.query.controller;
 
 import java.util.List;
 
-import com.nexus.sion.exception.BusinessException;
-import com.nexus.sion.exception.ErrorCode;
-import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nexus.sion.common.dto.ApiResponse;
 import com.nexus.sion.common.dto.PageResponse;
 import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
+import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import com.nexus.sion.feature.project.query.dto.response.FunctionTypeDto;
 import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
 import com.nexus.sion.feature.project.query.service.DeveloperProjectWorkQueryService;
@@ -64,9 +62,9 @@ public class DeveloperProjectWorkQueryController {
 
   @GetMapping("/{projectCode}/developer-approvals")
   public ResponseEntity<ApiResponse<List<DeveloperApprovalResponse>>> getDeveloperApprovals(
-          @PathVariable String projectCode) {
-    List<DeveloperApprovalResponse>
-            approvals = developerProjectWorkQueryService.getDeveloperApprovals(projectCode);
+      @PathVariable String projectCode) {
+    List<DeveloperApprovalResponse> approvals =
+        developerProjectWorkQueryService.getDeveloperApprovals(projectCode);
     return ResponseEntity.ok(ApiResponse.success(approvals));
   }
 }

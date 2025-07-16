@@ -8,13 +8,13 @@ import static com.example.jooq.generated.tables.Project.PROJECT;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.DeveloperProjectWorkApprovalStatus;
 import com.nexus.sion.feature.project.query.dto.request.WorkRequestQueryDto;
+import com.nexus.sion.feature.project.query.dto.response.DeveloperApprovalResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -170,18 +170,17 @@ public class DeveloperProjectWorkQueryRepository {
     return dsl.selectCount().from(DEVELOPER_PROJECT_WORK).where(conditions).fetchOne(0, long.class);
   }
 
-    public List<DeveloperApprovalResponse> findDeveloperApprovalsByProjectCode(String projectCode) {
-      return dsl.select(
-                      DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
-                      DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
-                      DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
-                      DEVELOPER_PROJECT_WORK.APPROVED_BY,
-                      DEVELOPER_PROJECT_WORK.APPROVED_AT,
-                      DEVELOPER_PROJECT_WORK.REJECTED_REASON
-              )
-              .from(DEVELOPER_PROJECT_WORK)
-              .where(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(projectCode))
-              .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc())
-              .fetchInto(DeveloperApprovalResponse.class);
-    }
+  public List<DeveloperApprovalResponse> findDeveloperApprovalsByProjectCode(String projectCode) {
+    return dsl.select(
+            DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
+            DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
+            DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
+            DEVELOPER_PROJECT_WORK.APPROVED_BY,
+            DEVELOPER_PROJECT_WORK.APPROVED_AT,
+            DEVELOPER_PROJECT_WORK.REJECTED_REASON)
+        .from(DEVELOPER_PROJECT_WORK)
+        .where(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(projectCode))
+        .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc())
+        .fetchInto(DeveloperApprovalResponse.class);
+  }
 }
