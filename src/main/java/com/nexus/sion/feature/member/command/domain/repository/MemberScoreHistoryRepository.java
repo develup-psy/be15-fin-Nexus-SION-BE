@@ -10,4 +10,7 @@ public interface MemberScoreHistoryRepository extends JpaRepository<MemberScoreH
 
   Optional<MemberScoreHistory> findByEmployeeIdentificationNumber(
       String employeeIdentificationNumber);
+
+  Optional<MemberScoreHistory> findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(String employeeIdentificationNumber);
 }
+
