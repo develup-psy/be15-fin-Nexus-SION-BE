@@ -199,26 +199,4 @@ public class TrainingRecommendationDao
       String... values) {
     return fetch(TrainingRecommendation.TRAINING_RECOMMENDATION.VIDEO_URL, values);
   }
-
-  /**
-   * Fetch records that have <code>employee_identification_number BETWEEN
-   * lowerInclusive AND upperInclusive</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.TrainingRecommendation>
-      fetchRangeOfEmployeeIdentificationNumber(String lowerInclusive, String upperInclusive) {
-    return fetchRange(
-        TrainingRecommendation.TRAINING_RECOMMENDATION.EMPLOYEE_IDENTIFICATION_NUMBER,
-        lowerInclusive,
-        upperInclusive);
-  }
-
-  /**
-   * Fetch records that have <code>employee_identification_number IN
-   * (values)</code>
-   */
-  public List<com.example.jooq.generated.tables.pojos.TrainingRecommendation>
-      fetchByEmployeeIdentificationNumber(String... values) {
-    return fetch(
-        TrainingRecommendation.TRAINING_RECOMMENDATION.EMPLOYEE_IDENTIFICATION_NUMBER, values);
-  }
 }

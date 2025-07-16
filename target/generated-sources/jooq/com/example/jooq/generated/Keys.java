@@ -598,16 +598,6 @@ public class Keys {
           Keys.KEY_SQUAD_PRIMARY,
           new TableField[] {Squad.SQUAD.SQUAD_CODE},
           true);
-  public static final ForeignKey<TrainingRecommendationRecord, MemberRecord> FK_TR_MEMBER =
-      Internal.createForeignKey(
-          TrainingRecommendation.TRAINING_RECOMMENDATION,
-          DSL.name("FK_TR_MEMBER"),
-          new TableField[] {
-            TrainingRecommendation.TRAINING_RECOMMENDATION.EMPLOYEE_IDENTIFICATION_NUMBER
-          },
-          Keys.KEY_MEMBER_PRIMARY,
-          new TableField[] {Member.MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER},
-          true);
   public static final ForeignKey<UserCertificateHistoryRecord, CertificateRecord>
       FK_USER_CERT_HISTORY_TO_CERTIFICATE =
           Internal.createForeignKey(

@@ -105,6 +105,10 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
           this,
           "");
 
+  /** The column <code>sion.user_certificate_history.certificate_name</code>. */
+  public final TableField<UserCertificateHistoryRecord, String> CERTIFICATE_NAME =
+      createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
+
   /** The column <code>sion.user_certificate_history.employee_identification_number</code>. */
   public final TableField<UserCertificateHistoryRecord, String> EMPLOYEE_IDENTIFICATION_NUMBER =
       createField(
@@ -112,10 +116,6 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
           SQLDataType.VARCHAR(30).nullable(false),
           this,
           "");
-
-  /** The column <code>sion.user_certificate_history.certificate_name</code>. */
-  public final TableField<UserCertificateHistoryRecord, String> CERTIFICATE_NAME =
-      createField(DSL.name("certificate_name"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
   private UserCertificateHistory(Name alias, Table<UserCertificateHistoryRecord> aliased) {
     this(alias, aliased, null);
@@ -164,18 +164,11 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
   @Override
   public List<ForeignKey<UserCertificateHistoryRecord, ?>> getReferences() {
     return Arrays.asList(
-        Keys.FK_USER_CERT_HISTORY_TO_MEMBER, Keys.FK_USER_CERT_HISTORY_TO_CERTIFICATE);
+        Keys.FK_USER_CERT_HISTORY_TO_CERTIFICATE, Keys.FK_USER_CERT_HISTORY_TO_MEMBER);
   }
 
-  private transient Member _member;
   private transient Certificate _certificate;
-
-  /** Get the implicit join path to the <code>sion.member</code> table. */
-  public Member member() {
-    if (_member == null) _member = new Member(this, Keys.FK_USER_CERT_HISTORY_TO_MEMBER);
-
-    return _member;
-  }
+  private transient Member _member;
 
   /** Get the implicit join path to the <code>sion.certificate</code> table. */
   public Certificate certificate() {
@@ -183,6 +176,13 @@ public class UserCertificateHistory extends TableImpl<UserCertificateHistoryReco
       _certificate = new Certificate(this, Keys.FK_USER_CERT_HISTORY_TO_CERTIFICATE);
 
     return _certificate;
+  }
+
+  /** Get the implicit join path to the <code>sion.member</code> table. */
+  public Member member() {
+    if (_member == null) _member = new Member(this, Keys.FK_USER_CERT_HISTORY_TO_MEMBER);
+
+    return _member;
   }
 
   @Override
