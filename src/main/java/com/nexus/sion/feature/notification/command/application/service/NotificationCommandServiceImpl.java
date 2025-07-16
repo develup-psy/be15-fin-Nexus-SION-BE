@@ -86,19 +86,17 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
         () -> {
           sseEmitterRepository.deleteById(emitterId);
           cancelPing(emitterId);
-          log.info("onCompletion - emitter 삭제: {}", emitterId);
+          log.info("onCompletion - emitter 정리 완료: {}", emitterId);
         });
 
     emitter.onTimeout(
         () -> {
-          sseEmitterRepository.deleteById(emitterId);
-          cancelPing(emitterId);
-          log.info("onTimeout - emitter 삭제: {}", emitterId);
+            log.info("onTimeout 발생: {}", emitterId);
+            emitter.complete();
         });
 
     emitter.onError(
         (e) -> {
-          cancelPing(emitterId);
           if (e instanceof IOException) {
             log.info("✅ onError - SSE 연결 끊김: {}", emitterId);
           } else {
