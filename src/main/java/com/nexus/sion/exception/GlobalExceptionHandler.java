@@ -13,6 +13,8 @@ import com.nexus.sion.common.dto.ApiResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -48,7 +50,7 @@ public class GlobalExceptionHandler {
     ApiResponse<Void> response =
         ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
     ApiResponse.failure(errorSplit[errorSplit.length - 1], e.getMessage());
-    ;
+
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
@@ -77,5 +79,11 @@ public class GlobalExceptionHandler {
     log.warn("JWT 예외 발생: {} - {}", errorCode.getCode(), errorCode.getMessage(), e);
     ApiResponse<Void> response = ApiResponse.failure(errorCode.getCode(), errorCode.getMessage());
     return new ResponseEntity<>(response, errorCode.getHttpStatus());
+  }
+
+  /** SSE 관련 예외 처리 */
+  @ExceptionHandler(IOException.class)
+  public void handleIOException(IOException ex) {
+    log.info("SSE 연결 끊김: {}", ex.getMessage());
   }
 }
