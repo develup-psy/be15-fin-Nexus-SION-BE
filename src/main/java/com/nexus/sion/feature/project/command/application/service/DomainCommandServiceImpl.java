@@ -20,7 +20,7 @@ public class DomainCommandServiceImpl implements DomainCommandService {
 
   private final ModelMapper modelMapper;
   private final DomainRepository domainRepository;
-  private ProjectRepository projectRepository;
+  private final ProjectRepository projectRepository;
 
   @Override
   @Transactional
@@ -37,8 +37,10 @@ public class DomainCommandServiceImpl implements DomainCommandService {
   @Override
   @Transactional
   public void removeDomain(String domainName) {
-    Domain domain = domainRepository.findById(domainName)
-            .orElseThrow(() -> new BusinessException(ErrorCode.DOMAIN_NOT_FOUND));
+    // 기존에 해당 도메인이 없으면 에러
+    if (!domainRepository.existsById(domainName)) {
+      throw new BusinessException(ErrorCode.DOMAIN_NOT_FOUND);
+    }
 
     // 도메인을 사용하는 프로젝트가 있는지 확인
     if (projectRepository.existsByDomainName(domainName)) {
@@ -46,6 +48,6 @@ public class DomainCommandServiceImpl implements DomainCommandService {
     }
 
     // 해당 도메인 삭제
-    domainRepository.delete(domain);
+    domainRepository.deleteById(domainName);
   }
 }
