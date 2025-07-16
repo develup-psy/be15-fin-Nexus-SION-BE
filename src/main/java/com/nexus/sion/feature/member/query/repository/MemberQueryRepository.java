@@ -7,19 +7,18 @@ import static com.example.jooq.generated.tables.Member.MEMBER;
 import static org.jooq.impl.DSL.*;
 import static org.jooq.impl.SQLDataType.VARCHAR;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.jooq.generated.enums.*;
+import com.example.jooq.generated.tables.MemberScoreHistory;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
-import com.example.jooq.generated.enums.MemberRole;
-import com.example.jooq.generated.enums.MemberStatus;
-import com.example.jooq.generated.enums.ProjectAnalysisStatus;
-import com.example.jooq.generated.enums.ProjectStatus;
 import com.example.jooq.generated.tables.Domain;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
@@ -48,7 +47,10 @@ public class MemberQueryRepository {
             .from(PROJECT)
             .join(DOMAIN)
             .on(PROJECT.DOMAIN_NAME.eq(Domain.DOMAIN.NAME))
-            .where(PROJECT.STATUS.eq(ProjectStatus.WAITING)) // enum
+            .where(PROJECT.STATUS.eq(ProjectStatus.WAITING)
+                    .and(PROJECT.START_DATE.isNotNull())
+                    .and(PROJECT.START_DATE.ge(LocalDate.now()))
+            ) // enum
             .orderBy(PROJECT.START_DATE.asc()) // 시작일 임박 기준
             .limit(5)
             .fetch();
@@ -95,42 +97,75 @@ public class MemberQueryRepository {
         .toList();
   }
 
-  public List<DashboardSummaryResponse.AnalyzingProject> findAnalyzingProjects() {
-    return dsl.select(PROJECT.PROJECT_CODE, PROJECT.TITLE, PROJECT.CREATED_AT)
-        .from(PROJECT)
-        .where(PROJECT.ANALYSIS_STATUS.eq(ProjectAnalysisStatus.PROCEEDING))
-        .orderBy(PROJECT.CREATED_AT.desc())
-        .limit(5)
-        .fetch()
-        .map(
-            r ->
-                new DashboardSummaryResponse.AnalyzingProject(
-                    r.get(PROJECT.PROJECT_CODE),
-                    r.get(PROJECT.TITLE),
-                    r.get(PROJECT.CREATED_AT).toLocalDate()));
-  }
-
-  public List<DashboardSummaryResponse.TopDeveloper> fetchTopDevelopers() {
-    // 상위 생산성 개발자 10명 조회
-    var topDevelopers =
-        dsl.select(
-                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
-                MEMBER.EMPLOYEE_NAME,
-                MEMBER.GRADE_CODE,
-                GRADE.PRODUCTIVITY,
-                MEMBER.PROFILE_IMAGE_URL)
-            .from(MEMBER)
-            .join(GRADE)
-            .on(MEMBER.GRADE_CODE.cast(String.class).eq(GRADE.GRADE_CODE.cast(String.class)))
-            .orderBy(GRADE.PRODUCTIVITY.desc())
+  public List<DashboardSummaryResponse.PendingApprovalProject> findPendingApprovalProjects() {
+    var records = dsl
+            .select(
+                    DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
+                    DEVELOPER_PROJECT_WORK.PROJECT_CODE,
+                    PROJECT.TITLE,
+                    DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    MEMBER.EMPLOYEE_NAME,
+                    DEVELOPER_PROJECT_WORK.CREATED_AT
+            )
+            .from(DEVELOPER_PROJECT_WORK)
+            .join(PROJECT).on(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(PROJECT.PROJECT_CODE))
+            .join(MEMBER).on(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+            .where(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(DeveloperProjectWorkApprovalStatus.PENDING))
+            .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.asc())
             .limit(10)
             .fetch();
 
-    // 개발자 ID 리스트
+    return records.stream()
+            .map(r -> DashboardSummaryResponse.PendingApprovalProject.builder()
+                    .id(r.get(DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID))
+                    .projectCode(r.get(DEVELOPER_PROJECT_WORK.PROJECT_CODE))
+                    .projectTitle(r.get(PROJECT.TITLE))
+                    .developerId(r.get(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER))
+                    .developerName(r.get(MEMBER.EMPLOYEE_NAME))
+                    .createdAt(r.get(DEVELOPER_PROJECT_WORK.CREATED_AT))
+                    .build())
+            .toList();
+  }
+
+  public List<DashboardSummaryResponse.TopDeveloper> fetchTopDevelopers() {
+
+    MemberScoreHistory mshOuter = MEMBER_SCORE_HISTORY.as("msh_outer");
+    MemberScoreHistory mshInner = MEMBER_SCORE_HISTORY.as("msh_inner");
+
+    var latestScores = DSL.select(
+                    mshOuter.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    mshOuter.TOTAL_TECH_STACK_SCORES,
+                    mshOuter.TOTAL_CERTIFICATE_SCORES,
+                    mshOuter.CREATED_AT
+            )
+            .from(mshOuter)
+            .where(mshOuter.CREATED_AT.eq(
+                    dsl.select(DSL.max(mshInner.CREATED_AT))
+                            .from(mshInner)
+                            .where(mshInner.EMPLOYEE_IDENTIFICATION_NUMBER.eq(mshOuter.EMPLOYEE_IDENTIFICATION_NUMBER))
+            ))
+            .asTable("latest_score");
+
+    var topDevelopers = dsl
+            .select(
+                    MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    MEMBER.EMPLOYEE_NAME,
+                    MEMBER.GRADE_CODE,
+                    MEMBER.PROFILE_IMAGE_URL,
+                    latestScores.field(MEMBER_SCORE_HISTORY.TOTAL_TECH_STACK_SCORES).add(
+                            latestScores.field(MEMBER_SCORE_HISTORY.TOTAL_CERTIFICATE_SCORES)
+                    ).as("total_score")
+            )
+            .from(MEMBER)
+            .leftJoin(latestScores)
+            .on(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(latestScores.field(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER)))
+            .orderBy(DSL.field("total_score").desc())
+            .limit(10)
+            .fetch();
+
     List<String> developerIds =
         topDevelopers.stream().map(r -> r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)).toList();
 
-    // 기술스택 조회
     Map<String, List<String>> techStackMap =
         dsl.select(
                 DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER,
@@ -148,8 +183,12 @@ public class MemberQueryRepository {
                 DashboardSummaryResponse.TopDeveloper.builder()
                     .id(r.get(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
                     .name(r.get(MEMBER.EMPLOYEE_NAME))
-                    .grade(r.get(MEMBER.GRADE_CODE).name())
-                    .productivity(r.get(GRADE.PRODUCTIVITY))
+                    .grade(
+                            Optional.ofNullable(r.get(MEMBER.GRADE_CODE))
+                                    .map(Enum::name)
+                                    .orElse(null)
+                    )
+                    .totalScores(r.get("total_score", Integer.class))
                     .profileUrl(r.get(MEMBER.PROFILE_IMAGE_URL))
                     .techStacks(
                         techStackMap.getOrDefault(
@@ -201,7 +240,7 @@ public class MemberQueryRepository {
                         r.get(MEMBER.GRADE_CODE) != null ? r.get(MEMBER.GRADE_CODE).name() : "미정",
                         r.get(DSL.count())));
 
-    // 3. available 상태 개발자들의 기술스택 목록 (중복 제거)
+    // 3. available 상태 개발자들의 기술스택 목록 (중복 제거 - 20개까지)
     List<String> availableStacks =
         dsl.selectDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
             .from(DEVELOPER_TECH_STACK)
@@ -210,6 +249,7 @@ public class MemberQueryRepository {
                 DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
                     MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .where(MEMBER.STATUS.eq(MemberStatus.AVAILABLE))
+                .limit(20)
             .fetch(DEVELOPER_TECH_STACK.TECH_STACK_NAME);
 
     return new DashboardSummaryResponse.DeveloperAvailability(
