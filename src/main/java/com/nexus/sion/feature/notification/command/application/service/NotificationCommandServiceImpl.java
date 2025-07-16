@@ -120,9 +120,8 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
               try {
                 emitter.send(SseEmitter.event().name("ping").data("ping"));
               } catch (IOException | IllegalStateException e) {
-                sseEmitterRepository.deleteById(emitterId);
-                cancelPing(emitterId);
-                log.info("✅ ping 전송 실패 - emitter 삭제: {}", emitterId);
+                log.info("✅ ping 전송 실패 - emitter 정리 시작: {}", emitterId);
+                emitter.complete();
               }
             },
             30,
@@ -235,13 +234,11 @@ public class NotificationCommandServiceImpl implements NotificationCommandServic
     try {
       emitter.send(SseEmitter.event().id(emitterId).name(name).data(data));
     } catch (IOException e) {
-      sseEmitterRepository.deleteById(emitterId);
-      cancelPing(emitterId);
-      log.info("✅ SSE 연결 끊김: emitterId={}, reason={}", emitterId, e.getMessage());
+      log.info("✅ SSE 연결 끊김으로 emitter 정리 시작: emitterId={}, reason={}", emitterId, e.getMessage());
+      emitter.complete();
     } catch (Exception e) {
-      sseEmitterRepository.deleteById(emitterId);
-      cancelPing(emitterId);
-      log.error("🚨 SSE 예기치 않은 오류: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      log.error("🚨 SSE 예기치 않은 오류로 emitter 정리 시작: emitterId={}, error={}", emitterId, e.getMessage(), e);
+      emitter.complete();
     }
   }
 
