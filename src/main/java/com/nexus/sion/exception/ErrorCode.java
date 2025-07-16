@@ -58,7 +58,8 @@ public enum ErrorCode {
   CLIENT_COMPANY_NOT_FOUND("30009", "해당 고객사가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
   CLIENT_COMPANY_DELETE_CONSTRAINT(
       "30010", "해당 고객사는 연결된 프로젝트가 있어 삭제할 수 없습니다.", HttpStatus.CONFLICT),
-  PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED("30011","모든 구성원의 프로젝트 이력 등록이 완료되지 않았습니다",HttpStatus.BAD_REQUEST ),
+  PROJECT_CANNOT_COMPLETE_NOT_ALL_APPROVED(
+      "30011", "모든 구성원의 프로젝트 이력 등록이 완료되지 않았습니다", HttpStatus.BAD_REQUEST),
 
   // squad
   PROJECT_SQUAD_NOT_FOUND("40001", "해당 프로젝트에 스쿼드가 존재하지 않습니다.", HttpStatus.NOT_FOUND),

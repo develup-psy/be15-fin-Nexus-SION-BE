@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.member.query.dto.response;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,13 +27,12 @@ public record DashboardSummaryResponse(
 
   @Builder
   public record PendingApprovalProject(
-          Long id,
-          String projectCode,
-          String projectTitle,
-          String developerId,
-          String developerName,
-          LocalDateTime createdAt
-  ) {}
+      Long id,
+      String projectCode,
+      String projectTitle,
+      String developerId,
+      String developerName,
+      LocalDateTime createdAt) {}
 
   @Builder
   public record TopDeveloper(
