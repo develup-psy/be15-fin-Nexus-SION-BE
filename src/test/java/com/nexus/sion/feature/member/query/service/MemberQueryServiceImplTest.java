@@ -358,7 +358,8 @@ class MemberQueryServiceImplTest {
       // given
       String employeeId = "DEV001";
       String expectedImageUrl = "https://sion-bucket.s3.amazonaws.com/profile/abcd.png";
-      when(memberQueryRepository.findProfileImageUrlById(employeeId)).thenReturn(Optional.of(expectedImageUrl));
+      when(memberQueryRepository.findProfileImageUrlById(employeeId))
+          .thenReturn(Optional.of(expectedImageUrl));
 
       // when
       String actualImageUrl = memberQueryService.getMyProfileImage(employeeId);

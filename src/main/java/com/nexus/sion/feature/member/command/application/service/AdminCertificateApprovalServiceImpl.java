@@ -2,8 +2,6 @@ package com.nexus.sion.feature.member.command.application.service;
 
 import java.util.List;
 
-import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
-import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +15,8 @@ import com.nexus.sion.feature.member.command.domain.repository.CertificateReposi
 import com.nexus.sion.feature.member.command.domain.repository.MemberScoreHistoryRepository;
 import com.nexus.sion.feature.member.command.domain.repository.UserCertificateHistoryRepository;
 import com.nexus.sion.feature.member.query.dto.response.UserCertificateHistoryResponse;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -75,12 +75,7 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
 
     // 알림
     notificationCommandService.createAndSendNotification(
-            null,
-            employeeId,
-            null,
-            NotificationType.CERTIFICATION_APPROVED,
-            null
-    );
+        null, employeeId, null, NotificationType.CERTIFICATION_APPROVED, null);
   }
 
   @Override
@@ -96,11 +91,10 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
 
     // 알림
     notificationCommandService.createAndSendNotification(
-            null,
-            history.getEmployeeIdentificationNumber(),
-            null,
-            NotificationType.CERTIFICATION_REJECTED,
-            null
-    );
+        null,
+        history.getEmployeeIdentificationNumber(),
+        null,
+        NotificationType.CERTIFICATION_REJECTED,
+        null);
   }
 }

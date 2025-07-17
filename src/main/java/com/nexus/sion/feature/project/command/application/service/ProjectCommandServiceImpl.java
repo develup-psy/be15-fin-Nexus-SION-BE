@@ -98,9 +98,10 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public void updateProject(ProjectUpdateRequest request) {
-    Project project = projectRepository
-                    .findById(request.getProjectCode())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+    Project project =
+        projectRepository
+            .findById(request.getProjectCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     project.setDomainName(request.getDomainName());
     project.setDescription(request.getDescription());
@@ -147,7 +148,7 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   public void deleteProject(String projectCode) {
     Project project =
-            projectRepository
+        projectRepository
             .findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -160,7 +161,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public void updateProjectStatus(String projectCode, Project.ProjectStatus status) {
-    Project project = projectRepository.findById(projectCode)
+    Project project =
+        projectRepository
+            .findById(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     if (status == Project.ProjectStatus.COMPLETE) {

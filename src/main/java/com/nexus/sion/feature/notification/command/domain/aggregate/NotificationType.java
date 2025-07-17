@@ -46,7 +46,6 @@ public enum NotificationType {
 
   /** 자격증 등록 반려 알림 */
   CERTIFICATION_REJECTED("자격증 등록이 반려되었습니다."),
-
   ;
 
   private final String message;
