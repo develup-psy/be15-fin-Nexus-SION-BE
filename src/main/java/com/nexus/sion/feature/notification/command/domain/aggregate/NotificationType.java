@@ -36,7 +36,12 @@ public enum NotificationType {
   TASK_APPROVAL_REQUEST_AGAIN("{username}님의 프로젝트 이력 등록을 다시 해주세요."),
 
   /** 자격증 등록 승인 요청 알림 */
-  CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다.");
+  CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다."),
+
+  /** 프로젝트 확정 알림 */
+  SQUAD_CONFIRMED("당신이 포함된 스쿼드가 프로젝트에 확정되었습니다."),
+
+  ;
 
   private final String message;
 

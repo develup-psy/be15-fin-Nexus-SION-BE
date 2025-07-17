@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   private final ProjectCommandService projectCommandService;
   private final SquadDomainService squadDomainService;
   private final SquadValidationService squadValidationService;
+  private final NotificationCommandService notificationCommandService;
 
   @Override
   @Transactional
@@ -286,6 +289,18 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     // 2. 프로젝트 상태를 IN_PROGRESS로 변경
     projectCommandService.updateProjectStatus(
         squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+
+    // 3. 알림 전송
+    squadEmployeeCommandRepository.findBySquadCode(squadCode)
+                    .forEach(member ->
+                      notificationCommandService.createAndSendNotification(
+                              null,
+                              member.getEmployeeIdentificationNumber(),
+                              null,
+                              NotificationType.SQUAD_CONFIRMED,
+                              squad.getProjectCode()
+                              )
+                    );
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(
