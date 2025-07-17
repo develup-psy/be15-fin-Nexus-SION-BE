@@ -2,6 +2,8 @@ package com.nexus.sion.feature.member.command.application.service;
 
 import java.util.List;
 
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
   private final UserCertificateHistoryRepository userCertificateHistoryRepository;
   private final CertificateRepository certificateRepository;
   private final MemberScoreHistoryRepository memberScoreHistoryRepository;
+  private final NotificationCommandService notificationCommandService;
 
   @Override
   @Transactional
@@ -69,6 +72,15 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
             .build();
 
     memberScoreHistoryRepository.save(newHistory);
+
+    // 알림
+    notificationCommandService.createAndSendNotification(
+            null,
+            employeeId,
+            null,
+            NotificationType.CERTIFICATION_APPROVED,
+            null
+    );
   }
 
   @Override
@@ -81,5 +93,14 @@ public class AdminCertificateApprovalServiceImpl implements AdminCertificateAppr
 
     history.reject(request.getRejectedReason());
     userCertificateHistoryRepository.save(history);
+
+    // 알림
+    notificationCommandService.createAndSendNotification(
+            null,
+            history.getEmployeeIdentificationNumber(),
+            null,
+            NotificationType.CERTIFICATION_REJECTED,
+            null
+    );
   }
 }
