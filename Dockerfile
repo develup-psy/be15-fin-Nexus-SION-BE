@@ -6,7 +6,6 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradlew clean build -x test -x spotlessJavaCheck --no-daemon
 
-# 2단계: 실제 실행 이미지
 FROM openjdk:17
 
 WORKDIR /app
