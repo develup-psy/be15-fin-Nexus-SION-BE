@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import static org.jooq.impl.DSL.rowNumber;
+import static org.jooq.impl.DSL.partitionBy;
+import static org.jooq.impl.DSL.field;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.DeveloperProjectWorkApprovalStatus;
@@ -28,8 +31,8 @@ public class DeveloperProjectWorkQueryRepository {
     return findByCondition(null, status);
   }
 
-  public List<WorkRequestQueryDto> findByEmployeeId(String employeeId) {
-    return findByCondition(employeeId, null);
+  public List<WorkRequestQueryDto> findByEmployeeId(String employeeId, String status) {
+    return findByCondition(employeeId, status);
   }
 
   private List<WorkRequestQueryDto> findByCondition(String employeeId, String status) {
@@ -45,12 +48,17 @@ public class DeveloperProjectWorkQueryRepository {
     // 특정 사번 필터링
     if (employeeId != null) {
       conditions.add(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId));
+
+      // 상태 필터링 (NOT_REQUESTED 포함 가능)
+      if (status != null && !status.isBlank()) {
+        conditions.add(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
+                DeveloperProjectWorkApprovalStatus.valueOf(status)));
+      }
     }
 
-    // 상태 필터링
-    if (status != null && !status.isBlank()) {
-      conditions.add(
-          DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
+    // 관리자이면서 status 필터가 들어온 경우 추가 조건
+    if (employeeId == null && status != null && !status.isBlank()) {
+      conditions.add(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
               DeveloperProjectWorkApprovalStatus.valueOf(status)));
     }
 
@@ -171,16 +179,24 @@ public class DeveloperProjectWorkQueryRepository {
   }
 
   public List<DeveloperApprovalResponse> findDeveloperApprovalsByProjectCode(String projectCode) {
-    return dsl.select(
-            DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
-            DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
-            DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
-            DEVELOPER_PROJECT_WORK.APPROVED_BY,
-            DEVELOPER_PROJECT_WORK.APPROVED_AT,
-            DEVELOPER_PROJECT_WORK.REJECTED_REASON)
-        .from(DEVELOPER_PROJECT_WORK)
-        .where(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(projectCode))
-        .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc())
-        .fetchInto(DeveloperApprovalResponse.class);
+    var latestWork = dsl.select(
+                    DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
+                    DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
+                    DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
+                    DEVELOPER_PROJECT_WORK.APPROVED_BY,
+                    DEVELOPER_PROJECT_WORK.APPROVED_AT,
+                    DEVELOPER_PROJECT_WORK.REJECTED_REASON,
+                    rowNumber().over(
+                            partitionBy(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER)
+                                    .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc())
+                    ).as("rn")
+            )
+            .from(DEVELOPER_PROJECT_WORK)
+            .where(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(projectCode))
+            .asTable("latest_work");
+
+    return dsl.selectFrom(latestWork)
+            .where(field("rn", Integer.class).eq(1))
+            .fetchInto(DeveloperApprovalResponse.class);
   }
 }

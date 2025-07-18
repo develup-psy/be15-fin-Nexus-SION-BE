@@ -182,7 +182,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
       project.setActualEndDate(LocalDate.now());
     } else if (status == Project.ProjectStatus.EVALUATION) {
-      project.setActualEndDate(LocalDate.now());
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);

@@ -3,7 +3,6 @@ package com.nexus.sion.feature.project.command.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
   boolean existsByDomainName(String domainName);
 
   boolean existsByClientCode(String clientCode);
+
+  Optional<String> findProjectNameByProjectCode(String projectCode);
 }

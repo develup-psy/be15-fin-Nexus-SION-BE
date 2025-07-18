@@ -34,9 +34,9 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
 
   @Override
   public PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(
-      String employeeId, int page, int size) {
+      String employeeId, String status, int page, int size) {
     List<WorkRequestQueryDto> fullList =
-        developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
+        developerProjectWorkQueryRepository.findByEmployeeId(employeeId, status);
 
     int total = fullList.size();
     int fromIndex = Math.min(page * size, total);

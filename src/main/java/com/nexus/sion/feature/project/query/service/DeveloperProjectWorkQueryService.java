@@ -12,7 +12,7 @@ import com.nexus.sion.feature.project.query.dto.response.WorkInfoQueryDto;
 public interface DeveloperProjectWorkQueryService {
   PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size);
 
-  PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(String employeeId, int page, int size);
+  PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(String employeeId, String status, int page, int size);
 
   ProjectInfoDto getProjectInfo(Long workId);
 

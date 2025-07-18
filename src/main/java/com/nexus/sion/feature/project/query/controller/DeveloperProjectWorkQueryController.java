@@ -39,11 +39,12 @@ public class DeveloperProjectWorkQueryController {
   @GetMapping("/me")
   public ResponseEntity<ApiResponse<PageResponse<WorkRequestQueryDto>>> getMyRequests(
       @AuthenticationPrincipal User user,
+      @RequestParam(required = false) String status,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
     String employeeId = user.getUsername();
     PageResponse<WorkRequestQueryDto> result =
-        developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId, page, size);
+        developerProjectWorkQueryService.getRequestsByEmployeeId(employeeId, status, page, size);
     return ResponseEntity.ok(ApiResponse.success(result));
   }
 

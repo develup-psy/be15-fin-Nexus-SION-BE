@@ -15,6 +15,7 @@ public class ProjectListRequest {
   private Integer maxPeriodInMonth;
   private Integer maxNumberOfMembers;
   private List<String> statuses;
+  private String sortBy;
 
   private int page;
   private int size;

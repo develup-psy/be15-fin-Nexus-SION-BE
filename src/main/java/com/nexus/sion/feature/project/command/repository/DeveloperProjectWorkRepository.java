@@ -8,4 +8,6 @@ import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectW
 
 public interface DeveloperProjectWorkRepository extends JpaRepository<DeveloperProjectWork, Long> {
   List<DeveloperProjectWork> findByProjectCode(String projectCode);
+
+    List<DeveloperProjectWork> findAllByProjectCode(String projectCode);
 }
