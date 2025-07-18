@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +32,7 @@ import com.nexus.sion.feature.project.command.application.dto.response.ProjectRe
 import com.nexus.sion.feature.project.command.domain.aggregate.*;
 import com.nexus.sion.feature.project.command.domain.repository.*;
 import com.nexus.sion.feature.project.command.domain.service.ProjectAnalysisService;
+import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.Squad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.entity.SquadEmployee;
 import com.nexus.sion.feature.squad.command.repository.SquadCommandRepository;
@@ -153,16 +153,16 @@ class ProjectCommandServiceImplTest {
 
     when(projectRepository.findById(projectCode)).thenReturn(Optional.of(project));
     when(developerProjectWorkRepository.findByProjectCode(projectCode))
-            .thenReturn(List.of(
-                    DeveloperProjectWork.builder()
-                            .id(1L)
-                            .employeeIdentificationNumber("test01")
-                            .projectCode(projectCode)
-                            .approvalStatus(DeveloperProjectWork.ApprovalStatus.APPROVED)
-                            .approvedBy("test02")
-                            .approvedAt(LocalDateTime.now())
-                            .build()
-            ));
+        .thenReturn(
+            List.of(
+                DeveloperProjectWork.builder()
+                    .id(1L)
+                    .employeeIdentificationNumber("test01")
+                    .projectCode(projectCode)
+                    .approvalStatus(DeveloperProjectWork.ApprovalStatus.APPROVED)
+                    .approvedBy("test02")
+                    .approvedAt(LocalDateTime.now())
+                    .build()));
 
     // when
     projectCommandService.updateProjectStatus(projectCode, Project.ProjectStatus.COMPLETE);
