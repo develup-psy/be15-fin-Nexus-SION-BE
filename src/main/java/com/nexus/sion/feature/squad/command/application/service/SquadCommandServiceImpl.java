@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.service.GradeDomainService;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
+import com.nexus.sion.feature.notification.command.domain.aggregate.NotificationType;
 import com.nexus.sion.feature.project.command.application.service.ProjectCommandService;
 import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 import com.nexus.sion.feature.squad.command.application.dto.internal.CandidateSummary;
@@ -51,6 +53,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   private final ProjectCommandService projectCommandService;
   private final SquadDomainService squadDomainService;
   private final SquadValidationService squadValidationService;
+  private final NotificationCommandService notificationCommandService;
 
   @Override
   @Transactional
@@ -286,6 +289,18 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     // 2. 프로젝트 상태를 IN_PROGRESS로 변경
     projectCommandService.updateProjectStatus(
         squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+
+    // 3. 알림 전송
+    squadEmployeeCommandRepository
+        .findBySquadCode(squadCode)
+        .forEach(
+            member ->
+                notificationCommandService.createAndSendNotification(
+                    null,
+                    member.getEmployeeIdentificationNumber(),
+                    null,
+                    NotificationType.SQUAD_CONFIRMED,
+                    squad.getProjectCode()));
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(

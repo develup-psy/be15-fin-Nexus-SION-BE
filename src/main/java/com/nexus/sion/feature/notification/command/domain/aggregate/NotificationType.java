@@ -39,7 +39,17 @@ public enum NotificationType {
   PROJECT_EVALUATION_READY("{projectName} 프로젝트를 평가 완료할 수 있습니다."),
 
   /** 자격증 등록 승인 요청 알림 */
-  CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다.");
+  CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다."),
+
+  /** 프로젝트 확정 알림 */
+  SQUAD_CONFIRMED("당신이 포함된 스쿼드가 프로젝트에 확정되었습니다."),
+
+  /** 자격증 등록 승인 알림 */
+  CERTIFICATION_APPROVED("자격증 등록이 승인되었습니다."),
+
+  /** 자격증 등록 반려 알림 */
+  CERTIFICATION_REJECTED("자격증 등록이 반려되었습니다."),
+  ;
 
   private final String message;
 

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +15,7 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.DomainRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Domain;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.project.command.repository.DomainRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -104,9 +104,7 @@ class DomainCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> domainCommandService.removeDomain(domainName));
+        assertThrows(BusinessException.class, () -> domainCommandService.removeDomain(domainName));
 
     assertEquals(ErrorCode.DOMAIN_DELETE_CONSTRAINT, exception.getErrorCode());
   }

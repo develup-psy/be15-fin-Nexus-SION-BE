@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +22,7 @@ import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyCreateRequest;
 import com.nexus.sion.feature.project.command.application.dto.request.ClientCompanyUpdateRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.ClientCompany;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.project.command.repository.ClientCompanyRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -303,9 +303,7 @@ class ClientCompanyCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> service.deleteClientCompany(clientCode));
+        assertThrows(BusinessException.class, () -> service.deleteClientCompany(clientCode));
 
     assertEquals(ErrorCode.CLIENT_COMPANY_DELETE_CONSTRAINT, exception.getErrorCode());
   }

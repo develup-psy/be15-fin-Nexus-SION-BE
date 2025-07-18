@@ -1,4 +1,4 @@
-name: Deploy Backend to ECR
+name: Deploy Backend to ECR and Update Manifest
 
 on:
   push:
@@ -10,9 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout Backend Repo
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      # 2. Set Git short SHA as image tag
+      - name: Set image tag
+        id: vars
+        run: echo "tag=sha-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      # 3. AWS Credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -20,14 +27,35 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # 4. Login to ECR
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker image
+      # 5. Build & Push Docker image with SHA tag
+      - name: Build & Push Docker Image
         run: |
-          docker build -t ${{ secrets.ECR_REPOSITORY }}:latest .
+          docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ steps.vars.outputs.tag }} .
+          docker push ${{ secrets.ECR_REPOSITORY }}:${{ steps.vars.outputs.tag }}
 
-      - name: Push Docker image to ECR
+      # 6. Clone Manifest Repo
+      - name: Checkout sion-k8s-manifests
+        uses: actions/checkout@v3
+        with:
+          repository: be15-fin-Nexus-SION/sion-k8s-manifests
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: manifest
+
+      # 7. Update deployment.yaml
+      - name: Update image tag in manifest
         run: |
-          docker push ${{ secrets.ECR_REPOSITORY }}:latest
+          sed -i "s|image: .*$|image: ${{ secrets.ECR_REPOSITORY }}:${{ steps.vars.outputs.tag }}|" manifest/apps/sion-backend/deployment.yml
+
+      # 8. Commit and push
+      - name: Commit and push manifest change
+        run: |
+          cd manifest
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add apps/sion-backend/deployment.yml
+          git commit -m "chore: update backend image tag to ${{ steps.vars.outputs.tag }}"
+          git push

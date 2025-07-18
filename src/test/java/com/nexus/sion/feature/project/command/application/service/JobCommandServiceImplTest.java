@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.example.jooq.generated.tables.records.ProjectAndJobRecord;
-import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
-import org.jooq.DAO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,8 +15,8 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.project.command.application.dto.request.JobRequest;
 import com.nexus.sion.feature.project.command.domain.aggregate.Job;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectAndJobRepository;
 import com.nexus.sion.feature.project.command.repository.JobRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 
 @ExtendWith(MockitoExtension.class)
 class JobCommandServiceImplTest {
@@ -106,9 +103,7 @@ class JobCommandServiceImplTest {
 
     // when & then
     BusinessException exception =
-            assertThrows(
-                    BusinessException.class,
-                    () -> jobCommandService.removeJob(jobName));
+        assertThrows(BusinessException.class, () -> jobCommandService.removeJob(jobName));
 
     assertEquals(ErrorCode.JOB_DELETE_CONSTRAINT, exception.getErrorCode());
   }
