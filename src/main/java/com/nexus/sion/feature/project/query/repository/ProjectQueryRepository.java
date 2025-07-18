@@ -145,11 +145,14 @@ public class ProjectQueryRepository {
 
     // 2. 기간 계산
     LocalDate start = project.get(PROJECT.START_DATE);
-    LocalDate end =
-        project.get(PROJECT.ACTUAL_END_DATE) != null
-            ? project.get(PROJECT.ACTUAL_END_DATE)
-            : project.get(PROJECT.EXPECTED_END_DATE);
-    String duration = start + " ~ " + end;
+    LocalDate actualEnd = project.get(PROJECT.ACTUAL_END_DATE);
+    String duration;
+
+    if (actualEnd != null) {
+      duration = start + " ~ " + actualEnd;
+    } else {
+      duration = start + " ~ 진행중";
+    }
 
     // 3. 예산 포맷
     String budget = "₩" + new DecimalFormat("#,###").format(project.get(PROJECT.BUDGET));

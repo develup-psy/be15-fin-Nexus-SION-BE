@@ -326,4 +326,13 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
       sendTaskUploadRequestNotification(employee, saved.getId());
     }
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Long getProjectBudget(String projectCode) {
+    Project project = projectRepository
+            .findByProjectCode(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+    return project.getBudget();
+  }
 }

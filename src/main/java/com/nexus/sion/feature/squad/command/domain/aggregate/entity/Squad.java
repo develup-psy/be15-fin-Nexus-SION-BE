@@ -58,4 +58,8 @@ public class Squad extends BaseTimeEntity {
   public void confirm() {
     this.isActive = true;
   }
+
+  public void updateEstimatedCost(Long projectBudget) {
+    this.estimatedCost = estimatedCost;
+  }
 }
