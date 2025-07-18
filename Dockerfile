@@ -8,6 +8,7 @@ RUN ./gradlew clean build -x test -x spotlessJavaCheck --no-daemon
 
 FROM openjdk:17
 
+
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar ./
 
