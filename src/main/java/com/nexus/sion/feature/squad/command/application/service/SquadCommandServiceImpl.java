@@ -286,9 +286,12 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
     squad.confirm(); // isActive = true
 
-    // 2. 프로젝트 상태를 IN_PROGRESS로 변경
+    // 2. 프로젝트 상태를 IN_PROGRESS로 변경, 예산도 스쿼드 예산으로 변경
     projectCommandService.updateProjectStatus(
         squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+
+    Long projectBudget = projectCommandService.getProjectBudget(squad.getProjectCode());
+    squad.updateEstimatedCost(projectBudget);
 
     // 3. 알림 전송
     squadEmployeeCommandRepository

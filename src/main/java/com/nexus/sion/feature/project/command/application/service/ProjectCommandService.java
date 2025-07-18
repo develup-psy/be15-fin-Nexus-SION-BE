@@ -25,4 +25,6 @@ public interface ProjectCommandService {
       String projectId, MultipartFile multipartFile, String employeeIdentificationNumber);
 
   void replaceMember(SquadReplacementRequest request);
+
+  Long getProjectBudget(String projectCode);
 }

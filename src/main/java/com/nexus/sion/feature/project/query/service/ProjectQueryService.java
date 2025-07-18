@@ -22,5 +22,5 @@ public interface ProjectQueryService {
       String employeeId, int page, int size);
 
   PageResponse<ProjectListResponse> getProjectsByEmployeeId(
-      String employeeId, List<String> statuses, int page, int size);
+      String employeeId, List<String> statuses, int page, int size, String sortBy, String keyword);
 }

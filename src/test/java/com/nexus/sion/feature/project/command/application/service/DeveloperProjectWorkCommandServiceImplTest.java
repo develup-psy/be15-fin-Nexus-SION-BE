@@ -69,7 +69,7 @@ class DeveloperProjectWorkCommandServiceImplTest {
             eq("ADMIN001"),
             eq("EMP001"),
             anyString(),
-            eq(NotificationType.TASK_APPROVAL_RESULT),
+            eq(NotificationType.TASK_RESULT),
             eq("1"));
   }
 

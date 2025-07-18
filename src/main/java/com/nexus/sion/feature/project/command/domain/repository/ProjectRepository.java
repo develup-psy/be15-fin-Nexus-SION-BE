@@ -21,4 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
   boolean existsByDomainName(String domainName);
 
   boolean existsByClientCode(String clientCode);
+
+  Optional<String> findProjectNameByProjectCode(String projectCode);
 }

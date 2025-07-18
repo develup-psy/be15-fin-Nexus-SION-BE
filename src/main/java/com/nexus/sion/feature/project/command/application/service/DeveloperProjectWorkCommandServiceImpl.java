@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,76 +39,102 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
   private final NotificationCommandService notificationCommandService;
   private final MemberRepository memberRepository;
   private final ProjectEvaluateCommandServiceImpl projectEvaluateCommandService;
+  private final ProjectRepository projectRepository;
 
   @Override
   @Transactional
   public void approve(Long id, String adminId) {
     validateAdmin(adminId);
-    DeveloperProjectWork work =
-        workRepository
+
+    DeveloperProjectWork work = workRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
+
     work.approve(adminId);
 
-    // 점수 산정 로직 코드
+    // ===== 점수 산정 로직 =====
     List<DeveloperProjectWorkHistory> histories =
-        workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
+            workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
 
-    List<Long> historyIds = histories.stream().map(DeveloperProjectWorkHistory::getId).toList();
-
-    List<DeveloperProjectWorkHistoryTechStack> techStacks =
-        workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
-
-    Map<Long, List<String>> historyIdToStackNamesMap =
-        techStacks.stream()
-            .collect(
-                Collectors.groupingBy(
-                    DeveloperProjectWorkHistoryTechStack::getDeveloperProjectWorkHistoryId,
-                    Collectors.mapping(
-                        DeveloperProjectWorkHistoryTechStack::getTechStackName,
-                        Collectors.toList())));
-
-    List<FunctionScore> functionScores =
-        histories.stream()
-            .map(
-                history ->
-                    new FunctionScore(
-                        history.getFunctionName(),
-                        history.getFunctionDescription(),
-                        history.getFunctionType().name(),
-                        history.getDet(),
-                        history.getFtr(),
-                        historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())))
+    List<Long> historyIds = histories.stream()
+            .map(DeveloperProjectWorkHistory::getId)
             .toList();
 
-    FunctionScoreDTO dto =
-        new FunctionScoreDTO(
-            work.getEmployeeIdentificationNumber(), work.getProjectCode(), functionScores);
+    List<DeveloperProjectWorkHistoryTechStack> techStacks =
+            workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
+
+    Map<Long, List<String>> historyIdToStackNamesMap = techStacks.stream()
+            .collect(Collectors.groupingBy(
+                    DeveloperProjectWorkHistoryTechStack::getDeveloperProjectWorkHistoryId,
+                    Collectors.mapping(
+                            DeveloperProjectWorkHistoryTechStack::getTechStackName,
+                            Collectors.toList()
+                    )
+            ));
+
+    List<FunctionScore> functionScores = histories.stream()
+            .map(history -> new FunctionScore(
+                    history.getFunctionName(),
+                    history.getFunctionDescription(),
+                    history.getFunctionType().name(),
+                    history.getDet(),
+                    history.getFtr(),
+                    historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())
+            ))
+            .toList();
+
+    FunctionScoreDTO dto = new FunctionScoreDTO(
+            work.getEmployeeIdentificationNumber(),
+            work.getProjectCode(),
+            functionScores
+    );
 
     projectEvaluateCommandService.evaluateFunctionScores(dto);
 
     // ===== 승인 알림 전송 =====
-    String receiverId = work.getEmployeeIdentificationNumber(); // 요청한 사원
-    String receiverName =
-        memberRepository
+    String receiverId = work.getEmployeeIdentificationNumber();
+    String receiverName = memberRepository
             .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
-    String statusMessage = "승인"; // 승인 상태 메시지
-    String message =
-        NotificationType.TASK_APPROVAL_RESULT
-            .getMessage()
+    String statusMessage = "승인";
+    String message = NotificationType.TASK_RESULT.getMessage()
             .replace("{username}", receiverName)
             .replace("{status}", statusMessage);
 
     notificationCommandService.createAndSendNotification(
-        adminId, // senderId = 승인한 관리자
-        receiverId, // receiverId = 요청한 사원
-        message, // 직접 생성한 메시지 전달
-        NotificationType.TASK_APPROVAL_RESULT, // 알림 타입
-        String.valueOf(id) // linkedContentId = 이력 ID
-        );
+            adminId,
+            receiverId,
+            message,
+            NotificationType.TASK_RESULT,
+            String.valueOf(id)
+    );
+
+    // ===== 모든 멤버 승인 완료 시 관리자에게 알림 =====
+    List<DeveloperProjectWork> projectWorks =
+            workRepository.findAllByProjectCode(work.getProjectCode());
+
+    boolean allApproved = projectWorks.stream()
+            .allMatch(w -> w.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
+
+    if (allApproved) {
+      String projectName = projectRepository
+              .findProjectNameByProjectCode(work.getProjectCode())
+              .orElse("알 수 없는 프로젝트");
+
+      String notifyMessage = NotificationType.PROJECT_EVALUATION_READY.getMessage()
+              .replace("{projectName}", projectName);
+
+      notificationCommandService.createAndSendNotification(
+              "SYSTEM", // senderId
+              adminId,  // 승인한 관리자에게 알림
+              notifyMessage,
+              NotificationType.PROJECT_EVALUATION_READY,
+              work.getProjectCode()
+      );
+    }
   }
+
 
   @Override
   @Transactional
@@ -130,13 +157,13 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
 
     String statusMessage = "거부";
     String message =
-        NotificationType.TASK_APPROVAL_RESULT
+        NotificationType.TASK_RESULT
             .getMessage()
             .replace("{username}", receiverName)
             .replace("{status}", statusMessage);
 
     notificationCommandService.createAndSendNotification(
-        adminId, receiverId, message, NotificationType.TASK_APPROVAL_RESULT, String.valueOf(id));
+        adminId, receiverId, message, NotificationType.TASK_RESULT, String.valueOf(id));
 
     // ===== 새로운 이력 생성 및 다시 요청 알림 전송 =====
     DeveloperProjectWork newWork =

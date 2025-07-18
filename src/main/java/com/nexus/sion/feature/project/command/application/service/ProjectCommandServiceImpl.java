@@ -185,7 +185,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
       project.setActualEndDate(LocalDate.now());
     } else if (status == Project.ProjectStatus.EVALUATION) {
-      project.setActualEndDate(LocalDate.now());
       createDeveloperProjectWorks(projectCode);
     } else {
       project.setActualEndDate(null);
@@ -326,5 +325,14 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
       sendTaskUploadRequestNotification(employee, saved.getId());
     }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Long getProjectBudget(String projectCode) {
+    Project project = projectRepository
+            .findByProjectCode(projectCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+    return project.getBudget();
   }
 }

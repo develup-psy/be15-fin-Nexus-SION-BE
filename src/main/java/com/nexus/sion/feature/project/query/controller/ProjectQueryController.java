@@ -43,7 +43,8 @@ public class ProjectQueryController {
       @RequestBody MyProjectListRequest request) {
     PageResponse<ProjectListResponse> result =
         projectQueryService.getProjectsByEmployeeId(
-            request.getEmployeeId(), request.getStatuses(), request.getPage(), request.getSize());
+            request.getEmployeeId(), request.getStatuses(), request.getPage(),
+                request.getSize(), request.getSortBy(), request.getKeyword());
     return ApiResponse.success(result);
   }
 

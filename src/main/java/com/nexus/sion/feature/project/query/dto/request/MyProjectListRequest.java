@@ -13,11 +13,16 @@ public class MyProjectListRequest {
   private int page = 0;
   private int size = 4;
   private List<String> statuses;
+  private String sortBy;
+  private String keyword;
 
-  public MyProjectListRequest(String employeeId, int page, int size, List<String> statuses) {
+  public MyProjectListRequest(String employeeId, int page, int size,
+                              List<String> statuses, String sortBy, String keyword) {
     this.employeeId = employeeId;
     this.page = page;
     this.size = size;
     this.statuses = statuses;
+    this.sortBy = sortBy;
+    this.keyword = keyword;
   }
 }

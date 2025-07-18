@@ -27,16 +27,20 @@ public class DeveloperProjectWorkQueryServiceImpl implements DeveloperProjectWor
 
   @Override
   public PageResponse<WorkRequestQueryDto> getRequestsForAdmin(String status, int page, int size) {
-    List<WorkRequestQueryDto> result = developerProjectWorkQueryRepository.findForAdmin(status);
-    long totalElements = developerProjectWorkQueryRepository.getTotalCountForAdmin(status);
-    return PageResponse.fromJooq(result, totalElements, page, size);
+    List<WorkRequestQueryDto> fullList = developerProjectWorkQueryRepository.findForAdmin(status);
+    int total = fullList.size();
+    int fromIndex = Math.min(page * size, total);
+    int toIndex = Math.min(fromIndex + size, total);
+    List<WorkRequestQueryDto> pagedList = fullList.subList(fromIndex, toIndex);
+
+    return PageResponse.fromJooq(pagedList, total, page, size);
   }
 
   @Override
   public PageResponse<WorkRequestQueryDto> getRequestsByEmployeeId(
-      String employeeId, int page, int size) {
+      String employeeId, String status, int page, int size) {
     List<WorkRequestQueryDto> fullList =
-        developerProjectWorkQueryRepository.findByEmployeeId(employeeId);
+        developerProjectWorkQueryRepository.findByEmployeeId(employeeId, status);
 
     int total = fullList.size();
     int fromIndex = Math.min(page * size, total);

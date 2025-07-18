@@ -51,11 +51,9 @@ public class ProjectQueryRepository {
     if (request.getKeyword() != null && !request.getKeyword().isBlank()) {
       String keyword = "%" + request.getKeyword() + "%";
       keywordCondition =
-          PROJECT
-              .TITLE
-              .likeIgnoreCase(keyword)
-              .or(PROJECT.DOMAIN_NAME.likeIgnoreCase(keyword))
-              .or(PROJECT.DESCRIPTION.likeIgnoreCase(keyword));
+              PROJECT.TITLE.likeIgnoreCase(keyword)
+                      .or(PROJECT.DOMAIN_NAME.likeIgnoreCase(keyword))
+                      .or(PROJECT.DESCRIPTION.likeIgnoreCase(keyword));
     }
 
     // 필터 조건 (AND)
@@ -66,8 +64,7 @@ public class ProjectQueryRepository {
     }
 
     if (request.getMaxNumberOfMembers() != null) {
-      filterCondition =
-          filterCondition.and(PROJECT.NUMBER_OF_MEMBERS.le(request.getMaxNumberOfMembers()));
+      filterCondition = filterCondition.and(PROJECT.NUMBER_OF_MEMBERS.le(request.getMaxNumberOfMembers()));
     }
 
     if (request.getStatuses() != null && !request.getStatuses().isEmpty()) {
@@ -77,40 +74,50 @@ public class ProjectQueryRepository {
     if (request.getMaxPeriodInMonth() != null) {
       Field<LocalDate> endDate = DSL.coalesce(PROJECT.ACTUAL_END_DATE, PROJECT.EXPECTED_END_DATE);
       Field<Integer> months =
-          DSL.field("timestampdiff(month, {0}, {1})", Integer.class, PROJECT.START_DATE, endDate);
+              DSL.field("timestampdiff(month, {0}, {1})", Integer.class, PROJECT.START_DATE, endDate);
       filterCondition = filterCondition.and(months.le(request.getMaxPeriodInMonth()));
     }
 
     // 최종 WHERE 조건: keyword AND filter
     Condition finalCondition = keywordCondition.and(filterCondition);
 
+    // 정렬 조건 처리
+    SortField<?> sortField;
+    switch (request.getSortBy()) {
+      case "TITLE" -> sortField = PROJECT.TITLE.asc();
+      case "HR_DESC" -> sortField = PROJECT.NUMBER_OF_MEMBERS.desc();
+      case "START_DATE_DESC" -> sortField = PROJECT.START_DATE.desc();
+      default -> sortField = PROJECT.UPDATED_AT.desc(); // 기본: 최근 업데이트순
+    }
+
     // 전체 개수
-    long totalCount = dsl.selectCount().from(PROJECT).where(finalCondition).fetchOne(0, long.class);
+    long totalCount = dsl
+            .selectCount()
+            .from(PROJECT)
+            .where(finalCondition)
+            .fetchOne(0, long.class);
 
     // 데이터 조회
-    List<ProjectListResponse> content =
-        dsl
+    List<ProjectListResponse> content = dsl
             .selectFrom(PROJECT)
             .where(finalCondition)
-            .orderBy(PROJECT.CREATED_AT.desc())
+            .orderBy(sortField)
             .limit(request.getSize())
             .offset(request.getPage() * request.getSize())
             .fetch()
             .stream()
-            .map(
-                record -> {
-                  LocalDate start = record.get(PROJECT.START_DATE);
-                  LocalDate end =
-                      record.get(PROJECT.ACTUAL_END_DATE) != null
-                          ? record.get(PROJECT.ACTUAL_END_DATE)
-                          : record.get(PROJECT.EXPECTED_END_DATE);
+            .map(record -> {
+              LocalDate start = record.get(PROJECT.START_DATE);
+              LocalDate end = record.get(PROJECT.ACTUAL_END_DATE) != null
+                      ? record.get(PROJECT.ACTUAL_END_DATE)
+                      : record.get(PROJECT.EXPECTED_END_DATE);
 
-                  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-                  String formattedStart = formatter.format(start);
-                  String formattedEnd = formatter.format(end);
-                  int months = (int) ChronoUnit.MONTHS.between(start, end);
+              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+              String formattedStart = formatter.format(start);
+              String formattedEnd = formatter.format(end);
+              int months = (int) ChronoUnit.MONTHS.between(start, end);
 
-                  return new ProjectListResponse(
+              return new ProjectListResponse(
                       record.get(PROJECT.PROJECT_CODE),
                       record.get(PROJECT.TITLE),
                       record.get(PROJECT.DESCRIPTION),
@@ -120,8 +127,9 @@ public class ProjectQueryRepository {
                       String.valueOf(record.get(PROJECT.STATUS)),
                       record.get(PROJECT.DOMAIN_NAME),
                       record.get(PROJECT.NUMBER_OF_MEMBERS),
-                      record.get(PROJECT.ANALYSIS_STATUS));
-                })
+                      record.get(PROJECT.ANALYSIS_STATUS)
+              );
+            })
             .collect(Collectors.toList());
 
     return PageResponse.fromJooq(content, totalCount, request.getPage(), request.getSize());
@@ -137,11 +145,14 @@ public class ProjectQueryRepository {
 
     // 2. 기간 계산
     LocalDate start = project.get(PROJECT.START_DATE);
-    LocalDate end =
-        project.get(PROJECT.ACTUAL_END_DATE) != null
-            ? project.get(PROJECT.ACTUAL_END_DATE)
-            : project.get(PROJECT.EXPECTED_END_DATE);
-    String duration = start + " ~ " + end;
+    LocalDate actualEnd = project.get(PROJECT.ACTUAL_END_DATE);
+    String duration;
+
+    if (actualEnd != null) {
+      duration = start + " ~ " + actualEnd;
+    } else {
+      duration = start + " ~ 진행중";
+    }
 
     // 3. 예산 포맷
     String budget = "₩" + new DecimalFormat("#,###").format(project.get(PROJECT.BUDGET));
@@ -421,55 +432,72 @@ public class ProjectQueryRepository {
   }
 
   public List<Project> findProjectsByEmployeeId(
-      String employeeId, List<String> statuses, int page, int size) {
-    // 기본 조건: 참여 중인 프로젝트 + 삭제되지 않은 프로젝트
-    Condition condition =
-        PROJECT
-            .DELETED_AT
-            .isNull()
-            .and(
-                PROJECT.PROJECT_CODE.in(
-                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
-                        .from(PROJECT_AND_JOB)
-                        .join(SQUAD_EMPLOYEE)
-                        .on(
-                            PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(
-                                SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
-                        .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
+          String employeeId, List<String> statuses, int page, int size, String sortBy, String keyword) {
 
-    // status 필터링
+    Condition condition =
+            PROJECT.DELETED_AT.isNull()
+                    .and(
+                            PROJECT.PROJECT_CODE.in(
+                                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                                            .from(PROJECT_AND_JOB)
+                                            .join(SQUAD_EMPLOYEE)
+                                            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                                            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
+
+    // status 조건
     if (statuses != null && !statuses.isEmpty()) {
-      condition =
-          condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
+      condition = condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
     }
 
-    return dsl.select(PROJECT.fields())
-        .from(PROJECT)
-        .where(condition)
-        .orderBy(PROJECT.START_DATE.desc())
-        .limit(size)
-        .offset(page * size)
-        .fetchInto(Project.class);
+    // keyword 조건
+    if (keyword != null && !keyword.isBlank()) {
+      String likeKeyword = "%" + keyword + "%";
+      Condition keywordCondition =
+              PROJECT.TITLE.likeIgnoreCase(likeKeyword)
+                      .or(PROJECT.DOMAIN_NAME.likeIgnoreCase(likeKeyword))
+                      .or(PROJECT.DESCRIPTION.likeIgnoreCase(likeKeyword));
+
+      condition = condition.and(keywordCondition);
+    }
+
+    SortField<?> sortField;
+    switch (sortBy) {
+      case "TITLE" -> sortField = PROJECT.TITLE.asc();
+      case "HR_DESC" -> sortField = PROJECT.NUMBER_OF_MEMBERS.desc();
+      case "START_DATE_DESC" -> sortField = PROJECT.START_DATE.desc();
+      default -> sortField = PROJECT.UPDATED_AT.desc();
+    }
+
+    return dsl.selectFrom(PROJECT)
+            .where(condition)
+            .orderBy(sortField)
+            .limit(size)
+            .offset(page * size)
+            .fetchInto(Project.class);
   }
 
-  public long countProjectsByEmployeeId(String employeeId, List<String> statuses) {
+  public long countProjectsByEmployeeId(String employeeId, List<String> statuses, String keyword) {
     Condition condition =
-        PROJECT
-            .DELETED_AT
-            .isNull()
-            .and(
-                PROJECT.PROJECT_CODE.in(
-                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
-                        .from(PROJECT_AND_JOB)
-                        .join(SQUAD_EMPLOYEE)
-                        .on(
-                            PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(
-                                SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
-                        .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
+            PROJECT.DELETED_AT.isNull()
+                    .and(
+                            PROJECT.PROJECT_CODE.in(
+                                    DSL.select(PROJECT_AND_JOB.PROJECT_CODE)
+                                            .from(PROJECT_AND_JOB)
+                                            .join(SQUAD_EMPLOYEE)
+                                            .on(PROJECT_AND_JOB.PROJECT_AND_JOB_ID.eq(SQUAD_EMPLOYEE.PROJECT_AND_JOB_ID))
+                                            .where(SQUAD_EMPLOYEE.EMPLOYEE_IDENTIFICATION_NUMBER.eq(employeeId))));
 
     if (statuses != null && !statuses.isEmpty()) {
-      condition =
-          condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
+      condition = condition.and(PROJECT.STATUS.in(statuses.stream().map(ProjectStatus::valueOf).toList()));
+    }
+
+    if (keyword != null && !keyword.isBlank()) {
+      String likeKeyword = "%" + keyword + "%";
+      Condition keywordCondition =
+              PROJECT.TITLE.likeIgnoreCase(likeKeyword)
+                      .or(PROJECT.DOMAIN_NAME.likeIgnoreCase(likeKeyword))
+                      .or(PROJECT.DESCRIPTION.likeIgnoreCase(likeKeyword));
+      condition = condition.and(keywordCondition);
     }
 
     return dsl.selectCount().from(PROJECT).where(condition).fetchOne(0, Long.class);
