@@ -27,5 +27,4 @@
         WHERE paj.project_code = #{projectCode}
     </select>
 
-
 </mapper>
