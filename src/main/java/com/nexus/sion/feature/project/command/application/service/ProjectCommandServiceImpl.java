@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -328,11 +329,16 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public Long getProjectBudget(String projectCode) {
+  @Transactional
+  public void updateProjectBudget(String projectCode, BigDecimal newBudget) {
     Project project = projectRepository
             .findByProjectCode(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
-    return project.getBudget();
+
+    // BigDecimal → long 형변환 (소수점 절삭됨)
+    long convertedBudget = newBudget.longValue();
+
+    project.updateBudget(convertedBudget);
   }
+
 }

@@ -57,19 +57,20 @@ class DeveloperProjectWorkQueryServiceImplTest {
   void getRequestsByEmployeeId() {
     // given
     String employeeId = "EMP001";
+    String status = "PENDING";
     int page = 0, size = 10;
     List<WorkRequestQueryDto> mockList =
-        List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
-    when(workQueryRepository.findByEmployeeId(employeeId)).thenReturn(mockList);
+            List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
+    when(workQueryRepository.findByEmployeeId(employeeId, status)).thenReturn(mockList);
 
     // when
     PageResponse<WorkRequestQueryDto> result =
-        service.getRequestsByEmployeeId(employeeId, page, size);
+            service.getRequestsByEmployeeId(employeeId, status, page, size);
 
     // then
     assertThat(result.getContent()).hasSize(2);
     assertThat(result.getTotalElements()).isEqualTo(2);
-    verify(workQueryRepository).findByEmployeeId(employeeId);
+    verify(workQueryRepository).findByEmployeeId(employeeId, status);
   }
 
   @Test

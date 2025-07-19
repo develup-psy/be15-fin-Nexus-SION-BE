@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -64,6 +65,10 @@ public class Project extends BaseTimeEntity {
   @Column(name = "analysis_status")
   @Enumerated(EnumType.STRING)
   private AnalysisStatus analysisStatus = AnalysisStatus.PENDING;
+
+  public void updateBudget(Long newBudget) {
+    this.budget = newBudget;
+  }
 
   public enum ProjectStatus {
     WAITING,
