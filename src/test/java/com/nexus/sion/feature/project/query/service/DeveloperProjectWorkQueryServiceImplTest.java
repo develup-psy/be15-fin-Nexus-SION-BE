@@ -60,12 +60,12 @@ class DeveloperProjectWorkQueryServiceImplTest {
     String status = "PENDING";
     int page = 0, size = 10;
     List<WorkRequestQueryDto> mockList =
-            List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
+        List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
     when(workQueryRepository.findByEmployeeId(employeeId, status)).thenReturn(mockList);
 
     // when
     PageResponse<WorkRequestQueryDto> result =
-            service.getRequestsByEmployeeId(employeeId, status, page, size);
+        service.getRequestsByEmployeeId(employeeId, status, page, size);
 
     // then
     assertThat(result.getContent()).hasSize(2);

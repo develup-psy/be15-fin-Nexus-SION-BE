@@ -331,7 +331,8 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
   @Override
   @Transactional
   public void updateProjectBudget(String projectCode, BigDecimal newBudget) {
-    Project project = projectRepository
+    Project project =
+        projectRepository
             .findByProjectCode(projectCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
@@ -340,5 +341,4 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
     project.updateBudget(convertedBudget);
   }
-
 }
