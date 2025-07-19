@@ -141,19 +141,6 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
 
     GradeCode grade = memberCommandService.calculateGradeByScore(totalStackScore);
 
-    MemberScoreHistory scoreHistory =
-        memberScoreHistoryRepository
-            .findByEmployeeIdentificationNumber(freelancer.freelancerId())
-            .orElseGet(
-                () ->
-                    MemberScoreHistory.builder()
-                        .employeeIdentificationNumber(freelancer.freelancerId())
-                        .totalCertificateScores(0)
-                        .totalTechStackScores(0)
-                        .build());
-    scoreHistory.setTotalTechStackScores(totalStackScore);
-    memberScoreHistoryRepository.save(scoreHistory);
-
     Member member =
         memberRepository
             .findById(freelancer.freelancerId())
