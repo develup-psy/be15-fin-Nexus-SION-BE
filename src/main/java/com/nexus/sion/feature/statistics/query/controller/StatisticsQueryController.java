@@ -36,7 +36,7 @@ public class StatisticsQueryController {
 
   @GetMapping("/developers")
   public ResponseEntity<ApiResponse<PageResponse<DeveloperDto>>> getAllDevelopers(
-      @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     var response = statisticsQueryService.getAllDevelopers(page, size);
     return ResponseEntity.ok(ApiResponse.success(response));
   }
