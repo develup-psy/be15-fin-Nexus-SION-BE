@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -26,5 +27,5 @@ public interface ProjectCommandService {
 
   void replaceMember(SquadReplacementRequest request);
 
-  Long getProjectBudget(String projectCode);
+  void updateProjectBudget(String projectCode, BigDecimal estimatedCost);
 }

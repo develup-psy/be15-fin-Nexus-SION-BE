@@ -1,13 +1,5 @@
 package com.nexus.sion.feature.project.command.application.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
@@ -21,12 +13,19 @@ import com.nexus.sion.feature.project.command.application.dto.request.WorkHistor
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWork;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistory;
 import com.nexus.sion.feature.project.command.domain.aggregate.DeveloperProjectWorkHistoryTechStack;
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkHistoryRepository;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkHistoryTechStackRepository;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -119,14 +118,16 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
 
     if (allApproved) {
       String projectName = projectRepository
-              .findProjectNameByProjectCode(work.getProjectCode())
+              .findByProjectCode(work.getProjectCode())
+              .map(Project::getTitle)
               .orElse("알 수 없는 프로젝트");
+      System.out.println(projectName);
 
       String notifyMessage = NotificationType.PROJECT_EVALUATION_READY.getMessage()
               .replace("{projectName}", projectName);
 
       notificationCommandService.createAndSendNotification(
-              "SYSTEM", // senderId
+              null, // senderId
               adminId,  // 승인한 관리자에게 알림
               notifyMessage,
               NotificationType.PROJECT_EVALUATION_READY,

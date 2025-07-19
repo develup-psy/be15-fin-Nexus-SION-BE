@@ -10,8 +10,6 @@ import com.nexus.sion.feature.project.command.domain.aggregate.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
-  Optional<Project> findByProjectCode(String projectCode);
-
   @Query(
       "SELECT p.projectCode FROM Project p WHERE p.clientCode = :clientCode AND p.projectCode LIKE CONCAT(:clientCode, '_%')")
   List<String> findProjectCodesByClientCode(String clientCode);
@@ -22,5 +20,5 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
 
   boolean existsByClientCode(String clientCode);
 
-  Optional<String> findProjectNameByProjectCode(String projectCode);
+  Optional<Project> findByProjectCode(String projectCode);
 }
