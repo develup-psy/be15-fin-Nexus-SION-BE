@@ -3,10 +3,7 @@ package com.nexus.sion.feature.project.command.application.service;
 import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.classifyComplexity;
 import static com.nexus.sion.feature.project.command.application.util.FPScoreUtils.getFpScore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,16 +95,18 @@ public class ProjectEvaluateCommandServiceImpl implements ProjectEvaluateCommand
     int totalStackScore =
         developerTechStackList.stream().mapToInt(DeveloperTechStack::getTotalScore).sum();
 
-    MemberScoreHistory scoreHistory =
-        memberScoreHistoryRepository
-            .findByEmployeeIdentificationNumber(ein)
-            .orElseGet(
-                () ->
-                    MemberScoreHistory.builder()
-                        .totalCertificateScores(0)
-                        .totalTechStackScores(0)
-                        .employeeIdentificationNumber(ein)
-                        .build());
+    Optional<MemberScoreHistory> lastScoreHistory = memberScoreHistoryRepository
+            .findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(ein);
+
+    int previousCertificateScore = lastScoreHistory
+            .map(MemberScoreHistory::getTotalCertificateScores)
+            .orElse(0);
+
+    MemberScoreHistory scoreHistory = MemberScoreHistory.builder()
+            .employeeIdentificationNumber(ein)
+            .totalTechStackScores(totalStackScore)
+            .totalCertificateScores(previousCertificateScore)
+            .build();
 
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
