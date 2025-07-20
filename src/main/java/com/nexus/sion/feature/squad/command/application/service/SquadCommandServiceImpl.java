@@ -308,7 +308,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
               Member memberEntity = memberRepository.findById(receiverId)
                       .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-              String message = NotificationType.SQUAD_CONFIRMED.generateMessages(
+              String message = NotificationType.SQUAD_CONFIRMED.generateMessage(
                       memberEntity.getEmployeeName(),
                       project.getTitle()
               );
