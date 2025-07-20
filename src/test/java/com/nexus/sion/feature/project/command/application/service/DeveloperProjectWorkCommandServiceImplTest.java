@@ -7,6 +7,8 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.project.command.domain.aggregate.Project;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,11 @@ class DeveloperProjectWorkCommandServiceImplTest {
 
   @Mock private MemberRepository memberRepository;
 
+  @Mock private ProjectEvaluateCommandServiceImpl projectEvaluateCommandService;
+
+  @Mock private ProjectRepository projectRepository;
+
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
@@ -56,11 +63,19 @@ class DeveloperProjectWorkCommandServiceImplTest {
             .projectCode("PJT001")
             .build();
 
+    Project project = Project.builder()
+            .projectCode("PJT001")
+            .title("테스트 프로젝트")
+            .build();
+
     when(memberRepository.existsByEmployeeIdentificationNumberAndRole("ADMIN001", MemberRole.ADMIN))
         .thenReturn(true);
     when(workRepository.findById(1L)).thenReturn(Optional.of(work));
     when(memberRepository.findEmployeeNameByEmployeeIdentificationNumber("EMP001"))
         .thenReturn(Optional.of("홍길동"));
+    when(projectRepository.findByProjectCode("PJT001")).thenReturn(Optional.of(project));
+    doNothing().when(projectEvaluateCommandService).evaluateFunctionScores(any());
+
 
     service.approve(1L, "ADMIN001");
 

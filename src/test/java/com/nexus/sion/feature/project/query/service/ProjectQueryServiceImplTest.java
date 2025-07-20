@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -240,4 +241,77 @@ class ProjectQueryServiceImplTest {
     verify(projectQueryMapper).findProjectInfo(invalidCode);
     verify(projectQueryMapper, never()).findJobRequirements(anyString());
   }
+
+  @Test
+  @DisplayName("사용자 ID와 프로젝트 코드로 상세 프로젝트 조회")
+  void findProjectDetailByMemberIdAndProjectCode_success() {
+    String employeeId = "EMP001";
+    String projectCode = "PROJ-123";
+
+    ProjectDetailResponse response = new ProjectDetailResponse(
+            "AI 프로젝트", "AI", "https://url.com", "설명",
+            "2025-01-01 ~ 2025-03-01", "1000000", List.of(),
+            List.of(), "IN_PROGRESS", ProjectAnalysisStatus.COMPLETE, "ai_1_1_1"
+    );
+
+    when(repository.findProjectDetailByMemberIdAndProjectCode(employeeId, projectCode))
+            .thenReturn(response);
+
+    ProjectDetailResponse result = service.findProjectDetailByMemberIdAndProjectCode(employeeId, projectCode);
+
+    assertThat(result.getTitle()).isEqualTo("AI 프로젝트");
+    verify(repository).findProjectDetailByMemberIdAndProjectCode(employeeId, projectCode);
+  }
+
+  @Test
+  @DisplayName("사용자 ID로 프로젝트 리스트 조회")
+  void findProjectListByMemberId_success() {
+    String employeeId = "EMP001";
+
+    ProjectListResponse res = new ProjectListResponse(
+            "PROJ-001", "제목", "설명", "2025-01-01", "2025-02-01", 1,
+            "WAITING", "도메인", 5, ProjectAnalysisStatus.COMPLETE);
+
+    PageResponse<ProjectListResponse> page = PageResponse.fromJooq(List.of(res), 1, 0, 10);
+
+    when(repository.findProjectListByMemberId(employeeId, 0, 10)).thenReturn(page);
+
+    PageResponse<ProjectListResponse> result = service.findProjectListByMemberId(employeeId, 0, 10);
+
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).getProjectCode()).isEqualTo("PROJ-001");
+    verify(repository).findProjectListByMemberId(employeeId, 0, 10);
+  }
+
+  @Test
+  @DisplayName("직원 ID 기준 프로젝트 목록 + 필터 조회")
+  void getProjectsByEmployeeId_success() {
+    String employeeId = "EMP001";
+
+    com.example.jooq.generated.tables.pojos.Project project = new com.example.jooq.generated.tables.pojos.Project();
+    project.setProjectCode("PROJ-999");
+    project.setTitle("AI 분석 시스템");
+    project.setDescription("AI 기반 분석 도구");
+    project.setStartDate(LocalDate.of(2025, 1, 1));
+    project.setExpectedEndDate(LocalDate.of(2025, 4, 1));
+    project.setStatus(com.example.jooq.generated.enums.ProjectStatus.IN_PROGRESS);
+    project.setDomainName("데이터");
+    project.setNumberOfMembers(4);
+    project.setAnalysisStatus(ProjectAnalysisStatus.COMPLETE);
+
+    when(repository.findProjectsByEmployeeId(eq(employeeId), anyList(), anyInt(), anyInt(), anyString(), anyString()))
+            .thenReturn(List.of(project));
+    when(repository.countProjectsByEmployeeId(eq(employeeId), anyList(), anyString())).thenReturn(1L);
+
+    PageResponse<ProjectListResponse> result =
+            service.getProjectsByEmployeeId(employeeId, List.of("IN_PROGRESS"), 0, 10, "startDate", "AI");
+
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).getProjectCode()).isEqualTo("PROJ-999");
+    assertThat(result.getContent().get(0).getPeriod()).isEqualTo(3); // 1월~4월
+
+    verify(repository).findProjectsByEmployeeId(eq(employeeId), anyList(), anyInt(), anyInt(), anyString(), anyString());
+    verify(repository).countProjectsByEmployeeId(eq(employeeId), anyList(), anyString());
+  }
+
 }

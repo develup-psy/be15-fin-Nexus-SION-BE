@@ -76,8 +76,8 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
       tempFile = documentS3Service.downloadFileFromUrl(freelancer.resumeUrl());
       functions = fastApiClient.requestFpFreelencerInference(tempFile);
     } catch (Exception e) {
-      log.error("[FP 분석 실패] 프리랜서 이력서 분석 중 오류 발생: {}", e.getMessage(), e);
-      throw new BusinessException(ErrorCode.FP_ANALYZE_FAIL);
+      log.error("[FP 분석 실패] 프리랜서 이력서 분석 중 오류 발생", e);
+      throw new BusinessException(ErrorCode.FP_ANALYZE_FAIL, e);
     } finally {
       if (tempFile != null && tempFile.exists()) {
         if (!tempFile.delete()) {

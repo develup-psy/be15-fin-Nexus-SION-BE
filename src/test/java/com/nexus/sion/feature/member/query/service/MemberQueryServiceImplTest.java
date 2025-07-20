@@ -8,8 +8,10 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.query.dto.response.*;
 import org.jooq.Condition;
 import org.jooq.SortField;
 import org.junit.jupiter.api.*;
@@ -25,12 +27,10 @@ import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.query.dto.internal.MemberListQuery;
 import com.nexus.sion.feature.member.query.dto.request.MemberListRequest;
-import com.nexus.sion.feature.member.query.dto.response.MemberDetailResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberListResponse;
-import com.nexus.sion.feature.member.query.dto.response.MemberSquadListResponse;
 import com.nexus.sion.feature.member.query.repository.MemberQueryRepository;
 import com.nexus.sion.feature.member.query.util.MemberConditionBuilder;
 import com.nexus.sion.feature.member.query.util.SortFieldSelector;
+import com.nexus.sion.feature.member.query.dto.response.DashboardSummaryResponse;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MemberQueryService 단위 테스트")
@@ -368,5 +368,80 @@ class MemberQueryServiceImplTest {
       assertThat(actualImageUrl).isEqualTo(expectedImageUrl);
       verify(memberQueryRepository, times(1)).findProfileImageUrlById(employeeId);
     }
+  }
+
+  @DisplayName("유효하지 않은 등급 필터는 예외를 발생시킨다")
+  @Test
+  void getAllMembers_invalidGradeCode_throwsException() {
+    MemberListRequest request = MemberListRequest.builder().gradeCode("INVALID").build();
+
+    BusinessException exception = assertThrows(
+            BusinessException.class,
+            () -> memberQueryService.getAllMembers(request)
+    );
+
+    assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_GRADE);
+  }
+
+  @DisplayName("유효하지 않은 역할 필터는 예외를 발생시킨다")
+  @Test
+  void getAllMembers_invalidRole_throwsException() {
+    MemberListRequest request = MemberListRequest.builder().role("INVALID_ROLE").build();
+
+    BusinessException exception = assertThrows(
+            BusinessException.class,
+            () -> memberQueryService.getAllMembers(request)
+    );
+
+    assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_MEMBER_ROLE);
+  }
+
+  @DisplayName("키워드로 관리자 검색 결과 반환")
+  @Test
+  void searchAdmins_returnMatchingResults() {
+    String keyword = "관리자";
+    int page = 0;
+    int size = 5;
+    int offset = page * size;
+
+    List<AdminSearchResponse> mockResults = List.of(
+            new AdminSearchResponse("ADMIN001", "관리자", "profile.jpg")
+    );
+
+    when(memberQueryRepository.searchAdmins(keyword, offset, size)).thenReturn(mockResults);
+    when(memberQueryRepository.countSearchAdmins(keyword)).thenReturn(1);
+
+    PageResponse<AdminSearchResponse> result = memberQueryService.searchAdmins(keyword, page, size);
+
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().get(0).name()).isEqualTo("관리자");
+  }
+
+  @DisplayName("총 점수 트렌드 조회")
+  @Test
+  void getMonthlyTotalScoreTrend_success() {
+    String employeeId = "DEV001";
+    List<ScoreTrendDto> mockTrend = List.of(new ScoreTrendDto("2025-06", "Java",80));
+
+    when(memberQueryRepository.findMonthlyTotalScoreTrend(employeeId)).thenReturn(mockTrend);
+
+    List<ScoreTrendDto> result = memberQueryService.getMonthlyTotalScoreTrend(employeeId);
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).score()).isEqualTo(80);
+  }
+
+  @DisplayName("기술스택 점수 트렌드 조회")
+  @Test
+  void getMonthlyTechStackScoreTrend_success() {
+    String employeeId = "DEV001";
+    List<ScoreTrendDto> mockTrend = List.of(new ScoreTrendDto("2025-06", "React",90));
+
+    when(memberQueryRepository.findMonthlyTechStackScoreTrend(employeeId)).thenReturn(mockTrend);
+
+    List<ScoreTrendDto> result = memberQueryService.getMonthlyTechStackScoreTrend(employeeId);
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).score()).isEqualTo(90);
   }
 }

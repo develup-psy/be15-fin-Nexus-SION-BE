@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import com.nexus.sion.feature.project.command.domain.repository.JobAndTechStackRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,8 @@ class TechStackCommandServiceImplTest {
   @Mock private TechStackRepository techStackRepository;
 
   @Mock private ModelMapper modelMapper;
+
+  @Mock private JobAndTechStackRepository jobAndTechStackRepository;
 
   String techStackName = "Java";
 
@@ -65,7 +68,10 @@ class TechStackCommandServiceImplTest {
   @Test
   void deleteTechStack_존재하면삭제() {
     // given
-    when(techStackRepository.existsById(techStackName)).thenReturn(true);
+    TechStack techStack = TechStack.builder().techStackName(techStackName).build();
+
+    when(techStackRepository.findById(techStackName)).thenReturn(java.util.Optional.of(techStack));
+    when(jobAndTechStackRepository.existsByTechStackName(techStackName)).thenReturn(false);
     doNothing().when(techStackRepository).deleteById(techStackName);
 
     // when
@@ -78,7 +84,7 @@ class TechStackCommandServiceImplTest {
   @Test
   void deleteTechStack_존재하지않으면에러() {
     // given
-    when(techStackRepository.existsById(techStackName)).thenReturn(false);
+    lenient().when(techStackRepository.existsById(techStackName)).thenReturn(false);
 
     // when & then
     BusinessException exception =
