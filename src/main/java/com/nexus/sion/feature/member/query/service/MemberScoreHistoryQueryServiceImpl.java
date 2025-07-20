@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import com.example.jooq.generated.tables.records.MemberScoreHistoryRecord;
-
 import com.nexus.sion.feature.member.query.dto.response.MemberScoreHistoryResponse;
 import com.nexus.sion.feature.member.query.repository.MemberScoreQueryRepository;
 
@@ -23,18 +22,18 @@ public class MemberScoreHistoryQueryServiceImpl implements MemberScoreHistoryQue
 
     if (curr == null) {
       return new MemberScoreHistoryResponse(
-              employeeId,
-              0, // currentTech
-              0, // currentCert
-              0, // currentTotal
-              null, // currentCreatedAt
-              null, // previousTechScore
-              null, // previousTechDate
-              null, // previousCertScore
-              null, // previousCertDate
-              null, // previousTotalScore
-              null  // previousTotalDate
-      );
+          employeeId,
+          0, // currentTech
+          0, // currentCert
+          0, // currentTotal
+          null, // currentCreatedAt
+          null, // previousTechScore
+          null, // previousTechDate
+          null, // previousCertScore
+          null, // previousCertDate
+          null, // previousTotalScore
+          null // previousTotalDate
+          );
     }
 
     int currentTech = curr.getTotalTechStackScores();
