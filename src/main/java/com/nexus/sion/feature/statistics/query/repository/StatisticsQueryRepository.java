@@ -37,15 +37,17 @@ public class StatisticsQueryRepository {
 
   public List<TechStackCountDto> findStackMemberCount(List<String> techStackNames) {
     return dsl.select(
-                    DEVELOPER_TECH_STACK.TECH_STACK_NAME,
-                    DSL.countDistinct(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER).as("count"))
-            .from(DEVELOPER_TECH_STACK)
-            .join(MEMBER)
-            .on(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
-            .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
-            .and(MEMBER.ROLE.ne(MemberRole.ADMIN))
-            .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
-            .fetchInto(TechStackCountDto.class);
+            DEVELOPER_TECH_STACK.TECH_STACK_NAME,
+            DSL.countDistinct(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER).as("count"))
+        .from(DEVELOPER_TECH_STACK)
+        .join(MEMBER)
+        .on(
+            DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
+                MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+        .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
+        .and(MEMBER.ROLE.ne(MemberRole.ADMIN))
+        .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
+        .fetchInto(TechStackCountDto.class);
   }
 
   public PageResponse<DeveloperDto> findAllDevelopers(int page, int size) {

@@ -171,15 +171,15 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
     memberRepository.save(member);
 
     MemberScoreHistory scoreHistory =
-            memberScoreHistoryRepository
-                    .findByEmployeeIdentificationNumber(freelancer.freelancerId())
-                    .orElseGet(
-                            () ->
-                                    MemberScoreHistory.builder()
-                                            .employeeIdentificationNumber(freelancer.freelancerId())
-                                            .totalCertificateScores(0)
-                                            .totalTechStackScores(0)
-                                            .build());
+        memberScoreHistoryRepository
+            .findByEmployeeIdentificationNumber(freelancer.freelancerId())
+            .orElseGet(
+                () ->
+                    MemberScoreHistory.builder()
+                        .employeeIdentificationNumber(freelancer.freelancerId())
+                        .totalCertificateScores(0)
+                        .totalTechStackScores(0)
+                        .build());
     scoreHistory.setTotalTechStackScores(totalStackScore);
     memberScoreHistoryRepository.save(scoreHistory);
 
