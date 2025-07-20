@@ -57,11 +57,6 @@
         m.employee_name,
         m.grade_code,
         domain_info.domain_count
-        HAVING COUNT(DISTINCT dts.tech_stack_name) = (
-            SELECT COUNT(DISTINCT jts2.tech_stack_name)
-              FROM job_and_tech_stack jts2
-             WHERE jts2.project_and_job_id = #{projectAndJobId}
-        )
     </select>
 
     <select id="findRequiredMemberCountByRoles"
