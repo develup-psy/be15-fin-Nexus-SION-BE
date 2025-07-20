@@ -9,4 +9,5 @@ public record MemberSquadListResponse(
     String status,
     String topTechStackName,
     int monthlyUnitPrice,
-    BigDecimal productivity) {}
+    BigDecimal productivity,
+    String imageUrl) {}

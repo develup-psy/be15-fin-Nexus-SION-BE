@@ -543,7 +543,8 @@ public class MemberQueryRepository {
             MEMBER.STATUS,
             topStack.techStackName(),
             GRADE.MONTHLY_UNIT_PRICE,
-            GRADE.PRODUCTIVITY)
+            GRADE.PRODUCTIVITY,
+            MEMBER.PROFILE_IMAGE_URL)
         .from(MEMBER)
         .leftJoin(topStack.table())
         .on(
@@ -568,7 +569,8 @@ public class MemberQueryRepository {
                     record.get(MEMBER.STATUS) != null ? record.get(MEMBER.STATUS).name() : null,
                     record.get(topStack.techStackName()),
                     record.get(GRADE.MONTHLY_UNIT_PRICE),
-                    record.get(GRADE.PRODUCTIVITY)));
+                    record.get(GRADE.PRODUCTIVITY),
+                    record.get(MEMBER.PROFILE_IMAGE_URL)));
   }
 
   public List<ScoreTrendDto> findMonthlyTotalScoreTrend(String employeeId) {
