@@ -170,6 +170,10 @@ public class SquadCommandServiceImpl implements SquadCommandService {
     Map<String, List<DeveloperSummary>> candidates =
         squadQueryService.findCandidatesByRoles(projectId).candidates();
 
+    if (candidates.isEmpty() || candidates.values().stream().allMatch(List::isEmpty)) {
+      throw new BusinessException(ErrorCode.SQUAD_CANDIDATE_FETCH_FAILED);
+    }
+
     // 직무별 필요 인원 수 조회
     Map<String, Integer> requiredCountByRole =
         squadQueryService.findRequiredMemberCountByRoles(projectId);
@@ -183,7 +187,7 @@ public class SquadCommandServiceImpl implements SquadCommandService {
         squadCombinationGenerator.generate(filteredCandidates, requiredCountByRole);
 
     if (combinations.isEmpty()) {
-      throw new IllegalStateException("생성 가능한 스쿼드 조합이 없습니다.");
+      throw new BusinessException(ErrorCode.SQUNAD_GENERATE_CANDIDATE_FAILED);
     }
 
     List<Map<String, List<CandidateSummary>>> transformedCombinations =

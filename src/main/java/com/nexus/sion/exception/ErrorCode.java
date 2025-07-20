@@ -84,6 +84,7 @@ public enum ErrorCode {
   INVALID_LEADER_REPLACEMENT("40017", "리더는 대체될 수 없습니다", HttpStatus.BAD_REQUEST),
   INVALID_EXIST_MEMBER_REPLACEMENT("40018", "이미 배정된 멤버로 대체할 수 없습니다", HttpStatus.BAD_REQUEST),
   SQUAD_CANDIDATE_FETCH_FAILED("40019", "스쿼드 후보자 조회에 실패했습니다", HttpStatus.BAD_REQUEST),
+  SQUNAD_GENERATE_CANDIDATE_FAILED("40020", "스쿼드 후보 생성에 실패했습니다", HttpStatus.BAD_REQUEST),
 
   // techstack
   TECH_STACK_NOT_FOUND("50001", "해당 기술스택을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
