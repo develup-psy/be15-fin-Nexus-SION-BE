@@ -23,11 +23,6 @@ public class MemberScoreQueryController {
   public ResponseEntity<ApiResponse<MemberScoreHistoryResponse>> getScoreHistory(
       @PathVariable String employeeId) {
     MemberScoreHistoryResponse response = scoreHistoryQueryService.getScoreHistory(employeeId);
-
-    if (response == null) {
-      return ResponseEntity.notFound().build();
-    }
-
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 }
