@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.query.dto.response;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.jooq.generated.enums.ProjectAnalysisStatus;
@@ -14,7 +15,8 @@ public class ProjectDetailResponse {
   private String domainName;
   private String requestSpecificationUrl;
   private String description;
-  private String duration; // ex: 2024-01-01 ~ 2024-03-01
+  private LocalDate startDate; // 변경
+  private LocalDate endDate;
   private String budget; // ex: ₩29,000,000
   private List<String> techStacks;
   private List<SquadMemberInfo> members;
