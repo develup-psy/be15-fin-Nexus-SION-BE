@@ -27,7 +27,7 @@ public class MemberGradeScheduler {
   private final DSLContext dsl;
   private final NotificationCommandService notificationCommandService;
 
-  @Scheduled(cron = "0 0 3 1 * *") // 매일 새벽 3시 실행
+  @Scheduled(cron = "0 0 3 1 * *") // 매월 1일 새벽 3시
   public void updateDeveloperGrades() {
     // 1. 최신 점수 가져오기
     List<MemberScoreHistoryRecord> latestScores =
@@ -58,9 +58,26 @@ public class MemberGradeScheduler {
 
     Map<String, List<ScoredMember>> gradeGroups = new HashMap<>();
 
-    // 3. member 테이블 업데이트 및 등급별 리스트 구성
+    // ✅ 2-1. 등급 변경 대상자 ID 목록 추출
+    List<String> employeeIds = scoredMembers.stream().map(ScoredMember::employeeId).toList();
+
+    // ✅ 2-2. 모든 사용자 이름과 현재 등급 한 번에 조회
+    Map<String, String> usernameMap =
+        dsl.select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER, MEMBER.EMPLOYEE_NAME)
+            .from(MEMBER)
+            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(employeeIds))
+            .fetchMap(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER, MEMBER.EMPLOYEE_NAME);
+
+    Map<String, MemberGradeCode> previousGradeMap =
+        dsl.select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER, MEMBER.GRADE_CODE)
+            .from(MEMBER)
+            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(employeeIds))
+            .fetchMap(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER, MEMBER.GRADE_CODE);
+
+    // 3. 등급 산정 및 알림
     for (int i = 0; i < size; i++) {
       ScoredMember m = scoredMembers.get(i);
+
       String gradeStr;
       if (m.totalScore() == 0) {
         gradeStr = "D";
@@ -77,26 +94,16 @@ public class MemberGradeScheduler {
       }
 
       MemberGradeCode newGrade = MemberGradeCode.valueOf(gradeStr);
+      MemberGradeCode previousGrade = previousGradeMap.get(m.employeeId());
 
-      // 현재 등급 조회
-      MemberGradeCode previousGrade =
-          dsl.select(MEMBER.GRADE_CODE)
-              .from(MEMBER)
-              .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
-              .fetchOneInto(MemberGradeCode.class);
-
-      // 등급이 변경된 경우에만 업데이트 및 알림
+      // 변경된 경우에만 업데이트 및 알림
       if (!newGrade.equals(previousGrade)) {
         dsl.update(MEMBER)
             .set(MEMBER.GRADE_CODE, newGrade)
             .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
             .execute();
 
-        String username =
-            dsl.select(MEMBER.EMPLOYEE_NAME)
-                .from(MEMBER)
-                .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
-                .fetchOneInto(String.class);
+        String username = usernameMap.get(m.employeeId());
 
         String message =
             NotificationType.GRADE_CHANGE.generateMessage(

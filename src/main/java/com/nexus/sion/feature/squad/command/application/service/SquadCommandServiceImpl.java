@@ -291,40 +291,43 @@ public class SquadCommandServiceImpl implements SquadCommandService {
             .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
     squad.confirm();
 
-    // 2. 프로젝트 상태를 IN_PROGRESS로 변경
+    // 2. 프로젝트 상태 변경 및 예산 반영
     projectCommandService.updateProjectStatus(
         squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
-
-    // 3. 예산 반영
     projectCommandService.updateProjectBudget(squad.getProjectCode(), squad.getEstimatedCost());
 
-    // 4. 알림 전송
+    // 3. 프로젝트 조회
     Project project =
         projectRepository
             .findById(squad.getProjectCode())
             .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
-    squadEmployeeCommandRepository
-        .findBySquadCode(squadCode)
-        .forEach(
-            member -> {
-              String receiverId = member.getEmployeeIdentificationNumber();
-              Member memberEntity =
-                  memberRepository
-                      .findById(receiverId)
-                      .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    // 4. 스쿼드 멤버 목록 조회
+    List<SquadEmployee> squadMembers = squadEmployeeCommandRepository.findBySquadCode(squadCode);
 
-              String message =
-                  NotificationType.SQUAD_CONFIRMED.generateMessage(
-                      memberEntity.getEmployeeName(), project.getTitle());
+    // ✅ 5. 멤버 ID로 Member 정보 한 번에 조회
+    List<String> memberIds =
+        squadMembers.stream().map(SquadEmployee::getEmployeeIdentificationNumber).toList();
 
-              notificationCommandService.createAndSendNotification(
-                  null,
-                  receiverId,
-                  message,
-                  NotificationType.SQUAD_CONFIRMED,
-                  squad.getProjectCode());
-            });
+    Map<String, Member> memberMap =
+        memberRepository.findAllById(memberIds).stream()
+            .collect(Collectors.toMap(Member::getEmployeeIdentificationNumber, m -> m));
+
+    // 6. 알림 발송
+    for (SquadEmployee member : squadMembers) {
+      String receiverId = member.getEmployeeIdentificationNumber();
+      Member memberEntity = memberMap.get(receiverId);
+      if (memberEntity == null) {
+        throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+      }
+
+      String message =
+          NotificationType.SQUAD_CONFIRMED.generateMessage(
+              memberEntity.getEmployeeName(), project.getTitle());
+
+      notificationCommandService.createAndSendNotification(
+          null, receiverId, message, NotificationType.SQUAD_CONFIRMED, squad.getProjectCode());
+    }
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(
