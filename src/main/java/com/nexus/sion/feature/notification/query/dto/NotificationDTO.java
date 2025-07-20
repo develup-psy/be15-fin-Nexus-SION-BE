@@ -21,4 +21,5 @@ public class NotificationDTO {
   String senderId;
   String senderName;
   String receiverId;
+  String receiverName;
 }
