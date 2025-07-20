@@ -42,7 +42,7 @@ public enum NotificationType {
   CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다."),
 
   /** 프로젝트 확정 알림 */
-  SQUAD_CONFIRMED("당신이 포함된 스쿼드가 프로젝트에 확정되었습니다."),
+  SQUAD_CONFIRMED("{username}님이 포함된 스쿼드가 {projectName} 프로젝트에 확정되었습니다."),
 
   /** 자격증 등록 승인 알림 */
   CERTIFICATION_APPROVED("자격증 등록이 승인되었습니다."),
@@ -56,6 +56,14 @@ public enum NotificationType {
   public String generateMessage(String username) {
     String safeUsername = username != null ? username : "";
     return this.message.replace("{username}", safeUsername);
+  }
+
+  public String generateMessages(String username, String projectName) {
+    String safeUsername = username != null ? username : "";
+    String safeProjectName = projectName != null ? projectName : "";
+    return this.message
+            .replace("{username}", safeUsername)
+            .replace("{projectName}", safeProjectName);
   }
 
   public Notification toEntity(

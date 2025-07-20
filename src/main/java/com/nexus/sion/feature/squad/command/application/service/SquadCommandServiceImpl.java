@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
+import com.nexus.sion.feature.member.command.domain.repository.MemberRepository;
+import com.nexus.sion.feature.project.command.domain.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +57,9 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   private final SquadDomainService squadDomainService;
   private final SquadValidationService squadValidationService;
   private final NotificationCommandService notificationCommandService;
+  private final ProjectRepository projectRepository;
+  private final MemberRepository memberRepository;
+
 
   @Override
   @Transactional
@@ -280,30 +286,41 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   @Transactional
   public void confirmSquad(String squadCode) {
     // 1. 스쿼드 조회 및 확정 처리
-    Squad squad =
-        squadCommandRepository
+    Squad squad = squadCommandRepository
             .findBySquadCode(squadCode)
             .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
-    squad.confirm(); // isActive = true
+    squad.confirm();
 
-    // 2. 프로젝트 상태를 IN_PROGRESS로 변경, 예산도 스쿼드 예산으로 변경
+    // 2. 프로젝트 상태를 IN_PROGRESS로 변경
     projectCommandService.updateProjectStatus(
-        squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+            squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
 
-    // 3. 프로젝트 예산을 스쿼드 예산으로 덮어쓰기
+    // 3. 예산 반영
     projectCommandService.updateProjectBudget(squad.getProjectCode(), squad.getEstimatedCost());
 
     // 4. 알림 전송
-    squadEmployeeCommandRepository
-        .findBySquadCode(squadCode)
-        .forEach(
-            member ->
-                notificationCommandService.createAndSendNotification(
-                    null,
-                    member.getEmployeeIdentificationNumber(),
-                    null,
-                    NotificationType.SQUAD_CONFIRMED,
-                    squad.getProjectCode()));
+    Project project = projectRepository.findById(squad.getProjectCode())
+            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+
+    squadEmployeeCommandRepository.findBySquadCode(squadCode)
+            .forEach(member -> {
+              String receiverId = member.getEmployeeIdentificationNumber();
+              Member memberEntity = memberRepository.findById(receiverId)
+                      .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+              String message = NotificationType.SQUAD_CONFIRMED.generateMessages(
+                      memberEntity.getEmployeeName(),
+                      project.getTitle()
+              );
+
+              notificationCommandService.createAndSendNotification(
+                      null,
+                      receiverId,
+                      message,
+                      NotificationType.SQUAD_CONFIRMED,
+                      squad.getProjectCode()
+              );
+            });
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(
