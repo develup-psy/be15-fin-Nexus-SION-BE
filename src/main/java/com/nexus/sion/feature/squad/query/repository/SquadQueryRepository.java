@@ -167,7 +167,7 @@ public class SquadQueryRepository {
                         .isLeader(
                             r.get(SQUAD_EMPLOYEE.IS_LEADER) != null
                                 && r.get(SQUAD_EMPLOYEE.IS_LEADER) == 1)
-                         .imageUrl(r.get(MEMBER.PROFILE_IMAGE_URL))
+                        .imageUrl(r.get(MEMBER.PROFILE_IMAGE_URL))
                         .build())
             .toList();
 
