@@ -7,6 +7,11 @@ import static org.mockito.BDDMockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.Certificate;
+import com.nexus.sion.feature.member.command.domain.aggregate.entity.MemberScoreHistory;
+import com.nexus.sion.feature.member.command.domain.repository.CertificateRepository;
+import com.nexus.sion.feature.member.command.domain.repository.MemberScoreHistoryRepository;
+import com.nexus.sion.feature.notification.command.application.service.NotificationCommandService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +30,15 @@ class AdminCertificateApprovalServiceImplTest {
   @InjectMocks private AdminCertificateApprovalServiceImpl service;
 
   @Mock private UserCertificateHistoryRepository historyRepository;
+
+  @Mock
+  private NotificationCommandService notificationCommandService;
+
+  @Mock
+  private CertificateRepository certificateRepository;
+
+  @Mock
+  private MemberScoreHistoryRepository memberScoreHistoryRepository;
 
   @BeforeEach
   void setUp() {
@@ -53,7 +67,13 @@ class AdminCertificateApprovalServiceImplTest {
     // given
     Long id = 1L;
     UserCertificateHistory history = mock(UserCertificateHistory.class);
+    Certificate certificate = mock(Certificate.class);
+    MemberScoreHistory scoreHistory = mock(MemberScoreHistory.class);
+
     given(historyRepository.findById(id)).willReturn(Optional.of(history));
+    given(certificateRepository.findById(any())).willReturn(Optional.of(certificate));
+    given(memberScoreHistoryRepository.findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(any()))
+            .willReturn(Optional.of(scoreHistory));
 
     // when
     service.approveUserCertificate(id);
@@ -62,6 +82,7 @@ class AdminCertificateApprovalServiceImplTest {
     then(history).should().approve();
     then(historyRepository).should().save(history);
   }
+
 
   @Test
   @DisplayName("자격증 승인 실패 - 존재하지 않는 ID")
@@ -83,7 +104,8 @@ class AdminCertificateApprovalServiceImplTest {
   void rejectUserCertificate_success() {
     // given
     Long id = 2L;
-    CertificateRejectRequest request = new CertificateRejectRequest("파일 훼손");
+    String reason = "파일 훼손";
+    CertificateRejectRequest request = new CertificateRejectRequest(reason);
     UserCertificateHistory history = mock(UserCertificateHistory.class);
     given(historyRepository.findById(id)).willReturn(Optional.of(history));
 
@@ -91,8 +113,11 @@ class AdminCertificateApprovalServiceImplTest {
     service.rejectUserCertificate(id, request);
 
     // then
-    then(history).should().reject("파일 훼손");
+    then(history).should().reject(reason);
     then(historyRepository).should().save(history);
+    then(notificationCommandService).should().createAndSendNotification(
+            any(), any(), any(), any(), any()
+    );
   }
 
   @Test
