@@ -24,7 +24,7 @@ public enum NotificationType {
   SQUAD_SHARE("{username}님이 스쿼드를 공유했습니다."),
 
   /** 등급 변경 알림 */
-  GRADE_CHANGE("등급이 변경되었습니다."),
+  GRADE_CHANGE("{username}님의 등급이 {previousGrade}에서 {newGrade} 등급으로 변경되었습니다."),
 
   /** 프로젝트 업무 승인 요청 알림 */
   TASK_APPROVAL_REQUEST("{username}님의 프로젝트 이력 등록 요청이 들어왔습니다."),
