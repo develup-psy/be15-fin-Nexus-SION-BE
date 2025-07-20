@@ -62,8 +62,8 @@ public enum NotificationType {
     String safeUsername = username != null ? username : "";
     String safeProjectName = projectName != null ? projectName : "";
     return this.message
-            .replace("{username}", safeUsername)
-            .replace("{projectName}", safeProjectName);
+        .replace("{username}", safeUsername)
+        .replace("{projectName}", safeProjectName);
   }
 
   public String generateMessage(String username, String previousGrade, String newGrade) {
@@ -71,11 +71,10 @@ public enum NotificationType {
     String safePrev = previousGrade != null ? previousGrade : "";
     String safeNew = newGrade != null ? newGrade : "";
     return this.message
-            .replace("{username}", safeUsername)
-            .replace("{previousGrade}", safePrev)
-            .replace("{newGrade}", safeNew);
+        .replace("{username}", safeUsername)
+        .replace("{previousGrade}", safePrev)
+        .replace("{newGrade}", safeNew);
   }
-
 
   public Notification toEntity(
       String senderId, String receiverId, String message, String contentId) {
