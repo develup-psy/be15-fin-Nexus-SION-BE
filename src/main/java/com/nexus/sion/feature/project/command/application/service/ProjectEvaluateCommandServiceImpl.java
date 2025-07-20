@@ -95,14 +95,14 @@ public class ProjectEvaluateCommandServiceImpl implements ProjectEvaluateCommand
     int totalStackScore =
         developerTechStackList.stream().mapToInt(DeveloperTechStack::getTotalScore).sum();
 
-    Optional<MemberScoreHistory> lastScoreHistory = memberScoreHistoryRepository
-            .findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(ein);
+    Optional<MemberScoreHistory> lastScoreHistory =
+        memberScoreHistoryRepository.findTopByEmployeeIdentificationNumberOrderByCreatedAtDesc(ein);
 
-    int previousCertificateScore = lastScoreHistory
-            .map(MemberScoreHistory::getTotalCertificateScores)
-            .orElse(0);
+    int previousCertificateScore =
+        lastScoreHistory.map(MemberScoreHistory::getTotalCertificateScores).orElse(0);
 
-    MemberScoreHistory scoreHistory = MemberScoreHistory.builder()
+    MemberScoreHistory scoreHistory =
+        MemberScoreHistory.builder()
             .employeeIdentificationNumber(ein)
             .totalTechStackScores(totalStackScore)
             .totalCertificateScores(previousCertificateScore)

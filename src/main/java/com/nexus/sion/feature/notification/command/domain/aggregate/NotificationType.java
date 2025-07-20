@@ -24,7 +24,7 @@ public enum NotificationType {
   SQUAD_SHARE("{username}님이 스쿼드를 공유했습니다."),
 
   /** 등급 변경 알림 */
-  GRADE_CHANGE("등급이 변경되었습니다."),
+  GRADE_CHANGE("{username}님의 등급이 {previousGrade}에서 {newGrade} 등급으로 변경되었습니다."),
 
   /** 프로젝트 업무 승인 요청 알림 */
   TASK_APPROVAL_REQUEST("{username}님의 프로젝트 이력 등록 요청이 들어왔습니다."),
@@ -42,7 +42,7 @@ public enum NotificationType {
   CERTIFICATION_APPROVAL_REQUEST("{username}님의 자격증 등록 요청이 들어왔습니다."),
 
   /** 프로젝트 확정 알림 */
-  SQUAD_CONFIRMED("당신이 포함된 스쿼드가 프로젝트에 확정되었습니다."),
+  SQUAD_CONFIRMED("{username}님이 포함된 스쿼드가 {projectName} 프로젝트에 확정되었습니다."),
 
   /** 자격증 등록 승인 알림 */
   CERTIFICATION_APPROVED("자격증 등록이 승인되었습니다."),
@@ -56,6 +56,24 @@ public enum NotificationType {
   public String generateMessage(String username) {
     String safeUsername = username != null ? username : "";
     return this.message.replace("{username}", safeUsername);
+  }
+
+  public String generateMessage(String username, String projectName) {
+    String safeUsername = username != null ? username : "";
+    String safeProjectName = projectName != null ? projectName : "";
+    return this.message
+        .replace("{username}", safeUsername)
+        .replace("{projectName}", safeProjectName);
+  }
+
+  public String generateMessage(String username, String previousGrade, String newGrade) {
+    String safeUsername = username != null ? username : "";
+    String safePrev = previousGrade != null ? previousGrade : "";
+    String safeNew = newGrade != null ? newGrade : "";
+    return this.message
+        .replace("{username}", safeUsername)
+        .replace("{previousGrade}", safePrev)
+        .replace("{newGrade}", safeNew);
   }
 
   public Notification toEntity(
