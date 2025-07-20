@@ -145,15 +145,10 @@ public class ProjectQueryRepository {
     }
 
     // 2. 기간 계산
-    LocalDate start = project.get(PROJECT.START_DATE);
-    LocalDate actualEnd = project.get(PROJECT.ACTUAL_END_DATE);
-    String duration;
-
-    if (actualEnd != null) {
-      duration = start + " ~ " + actualEnd;
-    } else {
-      duration = start + " ~ 진행중";
-    }
+    LocalDate startDate = project.get(PROJECT.START_DATE);
+    LocalDate endDate = project.get(PROJECT.ACTUAL_END_DATE) != null
+            ? project.get(PROJECT.ACTUAL_END_DATE)
+            : project.get(PROJECT.EXPECTED_END_DATE);
 
     // 3. 예산 포맷
     String budget = "₩" + new DecimalFormat("#,###").format(project.get(PROJECT.BUDGET));
@@ -215,7 +210,8 @@ public class ProjectQueryRepository {
         project.get(PROJECT.DOMAIN_NAME),
         project.get(PROJECT.REQUEST_SPECIFICATION_URL),
         project.get(PROJECT.DESCRIPTION),
-        duration,
+        startDate,
+        endDate,
         budget,
         techStacks,
         members,
