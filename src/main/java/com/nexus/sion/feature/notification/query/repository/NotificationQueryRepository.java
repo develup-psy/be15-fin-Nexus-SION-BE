@@ -62,11 +62,11 @@ public class NotificationQueryRepository {
             NOTIFICATION.IS_READ,
             NOTIFICATION.CREATED_AT,
             NOTIFICATION.SENDER_ID,
-            MEMBER.EMPLOYEE_NAME.as("senderName"),
+            MEMBER.EMPLOYEE_NAME.as("receiverName"),
             NOTIFICATION.RECEIVER_ID)
         .from(NOTIFICATION)
         .leftJoin(MEMBER)
-        .on(NOTIFICATION.SENDER_ID.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
+        .on(NOTIFICATION.RECEIVER_ID.eq(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
         .orderBy(NOTIFICATION.CREATED_AT.desc())
         .limit(size)
         .offset(offset)
