@@ -177,8 +177,7 @@ public class MemberQueryRepository {
             .on(
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(
                     latestScores.field(MEMBER_SCORE_HISTORY.EMPLOYEE_IDENTIFICATION_NUMBER)))
-                .where(MEMBER.DELETED_AT.isNull()
-                        .and(MEMBER.ROLE.notEqual(MemberRole.ADMIN)))
+            .where(MEMBER.ROLE.ne(MemberRole.ADMIN).and(MEMBER.DELETED_AT.isNull()))
             .orderBy(DSL.field("total_score").desc().nullsLast())
             .limit(10)
             .fetch();

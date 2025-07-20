@@ -19,6 +19,7 @@ import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.MemberGradeCode;
+import com.example.jooq.generated.enums.MemberRole;
 import com.example.jooq.generated.enums.MemberStatus;
 import com.example.jooq.generated.enums.ProjectStatus;
 import com.nexus.sion.common.dto.PageResponse;
@@ -40,6 +41,7 @@ public class StatisticsQueryRepository {
             DSL.countDistinct(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER).as("count"))
         .from(DEVELOPER_TECH_STACK)
         .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
+        .and(MEMBER.ROLE.ne(MemberRole.ADMIN))
         .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
         .fetchInto(TechStackCountDto.class);
   }
@@ -50,7 +52,7 @@ public class StatisticsQueryRepository {
     List<String> memberCodes =
         dsl.select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)
             .from(MEMBER)
-            .where(MEMBER.DELETED_AT.isNull())
+            .where(MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.ne(MemberRole.ADMIN)))
             .orderBy(MEMBER.EMPLOYEE_NAME.asc())
             .limit(size)
             .offset(offset)
@@ -112,7 +114,10 @@ public class StatisticsQueryRepository {
         tempMap.values().stream().map(DeveloperDto.DeveloperDtoBuilder::build).toList();
 
     long total =
-        dsl.selectCount().from(MEMBER).where(MEMBER.DELETED_AT.isNull()).fetchOne(0, Long.class);
+        dsl.selectCount()
+            .from(MEMBER)
+            .where(MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.ne(MemberRole.ADMIN)))
+            .fetchOne(0, Long.class);
 
     return PageResponse.fromJooq(content, total, page, size);
   }
@@ -155,6 +160,7 @@ public class StatisticsQueryRepository {
                     MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER))
             .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(techStackNames))
             .and(MEMBER.DELETED_AT.isNull())
+            .and(MEMBER.ROLE.ne(MemberRole.ADMIN))
             .groupBy(DEVELOPER_TECH_STACK.TECH_STACK_NAME)
             .orderBy(orderBy)
             .limit(size)
@@ -424,6 +430,7 @@ public class StatisticsQueryRepository {
                 DSL.sum(DSL.when(MEMBER.STATUS.eq(MemberStatus.AVAILABLE), 1).otherwise(0))
                     .as("waiting_count"))
             .from(MEMBER)
+            .where(MEMBER.ROLE.ne(MemberRole.ADMIN))
             .groupBy(MEMBER.GRADE_CODE)
             .asTable("member_stats");
 
@@ -467,7 +474,12 @@ public class StatisticsQueryRepository {
                 DSL.max(MEMBER.SALARY).as("maxSalary"),
                 DSL.avg(MEMBER.SALARY).as("avgSalary"))
             .from(MEMBER)
-            .where(MEMBER.SALARY.isNotNull().and(MEMBER.GRADE_CODE.isNotNull()))
+            .where(
+                MEMBER
+                    .SALARY
+                    .isNotNull()
+                    .and(MEMBER.GRADE_CODE.isNotNull())
+                    .and(MEMBER.ROLE.ne(MemberRole.ADMIN)))
             .groupBy(MEMBER.GRADE_CODE)
             .asTable("salary_stats");
 

@@ -4,15 +4,15 @@ import static com.example.jooq.generated.tables.DeveloperProjectWork.DEVELOPER_P
 import static com.example.jooq.generated.tables.DeveloperProjectWorkHistory.DEVELOPER_PROJECT_WORK_HISTORY;
 import static com.example.jooq.generated.tables.DeveloperProjectWorkHistoryTechStack.DEVELOPER_PROJECT_WORK_HISTORY_TECH_STACK;
 import static com.example.jooq.generated.tables.Project.PROJECT;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.partitionBy;
+import static org.jooq.impl.DSL.rowNumber;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import static org.jooq.impl.DSL.rowNumber;
-import static org.jooq.impl.DSL.partitionBy;
-import static org.jooq.impl.DSL.field;
 import org.springframework.stereotype.Repository;
 
 import com.example.jooq.generated.enums.DeveloperProjectWorkApprovalStatus;
@@ -51,14 +51,16 @@ public class DeveloperProjectWorkQueryRepository {
 
       // 상태 필터링 (NOT_REQUESTED 포함 가능)
       if (status != null && !status.isBlank()) {
-        conditions.add(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
+        conditions.add(
+            DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
                 DeveloperProjectWorkApprovalStatus.valueOf(status)));
       }
     }
 
     // 관리자이면서 status 필터가 들어온 경우 추가 조건
     if (employeeId == null && status != null && !status.isBlank()) {
-      conditions.add(DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
+      conditions.add(
+          DEVELOPER_PROJECT_WORK.APPROVAL_STATUS.eq(
               DeveloperProjectWorkApprovalStatus.valueOf(status)));
     }
 
@@ -179,24 +181,25 @@ public class DeveloperProjectWorkQueryRepository {
   }
 
   public List<DeveloperApprovalResponse> findDeveloperApprovalsByProjectCode(String projectCode) {
-    var latestWork = dsl.select(
-                    DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
-                    DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
-                    DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
-                    DEVELOPER_PROJECT_WORK.APPROVED_BY,
-                    DEVELOPER_PROJECT_WORK.APPROVED_AT,
-                    DEVELOPER_PROJECT_WORK.REJECTED_REASON,
-                    rowNumber().over(
-                            partitionBy(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER)
-                                    .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc())
-                    ).as("rn")
-            )
+    var latestWork =
+        dsl.select(
+                DEVELOPER_PROJECT_WORK.DEVELOPER_PROJECT_WORK_ID,
+                DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER,
+                DEVELOPER_PROJECT_WORK.APPROVAL_STATUS,
+                DEVELOPER_PROJECT_WORK.APPROVED_BY,
+                DEVELOPER_PROJECT_WORK.APPROVED_AT,
+                DEVELOPER_PROJECT_WORK.REJECTED_REASON,
+                rowNumber()
+                    .over(
+                        partitionBy(DEVELOPER_PROJECT_WORK.EMPLOYEE_IDENTIFICATION_NUMBER)
+                            .orderBy(DEVELOPER_PROJECT_WORK.CREATED_AT.desc()))
+                    .as("rn"))
             .from(DEVELOPER_PROJECT_WORK)
             .where(DEVELOPER_PROJECT_WORK.PROJECT_CODE.eq(projectCode))
             .asTable("latest_work");
 
     return dsl.selectFrom(latestWork)
-            .where(field("rn", Integer.class).eq(1))
-            .fetchInto(DeveloperApprovalResponse.class);
+        .where(field("rn", Integer.class).eq(1))
+        .fetchInto(DeveloperApprovalResponse.class);
   }
 }

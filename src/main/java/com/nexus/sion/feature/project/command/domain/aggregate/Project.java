@@ -1,6 +1,5 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

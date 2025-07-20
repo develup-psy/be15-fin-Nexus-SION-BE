@@ -61,8 +61,10 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
   public PageResponse<ProjectListResponse> getProjectsByEmployeeId(
       String employeeId, List<String> statuses, int page, int size, String sortBy, String keyword) {
     List<Project> pojos =
-        projectQueryRepository.findProjectsByEmployeeId(employeeId, statuses, page, size, sortBy, keyword);
-    long totalCount = projectQueryRepository.countProjectsByEmployeeId(employeeId, statuses, keyword);
+        projectQueryRepository.findProjectsByEmployeeId(
+            employeeId, statuses, page, size, sortBy, keyword);
+    long totalCount =
+        projectQueryRepository.countProjectsByEmployeeId(employeeId, statuses, keyword);
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

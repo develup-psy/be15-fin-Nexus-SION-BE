@@ -16,8 +16,8 @@ public class MyProjectListRequest {
   private String sortBy;
   private String keyword;
 
-  public MyProjectListRequest(String employeeId, int page, int size,
-                              List<String> statuses, String sortBy, String keyword) {
+  public MyProjectListRequest(
+      String employeeId, int page, int size, List<String> statuses, String sortBy, String keyword) {
     this.employeeId = employeeId;
     this.page = page;
     this.size = size;

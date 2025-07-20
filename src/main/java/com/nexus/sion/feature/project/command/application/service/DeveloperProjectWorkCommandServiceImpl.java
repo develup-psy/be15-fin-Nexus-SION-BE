@@ -1,5 +1,12 @@
 package com.nexus.sion.feature.project.command.application.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.nexus.sion.exception.BusinessException;
 import com.nexus.sion.exception.ErrorCode;
 import com.nexus.sion.feature.member.command.domain.aggregate.entity.Member;
@@ -18,14 +25,9 @@ import com.nexus.sion.feature.project.command.domain.repository.ProjectRepositor
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkHistoryRepository;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkHistoryTechStackRepository;
 import com.nexus.sion.feature.project.command.repository.DeveloperProjectWorkRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,8 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
   public void approve(Long id, String adminId) {
     validateAdmin(adminId);
 
-    DeveloperProjectWork work = workRepository
+    DeveloperProjectWork work =
+        workRepository
             .findById(id)
             .orElseThrow(() -> new BusinessException(ErrorCode.WORK_HISTORY_NOT_FOUND));
 
@@ -53,89 +56,87 @@ public class DeveloperProjectWorkCommandServiceImpl implements DeveloperProjectW
 
     // ===== 점수 산정 로직 =====
     List<DeveloperProjectWorkHistory> histories =
-            workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
+        workHistoryRepository.findAllByDeveloperProjectWorkId(work.getId());
 
-    List<Long> historyIds = histories.stream()
-            .map(DeveloperProjectWorkHistory::getId)
-            .toList();
+    List<Long> historyIds = histories.stream().map(DeveloperProjectWorkHistory::getId).toList();
 
     List<DeveloperProjectWorkHistoryTechStack> techStacks =
-            workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
+        workHistoryTechStackRepository.findAllByDeveloperProjectWorkHistoryIdIn(historyIds);
 
-    Map<Long, List<String>> historyIdToStackNamesMap = techStacks.stream()
-            .collect(Collectors.groupingBy(
+    Map<Long, List<String>> historyIdToStackNamesMap =
+        techStacks.stream()
+            .collect(
+                Collectors.groupingBy(
                     DeveloperProjectWorkHistoryTechStack::getDeveloperProjectWorkHistoryId,
                     Collectors.mapping(
-                            DeveloperProjectWorkHistoryTechStack::getTechStackName,
-                            Collectors.toList()
-                    )
-            ));
+                        DeveloperProjectWorkHistoryTechStack::getTechStackName,
+                        Collectors.toList())));
 
-    List<FunctionScore> functionScores = histories.stream()
-            .map(history -> new FunctionScore(
-                    history.getFunctionName(),
-                    history.getFunctionDescription(),
-                    history.getFunctionType().name(),
-                    history.getDet(),
-                    history.getFtr(),
-                    historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())
-            ))
+    List<FunctionScore> functionScores =
+        histories.stream()
+            .map(
+                history ->
+                    new FunctionScore(
+                        history.getFunctionName(),
+                        history.getFunctionDescription(),
+                        history.getFunctionType().name(),
+                        history.getDet(),
+                        history.getFtr(),
+                        historyIdToStackNamesMap.getOrDefault(history.getId(), List.of())))
             .toList();
 
-    FunctionScoreDTO dto = new FunctionScoreDTO(
-            work.getEmployeeIdentificationNumber(),
-            work.getProjectCode(),
-            functionScores
-    );
+    FunctionScoreDTO dto =
+        new FunctionScoreDTO(
+            work.getEmployeeIdentificationNumber(), work.getProjectCode(), functionScores);
 
     projectEvaluateCommandService.evaluateFunctionScores(dto);
 
     // ===== 승인 알림 전송 =====
     String receiverId = work.getEmployeeIdentificationNumber();
-    String receiverName = memberRepository
+    String receiverName =
+        memberRepository
             .findEmployeeNameByEmployeeIdentificationNumber(receiverId)
             .orElseThrow(() -> new BusinessException(ErrorCode.USER_INFO_NOT_FOUND));
 
     String statusMessage = "승인";
-    String message = NotificationType.TASK_RESULT.getMessage()
+    String message =
+        NotificationType.TASK_RESULT
+            .getMessage()
             .replace("{username}", receiverName)
             .replace("{status}", statusMessage);
 
     notificationCommandService.createAndSendNotification(
-            adminId,
-            receiverId,
-            message,
-            NotificationType.TASK_RESULT,
-            String.valueOf(id)
-    );
+        adminId, receiverId, message, NotificationType.TASK_RESULT, String.valueOf(id));
 
     // ===== 모든 멤버 승인 완료 시 관리자에게 알림 =====
     List<DeveloperProjectWork> projectWorks =
-            workRepository.findAllByProjectCode(work.getProjectCode());
+        workRepository.findAllByProjectCode(work.getProjectCode());
 
-    boolean allApproved = projectWorks.stream()
+    boolean allApproved =
+        projectWorks.stream()
             .allMatch(w -> w.getApprovalStatus() == DeveloperProjectWork.ApprovalStatus.APPROVED);
 
     if (allApproved) {
-      String projectName = projectRepository
+      String projectName =
+          projectRepository
               .findByProjectCode(work.getProjectCode())
               .map(Project::getTitle)
               .orElse("알 수 없는 프로젝트");
       System.out.println(projectName);
 
-      String notifyMessage = NotificationType.PROJECT_EVALUATION_READY.getMessage()
+      String notifyMessage =
+          NotificationType.PROJECT_EVALUATION_READY
+              .getMessage()
               .replace("{projectName}", projectName);
 
       notificationCommandService.createAndSendNotification(
-              null, // senderId
-              adminId,  // 승인한 관리자에게 알림
-              notifyMessage,
-              NotificationType.PROJECT_EVALUATION_READY,
-              work.getProjectCode()
-      );
+          null, // senderId
+          adminId, // 승인한 관리자에게 알림
+          notifyMessage,
+          NotificationType.PROJECT_EVALUATION_READY,
+          work.getProjectCode());
     }
   }
-
 
   @Override
   @Transactional

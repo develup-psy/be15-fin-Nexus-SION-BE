@@ -281,30 +281,29 @@ public class SquadCommandServiceImpl implements SquadCommandService {
   public void confirmSquad(String squadCode) {
     // 1. 스쿼드 조회 및 확정 처리
     Squad squad =
-            squadCommandRepository
-                    .findBySquadCode(squadCode)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+        squadCommandRepository
+            .findBySquadCode(squadCode)
+            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
     squad.confirm(); // isActive = true
 
     // 2. 프로젝트 상태를 IN_PROGRESS로 변경, 예산도 스쿼드 예산으로 변경
     projectCommandService.updateProjectStatus(
-            squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
+        squad.getProjectCode(), Project.ProjectStatus.IN_PROGRESS);
 
     // 3. 프로젝트 예산을 스쿼드 예산으로 덮어쓰기
-    projectCommandService.updateProjectBudget(
-            squad.getProjectCode(), squad.getEstimatedCost());
+    projectCommandService.updateProjectBudget(squad.getProjectCode(), squad.getEstimatedCost());
 
     // 4. 알림 전송
     squadEmployeeCommandRepository
-            .findBySquadCode(squadCode)
-            .forEach(
-                    member ->
-                            notificationCommandService.createAndSendNotification(
-                                    null,
-                                    member.getEmployeeIdentificationNumber(),
-                                    null,
-                                    NotificationType.SQUAD_CONFIRMED,
-                                    squad.getProjectCode()));
+        .findBySquadCode(squadCode)
+        .forEach(
+            member ->
+                notificationCommandService.createAndSendNotification(
+                    null,
+                    member.getEmployeeIdentificationNumber(),
+                    null,
+                    NotificationType.SQUAD_CONFIRMED,
+                    squad.getProjectCode()));
   }
 
   private Map<String, List<DeveloperSummary>> filterTopNByCriteria(

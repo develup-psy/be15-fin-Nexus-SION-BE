@@ -66,11 +66,7 @@ class DeveloperProjectWorkCommandServiceImplTest {
 
     verify(notificationCommandService)
         .createAndSendNotification(
-            eq("ADMIN001"),
-            eq("EMP001"),
-            anyString(),
-            eq(NotificationType.TASK_RESULT),
-            eq("1"));
+            eq("ADMIN001"), eq("EMP001"), anyString(), eq(NotificationType.TASK_RESULT), eq("1"));
   }
 
   @Test
