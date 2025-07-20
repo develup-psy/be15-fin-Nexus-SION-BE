@@ -88,17 +88,27 @@ public class MemberGradeScheduler {
       // 등급이 변경된 경우에만 업데이트 및 알림
       if (!newGrade.equals(previousGrade)) {
         dsl.update(MEMBER)
-            .set(MEMBER.GRADE_CODE, newGrade)
-            .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
-            .execute();
+                .set(MEMBER.GRADE_CODE, newGrade)
+                .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
+                .execute();
 
-        // 알림 발송
+        String username = dsl.select(MEMBER.EMPLOYEE_NAME)
+                .from(MEMBER)
+                .where(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.eq(m.employeeId()))
+                .fetchOneInto(String.class);
+
+        String message = NotificationType.GRADE_CHANGE.generateMessage(
+                username,
+                previousGrade.name(),
+                newGrade.name()
+        );
+
         notificationCommandService.createAndSendNotification(
-            null,
-            m.employeeId(),
-            String.format("당신의 등급이 %s에서 %s 등급으로 변경되었습니다.", previousGrade, newGrade),
-            NotificationType.GRADE_CHANGE,
-            null);
+                null,
+                m.employeeId(),
+                message,
+                NotificationType.GRADE_CHANGE,
+                null);
       }
 
       gradeGroups.computeIfAbsent(gradeStr, k -> new ArrayList<>()).add(m);
