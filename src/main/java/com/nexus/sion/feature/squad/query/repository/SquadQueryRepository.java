@@ -126,7 +126,8 @@ public class SquadQueryRepository {
                 GRADE.MONTHLY_UNIT_PRICE,
                 MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
                 GRADE.PRODUCTIVITY,
-                SQUAD_EMPLOYEE.IS_LEADER)
+                SQUAD_EMPLOYEE.IS_LEADER,
+                MEMBER.PROFILE_IMAGE_URL)
             .from(SQUAD_EMPLOYEE)
             .join(MEMBER)
             .on(
@@ -166,6 +167,7 @@ public class SquadQueryRepository {
                         .isLeader(
                             r.get(SQUAD_EMPLOYEE.IS_LEADER) != null
                                 && r.get(SQUAD_EMPLOYEE.IS_LEADER) == 1)
+                        .imageUrl(r.get(MEMBER.PROFILE_IMAGE_URL))
                         .build())
             .toList();
 

@@ -41,5 +41,6 @@ public class SquadDetailResponse {
     private String memberId;
     private BigDecimal productivity;
     private boolean isLeader;
+    private String imageUrl;
   }
 }
