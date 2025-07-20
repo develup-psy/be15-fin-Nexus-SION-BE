@@ -146,7 +146,8 @@ public class ProjectQueryRepository {
 
     // 2. 기간 계산
     LocalDate startDate = project.get(PROJECT.START_DATE);
-    LocalDate endDate = project.get(PROJECT.ACTUAL_END_DATE) != null
+    LocalDate endDate =
+        project.get(PROJECT.ACTUAL_END_DATE) != null
             ? project.get(PROJECT.ACTUAL_END_DATE)
             : project.get(PROJECT.EXPECTED_END_DATE);
 
