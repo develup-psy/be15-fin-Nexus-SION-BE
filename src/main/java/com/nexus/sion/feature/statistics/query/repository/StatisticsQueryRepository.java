@@ -53,22 +53,34 @@ public class StatisticsQueryRepository {
   public PageResponse<DeveloperDto> findDevelopersByStack(int page, int size, List<String> stackFilters) {
     int offset = page * size;
 
-    // 1. 필터 조건으로 일치하는 직원 코드 추출
-    var subquery = dsl
-            .select(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
-            .from(DEVELOPER_TECH_STACK)
-            .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(stackFilters))
-            .groupBy(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
-            .having(DSL.countDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME).eq(stackFilters.size()));
-
-    // 2. 회원 조건
+    // 1. 회원 기본 조건
     var baseCondition = MEMBER.DELETED_AT.isNull().and(MEMBER.ROLE.ne(MemberRole.ADMIN));
 
-    // 3. 전체 대상 추출
-    List<String> matchedMemberCodes = dsl
-            .select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)
-            .from(MEMBER)
-            .where(baseCondition.and(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(subquery)))
+    // 2. 기술 스택 필터 유무 분기
+    SelectConditionStep<?> memberCodeCondition;
+    if (stackFilters == null || stackFilters.isEmpty()) {
+      // 필터 없음: 모든 회원
+      memberCodeCondition = dsl
+              .select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)
+              .from(MEMBER)
+              .where(baseCondition);
+    } else {
+      // 필터 있음: 기술 스택을 모두 보유한 회원
+      var subquery = dsl
+              .select(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
+              .from(DEVELOPER_TECH_STACK)
+              .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(stackFilters))
+              .groupBy(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
+              .having(DSL.countDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME).eq(stackFilters.size()));
+
+      memberCodeCondition = dsl
+              .select(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER)
+              .from(MEMBER)
+              .where(baseCondition.and(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(subquery)));
+    }
+
+    // 3. 페이징 대상 추출
+    List<String> matchedMemberCodes = memberCodeCondition
             .orderBy(MEMBER.EMPLOYEE_NAME.asc())
             .limit(size)
             .offset(offset)
@@ -78,7 +90,7 @@ public class StatisticsQueryRepository {
       return PageResponse.fromJooq(List.of(), 0L, page, size);
     }
 
-    // 4. 상세 정보 + 기술 스택 병합
+    // 4. 상세 정보 + 기술 스택 병합 (변경 없음)
     var records = dsl
             .select(
                     MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER,
@@ -128,15 +140,29 @@ public class StatisticsQueryRepository {
     List<DeveloperDto> content = tempMap.values().stream().map(DeveloperDto.DeveloperDtoBuilder::build).toList();
 
     // 5. 전체 카운트
-    long total = dsl
-            .selectCount()
-            .from(MEMBER)
-            .where(baseCondition.and(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(subquery)))
-            .fetchOne(0, Long.class);
+    long total;
+    if (stackFilters == null || stackFilters.isEmpty()) {
+      total = dsl
+              .selectCount()
+              .from(MEMBER)
+              .where(baseCondition)
+              .fetchOne(0, Long.class);
+    } else {
+      total = dsl
+              .selectCount()
+              .from(MEMBER)
+              .where(baseCondition.and(MEMBER.EMPLOYEE_IDENTIFICATION_NUMBER.in(
+                      dsl.select(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
+                              .from(DEVELOPER_TECH_STACK)
+                              .where(DEVELOPER_TECH_STACK.TECH_STACK_NAME.in(stackFilters))
+                              .groupBy(DEVELOPER_TECH_STACK.EMPLOYEE_IDENTIFICATION_NUMBER)
+                              .having(DSL.countDistinct(DEVELOPER_TECH_STACK.TECH_STACK_NAME).eq(stackFilters.size()))
+              )))
+              .fetchOne(0, Long.class);
+    }
 
     return PageResponse.fromJooq(content, total, page, size);
   }
-
 
   public PageResponse<TechStackCareerDto> findStackAverageCareerPaged(
       List<String> techStackNames, int page, int size, String sort, String direction) {
