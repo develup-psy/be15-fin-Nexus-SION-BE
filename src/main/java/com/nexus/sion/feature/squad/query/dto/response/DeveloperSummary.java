@@ -16,6 +16,7 @@ public class DeveloperSummary {
   private String id;
   private String name;
   private String grade;
+  private String imageUrl;
 
   private double avgTechScore;
   private int domainCount;

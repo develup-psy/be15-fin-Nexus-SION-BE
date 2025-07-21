@@ -11,6 +11,7 @@
         <result property="grade" column="grade"/>
         <result property="avgTechScore" column="avgTechScore"/>
         <result property="domainCount" column="domainCount"/>
+        <result property="imageUrl" column="imageUrl"/>
     </resultMap>
 
     <select id="findJobsByProjectId"
@@ -33,6 +34,7 @@
                 COALESCE(domain_info.domain_count, 0) AS domainCount,
                 g.productivity AS productivity,
                 g.monthly_unit_price AS monthlyUnitPrice
+                m.profile_image_url AS imageUrl
           FROM member m
           JOIN grade g ON g.grade_code = m.grade_code
           JOIN developer_tech_stack dts
