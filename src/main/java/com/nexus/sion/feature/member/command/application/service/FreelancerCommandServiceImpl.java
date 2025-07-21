@@ -85,62 +85,10 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
         }
       }
     }
-    // FastAPI 분석 결과로 기술스택 점수 누적 계산
-    Map<String, Integer> techStackTotalScoreMap = new HashMap<>();
-    for (FunctionScore req : functions) {
-      String complexity = classifyComplexity(req.getFpType(), req.getDet(), req.getFtrOrRet());
-      int score = getFpScore(req.getFpType(), complexity);
-      int perStackScore = score / req.getStacks().size();
-      for (String stack : req.getStacks()) {
-        techStackTotalScoreMap.merge(stack, perStackScore, Integer::sum);
-      }
-    }
 
-    // 기술스택 및 이력 저장
-    for (Map.Entry<String, Integer> entry : techStackTotalScoreMap.entrySet()) {
-      String techStackName = entry.getKey();
-      int addedScore = entry.getValue();
+    GradeCode grade = GradeCode.C;
 
-      techStackRepository
-          .findById(techStackName)
-          .orElseGet(
-              () ->
-                  techStackRepository.save(
-                      TechStack.builder().techStackName(techStackName).build()));
-
-      DeveloperTechStack stack =
-          developerTechStackRepository
-              .findByEmployeeIdentificationNumberAndTechStackName(
-                  freelancer.freelancerId(), techStackName)
-              .orElseGet(
-                  () ->
-                      developerTechStackRepository.save(
-                          DeveloperTechStack.builder()
-                              .employeeIdentificationNumber(freelancer.freelancerId())
-                              .techStackName(techStackName)
-                              .totalScore(0)
-                              .build()));
-
-      developerTechStackHistoryRepository.save(
-          DeveloperTechStackHistory.builder()
-              .addedScore(addedScore)
-              .developerTechStackId(stack.getId())
-              .build());
-
-      stack.setTotalScore(stack.getTotalScore() + addedScore);
-      developerTechStackRepository.save(stack);
-    }
-
-    // Member 점수 이력 갱신
-    int totalStackScore =
-        developerTechStackRepository
-            .findAllByEmployeeIdentificationNumber(freelancer.freelancerId())
-            .stream()
-            .mapToInt(DeveloperTechStack::getTotalScore)
-            .sum();
-
-    GradeCode grade = memberCommandService.calculateGradeByScore(totalStackScore);
-
+    GradeCode finalGrade = grade;
     Member member =
         memberRepository
             .findById(freelancer.freelancerId())
@@ -162,12 +110,70 @@ public class FreelancerCommandServiceImpl implements FreelancerCommandService {
                           .careerYears(freelancer.careerYears())
                           .joinedAt(LocalDate.now())
                           .role(MemberRole.OUTSIDER)
-                          .gradeCode(grade)
+                          .gradeCode(finalGrade)
                           .status(MemberStatus.AVAILABLE)
                           .build();
                   return memberRepository.save(newMember);
                 });
 
+    memberRepository.save(member);
+
+    // FastAPI 분석 결과로 기술스택 점수 누적 계산
+    Map<String, Integer> techStackTotalScoreMap = new HashMap<>();
+    for (FunctionScore req : functions) {
+      String complexity = classifyComplexity(req.getFpType(), req.getDet(), req.getFtrOrRet());
+      int score = getFpScore(req.getFpType(), complexity);
+      int perStackScore = score / req.getStacks().size();
+      for (String stack : req.getStacks()) {
+        techStackTotalScoreMap.merge(stack, perStackScore, Integer::sum);
+      }
+    }
+
+    // 기술스택 및 이력 저장
+    for (Map.Entry<String, Integer> entry : techStackTotalScoreMap.entrySet()) {
+      String techStackName = entry.getKey();
+      int addedScore = entry.getValue();
+
+      techStackRepository
+              .findById(techStackName)
+              .orElseGet(
+                      () ->
+                              techStackRepository.save(
+                                      TechStack.builder().techStackName(techStackName).build()));
+
+      DeveloperTechStack stack =
+              developerTechStackRepository
+                      .findByEmployeeIdentificationNumberAndTechStackName(
+                              freelancer.freelancerId(), techStackName)
+                      .orElseGet(
+                              () ->
+                                      developerTechStackRepository.save(
+                                              DeveloperTechStack.builder()
+                                                      .employeeIdentificationNumber(freelancer.freelancerId())
+                                                      .techStackName(techStackName)
+                                                      .totalScore(0)
+                                                      .build()));
+
+      developerTechStackHistoryRepository.save(
+              DeveloperTechStackHistory.builder()
+                      .addedScore(addedScore)
+                      .developerTechStackId(stack.getId())
+                      .build());
+
+      stack.setTotalScore(stack.getTotalScore() + addedScore);
+      developerTechStackRepository.save(stack);
+    }
+
+    // Member 점수 이력 갱신
+    int totalStackScore =
+            developerTechStackRepository
+                    .findAllByEmployeeIdentificationNumber(freelancer.freelancerId())
+                    .stream()
+                    .mapToInt(DeveloperTechStack::getTotalScore)
+                    .sum();
+
+    grade = memberCommandService.calculateGradeByScore(totalStackScore);
+    member.setGradeCode(grade);
     memberRepository.save(member);
 
     MemberScoreHistory scoreHistory =
