@@ -131,4 +131,8 @@ public class Member {
   public void setDefaultProfileImageUrl(String s) {
     this.profileImageUrl = s;
   }
+
+  public void setGradeCode(GradeCode grade) {
+    this.gradeCode = grade;
+  }
 }
