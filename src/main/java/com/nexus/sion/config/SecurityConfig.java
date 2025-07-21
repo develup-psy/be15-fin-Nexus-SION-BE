@@ -56,7 +56,7 @@ public class SecurityConfig {
                 auth.requestMatchers(
                         "/api/v1/members/login",
                         "/api/v1/members/refresh",
-                        "/api/v1/members/refresh")
+                        "/api/v1/members/signup")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
