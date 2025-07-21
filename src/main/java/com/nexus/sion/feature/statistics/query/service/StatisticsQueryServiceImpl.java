@@ -22,8 +22,8 @@ public class StatisticsQueryServiceImpl implements StatisticsQueryService {
   }
 
   @Override
-  public PageResponse<DeveloperDto> getAllDevelopers(int page, int size) {
-    return statisticsQueryRepository.findAllDevelopers(page, size);
+  public PageResponse<DeveloperDto> getDevelopersByStack(int page, int size, List<String> stackFilters) {
+    return statisticsQueryRepository.findDevelopersByStack(page, size, stackFilters);
   }
 
   @Override
