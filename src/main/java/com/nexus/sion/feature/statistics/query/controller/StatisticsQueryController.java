@@ -34,10 +34,11 @@ public class StatisticsQueryController {
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 
-  @GetMapping("/developers")
-  public ResponseEntity<ApiResponse<PageResponse<DeveloperDto>>> getAllDevelopers(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-    var response = statisticsQueryService.getAllDevelopers(page, size);
+  @PostMapping("/stack-members")
+  public ResponseEntity<ApiResponse<PageResponse<DeveloperDto>>> getDevelopersByStack(
+          @RequestBody StackMemberSearchRequest request) {
+    var response =
+            statisticsQueryService.getDevelopersByStack(request.getPage(), request.getSize(), request.getStackFilters());
     return ResponseEntity.ok(ApiResponse.success(response));
   }
 

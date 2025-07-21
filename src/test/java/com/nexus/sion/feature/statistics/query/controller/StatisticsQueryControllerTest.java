@@ -81,30 +81,30 @@ class StatisticsQueryControllerTest {
         .andExpect(jsonPath("$.data[1].techStackName").value("Vue.js"));
   }
 
-  @Test
-  @DisplayName("개발자 목록 조회 성공")
-  void getAllDevelopers_success() throws Exception {
-    List<DeveloperDto> devs =
-        List.of(
-            DeveloperDto.builder()
-                .name("홍길동")
-                .position("사원")
-                .department("개발팀")
-                .code("EMP001")
-                .grade("B")
-                .status("AVAILABLE")
-                .techStacks(List.of("Java", "Vue.js"))
-                .build());
-
-    PageResponse<DeveloperDto> page = PageResponse.fromJooq(devs, 1, 0, 10);
-
-    when(service.getAllDevelopers(1, 10)).thenReturn(page);
-
-    mockMvc
-        .perform(get("/api/v1/statistics/developers?page=1&size=10"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.content[0].name").value("홍길동"));
-  }
+//  @Test
+//  @DisplayName("개발자 목록 조회 성공")
+//  void getAllDevelopers_success() throws Exception {
+//    List<DeveloperDto> devs =
+//        List.of(
+//            DeveloperDto.builder()
+//                .name("홍길동")
+//                .position("사원")
+//                .department("개발팀")
+//                .code("EMP001")
+//                .grade("B")
+//                .status("AVAILABLE")
+//                .techStacks(List.of("Java", "Vue.js"))
+//                .build());
+//
+//    PageResponse<DeveloperDto> page = PageResponse.fromJooq(devs, 1, 0, 10);
+//
+//    when(service.getAllDevelopers(1, 10)).thenReturn(page);
+//
+//    mockMvc
+//        .perform(get("/api/v1/statistics/developers?page=1&size=10"))
+//        .andExpect(status().isOk())
+//        .andExpect(jsonPath("$.data.content[0].name").value("홍길동"));
+//  }
 
   @Test
   @DisplayName("스택별 평균 경력 조회 성공")

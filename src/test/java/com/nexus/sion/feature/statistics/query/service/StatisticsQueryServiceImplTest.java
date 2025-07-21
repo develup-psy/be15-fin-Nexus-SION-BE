@@ -41,16 +41,16 @@ class StatisticsQueryServiceImplTest {
   }
 
   // 전체 개발자 목록을 페이지 단위로 조회하는 기능을 테스트
-  @Test
-  void getAllDevelopers_returnsPageResponse() {
-    PageResponse<DeveloperDto> mockPage =
-        PageResponse.fromJooq(List.of(new DeveloperDto()), 1, 0, 10);
-    when(statisticsQueryRepository.findAllDevelopers(0, 10)).thenReturn(mockPage);
-
-    PageResponse<DeveloperDto> result = service.getAllDevelopers(0, 10);
-
-    assertEquals(1, result.getTotalElements());
-  }
+//  @Test
+//  void getAllDevelopers_returnsPageResponse() {
+//    PageResponse<DeveloperDto> mockPage =
+//        PageResponse.fromJooq(List.of(new DeveloperDto()), 1, 0, 10);
+//    when(statisticsQueryRepository.findAllDevelopers(0, 10)).thenReturn(mockPage);
+//
+//    PageResponse<DeveloperDto> result = service.getAllDevelopers(0, 10);
+//
+//    assertEquals(1, result.getTotalElements());
+//  }
 
   // 기술 스택별 평균 경력 통계를 페이지 단위로 조회하는 기능을 테스트
   @Test
