@@ -17,12 +17,12 @@
     <select id="findJobsByProjectId"
             resultType="com.nexus.sion.feature.squad.query.dto.response.JobInfo">
         SELECT
-                paj.project_and_job_id AS projectAndJobId,
-                paj.job_name AS jobName
-          FROM project p
-          JOIN project_and_job paj
-            ON paj.project_code = p.project_code
-         WHERE p.project_code = #{projectId}
+        paj.project_and_job_id AS projectAndJobId,
+        paj.job_name AS jobName
+        FROM project p
+        JOIN project_and_job paj
+        ON paj.project_code = p.project_code
+        WHERE p.project_code = #{projectId}
     </select>
 
     <select id="findDevelopersByStacksPerJob" resultType="com.nexus.sion.feature.squad.query.dto.response.DeveloperSummary">
@@ -33,7 +33,7 @@
                 COALESCE(AVG(dts.tech_stack_total_scores), 0) AS avgTechScore,
                 COALESCE(domain_info.domain_count, 0) AS domainCount,
                 g.productivity AS productivity,
-                g.monthly_unit_price AS monthlyUnitPrice
+                g.monthly_unit_price AS monthlyUnitPrice,
                 m.profile_image_url AS imageUrl
           FROM member m
           JOIN grade g ON g.grade_code = m.grade_code
@@ -51,9 +51,9 @@
              )
             GROUP BY se.employee_identification_number
         ) AS domain_info
-           ON m.employee_identification_number = domain_info.employee_identification_number
+        ON m.employee_identification_number = domain_info.employee_identification_number
         WHERE m.status = 'AVAILABLE'
-          AND jts.project_and_job_id = #{projectAndJobId}
+        AND jts.project_and_job_id = #{projectAndJobId}
         GROUP BY
         m.employee_identification_number,
         m.employee_name,
