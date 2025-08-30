@@ -195,7 +195,6 @@ public class ProjectQueryRepository {
                         r.get(MEMBER.EMPLOYEE_NAME),
                         r.get(PROJECT_AND_JOB.JOB_NAME)));
 
-    // ✅ 상태 추출 및 반환에 포함
     String status = String.valueOf(project.get(PROJECT.STATUS));
     ProjectAnalysisStatus analysisStatus = project.get(PROJECT.ANALYSIS_STATUS);
 
@@ -217,7 +216,7 @@ public class ProjectQueryRepository {
         techStacks,
         members,
         status,
-        analysisStatus, // ✅ 여기 포함,
+        analysisStatus,
         squadCode);
   }
 
