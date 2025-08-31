@@ -35,7 +35,4 @@ public class SquadEmployee extends BaseTimeEntity {
 
   @Column(name = "squad_code", nullable = false, length = 30)
   private String squadCode;
-
-  @Column(name = "total_skill_score")
-  private Integer totalSkillScore;
 }

@@ -58,4 +58,5 @@ public class Squad extends BaseTimeEntity {
   public void confirm() {
     this.isActive = true;
   }
+
 }
