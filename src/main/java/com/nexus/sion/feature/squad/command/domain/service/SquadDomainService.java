@@ -5,20 +5,20 @@ import org.springframework.stereotype.Service;
 import com.nexus.sion.feature.squad.command.application.dto.internal.EvaluatedSquad;
 import com.nexus.sion.feature.squad.command.domain.aggregate.enums.RecommendationCriteria;
 
+import java.math.BigDecimal;
+
 @Service
 public class SquadDomainService {
 
   public String buildRecommendationReason(RecommendationCriteria criteria, EvaluatedSquad squad) {
-    int tech = squad.getAverageTechStackScore();
+    double tech = squad.getAverageTechStackScore();
     double domain = squad.getAverageDomainRelevance();
-    int monthlyCost = squad.getTotalMonthlyCost();
     int estimatedDuration = squad.getEstimatedDuration();
-    int totalCost = squad.getEstimatedTotalCost();
-    String preCondition = squad.getReason(); // 예: "예산과 기간 조건을 만족하는 최적 조합입니다."
+    BigDecimal totalCost = squad.getEstimatedTotalCost();
+    String preCondition = squad.getReason();
 
     StringBuilder sb = new StringBuilder();
 
-    // 1. 제약 조건 설명
     sb.append("현재 프로젝트에는 ");
     if (preCondition.contains("예산") && preCondition.contains("기간")) {
       sb.append("예산과 기간의 상한선이 설정되어 있으며, ");
@@ -30,13 +30,10 @@ public class SquadDomainService {
       sb.append("예산 및 기간에 대한 제약 없이, ");
     }
 
-    // 2. 추천 기준 설명
-    sb.append("당신이 선택한 기준인 ‘").append(getKoreanLabel(criteria)).append("’에 따라, ");
+    sb.append("당신이 선택한 기준인 ‘").append(getLabel(criteria)).append("’에 따라, ");
 
-    // 3. 선택된 조합의 이유 중심 설명
     sb.append(getRationale(criteria));
 
-    // 4. 수치 기반 보조 설명 (정량 근거)
     sb.append(
         String.format(
             " (기술 점수 평균: %d점, 도메인 적합률: %.0f%%, 예상 기간: %d개월, 총예산: %,d만원)",
@@ -45,7 +42,7 @@ public class SquadDomainService {
     return sb.toString();
   }
 
-  private String getKoreanLabel(RecommendationCriteria criteria) {
+  private String getLabel(RecommendationCriteria criteria) {
     return switch (criteria) {
       case TECH_STACK -> "기술 스택 중심";
       case DOMAIN_MATCH -> "도메인 적합도 중심";
