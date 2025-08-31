@@ -12,7 +12,7 @@ public class CandidateSummary {
   private String memberId;
   private String name;
   private String jobName;
-  private int techStackScore;
+  private double techStackScore;
   private double domainRelevance;
   private int costPerMonth;
   private double productivityFactor;

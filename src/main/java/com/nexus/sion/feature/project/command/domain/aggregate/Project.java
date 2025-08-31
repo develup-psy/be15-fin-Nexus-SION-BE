@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.domain.aggregate;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,6 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class Project extends BaseTimeEntity {
-  // base entity : 생성일자, 수정일자 자동생성 및 업데이트 설정
 
   @Id
   @Column(name = "project_code", length = 30)
@@ -33,7 +33,7 @@ public class Project extends BaseTimeEntity {
   private String title;
 
   @Column(name = "budget", nullable = false)
-  private Long budget;
+  private BigDecimal budget;
 
   @Column(name = "start_date", nullable = false)
   private LocalDate startDate;
