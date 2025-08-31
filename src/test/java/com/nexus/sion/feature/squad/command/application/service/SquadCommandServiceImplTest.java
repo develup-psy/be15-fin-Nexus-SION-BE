@@ -39,12 +39,13 @@ import com.nexus.sion.feature.squad.query.service.SquadQueryService;
 
 class SquadCommandServiceImplTest {
 
-  @InjectMocks private SquadCommandServiceImpl squadCommandService;
+  @InjectMocks private SquadRecommendationServiceImpl squadCommandService;
 
   @Mock private SquadCommandRepository squadCommandRepository;
   @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
   @Mock private SquadCommentRepository squadCommentRepository;
   @Mock private SquadValidationService squadValidationService;
+  @Mock private SquadManualService squadManualService;
 
   @BeforeEach
   void setUp() {
@@ -84,7 +85,7 @@ class SquadCommandServiceImplTest {
     given(squadCommandRepository.countByProjectCode("ha_1_1")).willReturn(0L);
 
     // when
-    squadCommandService.registerManualSquad(request);
+    squadManualService.registerManualSquad(request);
 
     // then
     then(squadCommandRepository).should(times(1)).save(any(Squad.class));
@@ -107,7 +108,7 @@ class SquadCommandServiceImplTest {
         .willThrow(new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
 
     // when & then
-    assertThatThrownBy(() -> squadCommandService.registerManualSquad(request))
+    assertThatThrownBy(() -> squadManualService.registerManualSquad(request))
         .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.PROJECT_NOT_FOUND.getMessage());
 
@@ -157,7 +158,7 @@ class SquadCommandServiceImplTest {
     willDoNothing().given(squadValidationService).validateDuration(project, BigDecimal.valueOf(2));
 
     // when
-    squadCommandService.updateManualSquad(request);
+    squadManualService.updateManualSquad(request);
 
     // then
     assertThat(squad.getTitle()).isEqualTo("수정된 제목");
@@ -182,7 +183,7 @@ class SquadCommandServiceImplTest {
     given(squadCommandRepository.findBySquadCode("invalid_code")).willReturn(Optional.empty());
 
     // when & then
-    assertThatThrownBy(() -> squadCommandService.updateManualSquad(request))
+    assertThatThrownBy(() -> squadManualService.updateManualSquad(request))
         .isInstanceOf(BusinessException.class)
         .hasMessageContaining("스쿼드");
 
@@ -200,7 +201,7 @@ class SquadCommandServiceImplTest {
     given(squadCommandRepository.findBySquadCode(squadCode)).willReturn(Optional.of(squad));
 
     // when
-    squadCommandService.deleteSquad(squadCode);
+    squadManualService.deleteSquad(squadCode);
 
     // then
     then(squadEmployeeCommandRepository).should(times(1)).deleteBySquadCode(squadCode);
@@ -216,7 +217,7 @@ class SquadCommandServiceImplTest {
     given(squadCommandRepository.findBySquadCode(squadCode)).willReturn(Optional.empty());
 
     // when & then
-    assertThatThrownBy(() -> squadCommandService.deleteSquad(squadCode))
+    assertThatThrownBy(() -> squadManualService.deleteSquad(squadCode))
         .isInstanceOf(BusinessException.class)
         .hasMessage(ErrorCode.SQUAD_NOT_FOUND.getMessage());
 
@@ -239,7 +240,7 @@ class SquadCommandServiceImplTest {
     @Mock private SquadCommandRepository squadCommandRepository;
     @Mock private SquadEmployeeCommandRepository squadEmployeeCommandRepository;
 
-    @InjectMocks private SquadCommandServiceImpl squadCommandService;
+    @InjectMocks private SquadRecommendationServiceImpl squadCommandService;
 
     private String projectId = "PJT-001";
     private SquadRecommendationRequest request;
@@ -284,7 +285,7 @@ class SquadCommandServiceImplTest {
 
       evaluatedSquad = new EvaluatedSquad();
       evaluatedSquad.setSquad(squad);
-      evaluatedSquad.setEstimatedTotalCost(15000000);
+      evaluatedSquad.setEstimatedTotalCost(BigDecimal.valueOf(15000000));
       evaluatedSquad.setEstimatedDuration(3);
 
       // 공통 Mock 설정
@@ -295,8 +296,6 @@ class SquadCommandServiceImplTest {
       given(squadEvaluator.evaluateAll(eq(projectId), any())).willReturn(List.of(evaluatedSquad));
       given(squadSelector.selectBest(anyList(), eq(RecommendationCriteria.BALANCED)))
           .willReturn(evaluatedSquad);
-      given(gradeDomainService.getMonthlyUnitPrice(any())).willReturn(5000000);
-      given(gradeDomainService.getProductivityFactor(any())).willReturn(1.1);
       given(projectCommandService.findProjectAndJobIdMap(projectId))
           .willReturn(Map.of("백엔드", 100L));
       given(squadDomainService.buildRecommendationReason(any(), any())).willReturn("기준: BALANCED");
