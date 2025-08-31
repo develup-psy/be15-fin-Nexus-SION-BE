@@ -27,5 +27,5 @@ public interface ProjectCommandService {
 
   void replaceMember(SquadReplacementRequest request);
 
-  void updateProjectBudget(String projectCode, BigDecimal estimatedCost);
+  void updateProjectBudget(String projectId, BigDecimal budget);
 }
