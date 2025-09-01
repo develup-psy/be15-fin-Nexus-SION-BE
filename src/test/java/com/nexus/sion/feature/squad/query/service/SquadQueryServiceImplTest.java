@@ -71,7 +71,7 @@ class SquadQueryServiceImplTest {
             .domainCount(3)
             .weight(0.8)
             .monthlyUnitPrice(500000)
-            .productivity(BigDecimal.valueOf(1.2))
+            .productivity(1.2)
             .build();
 
     given(squadQueryMapper.findJobsByProjectId(projectId)).willReturn(List.of(job1));

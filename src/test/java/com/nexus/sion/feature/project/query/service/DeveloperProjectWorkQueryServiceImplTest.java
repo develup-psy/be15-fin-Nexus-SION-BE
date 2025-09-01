@@ -59,6 +59,7 @@ class DeveloperProjectWorkQueryServiceImplTest {
     String employeeId = "EMP001";
     String status = "PENDING";
     int page = 0, size = 10;
+    String status = "pending";
     List<WorkRequestQueryDto> mockList =
         List.of(new WorkRequestQueryDto(), new WorkRequestQueryDto());
     when(workQueryRepository.findByEmployeeId(employeeId, status)).thenReturn(mockList);

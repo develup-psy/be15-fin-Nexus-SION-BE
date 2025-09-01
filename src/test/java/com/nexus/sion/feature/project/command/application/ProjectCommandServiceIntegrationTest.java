@@ -172,7 +172,7 @@ class ProjectCommandServiceIntegrationTest {
     request.setDomainName("testdomain");
     request.setDescription("설명");
     request.setTitle("제목");
-    request.setBudget(1000000L);
+    request.setBudget(new BigDecimal(1000000L));
     request.setStartDate(LocalDate.now());
     request.setExpectedEndDate(LocalDate.now().plusDays(30));
     request.setClientCode("CLIENT123");
@@ -204,7 +204,7 @@ class ProjectCommandServiceIntegrationTest {
             .startDate(LocalDate.of(2025, 1, 1))
             .expectedEndDate(LocalDate.of(2025, 12, 31))
             .numberOfMembers(1)
-            .budget(10_000_000L)
+            .budget(new BigDecimal(10_000_000))
             .status(Project.ProjectStatus.WAITING)
             .requestSpecificationUrl("http://example.com/spec")
             .domainName("CS")

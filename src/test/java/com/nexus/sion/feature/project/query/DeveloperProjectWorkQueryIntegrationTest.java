@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.query;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -92,7 +93,7 @@ class DeveloperProjectWorkQueryIntegrationTest {
                 .title("테스트 프로젝트")
                 .domainName("test-domain")
                 .description("설명")
-                .budget(10_000_000L)
+                .budget(new BigDecimal(10_000_000L))
                 .startDate(LocalDate.now())
                 .expectedEndDate(LocalDate.now().plusMonths(3))
                 .status(Project.ProjectStatus.IN_PROGRESS)

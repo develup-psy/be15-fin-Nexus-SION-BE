@@ -3,6 +3,7 @@ package com.nexus.sion.feature.project.command.application;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -95,7 +96,7 @@ class DeveloperProjectWorkCommandIntegrationTest {
                 .title("통합 테스트 프로젝트")
                 .domainName("test-domain")
                 .description("설명입니다")
-                .budget(10_000_000L)
+                .budget(new BigDecimal(10_000_000L))
                 .startDate(LocalDate.now())
                 .expectedEndDate(LocalDate.now().plusMonths(3))
                 .status(Project.ProjectStatus.IN_PROGRESS)

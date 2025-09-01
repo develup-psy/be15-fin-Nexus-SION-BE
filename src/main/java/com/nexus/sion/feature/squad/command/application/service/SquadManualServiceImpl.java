@@ -26,10 +26,10 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class SquadManualServiceImpl implements SquadManualService {
-    private static SquadValidationService squadValidationService;
-    private static SquadCommandRepository squadCommandRepository;
-    private static SquadEmployeeCommandRepository squadEmployeeCommandRepository;
-    private static SquadCommentRepository squadCommentRepository;
+    private final SquadValidationService squadValidationService;
+    private final SquadCommandRepository squadCommandRepository;
+    private final SquadEmployeeCommandRepository squadEmployeeCommandRepository;
+    private final SquadCommentRepository squadCommentRepository;
 
     @Override
     @Transactional

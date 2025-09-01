@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -204,7 +205,7 @@ class ProjectCommandServiceImplTest {
     request.setDomainName("Project A");
     request.setDescription("Project Description");
     request.setTitle("Project Title");
-    request.setBudget(1000000L);
+    request.setBudget(new BigDecimal(1000000L));
     request.setStartDate(LocalDate.now());
     request.setExpectedEndDate(LocalDate.now().plusDays(30));
     request.setClientCode("CLIENT1");
@@ -220,7 +221,7 @@ class ProjectCommandServiceImplTest {
         .domainName("Updated Domain")
         .description("Updated Description")
         .title("Updated Title")
-        .budget(2000000L)
+        .budget(new BigDecimal(2000000))
         .startDate(LocalDate.now())
         .expectedEndDate(LocalDate.now().plusDays(60))
         .numberOfMembers(4)
