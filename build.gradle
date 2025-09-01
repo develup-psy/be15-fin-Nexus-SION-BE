@@ -11,7 +11,27 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 jacoco {
-    toolVersion = "0.8.10"
+    toolVersion = "0.8.10" // 최신 버전 확인 후 반영
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // 테스트 후 커버리지 리포트 생성
+}
+
+configurations {
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+}
+
+jacocoTestReport {
+    dependsOn test // 테스트가 선행되어야 리포트 생성 가능
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
 }
 
 java {
@@ -20,10 +40,22 @@ java {
     }
 }
 
-configurations {
-    all {
-        exclude group: 'commons-logging', module: 'commons-logging'
+jacoco {
+    toolVersion = "0.8.10" // 최신 버전 사용
+}
+
+jacocoTestReport {
+    dependsOn test // 테스트 실행 후 리포트 생성
+
+    reports {
+        html.required.set(true)      // HTML 리포트
+        xml.required.set(true)       // XML 리포트 (CI용)
+        csv.required.set(false)
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
+}
+
+configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -53,29 +85,30 @@ dependencies {
     implementation 'com.diffplug.spotless:spotless-plugin-gradle:7.0.4'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-    // mybatis
+    //mybatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
-//    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.7'
 
-    // jwt
+    //jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     jooqGenerator 'org.mariadb.jdbc:mariadb-java-client'
 
-    // aws
+
+    //aws
     implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
+
     implementation 'software.amazon.awssdk:s3:2.21.5'
 
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-    // 메트릭 수집
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-
-    // 로그 수집
+//    //메트릭 수집
+//    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//    implementation 'io.micrometer:micrometer-registry-prometheus'
+//
+    //로그 수집
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 }
 
@@ -90,55 +123,22 @@ sourceSets {
 spotless {
     java {
         googleJavaFormat()
+        // 아래 순서로 import문 정렬
         importOrder('java', 'javax', 'jakarta', 'org', 'com')
+        // 사용하지 않는 import 제거
         removeUnusedImports()
+        // 각 라인 끝에 있는 공백을 제거
         trimTrailingWhitespace()
+        // 파일 끝에 새로운 라인 추가
         endWithNewline()
-        target '**/*.java'
+        target '**/*.java' // 포맷팅 대상
     }
 }
 
-// 테스트 실패해도 리포트 생성을 위해 설정
 tasks.named('test') {
     useJUnitPlatform()
-    ignoreFailures = true
-    finalizedBy 'jacocoTestReport'
 }
 
-jacocoTestReport {
-    dependsOn test
-
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
-        csv.required.set(false)
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
-    }
-
-    afterEvaluate {
-        classDirectories.setFrom(
-                files(classDirectories.files.collect {
-                    fileTree(dir: it, include: [
-                            // 원하는 패키지만 포함
-                            'com/nexus/sion/feature/auth/command/application/service/**',
-                            'com/nexus/sion/feature/member/command/application/service/**',
-                            'com/nexus/sion/feature/member/query/service/**',
-                            'com/nexus/sion/feature/notification/command/application/service/**',
-                            'com/nexus/sion/feature/notification/query/service/**',
-                            'com/nexus/sion/feature/project/command/application/service/**',
-                            'com/nexus/sion/feature/project/query/service/**',
-                            'com/nexus/sion/feature/squad/command/application/service/**',
-                            'com/nexus/sion/feature/squad/query/service/**',
-                            'com/nexus/sion/feature/statistics/query/service/**',
-                            'com/nexus/sion/feature/techstack/command/application/service/**',
-                            'com/nexus/sion/feature/techstack/query/service/**',
-                    ])
-                })
-        )
-    }
-}
-
-// JOOQ 설정
 def env = new Properties()
 def envFile = file(".env")
 if (envFile.exists()) {
@@ -153,7 +153,7 @@ def dbName = env.getProperty("DB_NAME", "sion")
 def dbUrl = "jdbc:mariadb://${dbHost}:${dbPort}/${dbName}"
 
 jooq {
-    version = '3.18.6'
+    version = '3.18.6' // jooq 라이브러리 버전
     configurations {
         main {
             generationTool {
@@ -168,7 +168,7 @@ jooq {
                     strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
                     database {
                         name = 'org.jooq.meta.mariadb.MariaDBDatabase'
-                        inputSchema = dbName
+                        inputSchema = dbName // MariaDB의 DB명
                     }
                     generate {
                         daos = true

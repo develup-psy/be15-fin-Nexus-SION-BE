@@ -84,16 +84,17 @@ logging:
     org.mybatis: DEBUG
     jdbc.sqlonly: DEBUG
     com.nexus.sion.feature.squad.query.mapper: DEBUG
+    org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport: WARN
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: ["health", "metrics", "prometheus"]
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: ["health", "metrics", "prometheus"]
 
 ai:
-  fp-infer: http://fastapi-service.fastapi.svc.cluster.local:8100/fp-infer
-  embed-function: http://fastapi-service.fastapi.svc.cluster.local:8100/fp-embed
-  fp-freelencer-infer: http://fastapi-service.fastapi.svc.cluster.local:8100/fp-freelancer-infer
+  fp-infer: http//localhost:8101/fp-infer
+  embed-function: http://localhost:8101/fp-embed
+  fp-freelencer-infer: http://localhost:8101/fp-freelancer-infer
 
 

@@ -134,7 +134,7 @@ public class ReplacementRecommendationRepository {
                     .grade(record.get("grade", String.class))
                     .avgTechScore(record.get("avgTechScore", Double.class))
                     .domainCount(record.get("domainCount", Integer.class))
-                    .productivity(record.get(GRADE.PRODUCTIVITY))
+                    .productivity(record.get(GRADE.PRODUCTIVITY).doubleValue())
                     .monthlyUnitPrice(record.get(GRADE.MONTHLY_UNIT_PRICE))
                     .build());
   }

@@ -23,7 +23,7 @@ public class DeveloperSummary {
   private Double weight;
 
   int monthlyUnitPrice;
-  BigDecimal productivity;
+  double productivity;
 
   public void setWeight(Double weight) {
     this.weight = weight;

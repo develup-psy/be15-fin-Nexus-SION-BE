@@ -65,7 +65,7 @@ public class SquadValidationService {
 
   public void validateBudget(Project project, BigDecimal estimatedCost) {
     if (project.getBudget() != null
-        && estimatedCost.compareTo(BigDecimal.valueOf(project.getBudget())) > 0) {
+        && estimatedCost.compareTo(project.getBudget()) > 0) {
       throw new BusinessException(
           ErrorCode.EXCEED_PROJECT_BUDGET,
           "예산 상한: " + project.getBudget() + ", 요청 금액: " + estimatedCost);

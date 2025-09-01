@@ -1,5 +1,7 @@
 package com.nexus.sion.feature.squad.command.application.controller;
 
+import com.nexus.sion.feature.squad.command.application.service.SquadLifeCycle;
+import com.nexus.sion.feature.squad.command.application.service.SquadManualService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,7 @@ import com.nexus.sion.feature.squad.command.application.dto.request.SquadRecomme
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadRegisterRequest;
 import com.nexus.sion.feature.squad.command.application.dto.request.SquadUpdateRequest;
 import com.nexus.sion.feature.squad.command.application.dto.response.SquadRecommendationResponse;
-import com.nexus.sion.feature.squad.command.application.service.SquadCommandService;
+import com.nexus.sion.feature.squad.command.application.service.SquadRecommendationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,25 +21,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SquadCommandController {
 
-  private final SquadCommandService squadCommandService;
+  private final SquadRecommendationService squadCommandService;
+  private final SquadManualService squadManualService;
+  private final SquadLifeCycle squadLifeCycle;
 
   @PostMapping("/manual")
   public ResponseEntity<ApiResponse<Void>> registerManualSquad(
       @RequestBody @Valid SquadRegisterRequest request) {
-    squadCommandService.registerManualSquad(request);
+    squadManualService.registerManualSquad(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @PutMapping("/manual")
   public ResponseEntity<ApiResponse<Void>> updateManualSquad(
       @RequestBody @Valid SquadUpdateRequest request) {
-    squadCommandService.updateManualSquad(request);
+    squadManualService.updateManualSquad(request);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 
   @DeleteMapping("/{squadCode}")
   public ResponseEntity<Void> deleteSquad(@PathVariable String squadCode) {
-    squadCommandService.deleteSquad(squadCode);
+    squadManualService.deleteSquad(squadCode);
     return ResponseEntity.noContent().build();
   }
 
@@ -51,7 +55,7 @@ public class SquadCommandController {
 
   @PatchMapping("/{squadCode}/confirm")
   public ResponseEntity<ApiResponse<Void>> confirmSquad(@PathVariable String squadCode) {
-    squadCommandService.confirmSquad(squadCode);
+    squadLifeCycle.confirmSquad(squadCode);
     return ResponseEntity.ok(ApiResponse.success(null));
   }
 }

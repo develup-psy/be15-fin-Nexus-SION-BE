@@ -195,17 +195,6 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     projectRepository.save(project);
   }
 
-  private String findActiveSquadCode(String projectCode) {
-    return squadCommandRepository
-        .findByProjectCodeAndIsActiveIsTrue(projectCode)
-        .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND))
-        .getSquadCode();
-  }
-
-  private List<SquadEmployee> findSquadEmployees(String squadCode) {
-    return squadEmployeeCommandRepository.findBySquadCode(squadCode);
-  }
-
   private void sendTaskUploadRequestNotification(
       SquadEmployee employee, Long developerProjectWorkId) {
     String employeeId = employee.getEmployeeIdentificationNumber();
@@ -259,11 +248,9 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
   @Override
   public void replaceMember(SquadReplacementRequest request) {
-
-    Squad existSquad =
-        squadCommandRepository
-            .findById(request.getSquadCode())
-            .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
+    squadCommandRepository
+        .findById(request.getSquadCode())
+        .orElseThrow(() -> new BusinessException(ErrorCode.SQUAD_NOT_FOUND));
 
     SquadEmployee existsMember =
         squadEmployeeCommandRepository
@@ -306,6 +293,15 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
     squadEmployeeCommandRepository.save(newMember);
   }
 
+  @Override
+  public void updateProjectBudget(String projectId, BigDecimal budget) {
+    Project project = projectRepository.findById(projectId).orElseThrow(
+            () -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND)
+    );
+    project.setBudget(budget);
+    projectRepository.save(project);
+  }
+
   private void notifyFPAnalysisFailure(String managerId, String projectId) {
     notificationCommandService.createAndSendNotification(
         null, managerId, null, NotificationType.FP_ANALYSIS_FAILURE, projectId);
@@ -326,19 +322,5 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
 
       sendTaskUploadRequestNotification(employee, saved.getId());
     }
-  }
-
-  @Override
-  @Transactional
-  public void updateProjectBudget(String projectCode, BigDecimal newBudget) {
-    Project project =
-        projectRepository
-            .findByProjectCode(projectCode)
-            .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
-
-    // BigDecimal → long 형변환 (소수점 절삭됨)
-    long convertedBudget = newBudget.longValue();
-
-    project.updateBudget(convertedBudget);
   }
 }

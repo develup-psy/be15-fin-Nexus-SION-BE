@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.dto.request;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import lombok.*;
@@ -15,11 +16,10 @@ public class ProjectUpdateRequest {
   private String domainName;
   private String description;
   private String title;
-  private Long budget;
+  private BigDecimal budget;
   private LocalDate startDate;
   private LocalDate expectedEndDate;
   private Integer numberOfMembers;
   private String requestSpecificationUrl;
 
-  // ✅ jobTechStacks 제거: 기술스택 수정도 불가
 }

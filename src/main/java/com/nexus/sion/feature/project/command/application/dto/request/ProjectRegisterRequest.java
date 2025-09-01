@@ -1,5 +1,6 @@
 package com.nexus.sion.feature.project.command.application.dto.request;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ProjectRegisterRequest {
   private String domainName;
   private String description;
   private String title;
-  private Long budget;
+  private BigDecimal budget;
   private LocalDate startDate;
   private LocalDate expectedEndDate;
   private String clientCode;

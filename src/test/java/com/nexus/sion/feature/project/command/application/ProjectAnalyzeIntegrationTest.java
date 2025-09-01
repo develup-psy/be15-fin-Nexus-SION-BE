@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -80,7 +81,7 @@ class ProjectAnalyzeIntegrationTest {
             .startDate(LocalDate.of(2025, 1, 1))
             .expectedEndDate(LocalDate.of(2025, 12, 31))
             .numberOfMembers(1)
-            .budget(10_000_000L)
+            .budget(new BigDecimal(10_000_000L))
             .status(ProjectStatus.WAITING)
             .requestSpecificationUrl("http://example.com/spec")
             .domainName("CS")
